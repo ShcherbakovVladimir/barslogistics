@@ -592,8 +592,33 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 
 [data-theme="light"] .shipments-page .shipment-events-panel :is(h2, h3, div, label, span).text-white,
 [data-theme="light"] .shipments-page .shipment-events-recent :is(h2, h3, div, span).text-white,
+[data-theme="light"] .shipments-page .shipment-events-hub :is(h2, h3, p, span).text-white,
 [data-theme="light"] .shipments-page .shipment-events-section :is(h2, h3, p, span).text-white {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-tabs {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-tab {
+  color: #64748b;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-tab:hover {
+  color: #0f172a;
+  background: #ffffff;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-tab.is-active {
+  color: #312e81;
+  background: #e0e7ff;
+  box-shadow: inset 0 0 0 1px #c7d2fe;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-tabpanel-hint {
+  color: #64748b;
 }
 
 [data-theme="light"] .shipments-page .shipments-list-toolbar h2.text-white,
@@ -632,6 +657,7 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 [data-theme="light"] .shipments-page .shipment-events-panel label > span,
+[data-theme="light"] .shipments-page .shipment-events-hub .text-slate-400,
 [data-theme="light"] .shipments-page .shipment-events-section .text-slate-400 {
   color: #64748b !important;
 }

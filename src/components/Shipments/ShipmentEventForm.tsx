@@ -27,6 +27,8 @@ interface ShipmentEventFormProps {
   products: Product[];
   selectedShipmentId?: string;
   lockShipment?: boolean;
+  /** Hide the form heading when the parent already shows the section title. */
+  hideTitle?: boolean;
   onSubmit: (shipmentId: string, input: ShipmentEventInput) => Promise<void>;
   onOpenShipment?: (shipmentId: string) => void;
 }
@@ -56,6 +58,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   products,
   selectedShipmentId,
   lockShipment = false,
+  hideTitle = false,
   onSubmit,
   onOpenShipment,
 }) => {
@@ -296,7 +299,9 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
 
   return (
     <form onSubmit={(e) => void handleSubmit(e)} className="shipment-events-panel bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4 text-xs">
-      <div className="font-semibold text-white text-sm">{t('shipmentEvents.addEvent')}</div>
+      {!hideTitle && (
+        <div className="font-semibold text-white text-sm">{t('shipmentEvents.addEvent')}</div>
+      )}
 
       {error && (
         <div className="text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-2">{error}</div>

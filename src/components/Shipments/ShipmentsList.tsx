@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { SupplyLink, Factory, User, ShipmentEvent, ShipmentEventInput, Product } from '../../types';
 import { CARGO_STATUSES } from '../../types';
 import { useI18n } from '../../i18n';
-import { Truck, Search, AlertTriangle, Clock, Edit3, ArrowRight, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
+import { Truck, Search, AlertTriangle, Clock, Edit3, ArrowRight, MapPin, ChevronDown, ChevronUp, PlusCircle, History } from 'lucide-react';
 import { canCreateAnyShipmentEvent, canCreateShipmentEvent, canEditShipmentStatus, isShipmentInUserScope } from '../../utils/permissions';
 import { ApiService } from '../../services/api';
 import { ShipmentEventForm } from './ShipmentEventForm';
@@ -164,7 +164,8 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   const [selectedSourceFilter, setSelectedSourceFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<ShipmentSortKey>('date_desc');
   const [recentEvents, setRecentEvents] = useState<ShipmentEvent[]>([]);
-  const [eventsExpanded, setEventsExpanded] = useState(false);
+  const [eventsHubExpanded, setEventsHubExpanded] = useState(false);
+  const [eventsTab, setEventsTab] = useState<'add' | 'history'>('add');
 
   const canEdit = canEditShipmentStatus(currentUser.role);
   const canManageEvents = canCreateAnyShipmentEvent(currentUser);
@@ -263,36 +264,98 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
     <div className="shipments-page p-4 sm:p-6 space-y-4 sm:space-y-6 bg-slate-950 min-h-full text-slate-100">
 
       {canManageEvents && eventFormShipments.length > 0 && (
-        <section className="shipment-events-section">
+        <section className="shipment-events-hub">
           <button
             type="button"
-            className="shipment-events-section-toggle"
-            onClick={() => setEventsExpanded(v => !v)}
-            aria-expanded={eventsExpanded}
+            className="shipment-events-hub-toggle"
+            onClick={() => setEventsHubExpanded(v => !v)}
+            aria-expanded={eventsHubExpanded}
           >
             <div className="min-w-0 text-left">
               <h2 className="text-base sm:text-lg font-bold text-white">{t('shipmentEvents.title')}</h2>
               <p className="text-xs text-slate-400 mt-0.5">{t('shipmentEvents.subtitle')}</p>
             </div>
-            <span className="shipment-events-section-chevron" aria-hidden="true">
-              {eventsExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            <span className="shipment-events-hub-chevron" aria-hidden="true">
+              {eventsHubExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </span>
           </button>
 
-          <div className={`shipment-events-section-body space-y-4 ${eventsExpanded ? 'is-open' : ''}`}>
-            <ShipmentEventForm
-              shipments={eventFormShipments}
-              factories={factories}
-              products={products}
-              onSubmit={handleCreateEvent}
-              onOpenShipment={(id) => {
-                const link = supplyLinks.find(s => s.id === id);
-                if (link) onSelectShipment(link);
-              }}
-            />
-            <div className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-              <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.recent')}</h3>
-              <ShipmentEventTimeline events={recentEvents} factories={factories} compact />
+          <div className={`shipment-events-hub-body ${eventsHubExpanded ? 'is-open' : ''}`}>
+            <div className="shipment-events-hub-head">
+              <div className="shipment-events-hub-head-text min-w-0">
+                <h2 className="text-base sm:text-lg font-bold text-white">{t('shipmentEvents.title')}</h2>
+                <p className="text-xs text-slate-400 mt-0.5">{t('shipmentEvents.subtitle')}</p>
+              </div>
+            </div>
+
+            <div
+              className="shipment-events-tabs"
+              role="tablist"
+              aria-label={t('shipmentEvents.title')}
+            >
+              <button
+                type="button"
+                role="tab"
+                id="shipment-events-tab-add"
+                aria-selected={eventsTab === 'add'}
+                aria-controls="shipment-events-panel-add"
+                className={`shipment-events-tab${eventsTab === 'add' ? ' is-active' : ''}`}
+                onClick={() => setEventsTab('add')}
+              >
+                <PlusCircle className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                <span className="shipment-events-tab-label-short">{t('shipmentEvents.tabAdd')}</span>
+                <span className="shipment-events-tab-label-full">{t('shipmentEvents.tabAddFull')}</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="shipment-events-tab-history"
+                aria-selected={eventsTab === 'history'}
+                aria-controls="shipment-events-panel-history"
+                className={`shipment-events-tab${eventsTab === 'history' ? ' is-active' : ''}`}
+                onClick={() => setEventsTab('history')}
+              >
+                <History className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                <span className="shipment-events-tab-label-short">{t('shipmentEvents.tabHistory')}</span>
+                <span className="shipment-events-tab-label-full">{t('shipmentEvents.tabHistoryFull')}</span>
+              </button>
+            </div>
+
+            <div
+              id="shipment-events-panel-add"
+              role="tabpanel"
+              aria-labelledby="shipment-events-tab-add"
+              aria-hidden={eventsTab !== 'add'}
+              className={`shipment-events-tabpanel${eventsTab === 'add' ? ' is-active' : ''}`}
+            >
+              <p className="shipment-events-tabpanel-hint">{t('shipmentEvents.addSubtitle')}</p>
+              <ShipmentEventForm
+                shipments={eventFormShipments}
+                factories={factories}
+                products={products}
+                hideTitle
+                onSubmit={handleCreateEvent}
+                onOpenShipment={(id) => {
+                  const link = supplyLinks.find(s => s.id === id);
+                  if (link) onSelectShipment(link);
+                }}
+              />
+            </div>
+
+            <div
+              id="shipment-events-panel-history"
+              role="tabpanel"
+              aria-labelledby="shipment-events-tab-history"
+              aria-hidden={eventsTab !== 'history'}
+              className={`shipment-events-tabpanel${eventsTab === 'history' ? ' is-active' : ''}`}
+            >
+              <div className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.tabHistoryFull')}</h3>
+                  <p className="text-[11px] text-slate-400 mt-0.5">{t('shipmentEvents.historySubtitle')}</p>
+                </div>
+                <ShipmentEventTimeline events={recentEvents} factories={factories} compact />
+              </div>
             </div>
           </div>
         </section>

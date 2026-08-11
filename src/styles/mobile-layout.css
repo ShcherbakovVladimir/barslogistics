@@ -1392,8 +1392,15 @@ html.layout-fold .shipments-cards-mobile {
   gap: 0.625rem;
 }
 
-html.layout-mobile .shipment-events-section-toggle,
-html.layout-fold .shipment-events-section-toggle {
+html.layout-mobile .shipment-events-hub,
+html.layout-fold .shipment-events-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .shipment-events-hub-toggle,
+html.layout-fold .shipment-events-hub-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1407,26 +1414,60 @@ html.layout-fold .shipment-events-section-toggle {
   text-align: left;
 }
 
-html.layout-mobile .shipment-events-section-chevron,
-html.layout-fold .shipment-events-section-chevron {
+html.layout-mobile .shipment-events-hub-chevron,
+html.layout-fold .shipment-events-hub-chevron {
   flex-shrink: 0;
   color: var(--shipment-events-toggle-chevron);
 }
 
-html.layout-mobile .shipment-events-section-body:not(.is-open),
-html.layout-fold .shipment-events-section-body:not(.is-open) {
+html.layout-mobile .shipment-events-hub-body:not(.is-open),
+html.layout-fold .shipment-events-hub-body:not(.is-open) {
   display: none;
 }
 
-html.layout-mobile .shipment-events-section,
-html.layout-fold .shipment-events-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
+html.layout-mobile .shipment-events-hub-head,
+html.layout-fold .shipment-events-hub-head {
+  display: none;
 }
 
-html.layout-mobile .shipment-events-section .shipment-events-panel,
-html.layout-fold .shipment-events-section .shipment-events-panel {
+html.layout-mobile .shipment-events-tabs,
+html.layout-fold .shipment-events-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 0.875rem;
+  border-color: var(--shipment-events-toggle-border);
+  background: var(--shipment-events-toggle-bg);
+}
+
+html.layout-mobile .shipment-events-tab,
+html.layout-fold .shipment-events-tab {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.8125rem;
+  border-radius: 0.625rem;
+}
+
+html.layout-mobile .shipment-events-tab-label-full,
+html.layout-fold .shipment-events-tab-label-full {
+  display: none;
+}
+
+html.layout-mobile .shipment-events-tab-label-short,
+html.layout-fold .shipment-events-tab-label-short {
+  display: inline;
+}
+
+html.layout-mobile .shipment-events-tabpanel-hint,
+html.layout-fold .shipment-events-tabpanel-hint {
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+}
+
+html.layout-mobile .shipment-events-hub .shipment-events-panel,
+html.layout-fold .shipment-events-hub .shipment-events-panel {
   border-radius: 1rem;
   padding: 0.875rem;
 }
