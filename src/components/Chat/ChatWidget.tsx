@@ -93,6 +93,19 @@ function formatListTime(iso: string | undefined, localeTag: string): string {
   return d.toLocaleDateString(localeTag, { day: '2-digit', month: '2-digit' });
 }
 
+function chatInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0] ?? ''}${parts[1][0] ?? ''}`.toUpperCase();
+}
+
+function chatAvatarTone(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return hash % 5;
+}
+
 export const ChatWidget: React.FC<ChatWidgetProps> = ({
   currentUser,
   hideLauncher = false,
@@ -598,7 +611,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
             ) : null}
             <button
               type="button"
-              className="chat-widget-icon-btn chat-widget-close-desktop"
+              className="chat-widget-icon-btn chat-widget-close-btn"
               onClick={closeChat}
               aria-label={t('common.close')}
             >
@@ -656,22 +669,29 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
                 <button
                   key={conv.id}
                   type="button"
-                  className={`chat-widget-list-item ${activeConversationId === conv.id ? 'chat-widget-list-item--active' : ''}`}
+                  className={`chat-widget-list-item ${activeConversationId === conv.id ? 'chat-widget-list-item--active' : ''}${conv.unread_count > 0 ? ' has-unread' : ''}`}
                   onClick={() => selectConversation(conv)}
                 >
-                  <div className="chat-widget-list-item-top">
-                    <span className="chat-widget-list-name">{conv.peer_name}</span>
-                    <span className="chat-widget-list-time">{formatListTime(conv.last_message_at, localeTag)}</span>
-                  </div>
-                  <div className="chat-widget-list-item-bottom">
-                    <span className="chat-widget-list-preview">@{conv.peer_username}</span>
-                    {conv.unread_count > 0 ? (
-                      <span className="chat-widget-unread">{conv.unread_count > 99 ? '99+' : conv.unread_count}</span>
-                    ) : null}
-                  </div>
-                  {conv.last_message ? (
-                    <div className="chat-widget-list-last">{conv.last_message}</div>
-                  ) : null}
+                  <span
+                    className={`chat-widget-avatar chat-widget-avatar--tone-${chatAvatarTone(conv.peer_id || conv.peer_name)}`}
+                    aria-hidden
+                  >
+                    {chatInitials(conv.peer_name)}
+                  </span>
+                  <span className="chat-widget-list-item-body">
+                    <span className="chat-widget-list-item-top">
+                      <span className="chat-widget-list-name">{conv.peer_name}</span>
+                      <span className="chat-widget-list-time">{formatListTime(conv.last_message_at, localeTag)}</span>
+                    </span>
+                    <span className="chat-widget-list-item-bottom">
+                      <span className="chat-widget-list-last">
+                        {conv.last_message || `@${conv.peer_username}`}
+                      </span>
+                      {conv.unread_count > 0 ? (
+                        <span className="chat-widget-unread">{conv.unread_count > 99 ? '99+' : conv.unread_count}</span>
+                      ) : null}
+                    </span>
+                  </span>
                 </button>
               ))
             )
@@ -686,16 +706,24 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
                   className={`chat-widget-list-item ${activePeer?.peer_id === u.id ? 'chat-widget-list-item--active' : ''}`}
                   onClick={() => selectUser(u)}
                 >
-                  <div className="chat-widget-list-item-top">
-                    <span className="chat-widget-list-name">{u.name}</span>
-                    {u.has_conversation ? (
-                      <span className="chat-widget-list-badge">{t('chat.existingChat')}</span>
-                    ) : null}
-                  </div>
-                  <div className="chat-widget-list-item-bottom">
-                    <span className="chat-widget-list-preview">@{u.username}</span>
-                    <span className="chat-widget-role">{roleLabel(u.role)}</span>
-                  </div>
+                  <span
+                    className={`chat-widget-avatar chat-widget-avatar--tone-${chatAvatarTone(u.id || u.name)}`}
+                    aria-hidden
+                  >
+                    {chatInitials(u.name)}
+                  </span>
+                  <span className="chat-widget-list-item-body">
+                    <span className="chat-widget-list-item-top">
+                      <span className="chat-widget-list-name">{u.name}</span>
+                      {u.has_conversation ? (
+                        <span className="chat-widget-list-badge">{t('chat.existingChat')}</span>
+                      ) : null}
+                    </span>
+                    <span className="chat-widget-list-item-bottom">
+                      <span className="chat-widget-list-preview">@{u.username}</span>
+                      <span className="chat-widget-role">{roleLabel(u.role)}</span>
+                    </span>
+                  </span>
                 </button>
               ))
             )
@@ -715,12 +743,26 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
               >
                 <ChevronLeft size={20} />
               </button>
+              <span
+                className={`chat-widget-avatar chat-widget-avatar--sm chat-widget-avatar--tone-${chatAvatarTone(activePeer.peer_id || activePeer.peer_name)}`}
+                aria-hidden
+              >
+                {chatInitials(activePeer.peer_name)}
+              </span>
               <div className="chat-widget-thread-peer">
                 <div className="chat-widget-thread-name">{activePeer.peer_name}</div>
                 <div className="chat-widget-thread-meta">
                   @{activePeer.peer_username} · {roleLabel(activePeer.peer_role)}
                 </div>
               </div>
+              <button
+                type="button"
+                className="chat-widget-icon-btn chat-widget-close-btn chat-widget-close-thread-mobile"
+                onClick={closeChat}
+                aria-label={t('common.close')}
+              >
+                <X size={18} />
+              </button>
             </div>
 
             <div className="chat-widget-messages scroll-area">

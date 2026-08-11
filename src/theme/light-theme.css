@@ -3039,7 +3039,7 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 [data-theme="light"] .chat-widget-backdrop {
-  background: rgb(15 23 42 / 0.35) !important;
+  background: rgb(15 23 42 / 0.28) !important;
 }
 
 [data-theme="light"] .chat-widget-panel {
@@ -3192,11 +3192,6 @@ html[data-theme="light"].layout-fold .app-side-rail.is-mobile-dock .app-side-rai
   background: #f1f5f9 !important;
 }
 
-html.layout-mobile[data-theme="light"] .chat-widget-panel,
-html.layout-fold[data-theme="light"] .chat-widget-panel {
-  box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
-}
-
 [data-theme="light"] .chat-widget-sidebar {
   background: #f8fafc !important;
   border-right-color: #e2e8f0 !important;
@@ -3225,9 +3220,9 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 }
 
 [data-theme="light"] .chat-widget-tab--active {
-  background: #e2e8f0 !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.28) !important;
+  color: #3730a3 !important;
 }
 
 [data-theme="light"] .chat-widget-search,
@@ -3238,8 +3233,7 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .chat-widget-search input,
-[data-theme="light"] .chat-widget-compose input[type='text']::placeholder {
+[data-theme="light"] .chat-widget-search input {
   color: #0f172a !important;
 }
 
@@ -3256,6 +3250,14 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
   border-color: rgb(99 102 241 / 0.25) !important;
 }
 
+[data-theme="light"] .chat-widget-list-item.has-unread .chat-widget-list-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .chat-widget-list-item.has-unread .chat-widget-list-last {
+  color: #475569 !important;
+}
+
 [data-theme="light"] .chat-widget-list-preview,
 [data-theme="light"] .chat-widget-list-last,
 [data-theme="light"] .chat-widget-list-time,
@@ -3269,8 +3271,8 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 }
 
 [data-theme="light"] .chat-widget-bubble--own {
-  background: rgb(99 102 241 / 0.12) !important;
-  border-color: rgb(99 102 241 / 0.25) !important;
+  background: linear-gradient(160deg, rgb(99 102 241 / 0.18), rgb(99 102 241 / 0.12)) !important;
+  border-color: rgb(99 102 241 / 0.28) !important;
 }
 
 [data-theme="light"] .chat-widget-bubble-sender {
@@ -3282,14 +3284,15 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 }
 
 [data-theme="light"] .chat-widget-icon-btn,
-[data-theme="light"] .chat-widget-back-mobile {
+[data-theme="light"] .chat-widget-back-mobile,
+[data-theme="light"] .chat-widget-close-btn {
   background: #f8fafc !important;
   border-color: #e2e8f0 !important;
   color: #475569 !important;
 }
 
 [data-theme="light"] .chat-widget-send-btn {
-  background: #4f46e5 !important;
+  background: linear-gradient(145deg, #6366f1, #4f46e5) !important;
   border-color: #4338ca !important;
   color: #fff !important;
 }
@@ -3307,6 +3310,11 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 
 [data-theme="light"] .chat-widget-unread {
   background: #4f46e5 !important;
+}
+
+[data-theme="light"] .chat-widget-avatar {
+  color: #fff !important;
+  border-color: rgb(99 102 241 / 0.25) !important;
 }
 
 [data-theme="light"] .chat-emoji-picker-panel {
@@ -3338,6 +3346,82 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 [data-theme="light"] .chat-widget-push-btn {
   color: #b45309 !important;
   border-color: rgb(245 158 11 / 0.4) !important;
+}
+
+/* Mobile chat sheet — light surface (beats dark mobile panel rules) */
+html[data-theme="light"].layout-mobile .chat-widget-panel,
+html[data-theme="light"].layout-fold .chat-widget-panel,
+html[data-theme="light"] .chat-widget-root--open .chat-widget-panel {
+  background: #ffffff !important;
+  border-top-color: #e2e8f0 !important;
+  box-shadow:
+    0 -12px 40px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(226 232 240 / 0.9) !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-sidebar-head,
+html[data-theme="light"].layout-fold .chat-widget-sidebar-head,
+html[data-theme="light"].layout-mobile .chat-widget-thread-head,
+html[data-theme="light"].layout-fold .chat-widget-thread-head,
+html[data-theme="light"].layout-mobile .chat-widget-compose,
+html[data-theme="light"].layout-fold .chat-widget-compose {
+  background: rgb(255 255 255 / 0.96) !important;
+  border-color: #e2e8f0 !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-thread,
+html[data-theme="light"].layout-fold .chat-widget-thread {
+  background:
+    radial-gradient(ellipse 120% 40% at 50% -10%, rgb(99 102 241 / 0.08), transparent 55%),
+    #f8fafc !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-tabs,
+html[data-theme="light"].layout-fold .chat-widget-tabs {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-tab--active,
+html[data-theme="light"].layout-fold .chat-widget-tab--active {
+  background: #ffffff !important;
+  border-color: rgb(99 102 241 / 0.28) !important;
+  color: #3730a3 !important;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.06);
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-search,
+html[data-theme="light"].layout-fold .chat-widget-search,
+html[data-theme="light"].layout-mobile .chat-widget-compose input[type='text'],
+html[data-theme="light"].layout-fold .chat-widget-compose input[type='text'] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-list-item:hover,
+html[data-theme="light"].layout-fold .chat-widget-list-item:hover,
+html[data-theme="light"].layout-mobile .chat-widget-list-item:active,
+html[data-theme="light"].layout-fold .chat-widget-list-item:active {
+  background: #f1f5f9 !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-bubble,
+html[data-theme="light"].layout-fold .chat-widget-bubble {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 0.06) !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-bubble--own,
+html[data-theme="light"].layout-fold .chat-widget-bubble--own {
+  background: linear-gradient(160deg, rgb(99 102 241 / 0.16), rgb(99 102 241 / 0.1)) !important;
+  border-color: rgb(99 102 241 / 0.28) !important;
+}
+
+html[data-theme="light"].layout-mobile .chat-widget-back-mobile,
+html[data-theme="light"].layout-fold .chat-widget-back-mobile {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
 }
 
 /* ── Badges / pills with low opacity backgrounds ── */
