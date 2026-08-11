@@ -136,11 +136,88 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
     };
   }, [isMobileDock, showNotifications]);
 
-  const renderNotificationsPanel = (mobileSheet: boolean) => (
+  const renderNotificationsList = () => (
+    notifications.length === 0 ? (
+      <p className="app-side-rail-empty tasks-empty">{t('header.notificationsEmpty')}</p>
+    ) : (
+      notifications.map(n => (
+        <div
+          key={n.id}
+          className={`app-side-rail-notify${n.read ? ' is-read' : ''}`}
+        >
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              onMarkNotificationRead(n.id);
+              if (n.link_type === 'chat' && n.link_id) {
+                window.dispatchEvent(
+                  new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
+                );
+              }
+              if (n.link_type === 'task' || n.link_type === 'board') {
+                dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+              }
+              if (n.link_type === 'shipment' && n.link_id) {
+                window.dispatchEvent(
+                  new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
+                );
+              }
+              setShowNotifications(false);
+            }}
+          >
+            <div className="flex justify-between items-start gap-2">
+              <span className={`font-semibold text-xs ${
+                n.type === 'alert' ? 'text-red-400'
+                  : n.type === 'success' ? 'text-emerald-400'
+                    : 'text-indigo-300'
+              }`}
+              >
+                {n.title}
+              </span>
+              <span className="text-[10px] text-slate-500 shrink-0">
+                {new Date(n.timestamp).toLocaleString(localeTag, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </span>
+            </div>
+            <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
+          </div>
+          <div className="flex justify-end gap-1 mt-1.5">
+            {!n.read ? (
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMarkNotificationRead(n.id);
+                }}
+              >
+                <CheckCheck size={12} />
+                {t('header.notificationsMarkRead')}
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteNotification(n.id);
+              }}
+            >
+              <Trash2 size={12} />
+              {t('header.notificationsDelete')}
+            </button>
+          </div>
+        </div>
+      ))
+    )
+  );
+
+  const renderDesktopNotificationsPopover = () => (
     <>
-      {mobileSheet ? (
-        <div className="app-side-rail-popover-handle" aria-hidden="true" />
-      ) : null}
       <div className="app-side-rail-popover-head">
         <h3>{t('header.notificationsPanel')}</h3>
         <div className="flex items-center gap-1">
@@ -173,83 +250,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
         </div>
       </div>
       <div className="app-side-rail-popover-body theme-scrollbar">
-        {notifications.length === 0 ? (
-          <p className="app-side-rail-empty">{t('header.notificationsEmpty')}</p>
-        ) : (
-          notifications.map(n => (
-            <div
-              key={n.id}
-              className={`app-side-rail-notify${n.read ? ' is-read' : ''}`}
-            >
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  onMarkNotificationRead(n.id);
-                  if (n.link_type === 'chat' && n.link_id) {
-                    window.dispatchEvent(
-                      new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
-                    );
-                  }
-                  if (n.link_type === 'task' || n.link_type === 'board') {
-                    dispatchTasksOpenFromNotification(n.link_type, n.link_id);
-                  }
-                  if (n.link_type === 'shipment' && n.link_id) {
-                    window.dispatchEvent(
-                      new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
-                    );
-                  }
-                  setShowNotifications(false);
-                }}
-              >
-                <div className="flex justify-between items-start gap-2">
-                  <span className={`font-semibold text-xs ${
-                    n.type === 'alert' ? 'text-red-400'
-                      : n.type === 'success' ? 'text-emerald-400'
-                        : 'text-indigo-300'
-                  }`}
-                  >
-                    {n.title}
-                  </span>
-                  <span className="text-[10px] text-slate-500 shrink-0">
-                    {new Date(n.timestamp).toLocaleString(localeTag, {
-                      day: '2-digit',
-                      month: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-                <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
-              </div>
-              <div className="flex justify-end gap-1 mt-1.5">
-                {!n.read ? (
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onMarkNotificationRead(n.id);
-                    }}
-                  >
-                    <CheckCheck size={12} />
-                    {t('header.notificationsMarkRead')}
-                  </button>
-                ) : null}
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteNotification(n.id);
-                  }}
-                >
-                  <Trash2 size={12} />
-                  {t('header.notificationsDelete')}
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+        {renderNotificationsList()}
       </div>
     </>
   );
@@ -297,7 +298,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
 
               {showNotifications && !isMobileDock ? (
                 <div className="app-side-rail-popover">
-                  {renderNotificationsPanel(false)}
+                  {renderDesktopNotificationsPopover()}
                 </div>
               ) : null}
             </div>
@@ -363,21 +364,61 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
       ) : null}
 
       {showNotifications && isMobileDock ? (
-        <div className="app-side-rail-popover-stack" ref={notificationsRef} role="presentation">
+        <div className="tasks-drawer-root app-notifications-drawer-root" ref={notificationsRef} role="presentation">
           <button
             type="button"
-            className="app-side-rail-popover-backdrop"
+            className="tasks-drawer-backdrop"
             aria-label={t('common.close')}
             onClick={() => setShowNotifications(false)}
           />
-          <div
-            className="app-side-rail-popover app-side-rail-popover--mobile-sheet"
+          <aside
+            className="tasks-drawer-panel app-notifications-drawer-panel bg-slate-900/96 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl text-slate-200"
             role="dialog"
             aria-modal="true"
             aria-label={t('header.notificationsPanel')}
           >
-            {renderNotificationsPanel(true)}
-          </div>
+            <header className="tasks-drawer-header border-b border-slate-700">
+              <div className="tasks-drawer-header-main min-w-0">
+                <div className="min-w-0 flex items-start gap-1.5">
+                  <Bell className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" aria-hidden />
+                  <div className="min-w-0">
+                    <h2 className="tasks-drawer-title truncate">{t('header.notificationsPanel')}</h2>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-0.5 shrink-0">
+                {unreadCount > 0 ? (
+                  <button
+                    type="button"
+                    className="app-notifications-toolbar-btn"
+                    onClick={() => onMarkAllNotificationsRead()}
+                  >
+                    {t('header.notificationsMarkAll')}
+                  </button>
+                ) : null}
+                {notifications.length > 0 ? (
+                  <button
+                    type="button"
+                    className="app-notifications-toolbar-btn app-notifications-toolbar-btn--danger"
+                    onClick={() => onClearAllNotifications()}
+                  >
+                    {t('header.notificationsClear')}
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  className="tasks-drawer-icon-btn"
+                  onClick={() => setShowNotifications(false)}
+                  aria-label={t('common.close')}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </header>
+            <div className="tasks-drawer-body scroll-area theme-scrollbar app-notifications-drawer-body">
+              {renderNotificationsList()}
+            </div>
+          </aside>
         </div>
       ) : null}
     </aside>
