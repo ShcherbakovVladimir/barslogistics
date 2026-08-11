@@ -109,18 +109,31 @@ html.layout-fold:not(.portal-embed) .app-shell {
 }
 
 /*
- * Map tab — tiles in the visible viewport; theme fill under Safari chrome
- * comes from html { min-height: 100lvh; background: --safe-fill-map }.
- * No ::after strip — it sat above buttons on iOS.
+ * Map tab — bottom theme fill under Safari chrome (same colors as other tabs).
+ * Strip lives inside .logistics-map stacking context (z-index 8) so FABs /
+ * chat / zoom (30+) stay clickable — html::after at 10000 covered them on iOS.
  */
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
-  background-color: transparent;
+  background-color: var(--safe-fill-map);
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed)::after,
 html.layout-fold.app-tab-map:not(.portal-embed)::after {
   display: none;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map::after,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: max(var(--safe-bottom, 0px), calc(100lvh - 100dvh));
+  background-color: var(--safe-fill-map);
+  z-index: 8;
+  pointer-events: none;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-header,
@@ -137,6 +150,16 @@ html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
 html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
 html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
   background-color: var(--safe-fill-map) !important;
+}
+
+/* Zoom sits inside Leaflet (z-index 7) — pin above the bottom fill strip (z-index 8) */
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar {
+  position: fixed !important;
+  right: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-right, 0px)) !important;
+  bottom: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  z-index: 35;
 }
 
 html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
