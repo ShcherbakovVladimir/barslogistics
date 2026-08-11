@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { NotificationItem, User } from '../types';
 import {
   MapPin, BarChart3, Truck, Building2, FileText, Download,
-  Bell, Shield, Menu, X, Languages, LogOut, LayoutGrid, BookOpen, Package, Container, Train, UserCircle, Search,
+  Bell, Shield, Menu, X, Languages, LogOut, LayoutGrid, BookOpen, Package, Container, Train, UserCircle, UserCog, Search,
   Moon, Sun, Trash2, CheckCheck, ListTodo,
 } from 'lucide-react';
 import { useI18n } from '../i18n';
@@ -103,6 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'managers', label: t('nav.managers'), icon: UserCircle },
     { id: 'rzd-analytics', label: t('nav.rzdAnalytics'), icon: Train },
     { id: 'mydata', label: t('nav.mydata'), icon: FileText },
+    { id: 'account', label: t('nav.account'), icon: UserCog },
     { id: 'admin', label: t('nav.admin'), icon: Shield },
     { id: 'logs', label: t('nav.logs'), icon: FileText },
   ]).filter(item => canAccessTab(item.id, currentUser.role)), [t, currentUser.role]);
@@ -326,9 +327,21 @@ export const Header: React.FC<HeaderProps> = ({
         onClick={() => {
           setShowUserMenu(false);
           closeNav();
+          setActiveTab('account');
+        }}
+        className="header-nav-item w-full mt-2"
+      >
+        <UserCog className="header-nav-item-icon" aria-hidden="true" />
+        <span className="header-nav-item-label">{t('account.open')}</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setShowUserMenu(false);
+          closeNav();
           onLogout();
         }}
-        className="header-nav-item header-nav-item--logout w-full mt-2"
+        className="header-nav-item header-nav-item--logout w-full mt-1"
       >
         <LogOut className="header-nav-item-icon" aria-hidden="true" />
         <span className="header-nav-item-label">{t('header.logout')}</span>
@@ -627,6 +640,17 @@ export const Header: React.FC<HeaderProps> = ({
                         <div className="text-slate-400 text-[10px] mt-0.5 truncate">@{currentUser.username}</div>
                       </div>
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setActiveTab('account');
+                      }}
+                      className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-slate-800 text-slate-200 transition-colors"
+                    >
+                      <UserCog className="w-4 h-4 text-indigo-400" />
+                      <span>{t('account.open')}</span>
+                    </button>
                     <button
                       type="button"
                       onClick={() => {

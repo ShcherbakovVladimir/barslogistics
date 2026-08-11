@@ -11,6 +11,7 @@ export const APP_TABS = [
   'managers',
   'rzd-analytics',
   'mydata',
+  'account',
   'admin',
   'logs',
 ] as const;

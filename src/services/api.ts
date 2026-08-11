@@ -188,6 +188,27 @@ export class ApiService {
     }
   }
 
+  static async updateMe(input: {
+    name?: string;
+    telegram_chat_id?: string | null;
+    notifications_enabled?: boolean;
+  }): Promise<User> {
+    const json = await this.request<{ status: string; data: User }>(`${this.baseUrl}/auth/me`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    });
+    return json.data;
+  }
+
+  static async requestMyPasswordReset(): Promise<{ message: string }> {
+    const json = await this.request<{ status: string; data: { message: string } }>(
+      `${this.baseUrl}/auth/me/request-password-reset`,
+      { method: 'POST' },
+    );
+    return json.data;
+  }
+
   static logout() {
     this.setToken(null);
   }

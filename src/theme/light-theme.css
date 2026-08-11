@@ -4229,3 +4229,58 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
   color: #0f172a !important;
   background-color: #f1f5f9 !important;
 }
+
+[data-theme="light"] .account-page {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgb(99 102 241 / 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(14 165 233 / 0.06), transparent 50%),
+    #f8fafc !important;
+}
+
+[data-theme="light"] .account-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .account-subtitle,
+[data-theme="light"] .account-section-hint {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .account-hero-icon {
+  color: #4338ca !important;
+  background: rgb(99 102 241 / 0.1) !important;
+  border-color: rgb(99 102 241 / 0.25) !important;
+}
+
+[data-theme="light"] .account-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 24px -16px rgb(15 23 42 / 0.18) !important;
+}
+
+[data-theme="light"] .account-section-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .account-field {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .account-field:disabled {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .account-alert--error {
+  color: #b91c1c !important;
+  background: rgb(254 226 226) !important;
+  border-color: rgb(252 165 165) !important;
+}
+
+[data-theme="light"] .account-alert--ok {
+  color: #047857 !important;
+  background: rgb(209 250 229) !important;
+  border-color: rgb(110 231 183) !important;
+}

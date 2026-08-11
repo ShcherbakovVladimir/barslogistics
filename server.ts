@@ -47,7 +47,9 @@ import {
   registerUser,
   confirmEmailByToken,
   requestPasswordReset,
+  requestPasswordResetByUserId,
   resetPasswordByToken,
+  updateSelfProfile,
   approveUser,
   rejectUser,
   getSupplyLinkById,
@@ -204,12 +206,14 @@ import {
   loginBodySchema,
   registerBodySchema,
   resetPasswordBodySchema,
+  updateMeBodySchema,
   validateBody,
   type ConfirmEmailBody,
   type ForgotPasswordBody,
   type LoginBody,
   type RegisterBody,
   type ResetPasswordBody,
+  type UpdateMeBody,
 } from "./server/security/validate.js";
 import "dotenv/config";
 
@@ -575,6 +579,70 @@ app.get("/api/auth/me", requireAuth, async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
+
+app.put("/api/auth/me", requireAuth, validateBody(updateMeBodySchema), async (req, res) => {
+  const { st } = req as AuthRequest;
+  const authUser = (req as AuthRequest).user;
+  const body = req.body as UpdateMeBody;
+  try {
+    const updated = await updateSelfProfile(authUser.id, {
+      name: body.name,
+      telegram_chat_id: body.telegram_chat_id,
+      notifications_enabled: body.notifications_enabled,
+    });
+    if (!updated) return res.status(404).json({ error: "User not found" });
+    res.json({ status: "success", data: updated });
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : "";
+    if (msg === "VALIDATION") return res.status(400).json({ error: st("auth.validationRequired") });
+    console.error("PUT /api/auth/me:", error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+app.post(
+  "/api/auth/me/request-password-reset",
+  requireAuth,
+  forgotPasswordRateLimiter,
+  async (req, res) => {
+    const { st, locale } = req as AuthRequest;
+    const authUser = (req as AuthRequest).user;
+    try {
+      const user = await getUserById(authUser.id);
+      if (!user) return res.status(404).json({ error: "User not found" });
+      if (!user.email?.trim()) {
+        return res.status(400).json({ error: st("account.noEmail") });
+      }
+
+      const mail = await getMailSettings();
+      if (!mail.enabled) {
+        return res.status(503).json({ error: st("auth.mailNotConfigured") });
+      }
+
+      const result = await requestPasswordResetByUserId(user.id);
+      if (!result) {
+        return res.status(400).json({ error: st("account.passwordResetFailed") });
+      }
+
+      try {
+        await sendPasswordResetEmail(result.user.email, result.resetToken, locale);
+      } catch (mailErr) {
+        console.error("sendPasswordResetEmail (me):", mailErr);
+        return res.status(502).json({ error: st("auth.mailSendFailed") });
+      }
+
+      res.json({
+        status: "success",
+        data: {
+          message: st("account.passwordResetSent", { email: result.user.email }),
+        },
+      });
+    } catch (error) {
+      console.error("POST /api/auth/me/request-password-reset:", error);
+      res.status(500).json({ error: "Database error" });
+    }
+  },
+);
 
 app.get("/api/auth/registration-status", async (_req, res) => {
   try {

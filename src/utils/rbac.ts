@@ -12,7 +12,7 @@ import {
 } from './permissions';
 
 export function canAccessTab(tab: string, role: UserRole): boolean {
-  if (['map', 'dashboard', 'shipments', 'factories', 'sites', 'carriers', 'managers'].includes(tab)) return true;
+  if (['map', 'dashboard', 'shipments', 'factories', 'sites', 'carriers', 'managers', 'account'].includes(tab)) return true;
   if (tab === 'products') return canManageProducts(role);
   if (tab === 'mydata') return canUploadData(role);
   if (tab === 'logs') return canAccessLogs(role);

@@ -63,6 +63,9 @@ const AuditLogs = lazy(() =>
 const MyDataPanel = lazy(() =>
   import('./components/DataEntry/MyDataPanel').then(m => ({ default: m.MyDataPanel })),
 );
+const AccountPanel = lazy(() =>
+  import('./components/Account/AccountPanel').then(m => ({ default: m.AccountPanel })),
+);
 import type { MyDataPanelProps } from './components/DataEntry/MyDataPanel';
 
 import { FacilityModal } from './components/Modals/FacilityModal';
@@ -157,6 +160,7 @@ export default function App() {
       { id: 'managers', label: t('nav.managers') },
       { id: 'rzd-analytics', label: t('nav.rzdAnalytics') },
       { id: 'mydata', label: t('nav.mydata') },
+      { id: 'account', label: t('nav.account') },
       { id: 'admin', label: t('nav.admin') },
       { id: 'logs', label: t('nav.logs') },
     ] as const).filter(item => canAccessTab(item.id, currentUser.role));
@@ -1241,6 +1245,17 @@ export default function App() {
                 onImported: handleInternalShipmentsImported,
                 changeLogs,
               } satisfies MyDataPanelProps)}
+            />
+          </div>
+        )}
+
+        {activeTab === 'account' && (
+          <div className="h-full min-h-0 overflow-hidden">
+            <AccountPanel
+              user={currentUser}
+              onUserUpdated={(next) => {
+                setCurrentUser((prev) => (prev ? { ...prev, ...next } : next));
+              }}
             />
           </div>
         )}

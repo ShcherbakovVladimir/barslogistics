@@ -1262,7 +1262,18 @@ export async function confirmEmailByToken(token: string): Promise<User | null> {
 export async function requestPasswordReset(email: string): Promise<{ user: User; resetToken: string } | null> {
   const user = await getUserByEmail(email);
   if (!user) return null;
+  return issuePasswordResetForUser(user);
+}
 
+export async function requestPasswordResetByUserId(
+  userId: string,
+): Promise<{ user: User; resetToken: string } | null> {
+  const user = await getUserById(userId);
+  if (!user?.email) return null;
+  return issuePasswordResetForUser(user);
+}
+
+async function issuePasswordResetForUser(user: User): Promise<{ user: User; resetToken: string }> {
   const resetToken = authToken();
   const expires = new Date(Date.now() + PASSWORD_RESET_TTL_MS);
   await pool.query(
@@ -1270,6 +1281,47 @@ export async function requestPasswordReset(email: string): Promise<{ user: User;
     [resetToken, expires.toISOString(), user.id],
   );
   return { user, resetToken };
+}
+
+export type SelfProfileUpdateInput = {
+  name?: string;
+  telegram_chat_id?: string | null;
+  notifications_enabled?: boolean;
+};
+
+export async function updateSelfProfile(
+  userId: string,
+  input: SelfProfileUpdateInput,
+): Promise<User | null> {
+  const current = await getUserById(userId);
+  if (!current) return null;
+
+  const fields: string[] = [];
+  const values: unknown[] = [];
+  let idx = 1;
+
+  const set = (col: string, val: unknown) => {
+    fields.push(`${col} = $${idx++}`);
+    values.push(val);
+  };
+
+  if (input.name != null) {
+    const name = input.name.trim();
+    if (!name) throw new Error("VALIDATION");
+    set("name", name);
+  }
+  if (input.telegram_chat_id !== undefined) {
+    set("telegram_chat_id", input.telegram_chat_id?.trim() || null);
+  }
+  if (input.notifications_enabled !== undefined) {
+    set("notifications_enabled", input.notifications_enabled);
+  }
+
+  if (fields.length === 0) return current;
+
+  values.push(userId);
+  await pool.query(`UPDATE users SET ${fields.join(", ")} WHERE id = $${idx}`, values);
+  return getUserById(userId);
 }
 
 export async function resetPasswordByToken(token: string, password: string): Promise<User | null> {

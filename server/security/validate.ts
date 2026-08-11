@@ -39,11 +39,21 @@ export const confirmEmailBodySchema = z.object({
   token: tokenSchema,
 });
 
+export const updateMeBodySchema = z.object({
+  name: z.string().trim().min(1, "name required").max(200, "name too long").optional(),
+  telegram_chat_id: z.string().trim().max(64, "telegram too long").nullable().optional(),
+  notifications_enabled: z.boolean().optional(),
+}).refine(
+  (v) => v.name !== undefined || v.telegram_chat_id !== undefined || v.notifications_enabled !== undefined,
+  { message: "empty update" },
+);
+
 export type LoginBody = z.infer<typeof loginBodySchema>;
 export type RegisterBody = z.infer<typeof registerBodySchema>;
 export type ForgotPasswordBody = z.infer<typeof forgotPasswordBodySchema>;
 export type ResetPasswordBody = z.infer<typeof resetPasswordBodySchema>;
 export type ConfirmEmailBody = z.infer<typeof confirmEmailBodySchema>;
+export type UpdateMeBody = z.infer<typeof updateMeBodySchema>;
 
 type LocalizedRequest = Request & { st?: (key: string) => string };
 
