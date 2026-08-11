@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Full deployment script for BarsLogistics
 # Usage: sudo bash deploy/deploy.sh
+#
+# After a successful deploy, commits local changes in SOURCE_DIR and pushes to Git
+# (disable: GIT_PUSH=0). Requires SSH access to the remote for APP_USER.
 set -euo pipefail
 
 DOMAIN="${DOMAIN:-barslogistics.almaz-t.ru}"
@@ -14,6 +17,10 @@ DB_USER="${DB_USER:-barslogistics}"
 DB_PASS="${DB_PASS:-}"
 PORT="${PORT:-3000}"
 NODE_MAJOR="${NODE_MAJOR:-22}"
+GIT_PUSH="${GIT_PUSH:-1}"
+GIT_REMOTE="${GIT_REMOTE:-origin}"
+GIT_COMMIT_USER_NAME="${GIT_COMMIT_USER_NAME:-BarsLogistics Deploy}"
+GIT_COMMIT_USER_EMAIL="${GIT_COMMIT_USER_EMAIL:-deploy@${DOMAIN}}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -349,6 +356,63 @@ verify_deployment() {
   curl -kfsS "https://127.0.0.1/api/health" -H "Host: ${DOMAIN}" >/dev/null && echo "  nginx HTTPS proxy: OK" || warn "HTTPS proxy check failed (DNS may not point here yet)"
 }
 
+# Commit SOURCE_DIR and push to GitHub (runs as APP_USER, not root).
+push_git_changes() {
+  if [[ "${GIT_PUSH}" == "0" ]]; then
+    log "Git push skipped (GIT_PUSH=0)"
+    return 0
+  fi
+
+  if [[ ! -d "$SOURCE_DIR/.git" ]]; then
+    warn "No git repo at $SOURCE_DIR — skip git push"
+    return 0
+  fi
+
+  log "Publishing source to git ($GIT_REMOTE) from $SOURCE_DIR"
+
+  local push_ok=0
+  if sudo -u "$APP_USER" bash -lc "
+    set -euo pipefail
+    cd '$SOURCE_DIR'
+
+    if ! git remote get-url '$GIT_REMOTE' >/dev/null 2>&1; then
+      echo 'Remote $GIT_REMOTE is not configured'
+      exit 2
+    fi
+
+    branch=\"\$(git rev-parse --abbrev-ref HEAD)\"
+    echo \"Branch: \$branch\"
+
+    git add -A
+
+    if git diff --cached --quiet; then
+      echo 'Nothing to commit (working tree clean after git add)'
+    else
+      msg=\"\${DEPLOY_COMMIT_MSG:-deploy: production sync \$(date -Iseconds)}\"
+      git -c user.name='$GIT_COMMIT_USER_NAME' -c user.email='$GIT_COMMIT_USER_EMAIL' \
+        commit -m \"\$msg\"
+    fi
+
+    git push -u '$GIT_REMOTE' \"\$branch\"
+  "; then
+    push_ok=1
+    log "Git push complete ($GIT_REMOTE)"
+  else
+    local rc=$?
+    if [[ "$rc" -eq 2 ]]; then
+      warn "Git remote '$GIT_REMOTE' not configured — skip push"
+      return 0
+    fi
+    if [[ "${GIT_PUSH_STRICT:-0}" == "1" ]]; then
+      die "git push failed (exit $rc)"
+    fi
+    warn "git push failed (exit $rc). Deploy succeeded; push manually or set GIT_PUSH_STRICT=1 to fail on push errors"
+    return 0
+  fi
+
+  [[ "$push_ok" -eq 1 ]]
+}
+
 print_summary() {
   cat <<EOF
 
@@ -376,6 +440,10 @@ Initial accounts (password in ${APP_DIR}/.env → DEFAULT_USER_PASSWORD):
 Re-deploy after code changes:
   sudo bash ${APP_DIR}/deploy/deploy.sh
   # includes npm run build:all + index-portal.html for WordPress portal
+  # commits SOURCE_DIR and pushes to origin (skip: GIT_PUSH=0)
+
+Custom commit message:
+  DEPLOY_COMMIT_MSG='fix: mobile layout' sudo bash ${APP_DIR}/deploy/deploy.sh
 
 Portal entry URL (for bars-portal plugin):
   https://${DOMAIN}/index-portal.html
@@ -400,6 +468,7 @@ main() {
   setup_systemd
   configure_firewall
   verify_deployment
+  push_git_changes
   print_summary
 }
 
