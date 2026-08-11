@@ -107,24 +107,6 @@ html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-activ
   box-shadow: none;
 }
 
-[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat,
-[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  color: #475569 !important;
-  box-shadow: none !important;
-}
-
-[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover,
-[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover,
-[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active,
-[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active {
-  background: #f8fafc !important;
-  color: #0f172a !important;
-  border-color: rgb(99 102 241 / 0.45) !important;
-  box-shadow: none !important;
-}
-
 html.portal-embed.layout-mobile .app-notifications-drawer-root,
 html.portal-embed.layout-fold .app-notifications-drawer-root,
 html.portal-embed.layout-mobile .app-side-rail.is-mobile-dock,
@@ -253,7 +235,7 @@ html.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-w
   max-width: none !important;
 }
 
-[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock,
-[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock {
+html[data-theme="light"].layout-mobile .app-side-rail.is-mobile-dock,
+html[data-theme="light"].layout-fold .app-side-rail.is-mobile-dock {
   border-top-color: #e2e8f0;
 }
