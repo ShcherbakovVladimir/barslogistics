@@ -44,6 +44,9 @@ html.layout-fold:not(.portal-embed) {
 html.layout-mobile.app-tab-map:not(.portal-embed),
 html.layout-fold.app-tab-map:not(.portal-embed) {
   --safe-fill-bottom: var(--safe-fill-map);
+  /* Physical bottom (under Safari chrome) — theme fill via page bg, not overlays */
+  background-color: var(--safe-fill-map);
+  min-height: 100lvh;
   background-image: linear-gradient(
     to bottom,
     var(--safe-fill-top) 0%,
@@ -106,9 +109,9 @@ html.layout-fold:not(.portal-embed) .app-shell {
 }
 
 /*
- * Map tab — immersive background like a native app:
- * • Leaflet tiles bleed to the physical bottom (under Safari URL bar / buttons)
- * • App shell, header, FABs, chat, zoom, sheets — unchanged (visible viewport + safe-area)
+ * Map tab — tiles in the visible viewport; theme fill under Safari chrome
+ * comes from html { min-height: 100lvh; background: --safe-fill-map }.
+ * No ::after strip — it sat above buttons on iOS.
  */
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
@@ -131,34 +134,9 @@ html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
   background-color: transparent !important;
 }
 
-/* Only the Leaflet mount — fixed full physical height under the header */
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map > .absolute.inset-0,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map > .absolute.inset-0 {
-  position: fixed;
-  top: calc(var(--app-header-height, 3.5rem) + var(--safe-top, 0px));
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: calc(100lvh - var(--app-header-height, 3.5rem) - var(--safe-top, 0px));
-  z-index: 0;
-}
-
 html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
 html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
   background-color: var(--safe-fill-map) !important;
-}
-
-/*
- * Zoom is inside the tall Leaflet box — pin it to the visible corner
- * (same offsets as the rest of the site: safe-area only, no browser-chrome shift).
- */
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar {
-  position: fixed !important;
-  right: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-right, 0px)) !important;
-  bottom: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-bottom, 0px)) !important;
-  margin: 0 !important;
-  z-index: 35;
 }
 
 html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
