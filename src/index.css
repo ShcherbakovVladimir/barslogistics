@@ -3909,6 +3909,27 @@ html.compact-laptop .audit-logs-filters-grid {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Above chat portal (1200) + bottom dock so page menu is not covered by chat FAB */
+html.layout-mobile .app-header-nav-overlay,
+html.layout-fold .app-header-nav-overlay {
+  z-index: 1400 !important;
+}
+
+html.layout-mobile .app-header-nav,
+html.layout-fold .app-header-nav {
+  z-index: 1401;
+  /* Clear bottom dock / chat button strip */
+  padding-bottom: calc(
+    var(--app-side-rail-mobile-height, 3.35rem) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+html.layout-mobile.app-tab-map .app-header-nav,
+html.layout-fold.app-tab-map .app-header-nav {
+  /* Map has no dock — only home-indicator / chat FAB inset */
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+}
+
 .app-header-nav .header-nav-scroll {
   flex: 1;
   min-height: 0;
