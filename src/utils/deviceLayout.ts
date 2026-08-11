@@ -33,7 +33,7 @@ export function getLayoutViewportSize(): { width: number; height: number } {
 
 /**
  * How much of the large layout viewport is covered by browser chrome
- * (Safari URL bar / toolbar). Map paints under this; interactive UI sits above.
+ * (Safari URL bar / toolbar). Map paints under this; absolute map UI sits above.
  */
 export function applyBrowserChromeInsets(root: HTMLElement = document.documentElement): void {
   if (typeof window === 'undefined') return;
@@ -45,9 +45,25 @@ export function applyBrowserChromeInsets(root: HTMLElement = document.documentEl
     return;
   }
 
-  const layoutH = Math.max(window.innerHeight || 0, root.clientHeight || 0);
+  /* Measure 100lvh in px — innerHeight/clientHeight often match the visual viewport on iOS */
+  let largeH = 0;
+  try {
+    const probe = document.createElement('div');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText =
+      'position:fixed;left:0;top:0;width:0;height:100lvh;visibility:hidden;pointer-events:none;';
+    root.appendChild(probe);
+    largeH = probe.offsetHeight;
+    probe.remove();
+  } catch {
+    largeH = 0;
+  }
+  if (!(largeH > 0)) {
+    largeH = Math.max(window.innerHeight || 0, root.clientHeight || 0);
+  }
+
   const top = Math.max(0, vv.offsetTop);
-  const bottom = Math.max(0, layoutH - top - vv.height);
+  const bottom = Math.max(0, largeH - top - vv.height);
   root.style.setProperty('--browser-chrome-top', `${Math.round(top)}px`);
   root.style.setProperty('--browser-chrome-bottom', `${Math.round(bottom)}px`);
 }

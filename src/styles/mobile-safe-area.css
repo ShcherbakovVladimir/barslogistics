@@ -106,15 +106,22 @@ html.layout-fold:not(.portal-embed) .app-shell {
 }
 
 /*
- * Map tab — paint under Safari URL bar / browser chrome to the physical
- * screen edge (100lvh). Stable across refresh vs tab switches (no JS max/min).
- * Interactive controls use --map-ui-bottom-inset (browser chrome + safe-area).
+ * Map tab — tiles under Safari URL bar to the physical screen edge.
+ *
+ * --map-ui-bottom-inset: gap between large (lvh) and dynamic (dvh) viewports
+ * ≈ bottom browser chrome. Absolute FABs inside the tall map use it so they
+ * stay above the address bar. Fixed chat stays on the visual viewport and
+ * only needs safe-area (do not add lvh−dvh or it double-counts on iOS).
  */
 html.layout-mobile.app-tab-map:not(.portal-embed),
 html.layout-fold.app-tab-map:not(.portal-embed) {
-  --map-ui-bottom-inset: max(
+  --map-browser-chrome-bottom: max(
     var(--browser-chrome-bottom, 0px),
-    var(--safe-bottom, 0px)
+    calc(100lvh - 100dvh)
+  );
+  --map-ui-bottom-inset: max(
+    var(--safe-bottom, 0px),
+    var(--map-browser-chrome-bottom, 0px)
   );
 }
 
@@ -124,36 +131,57 @@ html.layout-mobile.app-tab-map:not(.portal-embed) #root,
 html.layout-fold.app-tab-map:not(.portal-embed),
 html.layout-fold.app-tab-map:not(.portal-embed) body,
 html.layout-fold.app-tab-map:not(.portal-embed) #root {
-  /* Fallbacks before 100lvh — large viewport under Safari chrome */
-  height: 100vh;
-  height: -webkit-fill-available;
   height: 100lvh !important;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
   min-height: 100lvh !important;
   max-height: none !important;
   overflow: hidden;
+  background-color: transparent;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
+  /* top + height (not inset/bottom) so height:100lvh is not crushed by visual viewport */
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
   width: 100%;
-  height: 100vh;
-  height: -webkit-fill-available;
   height: 100lvh !important;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
   min-height: 100lvh !important;
   max-height: none !important;
   padding-bottom: 0;
-  background-color: var(--safe-fill-map);
+  background-color: transparent;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed)::after,
 html.layout-fold.app-tab-map:not(.portal-embed)::after {
   display: none;
+}
+
+/* Leaflet fills the large viewport under the header — tiles show under Safari chrome */
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
+  position: fixed !important;
+  top: calc(var(--app-header-height, 3.5rem) + var(--safe-top, 0px));
+  left: 0;
+  right: 0;
+  bottom: auto;
+  width: 100%;
+  height: calc(100lvh - var(--app-header-height, 3.5rem) - var(--safe-top, 0px)) !important;
+  z-index: 0;
+  background-color: transparent !important;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
+  background-color: transparent !important;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .app-header,
+html.layout-fold.app-tab-map:not(.portal-embed) .app-header {
+  position: relative;
+  z-index: 40;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .map-mobile-fab-bar,
@@ -166,14 +194,15 @@ html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .map-bottom-stack
   bottom: calc(4.25rem + var(--map-ui-bottom-inset, 0px));
 }
 
+/* Fixed chat is tied to the visual viewport on iOS — safe-area only */
 html.layout-mobile.app-tab-map:not(.portal-embed) .chat-widget-root,
 html.layout-fold.app-tab-map:not(.portal-embed) .chat-widget-root {
-  bottom: calc(var(--map-fab-inset, 0.75rem) + var(--map-ui-bottom-inset, 0px));
+  bottom: calc(var(--map-fab-inset, 0.75rem) + var(--safe-bottom, env(safe-area-inset-bottom, 0px)));
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .chat-widget-root--above-zoom,
 html.layout-fold.app-tab-map:not(.portal-embed) .chat-widget-root--above-zoom {
-  bottom: calc(var(--map-chat-bottom, 4.5rem) + var(--map-ui-bottom-inset, 0px));
+  bottom: calc(var(--map-chat-bottom, 4.5rem) + var(--safe-bottom, env(safe-area-inset-bottom, 0px)));
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom,
@@ -185,21 +214,6 @@ html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
 html.layout-fold:not(.portal-embed) .app-side-rail.is-mobile-dock {
   background-color: var(--safe-fill-bottom) !important;
   background-image: none;
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map,
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
-  background-color: var(--safe-fill-map) !important;
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 /* Android Chrome: slightly stronger opaque toolbar fill when theme toggles */
