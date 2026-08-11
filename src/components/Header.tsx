@@ -387,28 +387,29 @@ export const Header: React.FC<HeaderProps> = ({
                         {activeNavItem.label}
                       </span>
                     )}
-                    <span
-                      className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold border shrink-0 ${
-                        wsConnected
-                          ? 'is-live bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                          : 'is-polling bg-amber-500/10 text-amber-400 border-amber-500/30'
-                      }`}
-                      title={wsConnected ? t('header.wsLive') : t('header.pollingSync')}
-                    >
-                      <span
-                        className={`app-header-sync-dot w-1.5 h-1.5 rounded-full shrink-0 ${
-                          wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
-                        }`}
-                      />
-                      <span className="app-header-sync-label">
-                        {wsConnected ? t('header.wsLive') : t('header.pollingSync')}
-                      </span>
-                    </span>
                   </div>
                   <p className="app-header-brand-subtitle text-[11px] text-slate-400 truncate leading-snug">
                     {t('header.brandSubtitle')}
                   </p>
                 </div>
+
+                <span
+                  className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold border shrink-0 self-center ${
+                    wsConnected
+                      ? 'is-live bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                      : 'is-polling bg-amber-500/10 text-amber-400 border-amber-500/30'
+                  }`}
+                  title={wsConnected ? t('header.wsLive') : t('header.pollingSync')}
+                >
+                  <span
+                    className={`app-header-sync-dot w-1.5 h-1.5 rounded-full shrink-0 ${
+                      wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
+                    }`}
+                  />
+                  <span className="app-header-sync-label">
+                    {wsConnected ? t('header.wsLive') : t('header.pollingSync')}
+                  </span>
+                </span>
               </div>
             </div>
 

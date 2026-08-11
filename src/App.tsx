@@ -441,187 +441,235 @@ export default function App() {
 
     let cancelled = false;
     let socket: WebSocket | null = null;
+    let connecting = false;
+    const WS_HEALTH_INTERVAL_MS = 60_000;
 
-    (async () => {
-      const token = await ApiService.resolveToken();
-      if (cancelled || !token) return;
+    const syncWsConnected = () => {
+      const live = Boolean(socket && socket.readyState === WebSocket.OPEN);
+      setWsConnected(live);
+      return live;
+    };
 
-      const wsUrl = getWebSocketUrl(token);
+    const handleMessage = (event: MessageEvent<string>) => {
       try {
-        if (cancelled) return;
-        socket = new WebSocket(wsUrl, getWebSocketProtocols(token));
-        if (cancelled) {
-          socket.close();
+        const data = parseWebSocketMessage(JSON.parse(event.data));
+        if (!data) return;
+
+        switch (data.type) {
+          case 'LIVE_TELEMETRY_UPDATE': {
+            const updates = new Map(data.shipments.map(s => [s.id, s]));
+            setSupplyLinks(prev => prev.map(link => {
+              const update = updates.get(link.id);
+              if (!update) return link;
+              return {
+                ...link,
+                current_lat: update.current_lat ?? link.current_lat,
+                current_lng: update.current_lng ?? link.current_lng,
+                progress_pct: update.progress_pct ?? link.progress_pct,
+                speed_kmh: update.speed_kmh ?? link.speed_kmh,
+                status: update.status ?? link.status,
+                last_updated: new Date().toISOString(),
+              };
+            }));
+            break;
+          }
+          case 'SHIPMENT_EVENT': {
+            if (data.shipment) {
+              setSupplyLinks(prev => prev.map(s => s.id === data.shipment_id ? data.shipment! : s));
+            } else if (data.event.new_status) {
+              setSupplyLinks(prev => prev.map(s =>
+                s.id === data.shipment_id
+                  ? {
+                    ...s,
+                    status: data.event.new_status ?? s.status,
+                    delay_reason: data.event.delay_reason ?? s.delay_reason,
+                    eta: data.event.eta_after ?? s.eta,
+                  }
+                  : s,
+              ));
+            }
+            break;
+          }
+          case 'SHIPMENT_STATUS_UPDATE': {
+            setSupplyLinks(prev => prev.map(s =>
+              s.id === data.shipment_id
+                ? { ...s, status: data.status, delay_reason: data.delay_reason }
+                : s
+            ));
+            break;
+          }
+          case 'CARGO_ARRIVED':
+            break;
+          case 'MAP_DATA_IMPORTED':
+            void loadServerData(currentUser);
+            break;
+          case 'PRODUCTS_UPDATED':
+            void refreshProducts();
+            break;
+          case 'SALES_MANAGERS_UPDATED':
+            void refreshSalesManagers();
+            break;
+          case 'CARRIERS_UPDATED':
+            void refreshCarriers();
+            break;
+          case 'FACTORY_ADDED': {
+            setFactories(prev => {
+              const idx = prev.findIndex(f => f.id === data.factory.id);
+              if (idx >= 0) {
+                const next = [...prev];
+                next[idx] = data.factory;
+                return next;
+              }
+              return [data.factory, ...prev];
+            });
+            break;
+          }
+          case 'FACTORY_UPDATED': {
+            setFactories(prev => prev.map(f => (f.id === data.factory.id ? data.factory : f)));
+            setDetailFactory(prev => (prev?.id === data.factory.id ? data.factory : prev));
+            break;
+          }
+          case 'FACTORY_DELETED': {
+            setFactories(prev => prev.filter(f => f.id !== data.factoryId));
+            setDetailFactory(prev => (prev?.id === data.factoryId ? null : prev));
+            setHighlightedFactoryId(prev => (prev === data.factoryId ? null : prev));
+            break;
+          }
+          case 'SITES_IMPORTED':
+            void loadServerData(currentUser);
+            break;
+          case 'SITES_MERGED':
+            void loadServerData(currentUser);
+            break;
+          case 'CHAT_MESSAGE':
+          case 'CHAT_READ':
+            window.dispatchEvent(new CustomEvent('bars-chat-ws', { detail: data }));
+            if (data.type === 'CHAT_MESSAGE') {
+              const isOwn = data.message.sender_id === currentUser.id;
+              if (!isOwn && currentUser.notifications_enabled) {
+                void showChatPushNotification({
+                  conversationId: data.conversation_id,
+                  senderName: data.message.sender_name,
+                  body: data.message.body,
+                  notificationsEnabled: currentUser.notifications_enabled,
+                  isOwn: false,
+                });
+              }
+            }
+            break;
+          case 'NOTIFICATION_NEW': {
+            const item = data.notification;
+            if (item.deleted) break;
+            setNotifications(prev => {
+              if (prev.some(n => n.id === item.id)) {
+                return prev.map(n => (n.id === item.id ? item : n));
+              }
+              return [item, ...prev];
+            });
+            break;
+          }
+          case 'NOTIFICATION_UPDATED': {
+            const item = data.notification;
+            setNotifications(prev => {
+              if (item.deleted) return prev.filter(n => n.id !== item.id);
+              return prev.map(n => (n.id === item.id ? item : n));
+            });
+            break;
+          }
+          case 'TASK_BOARD_UPDATED':
+          case 'TASK_UPDATED': {
+            setTasksBoardSync(data.board);
+            void ApiService.getKanbanBoards()
+              .then(r => setTasksOpenCount(r.open_assigned))
+              .catch(() => {});
+            break;
+          }
+          case 'TASK_WORKSPACE_UPDATED': {
+            setTasksBoardSync(data.board);
+            setTasksWorkspaceRefresh({ taskId: data.task_id, key: Date.now() });
+            break;
+          }
+          case 'TASK_BOARD_DELETED': {
+            setTasksDeletedBoardId(data.board_id);
+            void ApiService.getKanbanBoards()
+              .then(r => setTasksOpenCount(r.open_assigned))
+              .catch(() => {});
+            break;
+          }
+          default:
+            break;
+        }
+      } catch (e) {
+        console.error('WS parse error:', e);
+      }
+    };
+
+    const connectWs = async () => {
+      if (cancelled || connecting) return;
+      if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
+        syncWsConnected();
+        return;
+      }
+
+      connecting = true;
+      try {
+        const token = await ApiService.resolveToken();
+        if (cancelled || !token) {
+          setWsConnected(false);
           return;
         }
 
-        socket.onopen = () => setWsConnected(true);
-
-        socket.onmessage = (event: MessageEvent<string>) => {
-          try {
-            const data = parseWebSocketMessage(JSON.parse(event.data));
-            if (!data) return;
-
-          switch (data.type) {
-            case 'LIVE_TELEMETRY_UPDATE': {
-              const updates = new Map(data.shipments.map(s => [s.id, s]));
-              setSupplyLinks(prev => prev.map(link => {
-                const update = updates.get(link.id);
-                if (!update) return link;
-                return {
-                  ...link,
-                  current_lat: update.current_lat ?? link.current_lat,
-                  current_lng: update.current_lng ?? link.current_lng,
-                  progress_pct: update.progress_pct ?? link.progress_pct,
-                  speed_kmh: update.speed_kmh ?? link.speed_kmh,
-                  status: update.status ?? link.status,
-                  last_updated: new Date().toISOString(),
-                };
-              }));
-              break;
-            }
-            case 'SHIPMENT_EVENT': {
-              if (data.shipment) {
-                setSupplyLinks(prev => prev.map(s => s.id === data.shipment_id ? data.shipment! : s));
-              } else if (data.event.new_status) {
-                setSupplyLinks(prev => prev.map(s =>
-                  s.id === data.shipment_id
-                    ? {
-                      ...s,
-                      status: data.event.new_status ?? s.status,
-                      delay_reason: data.event.delay_reason ?? s.delay_reason,
-                      eta: data.event.eta_after ?? s.eta,
-                    }
-                    : s,
-                ));
-              }
-              break;
-            }
-            case 'SHIPMENT_STATUS_UPDATE': {
-              setSupplyLinks(prev => prev.map(s =>
-                s.id === data.shipment_id
-                  ? { ...s, status: data.status, delay_reason: data.delay_reason }
-                  : s
-              ));
-              // Bell notifications come via NOTIFICATION_NEW (persisted on server).
-              break;
-            }
-            case 'CARGO_ARRIVED':
-              // Persisted notifications arrive as NOTIFICATION_NEW.
-              break;
-            case 'MAP_DATA_IMPORTED':
-              void loadServerData(currentUser);
-              break;
-            case 'PRODUCTS_UPDATED':
-              void refreshProducts();
-              break;
-            case 'SALES_MANAGERS_UPDATED':
-              void refreshSalesManagers();
-              break;
-            case 'CARRIERS_UPDATED':
-              void refreshCarriers();
-              break;
-            case 'FACTORY_ADDED': {
-              setFactories(prev => {
-                const idx = prev.findIndex(f => f.id === data.factory.id);
-                if (idx >= 0) {
-                  const next = [...prev];
-                  next[idx] = data.factory;
-                  return next;
-                }
-                return [data.factory, ...prev];
-              });
-              break;
-            }
-            case 'FACTORY_UPDATED': {
-              setFactories(prev => prev.map(f => (f.id === data.factory.id ? data.factory : f)));
-              setDetailFactory(prev => (prev?.id === data.factory.id ? data.factory : prev));
-              break;
-            }
-            case 'FACTORY_DELETED': {
-              setFactories(prev => prev.filter(f => f.id !== data.factoryId));
-              setDetailFactory(prev => (prev?.id === data.factoryId ? null : prev));
-              setHighlightedFactoryId(prev => (prev === data.factoryId ? null : prev));
-              break;
-            }
-            case 'SITES_IMPORTED':
-              void loadServerData(currentUser);
-              break;
-            case 'SITES_MERGED':
-              void loadServerData(currentUser);
-              break;
-            case 'CHAT_MESSAGE':
-            case 'CHAT_READ':
-              window.dispatchEvent(new CustomEvent('bars-chat-ws', { detail: data }));
-              if (data.type === 'CHAT_MESSAGE') {
-                const isOwn = data.message.sender_id === currentUser.id;
-                if (!isOwn && currentUser.notifications_enabled) {
-                  void showChatPushNotification({
-                    conversationId: data.conversation_id,
-                    senderName: data.message.sender_name,
-                    body: data.message.body,
-                    notificationsEnabled: currentUser.notifications_enabled,
-                    isOwn: false,
-                  });
-                }
-              }
-              break;
-            case 'NOTIFICATION_NEW': {
-              const item = data.notification;
-              if (item.deleted) break;
-              setNotifications(prev => {
-                if (prev.some(n => n.id === item.id)) {
-                  return prev.map(n => (n.id === item.id ? item : n));
-                }
-                return [item, ...prev];
-              });
-              break;
-            }
-            case 'NOTIFICATION_UPDATED': {
-              const item = data.notification;
-              setNotifications(prev => {
-                if (item.deleted) return prev.filter(n => n.id !== item.id);
-                return prev.map(n => (n.id === item.id ? item : n));
-              });
-              break;
-            }
-            case 'TASK_BOARD_UPDATED':
-            case 'TASK_UPDATED': {
-              setTasksBoardSync(data.board);
-              void ApiService.getKanbanBoards()
-                .then(r => setTasksOpenCount(r.open_assigned))
-                .catch(() => {});
-              break;
-            }
-            case 'TASK_WORKSPACE_UPDATED': {
-              setTasksBoardSync(data.board);
-              setTasksWorkspaceRefresh({ taskId: data.task_id, key: Date.now() });
-              break;
-            }
-            case 'TASK_BOARD_DELETED': {
-              setTasksDeletedBoardId(data.board_id);
-              void ApiService.getKanbanBoards()
-                .then(r => setTasksOpenCount(r.open_assigned))
-                .catch(() => {});
-              break;
-            }
-            default:
-              break;
-          }
-        } catch (e) {
-          console.error('WS parse error:', e);
+        if (socket) {
+          try { socket.close(); } catch { /* ignore */ }
+          socket = null;
         }
-      };
 
-      socket.onclose = () => setWsConnected(false);
+        const next = new WebSocket(getWebSocketUrl(token), getWebSocketProtocols(token));
+        socket = next;
+
+        next.onopen = () => {
+          if (cancelled || socket !== next) return;
+          setWsConnected(true);
+        };
+        next.onmessage = handleMessage;
+        next.onerror = () => {
+          if (socket === next) syncWsConnected();
+        };
+        next.onclose = () => {
+          if (socket === next) {
+            socket = null;
+            setWsConnected(false);
+          }
+        };
+
+        if (cancelled) {
+          next.close();
+          socket = null;
+          setWsConnected(false);
+        }
       } catch {
         setWsConnected(false);
+      } finally {
+        connecting = false;
       }
-    })();
+    };
+
+    const pollWsHealth = () => {
+      if (cancelled) return;
+      if (syncWsConnected()) return;
+      void connectWs();
+    };
+
+    void connectWs();
+    const healthTimer = window.setInterval(pollWsHealth, WS_HEALTH_INTERVAL_MS);
 
     return () => {
       cancelled = true;
-      if (socket) socket.close();
+      window.clearInterval(healthTimer);
+      if (socket) {
+        try { socket.close(); } catch { /* ignore */ }
+        socket = null;
+      }
       setWsConnected(false);
     };
   }, [currentUser, loadServerData, refreshProducts, refreshCarriers, refreshSalesManagers]);
