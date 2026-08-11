@@ -52,7 +52,30 @@
 
   try {
     var t = localStorage.getItem('barslogistics_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-    document.documentElement.classList.toggle('dark', t === 'dark');
+    if (t !== 'light' && t !== 'dark') t = 'dark';
+    var html = document.documentElement;
+    html.setAttribute('data-theme', t);
+    html.classList.toggle('dark', t === 'dark');
+    html.style.colorScheme = t;
+
+    var color = t === 'light' ? '#ffffff' : '#0f172a';
+    var statusBar = t === 'light' ? 'default' : 'black-translucent';
+
+    function setMeta(name, content) {
+      var m = document.querySelector('meta[name="' + name + '"]:not([media])');
+      if (!m) {
+        m = document.createElement('meta');
+        m.setAttribute('name', name);
+        document.head.appendChild(m);
+      }
+      m.setAttribute('content', content);
+    }
+
+    document.querySelectorAll('meta[name="theme-color"][media]').forEach(function (n) {
+      n.parentNode && n.parentNode.removeChild(n);
+    });
+    setMeta('theme-color', color);
+    setMeta('color-scheme', t);
+    setMeta('apple-mobile-web-app-status-bar-style', statusBar);
   } catch (e) {}
 })();
