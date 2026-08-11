@@ -1,0 +1,117 @@
+/*
+ * iOS / Android edge chrome — paint status bar & home-indicator zones.
+ * Interactive controls stay inside safe-area; these strips are fill-only.
+ * Requires: <meta name="viewport" content="..., viewport-fit=cover">
+ */
+
+:root,
+html:not([data-theme="light"]) {
+  /* Opaque solids — translucent chrome looks wrong under the notch */
+  --safe-fill-top: #0f172a;
+  --safe-fill-bottom: #0f172a;
+  --safe-fill-map: #020617;
+}
+
+[data-theme="light"] {
+  --safe-fill-top: #ffffff;
+  --safe-fill-bottom: #ffffff;
+  --safe-fill-map: #f8fafc;
+}
+
+/* Standalone mobile only — portal embed uses WordPress chrome */
+html.layout-mobile:not(.portal-embed),
+html.layout-fold:not(.portal-embed) {
+  background-color: var(--safe-fill-top);
+  background-image: linear-gradient(
+    to bottom,
+    var(--safe-fill-top) 0%,
+    var(--safe-fill-top) 42%,
+    var(--safe-fill-bottom) 58%,
+    var(--safe-fill-bottom) 100%
+  );
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed),
+html.layout-fold.app-tab-map:not(.portal-embed) {
+  --safe-fill-bottom: var(--safe-fill-map);
+  background-image: linear-gradient(
+    to bottom,
+    var(--safe-fill-top) 0%,
+    var(--safe-fill-top) 38%,
+    var(--safe-fill-map) 48%,
+    var(--safe-fill-map) 100%
+  );
+}
+
+html.layout-mobile:not(.portal-embed) body,
+html.layout-fold:not(.portal-embed) body,
+html.layout-mobile:not(.portal-embed) #root,
+html.layout-fold:not(.portal-embed) #root {
+  background-color: transparent;
+}
+
+/*
+ * Non-interactive paint strips (pointer-events: none).
+ * Safari still owns system gestures in these zones.
+ */
+html.layout-mobile:not(.portal-embed)::before,
+html.layout-fold:not(.portal-embed)::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  background-color: var(--safe-fill-top);
+  z-index: 10000;
+  pointer-events: none;
+}
+
+html.layout-mobile:not(.portal-embed)::after,
+html.layout-fold:not(.portal-embed)::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-bottom, 0px);
+  background-color: var(--safe-fill-bottom);
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* Header grows into the top inset — content stays below Dynamic Island / notch */
+html.layout-mobile:not(.portal-embed) .app-header,
+html.layout-fold:not(.portal-embed) .app-header {
+  padding-top: env(safe-area-inset-top, 0px);
+  background-color: var(--safe-fill-top) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html.layout-mobile:not(.portal-embed) .app-shell,
+html.layout-fold:not(.portal-embed) .app-shell {
+  /* Dock / map paint the bottom edge — avoid double gap under chrome */
+  padding-bottom: 0;
+  background-color: var(--safe-fill-bottom);
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
+html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
+  background-color: var(--safe-fill-map);
+}
+
+/* Bottom dock fills home-indicator strip (buttons stay in padded safe zone) */
+html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
+html.layout-fold:not(.portal-embed) .app-side-rail.is-mobile-dock {
+  background-color: var(--safe-fill-bottom) !important;
+  background-image: none;
+}
+
+/* Map canvas matches bottom fill when tab is map */
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map,
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
+  background-color: var(--safe-fill-map) !important;
+}

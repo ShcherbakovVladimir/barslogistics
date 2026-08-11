@@ -312,6 +312,14 @@ export default function App() {
   }, [activeTab, detailFactory]);
 
   useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('app-tab-map', activeTab === 'map');
+    return () => {
+      root.classList.remove('app-tab-map');
+    };
+  }, [activeTab]);
+
+  useEffect(() => {
     ApiService.setLocale(locale);
     let cancelled = false;
     let pollTimer: number | undefined;

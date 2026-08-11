@@ -2,6 +2,7 @@
 @import "./theme/light-theme.css";
 @import "./styles/mobile-layout.css";
 @import "./styles/mobile-side-rail.css";
+@import "./styles/mobile-safe-area.css";
 
 /*
  * Unified viewport height for standalone + portal embed.
