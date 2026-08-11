@@ -1383,6 +1383,7 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 [data-theme="light"] .admin-api-endpoint-card,
 [data-theme="light"] .admin-users-table-panel,
 [data-theme="light"] .admin-sites-table-panel,
+[data-theme="light"] .admin-support-panel,
 [data-theme="light"] .admin-backups-toolbar,
 [data-theme="light"] .admin-backup-card {
   background: #ffffff !important;
@@ -1460,6 +1461,154 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 [data-theme="light"] .admin-users-card-row,
 [data-theme="light"] .admin-sites-card-row {
   color: #475569;
+}
+
+/* ── Admin: support tickets (Техподдержка) ── */
+[data-theme="light"] .admin-support-subtitle,
+[data-theme="light"] .admin-support-loading,
+[data-theme="light"] .admin-support-empty,
+[data-theme="light"] .admin-support-placeholder {
+  color: #64748b;
+}
+
+[data-theme="light"] .admin-support-open-badge {
+  background: rgb(245 158 11 / 0.12);
+  color: #b45309;
+}
+
+[data-theme="light"] .admin-support-refresh-btn {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+[data-theme="light"] .admin-support-refresh-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+[data-theme="light"] .admin-support-error {
+  border-color: rgb(248 113 113 / 0.35);
+  background: rgb(254 242 242);
+  color: #b91c1c;
+}
+
+[data-theme="light"] .admin-support-filter-btn {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+[data-theme="light"] .admin-support-filter-btn.is-active {
+  background: rgb(99 102 241 / 0.1);
+  border-color: rgb(99 102 241 / 0.35);
+  color: #4338ca;
+}
+
+[data-theme="light"] .admin-support-filter-count {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+[data-theme="light"] .admin-support-filter-btn.is-active .admin-support-filter-count {
+  background: rgb(99 102 241 / 0.15);
+  color: #4338ca;
+}
+
+[data-theme="light"] .admin-support-table-head {
+  color: #64748b;
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-support-row {
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-support-row:hover,
+[data-theme="light"] .admin-support-row.is-selected {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] .admin-support-subject,
+[data-theme="light"] .admin-support-detail-title,
+[data-theme="light"] .admin-support-value {
+  color: #0f172a;
+}
+
+[data-theme="light"] .admin-support-preview,
+[data-theme="light"] .admin-support-user-login,
+[data-theme="light"] .admin-support-detail-id,
+[data-theme="light"] .admin-support-label {
+  color: #64748b;
+}
+
+[data-theme="light"] .admin-support-user-name,
+[data-theme="light"] .admin-support-cell,
+[data-theme="light"] .admin-support-meta-value,
+[data-theme="light"] .admin-support-message {
+  color: #334155;
+}
+
+[data-theme="light"] .admin-support-cell-muted,
+[data-theme="light"] .admin-support-card-user,
+[data-theme="light"] .admin-support-card-meta {
+  color: #64748b;
+}
+
+[data-theme="light"] .admin-support-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-support-card.is-selected {
+  background: rgb(99 102 241 / 0.06);
+  border-color: rgb(99 102 241 / 0.35);
+}
+
+[data-theme="light"] .admin-support-user-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-support-user-card-title {
+  color: #475569;
+}
+
+[data-theme="light"] .admin-support-user-card-title svg {
+  color: #4f46e5;
+}
+
+[data-theme="light"] .admin-support-message {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-support-empty-icon {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .admin-support-status--open {
+  color: #b45309;
+  background: rgb(245 158 11 / 0.12);
+  border-color: rgb(245 158 11 / 0.25);
+}
+
+[data-theme="light"] .admin-support-status--progress {
+  color: #1d4ed8;
+  background: rgb(59 130 246 / 0.1);
+  border-color: rgb(59 130 246 / 0.2);
+}
+
+[data-theme="light"] .admin-support-status--resolved {
+  color: #047857;
+  background: rgb(16 185 129 / 0.1);
+  border-color: rgb(16 185 129 / 0.2);
+}
+
+[data-theme="light"] .admin-support-status--closed {
+  color: #64748b;
+  background: #f1f5f9;
+  border-color: #e2e8f0;
 }
 
 [data-theme="light"] .admin-users-field,
