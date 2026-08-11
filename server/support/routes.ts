@@ -1,12 +1,27 @@
 import type { Express } from 'express';
 import { requireAuth, type AuthRequest } from '../auth.js';
-import type { SupportTicketCategory } from '../../src/types.js';
+import type { SupportTicketCategory, SupportTicketStatus } from '../../src/types.js';
 import { notifyUsers } from '../notifications/service.js';
 import { getServerT } from '../../src/i18n/translations.js';
-import { createSupportTicket, listAdminUserIds, listSupportTicketsForUser } from './repository.js';
+import {
+  createSupportTicket,
+  getSupportTicketById,
+  listAdminUserIds,
+  listSupportTicketsForUser,
+  updateSupportTicketStatus,
+} from './repository.js';
 
 const CATEGORIES: SupportTicketCategory[] = ['bug', 'question', 'suggestion', 'other'];
+const STATUSES: SupportTicketStatus[] = ['open', 'in_progress', 'resolved', 'closed'];
 const st = getServerT('ru');
+
+function requireAdmin(req: AuthRequest, res: import('express').Response): boolean {
+  if (req.user.role !== 'admin') {
+    res.status(403).json({ error: 'Forbidden' });
+    return false;
+  }
+  return true;
+}
 
 export function registerSupportRoutes(app: Express): void {
   app.get('/api/support/tickets', requireAuth, async (req, res) => {
@@ -17,6 +32,25 @@ export function registerSupportRoutes(app: Express): void {
       res.json({ status: 'success', data: { tickets } });
     } catch (error) {
       console.error('GET /api/support/tickets:', error);
+      res.status(500).json({ error: 'Database error' });
+    }
+  });
+
+  app.get('/api/support/tickets/:id', requireAuth, async (req, res) => {
+    try {
+      const user = (req as AuthRequest).user;
+      const ticket = await getSupportTicketById(req.params.id);
+      if (!ticket) {
+        res.status(404).json({ error: 'Not found' });
+        return;
+      }
+      if (user.role !== 'admin' && ticket.user_id !== user.id) {
+        res.status(403).json({ error: 'Forbidden' });
+        return;
+      }
+      res.json({ status: 'success', data: ticket });
+    } catch (error) {
+      console.error('GET /api/support/tickets/:id:', error);
       res.status(500).json({ error: 'Database error' });
     }
   });
@@ -76,6 +110,50 @@ export function registerSupportRoutes(app: Express): void {
       res.status(201).json({ status: 'success', data: ticket });
     } catch (error) {
       console.error('POST /api/support/tickets:', error);
+      res.status(500).json({ error: 'Database error' });
+    }
+  });
+
+  app.patch('/api/support/tickets/:id', requireAuth, async (req, res) => {
+    try {
+      const user = (req as AuthRequest).user;
+      if (!requireAdmin(req, res)) return;
+
+      const body = req.body as { status?: string };
+      const status = body.status as SupportTicketStatus;
+      if (!STATUSES.includes(status)) {
+        res.status(400).json({ error: 'Invalid status' });
+        return;
+      }
+
+      const existing = await getSupportTicketById(req.params.id);
+      if (!existing) {
+        res.status(404).json({ error: 'Not found' });
+        return;
+      }
+
+      const ticket = await updateSupportTicketStatus(req.params.id, status);
+      if (!ticket) {
+        res.status(404).json({ error: 'Not found' });
+        return;
+      }
+
+      if (existing.status !== status && ticket.user_id !== user.id) {
+        await notifyUsers([ticket.user_id], {
+          title: st('notifications.supportTicketStatusTitle'),
+          message: st('notifications.supportTicketStatusMessage', {
+            subject: ticket.subject,
+            status: st(`tasks.supportStatus.${status}`),
+          }),
+          type: 'info',
+          linkType: 'support',
+          linkId: ticket.id,
+        });
+      }
+
+      res.json({ status: 'success', data: ticket });
+    } catch (error) {
+      console.error('PATCH /api/support/tickets/:id:', error);
       res.status(500).json({ error: 'Database error' });
     }
   });

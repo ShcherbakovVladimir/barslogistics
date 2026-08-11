@@ -13,11 +13,15 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setTheme } from '../store/themeSlice';
 
 /** Open Tasks drawer from a notification link (task or board). */
+function dispatchSupportOpenFromNotification(linkId?: string) {
+  window.dispatchEvent(
+    new CustomEvent('bars-support-open', { detail: { ticketId: linkId } }),
+  );
+}
+
 function dispatchTasksOpenFromNotification(linkType?: string, linkId?: string) {
   if (linkType === 'support') {
-    window.dispatchEvent(
-      new CustomEvent('bars-tasks-open', { detail: { openSupport: true } }),
-    );
+    dispatchSupportOpenFromNotification(linkId);
     return;
   }
   if (!linkId) return;
@@ -224,7 +228,7 @@ export const Header: React.FC<HeaderProps> = ({
                     dispatchTasksOpenFromNotification(n.link_type, n.link_id);
                   }
                   if (n.link_type === 'support') {
-                    dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+                    dispatchSupportOpenFromNotification(n.link_id);
                   }
                   if (n.link_type === 'shipment' && n.link_id) {
                     window.dispatchEvent(
@@ -488,7 +492,7 @@ export const Header: React.FC<HeaderProps> = ({
                                   dispatchTasksOpenFromNotification(n.link_type, n.link_id);
                                 }
                                 if (n.link_type === 'support') {
-                                  dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+                                  dispatchSupportOpenFromNotification(n.link_id);
                                 }
                                 if (n.link_type === 'shipment' && n.link_id) {
                                   window.dispatchEvent(

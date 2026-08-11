@@ -997,6 +997,9 @@ export interface SupportTicket {
   id: string;
   user_id: string;
   user_name?: string;
+  user_username?: string;
+  user_email?: string;
+  user_role?: UserRole;
   subject: string;
   message: string;
   category: SupportTicketCategory;

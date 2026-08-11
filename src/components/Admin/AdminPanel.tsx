@@ -8,11 +8,12 @@ import { setAdminSection, type AdminSection } from '../../store/adminSlice';
 import { saveAdminScrollBeforeSectionChange, useAdminScroll } from '../../hooks/useAdminScroll';
 import {
   Shield, Truck, Satellite, Send, Cloud, Database, Users, Terminal,
-  RefreshCw, Copy, LayoutDashboard, Map, BookOpen, MapPin, Mail,
+  RefreshCw, Copy, LayoutDashboard, Map, BookOpen, MapPin, Mail, LifeBuoy,
 } from 'lucide-react';
 import { MapDataImportPanel } from './MapDataImportPanel';
 import { GeocodingAdminPanel } from './GeocodingAdminPanel';
 import { UserManager } from './UserManager';
+import { SupportTicketsAdmin } from './SupportTicketsAdmin';
 import { SiteDirectoryAdmin } from './SiteDirectoryAdmin';
 import {
   TelegramSettingsForm, CloudSettingsForm, CarrierConfigForm, TelemetrySettingsForm, MailSettingsForm,
@@ -42,6 +43,8 @@ interface AdminPanelProps {
   onRefreshUsers: () => Promise<void>;
   onSitesChanged: () => Promise<void>;
   factoriesCount: number;
+  focusSupportTicketId?: string | null;
+  onFocusSupportTicketConsumed?: () => void;
 }
 
 const CARRIER_I18N_KEYS: Record<string, string> = {
@@ -60,6 +63,7 @@ const SECTIONS: { id: AdminSection; icon: React.ElementType }[] = [
   { id: 'cloud', icon: Cloud },
   { id: 'backups', icon: Database },
   { id: 'users', icon: Users },
+  { id: 'support', icon: LifeBuoy },
   { id: 'sites', icon: BookOpen },
   { id: 'data', icon: Map },
   { id: 'geocoding', icon: MapPin },
@@ -87,6 +91,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onRefreshUsers,
   onSitesChanged,
   factoriesCount,
+  focusSupportTicketId,
+  onFocusSupportTicketConsumed,
 }) => {
   const { t, localeTag } = useI18n();
   const dispatch = useAppDispatch();
@@ -363,6 +369,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           />
         );
       case 'users': return renderUsers();
+      case 'support':
+        return (
+          <SupportTicketsAdmin
+            focusTicketId={focusSupportTicketId}
+            onFocusTicketConsumed={onFocusSupportTicketConsumed}
+          />
+        );
       case 'sites':
         return <SiteDirectoryAdmin onSitesChanged={onSitesChanged} />;
       case 'data':

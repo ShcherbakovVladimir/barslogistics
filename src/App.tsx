@@ -12,6 +12,7 @@ import { canAccessTab } from './utils/rbac';
 import { canAccessLogs, canEditSiteDirectory, canEditShipmentStatus, canManageProducts, canManageCarriers, canManageSalesManagers, canUploadData, isShipmentInUserScope } from './utils/permissions';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setActiveTab, type AppTab } from './store/navigationSlice';
+import { setAdminSection } from './store/adminSlice';
 import { createDefaultFilterState } from './utils/mapFilterDefaults';
 import { mapFiltersForImportedShipments } from './utils/mapFiltersForImport';
 import { DEFAULT_PRODUCT_CATALOG, activeProducts } from './constants/products';
@@ -119,6 +120,7 @@ export default function App() {
   const [tasksFocusTaskId, setTasksFocusTaskId] = useState<string | null>(null);
   const [tasksFocusBoardId, setTasksFocusBoardId] = useState<string | null>(null);
   const [tasksOpenSupport, setTasksOpenSupport] = useState(false);
+  const [adminFocusSupportTicketId, setAdminFocusSupportTicketId] = useState<string | null>(null);
   const [tasksWorkspaceRefresh, setTasksWorkspaceRefresh] = useState<{ taskId: string; key: number } | null>(null);
   const [tasksDeletedBoardId, setTasksDeletedBoardId] = useState<string | null>(null);
 
@@ -620,6 +622,22 @@ export default function App() {
     window.addEventListener('bars-tasks-open', onOpenTasks);
     return () => window.removeEventListener('bars-tasks-open', onOpenTasks);
   }, []);
+
+  useEffect(() => {
+    const onSupportOpen = (e: Event) => {
+      const detail = (e as CustomEvent<{ ticketId?: string }>).detail;
+      if (currentUser?.role === 'admin') {
+        goToTab('admin');
+        dispatch(setAdminSection('support'));
+        if (detail?.ticketId) setAdminFocusSupportTicketId(detail.ticketId);
+        return;
+      }
+      setTasksDrawerOpen(true);
+      setTasksOpenSupport(true);
+    };
+    window.addEventListener('bars-support-open', onSupportOpen);
+    return () => window.removeEventListener('bars-support-open', onSupportOpen);
+  }, [currentUser?.role, goToTab, dispatch]);
 
   useEffect(() => {
     const onOpenShipment = (e: Event) => {
@@ -1192,6 +1210,8 @@ export default function App() {
             onRefreshUsers={refreshAdminUsers}
             onSitesChanged={refreshFactories}
             factoriesCount={factories.length}
+            focusSupportTicketId={adminFocusSupportTicketId}
+            onFocusSupportTicketConsumed={() => setAdminFocusSupportTicketId(null)}
           />
           </div>
         )}

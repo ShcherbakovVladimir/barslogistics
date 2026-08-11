@@ -2070,6 +2070,167 @@ html.portal-embed .header-nav-scroll {
   display: none;
 }
 
+/* ── Admin: support tickets ── */
+.admin-support-error {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(248 113 113 / 0.35);
+  background: rgb(127 29 29 / 0.2);
+  color: #fca5a5;
+  font-size: 0.75rem;
+}
+
+.admin-support-loading,
+.admin-support-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 8rem;
+}
+
+.admin-support-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-support-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(15 23 42 / 0.8);
+  color: #94a3b8;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.admin-support-filter-btn.is-active {
+  border-color: rgb(99 102 241 / 0.5);
+  background: rgb(79 70 229 / 0.2);
+  color: #c7d2fe;
+}
+
+.admin-support-filter-count {
+  min-width: 1.1rem;
+  text-align: center;
+  padding: 0 0.25rem;
+  border-radius: 9999px;
+  background: rgb(30 41 59);
+  color: #cbd5e1;
+  font-size: 0.625rem;
+}
+
+.admin-support-table {
+  border-collapse: collapse;
+}
+
+.admin-support-row {
+  cursor: pointer;
+  border-bottom: 1px solid rgb(30 41 59);
+  transition: background 0.15s ease;
+}
+
+.admin-support-row:hover,
+.admin-support-row.is-selected {
+  background: rgb(30 41 59 / 0.55);
+}
+
+.admin-support-cards-mobile {
+  display: none;
+}
+
+.admin-support-card {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgb(51 65 85);
+  border-radius: 0.875rem;
+  background: rgb(15 23 42 / 0.65);
+  padding: 0.75rem;
+}
+
+.admin-support-card.is-selected {
+  border-color: rgb(99 102 241 / 0.55);
+  background: rgb(49 46 129 / 0.18);
+}
+
+.admin-support-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-support-card-user,
+.admin-support-card-meta {
+  margin-top: 0.35rem;
+  font-size: 0.6875rem;
+  color: #94a3b8;
+}
+
+.admin-support-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-support-status--open {
+  color: #fcd34d;
+  background: rgb(120 53 15 / 0.25);
+  border-color: rgb(245 158 11 / 0.25);
+}
+
+.admin-support-status--progress {
+  color: #93c5fd;
+  background: rgb(30 58 138 / 0.25);
+  border-color: rgb(59 130 246 / 0.25);
+}
+
+.admin-support-status--resolved {
+  color: #6ee7b7;
+  background: rgb(6 78 59 / 0.25);
+  border-color: rgb(16 185 129 / 0.25);
+}
+
+.admin-support-status--closed {
+  color: #94a3b8;
+  background: rgb(51 65 85 / 0.35);
+  border-color: rgb(100 116 139 / 0.25);
+}
+
+.admin-support-message {
+  max-height: 14rem;
+  overflow: auto;
+}
+
+@media (max-width: 1023px) {
+  .admin-support-list-desktop {
+    display: none;
+  }
+
+  .admin-support-cards-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .admin-support-detail {
+    position: sticky;
+    top: 0.5rem;
+    align-self: start;
+    max-height: calc(100vh - 8rem);
+    overflow: auto;
+  }
+}
+
 .admin-users-card,
 .admin-sites-card {
   border: 1px solid rgb(51 65 85);
