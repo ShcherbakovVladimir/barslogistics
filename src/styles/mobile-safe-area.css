@@ -130,7 +130,8 @@ html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map::after {
   bottom: 0;
   left: 0;
   right: 0;
-  height: max(var(--safe-bottom, 0px), calc(100lvh - 100dvh));
+  /* Home-indicator only — same as html::after on other tabs; no lvh−dvh (overlapped FABs) */
+  height: var(--safe-bottom, env(safe-area-inset-bottom, 0px));
   background-color: var(--safe-fill-map);
   z-index: 8;
   pointer-events: none;
