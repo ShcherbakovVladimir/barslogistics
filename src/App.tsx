@@ -316,7 +316,12 @@ export default function App() {
     const root = document.documentElement;
     root.classList.toggle('app-tab-map', activeTab === 'map');
     applyLayoutViewportVars();
+    /* Safari often reports final visualViewport only after a frame */
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => applyLayoutViewportVars());
+    });
     return () => {
+      cancelAnimationFrame(raf);
       root.classList.remove('app-tab-map');
       applyLayoutViewportVars();
     };

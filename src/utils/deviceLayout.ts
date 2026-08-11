@@ -1,20 +1,16 @@
 import { getPortalShellElement, measurePortalAppHeight } from './portalShell.js';
 
-export type LayoutViewportHeightMode = 'stable' | 'large';
-
 /**
  * Reliable layout viewport in CSS px.
- * - stable: min of candidates (avoids inflated first paint / Safari URL-bar jump)
- * - large: max of candidates (edge-to-edge map under Safari chrome)
+ * Always take the smallest positive candidate — Safari’s innerHeight / 100lvh
+ * is often taller than the visible area (URL bar), which pushes the map edge
+ * through the middle of the address bar on cold load.
  */
-export function getLayoutViewportSize(
-  options?: { heightMode?: LayoutViewportHeightMode },
-): { width: number; height: number } {
+export function getLayoutViewportSize(): { width: number; height: number } {
   if (typeof window === 'undefined') return { width: 0, height: 0 };
 
   const vv = window.visualViewport;
   const docEl = document.documentElement;
-  const heightMode = options?.heightMode ?? 'stable';
 
   const widthCandidates = [
     vv?.width,
@@ -26,15 +22,14 @@ export function getLayoutViewportSize(
     document.documentElement.classList.contains('portal-embed')
       ? measurePortalAppHeight() || undefined
       : undefined,
+    /* Prefer visualViewport when present — matches the area above Safari chrome */
     vv?.height,
     docEl.clientHeight,
     window.innerHeight,
   ].filter((n): n is number => typeof n === 'number' && n > 0);
 
   const width = widthCandidates.length > 0 ? Math.min(...widthCandidates) : 0;
-  const height = heightCandidates.length > 0
-    ? (heightMode === 'large' ? Math.max(...heightCandidates) : Math.min(...heightCandidates))
-    : 0;
+  const height = heightCandidates.length > 0 ? Math.min(...heightCandidates) : 0;
 
   return { width, height };
 }
@@ -77,18 +72,11 @@ export function applyLayoutViewportVars(): void {
     return;
   }
 
-  const isTouchShell =
-    root.classList.contains('layout-mobile') || root.classList.contains('layout-fold');
-  /* Map tab: fill large viewport so tiles reach the physical bottom under Safari chrome */
-  const edgeToEdgeMap = isTouchShell && root.classList.contains('app-tab-map');
-  const { width, height } = getLayoutViewportSize({
-    heightMode: edgeToEdgeMap ? 'large' : 'stable',
-  });
+  const { width, height } = getLayoutViewportSize();
   if (width > 0) root.style.setProperty('--layout-vw', `${width}px`);
   if (height > 0) root.style.setProperty('--layout-vh', `${height}px`);
   root.dataset.layoutVw = width > 0 ? String(Math.round(width)) : '';
   root.dataset.layoutVh = height > 0 ? String(Math.round(height)) : '';
-  root.dataset.layoutVhMode = edgeToEdgeMap ? 'large' : 'stable';
 }
 
 export type DeviceLayoutClass =
@@ -319,6 +307,7 @@ export function scheduleLayoutBootstrap(onReady?: () => void): void {
   });
 
   window.addEventListener('load', finalize, { once: true });
+  window.addEventListener('pageshow', finalize);
 }
 
 /** iOS updates layout after orientationchange — defer until dimensions settle. */

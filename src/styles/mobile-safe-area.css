@@ -106,28 +106,14 @@ html.layout-fold:not(.portal-embed) .app-shell {
 }
 
 /*
- * Map tab — native-app edge-to-edge:
- * stretch shell to the large viewport (under Safari URL bar / home indicator).
- * FABs / zoom stay inset via env(safe-area-inset-*); bottom paint strip is off
- * so Leaflet tiles show through the home-indicator zone.
+ * Map tab — fill the *visible* viewport (same --layout-vh as other tabs).
+ * Do not use 100lvh / max(innerHeight): on Safari cold load that sits the map
+ * edge through the middle of the URL bar. Bottom paint strip off so tiles reach
+ * the home-indicator zone inside the visible shell; FABs stay safe-area inset.
  */
-html.layout-mobile.app-tab-map:not(.portal-embed),
-html.layout-mobile.app-tab-map:not(.portal-embed) body,
-html.layout-mobile.app-tab-map:not(.portal-embed) #root,
-html.layout-fold.app-tab-map:not(.portal-embed),
-html.layout-fold.app-tab-map:not(.portal-embed) body,
-html.layout-fold.app-tab-map:not(.portal-embed) #root {
-  height: max(var(--layout-vh, 100dvh), 100dvh, 100lvh);
-  min-height: max(var(--layout-vh, 100dvh), 100dvh, 100lvh);
-  max-height: none;
-}
-
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
   background-color: var(--safe-fill-map);
-  height: 100%;
-  min-height: 100%;
-  max-height: none;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed)::after,
