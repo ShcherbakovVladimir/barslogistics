@@ -3312,9 +3312,19 @@ html[data-theme="light"].layout-fold .app-side-rail.is-mobile-dock .app-side-rai
   background: #4f46e5 !important;
 }
 
-[data-theme="light"] .chat-widget-avatar {
+[data-theme="light"] .chat-widget-avatar,
+[data-theme="light"] .user-avatar {
   color: #fff !important;
   border-color: rgb(99 102 241 / 0.25) !important;
+}
+
+[data-theme="light"] .user-avatar--image {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .admin-users-avatar-hint {
+  color: #64748b !important;
 }
 
 [data-theme="light"] .chat-emoji-picker-panel {

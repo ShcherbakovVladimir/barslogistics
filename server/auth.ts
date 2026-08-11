@@ -233,6 +233,8 @@ export function toPublicUser(user: AuthUser & {
   email_verified?: boolean;
   account_status?: string;
   telegram_chat_id?: string;
+  has_avatar?: boolean;
+  avatar_version?: string;
 }) {
   return {
     id: user.id,
@@ -246,6 +248,8 @@ export function toPublicUser(user: AuthUser & {
     email_verified: user.email_verified ?? true,
     account_status: user.account_status ?? "active",
     telegram_chat_id: user.telegram_chat_id,
+    has_avatar: user.has_avatar ?? false,
+    avatar_version: user.avatar_version,
   };
 }
 

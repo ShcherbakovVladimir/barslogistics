@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { ChatEmojiPicker } from './ChatEmojiPicker';
 import { AppBottomSheetHandle } from '../UI/AppBottomSheetHandle';
+import { UserAvatar } from '../UI/UserAvatar';
 import { useAppBottomSheet } from '../../hooks/useAppBottomSheet';
 import {
   getChatNotificationPermission,
@@ -93,18 +94,6 @@ function formatListTime(iso: string | undefined, localeTag: string): string {
   return d.toLocaleDateString(localeTag, { day: '2-digit', month: '2-digit' });
 }
 
-function chatInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '?';
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0] ?? ''}${parts[1][0] ?? ''}`.toUpperCase();
-}
-
-function chatAvatarTone(seed: string): number {
-  let hash = 0;
-  for (let i = 0; i < seed.length; i += 1) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-  return hash % 5;
-}
 
 export const ChatWidget: React.FC<ChatWidgetProps> = ({
   currentUser,
@@ -121,7 +110,10 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   const [conversations, setConversations] = useState<ChatConversationSummary[]>([]);
   const [users, setUsers] = useState<ChatUserDirectoryEntry[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
-  const [activePeer, setActivePeer] = useState<Pick<ChatConversationSummary, 'peer_id' | 'peer_name' | 'peer_username' | 'peer_role'> | null>(null);
+  const [activePeer, setActivePeer] = useState<Pick<
+    ChatConversationSummary,
+    'peer_id' | 'peer_name' | 'peer_username' | 'peer_role' | 'peer_has_avatar' | 'peer_avatar_version'
+  > | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [userQuery, setUserQuery] = useState('');
@@ -247,7 +239,10 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
 
   const openConversation = useCallback(async (
     conversationId: string,
-    peer: Pick<ChatConversationSummary, 'peer_id' | 'peer_name' | 'peer_username' | 'peer_role'>,
+    peer: Pick<
+      ChatConversationSummary,
+      'peer_id' | 'peer_name' | 'peer_username' | 'peer_role' | 'peer_has_avatar' | 'peer_avatar_version'
+    >,
     options?: { showMobileThread?: boolean },
   ) => {
     setActiveConversationId(conversationId);
@@ -278,6 +273,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
       peer_name: conv.peer_name,
       peer_username: conv.peer_username,
       peer_role: conv.peer_role,
+      peer_has_avatar: conv.peer_has_avatar,
+      peer_avatar_version: conv.peer_avatar_version,
     });
   }, [openConversation]);
 
@@ -316,6 +313,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
           peer_name: pick.peer_name,
           peer_username: pick.peer_username,
           peer_role: pick.peer_role,
+          peer_has_avatar: pick.peer_has_avatar,
+          peer_avatar_version: pick.peer_avatar_version,
         }, { showMobileThread: !isMobile });
       } catch (e) {
         console.error('chat auto-open:', e);
@@ -340,6 +339,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
             peer_name: updated.peer_name,
             peer_username: updated.peer_username,
             peer_role: updated.peer_role,
+            peer_has_avatar: updated.peer_has_avatar,
+            peer_avatar_version: updated.peer_avatar_version,
           });
         }
       })();
@@ -361,6 +362,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
             peer_name: conv.peer_name,
             peer_username: conv.peer_username,
             peer_role: conv.peer_role,
+            peer_has_avatar: conv.peer_has_avatar,
+            peer_avatar_version: conv.peer_avatar_version,
           });
         }
       })();
@@ -408,6 +411,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
         peer_name: entry.name,
         peer_username: entry.username,
         peer_role: entry.role,
+        peer_has_avatar: entry.has_avatar,
+        peer_avatar_version: entry.avatar_version,
       });
       setMessages(initial.map(m => ({ ...m, is_own: m.sender_id === currentUser.id })));
       await ApiService.markChatRead(conversation_id);
@@ -672,12 +677,14 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
                   className={`chat-widget-list-item ${activeConversationId === conv.id ? 'chat-widget-list-item--active' : ''}${conv.unread_count > 0 ? ' has-unread' : ''}`}
                   onClick={() => selectConversation(conv)}
                 >
-                  <span
-                    className={`chat-widget-avatar chat-widget-avatar--tone-${chatAvatarTone(conv.peer_id || conv.peer_name)}`}
-                    aria-hidden
-                  >
-                    {chatInitials(conv.peer_name)}
-                  </span>
+                  <UserAvatar
+                    userId={conv.peer_id}
+                    name={conv.peer_name}
+                    hasAvatar={Boolean(conv.peer_has_avatar)}
+                    avatarVersion={conv.peer_avatar_version}
+                    size="md"
+                    className="chat-widget-avatar"
+                  />
                   <span className="chat-widget-list-item-body">
                     <span className="chat-widget-list-item-top">
                       <span className="chat-widget-list-name">{conv.peer_name}</span>
@@ -706,12 +713,14 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
                   className={`chat-widget-list-item ${activePeer?.peer_id === u.id ? 'chat-widget-list-item--active' : ''}`}
                   onClick={() => selectUser(u)}
                 >
-                  <span
-                    className={`chat-widget-avatar chat-widget-avatar--tone-${chatAvatarTone(u.id || u.name)}`}
-                    aria-hidden
-                  >
-                    {chatInitials(u.name)}
-                  </span>
+                  <UserAvatar
+                    userId={u.id}
+                    name={u.name}
+                    hasAvatar={Boolean(u.has_avatar)}
+                    avatarVersion={u.avatar_version}
+                    size="md"
+                    className="chat-widget-avatar"
+                  />
                   <span className="chat-widget-list-item-body">
                     <span className="chat-widget-list-item-top">
                       <span className="chat-widget-list-name">{u.name}</span>
@@ -743,12 +752,14 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
               >
                 <ChevronLeft size={20} />
               </button>
-              <span
-                className={`chat-widget-avatar chat-widget-avatar--sm chat-widget-avatar--tone-${chatAvatarTone(activePeer.peer_id || activePeer.peer_name)}`}
-                aria-hidden
-              >
-                {chatInitials(activePeer.peer_name)}
-              </span>
+              <UserAvatar
+                userId={activePeer.peer_id}
+                name={activePeer.peer_name}
+                hasAvatar={Boolean(activePeer.peer_has_avatar)}
+                avatarVersion={activePeer.peer_avatar_version}
+                size="sm"
+                className="chat-widget-avatar chat-widget-avatar--sm"
+              />
               <div className="chat-widget-thread-peer">
                 <div className="chat-widget-thread-name">{activePeer.peer_name}</div>
                 <div className="chat-widget-thread-meta">

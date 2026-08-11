@@ -209,8 +209,14 @@ function mapUser(row: {
   assigned_site_ids?: string[] | null;
   email_verified?: boolean | null;
   account_status?: string | null;
+  avatar_path?: string | null;
+  avatar_updated_at?: Date | string | null;
 }): User {
   const status = (row.account_status as AccountStatus) || "active";
+  const hasAvatar = Boolean(row.avatar_path);
+  const avatarVersion = row.avatar_updated_at
+    ? new Date(row.avatar_updated_at).toISOString()
+    : undefined;
   return {
     id: row.id,
     username: row.username,
@@ -223,6 +229,8 @@ function mapUser(row: {
     assigned_site_ids: row.assigned_site_ids?.length ? row.assigned_site_ids : undefined,
     email_verified: row.email_verified ?? true,
     account_status: status === "pending" || status === "rejected" ? status : "active",
+    has_avatar: hasAvatar,
+    avatar_version: hasAvatar ? avatarVersion : undefined,
   };
 }
 

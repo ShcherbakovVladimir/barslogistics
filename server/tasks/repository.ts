@@ -77,6 +77,10 @@ function mapTask(row: Record<string, unknown>): KanbanTask {
     class_of_service: (row.class_of_service as KanbanClassOfService) || 'standard',
     assignee_id: row.assignee_id != null ? String(row.assignee_id) : null,
     assignee_name: row.assignee_name != null ? String(row.assignee_name) : null,
+    assignee_has_avatar: Boolean(row.assignee_has_avatar),
+    assignee_avatar_version: row.assignee_avatar_updated_at
+      ? new Date(row.assignee_avatar_updated_at as string).toISOString()
+      : null,
     creator_id: String(row.creator_id),
     creator_name: row.creator_name != null ? String(row.creator_name) : null,
     due_date: mapDueDate(row.due_date),
@@ -185,6 +189,8 @@ export async function getBoardDetail(boardId: string): Promise<KanbanBoardDetail
     pool.query(
       `SELECT t.*,
               ua.name AS assignee_name,
+              (ua.avatar_path IS NOT NULL AND ua.avatar_path <> '') AS assignee_has_avatar,
+              ua.avatar_updated_at AS assignee_avatar_updated_at,
               uc.name AS creator_name
        FROM kanban_tasks t
        LEFT JOIN users ua ON ua.id = t.assignee_id
@@ -355,6 +361,8 @@ async function loadTask(taskId: string): Promise<KanbanTask | null> {
   const { rows } = await pool.query(
     `SELECT t.*,
             ua.name AS assignee_name,
+            (ua.avatar_path IS NOT NULL AND ua.avatar_path <> '') AS assignee_has_avatar,
+            ua.avatar_updated_at AS assignee_avatar_updated_at,
             uc.name AS creator_name
      FROM kanban_tasks t
      LEFT JOIN users ua ON ua.id = t.assignee_id

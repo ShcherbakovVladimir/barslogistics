@@ -9,6 +9,7 @@ import { useI18n } from '../i18n';
 import { canAccessTab, canExport } from '../utils/rbac';
 import { ThemeToggle } from './Theme/ThemeToggle';
 import { BrandLogo } from './Brand/BrandLogo';
+import { UserAvatar } from './UI/UserAvatar';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setTheme } from '../store/themeSlice';
 
@@ -303,9 +304,20 @@ export const Header: React.FC<HeaderProps> = ({
   const userPanel = (
     <div className="header-nav-inline-panel">
       <div className="header-nav-user-card">
-        <div className="font-semibold text-slate-100">{currentUser.name}</div>
-        <div className="text-slate-400 text-[10px] mt-0.5">@{currentUser.username}</div>
-        <div className="text-[10px] text-indigo-300 mt-1 uppercase font-semibold">
+        <div className="flex items-center gap-2.5 mb-2">
+          <UserAvatar
+            userId={currentUser.id}
+            name={currentUser.name}
+            hasAvatar={Boolean(currentUser.has_avatar)}
+            avatarVersion={currentUser.avatar_version}
+            size="md"
+          />
+          <div className="min-w-0">
+            <div className="font-semibold text-slate-100 truncate">{currentUser.name}</div>
+            <div className="text-slate-400 text-[10px] mt-0.5 truncate">@{currentUser.username}</div>
+          </div>
+        </div>
+        <div className="text-[10px] text-indigo-300 uppercase font-semibold">
           {t(`roles.${currentUser.role}.title`)}
         </div>
       </div>
@@ -326,7 +338,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="app-header w-full bg-slate-900/96 backdrop-blur-md shrink-0 z-50">
+      <header
+        className={`app-header w-full bg-slate-900/96 backdrop-blur-md shrink-0 z-50${
+          showNotifications || showUserMenu ? ' is-popover-open' : ''
+        }`}
+      >
         <div className="app-header-inner w-full max-w-none px-3 sm:px-4 lg:px-5 xl:px-6">
           <div className="app-header-row flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-14 sm:h-16">
 
@@ -472,7 +488,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
 
                 {showNotifications && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                  <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl overflow-hidden">
                     <div className="px-4 py-3 border-b border-slate-700 bg-slate-900/95 flex items-center justify-between gap-2">
                       <h3 className="text-xs font-semibold text-slate-100">{t('header.notificationsPanel')}</h3>
                       {notifications.length > 0 ? (
@@ -582,7 +598,14 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                   className="app-header-btn flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 bg-transparent hover:bg-slate-800/80 text-slate-100 rounded-lg border border-slate-700/80 text-xs transition-colors"
                 >
-                  <Shield className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                  <UserAvatar
+                    userId={currentUser.id}
+                    name={currentUser.name}
+                    hasAvatar={Boolean(currentUser.has_avatar)}
+                    avatarVersion={currentUser.avatar_version}
+                    size="sm"
+                    className="app-header-user-avatar"
+                  />
                   <span className="hidden sm:inline font-medium truncate max-w-[80px] md:max-w-[110px]">{currentUser.name}</span>
                   <span className="hidden md:inline px-1.5 py-0.5 text-[10px] bg-indigo-500/20 text-indigo-300 rounded uppercase font-semibold shrink-0 whitespace-nowrap">
                     {t(`roles.${currentUser.role}.title`)}
@@ -590,10 +613,19 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
 
                 {showUserMenu && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl z-50 p-2 text-xs">
-                    <div className="px-2 py-2 border-b border-slate-700 mb-1">
-                      <div className="font-semibold text-slate-100">{currentUser.name}</div>
-                      <div className="text-slate-400 text-[10px] mt-0.5">@{currentUser.username}</div>
+                  <div className="app-header-popover absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl p-2 text-xs">
+                    <div className="px-2 py-2 border-b border-slate-700 mb-1 flex items-center gap-2.5">
+                      <UserAvatar
+                        userId={currentUser.id}
+                        name={currentUser.name}
+                        hasAvatar={Boolean(currentUser.has_avatar)}
+                        avatarVersion={currentUser.avatar_version}
+                        size="md"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-semibold text-slate-100 truncate">{currentUser.name}</div>
+                        <div className="text-slate-400 text-[10px] mt-0.5 truncate">@{currentUser.username}</div>
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -752,7 +784,14 @@ export const Header: React.FC<HeaderProps> = ({
                     className={`header-nav-item header-nav-item--tool${showUserMenu ? ' is-active' : ''}`}
                     aria-expanded={showUserMenu}
                   >
-                    <Shield className="header-nav-item-icon" aria-hidden="true" />
+                    <UserAvatar
+                      userId={currentUser.id}
+                      name={currentUser.name}
+                      hasAvatar={Boolean(currentUser.has_avatar)}
+                      avatarVersion={currentUser.avatar_version}
+                      size="sm"
+                      className="header-nav-item-icon app-header-user-avatar"
+                    />
                     <span className="header-nav-item-label">{currentUser.name.split(' ')[0]}</span>
                   </button>
                 </div>

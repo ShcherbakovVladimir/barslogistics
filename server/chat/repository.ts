@@ -84,8 +84,12 @@ export async function getChatDirectory(currentUserId: string): Promise<ChatUserD
     name: string | null;
     role: UserRole;
     has_conversation: boolean;
+    has_avatar: boolean;
+    avatar_updated_at: Date | null;
   }>(
     `SELECT u.id, u.username, u.name, u.role,
+            (u.avatar_path IS NOT NULL AND u.avatar_path <> '') AS has_avatar,
+            u.avatar_updated_at,
             EXISTS (
               SELECT 1 FROM chat_conversations c
               WHERE (c.user_a_id = u.id AND c.user_b_id = $1)
@@ -103,6 +107,10 @@ export async function getChatDirectory(currentUserId: string): Promise<ChatUserD
     name: row.name || row.username,
     role: row.role,
     has_conversation: row.has_conversation,
+    has_avatar: Boolean(row.has_avatar),
+    avatar_version: row.has_avatar && row.avatar_updated_at
+      ? new Date(row.avatar_updated_at).toISOString()
+      : undefined,
   }));
 }
 
@@ -116,6 +124,8 @@ export async function listConversations(currentUserId: string): Promise<ChatConv
     peer_name: string | null;
     peer_username: string;
     peer_role: UserRole;
+    peer_has_avatar: boolean;
+    peer_avatar_updated_at: Date | null;
     last_body: string | null;
     last_at: Date | null;
     unread_count: string;
@@ -125,6 +135,8 @@ export async function listConversations(currentUserId: string): Promise<ChatConv
             u.name AS peer_name,
             u.username AS peer_username,
             u.role AS peer_role,
+            (u.avatar_path IS NOT NULL AND u.avatar_path <> '') AS peer_has_avatar,
+            u.avatar_updated_at AS peer_avatar_updated_at,
             lm.body AS last_body,
             lm.created_at AS last_at,
             COALESCE((
@@ -152,6 +164,10 @@ export async function listConversations(currentUserId: string): Promise<ChatConv
     peer_name: row.peer_name || row.peer_username,
     peer_username: row.peer_username,
     peer_role: row.peer_role,
+    peer_has_avatar: Boolean(row.peer_has_avatar),
+    peer_avatar_version: row.peer_has_avatar && row.peer_avatar_updated_at
+      ? new Date(row.peer_avatar_updated_at).toISOString()
+      : undefined,
     last_message: row.last_body ?? undefined,
     last_message_at: row.last_at?.toISOString(),
     unread_count: Number.parseInt(row.unread_count, 10) || 0,

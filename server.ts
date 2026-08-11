@@ -152,6 +152,9 @@ import { registerNotificationRoutes } from "./server/notifications/routes.js";
 import { registerTaskRoutes } from "./server/tasks/routes.js";
 import { registerSupportRoutes } from "./server/support/routes.js";
 import { registerShipmentLogisticsRoutes } from "./server/shipments/routes.js";
+import { registerUserAvatarRoutes } from "./server/users/routes.js";
+import { getUserAvatarFile } from "./server/users/avatars.js";
+import fs from "fs";
 import { setTaskBroadcast } from "./server/tasks/broadcast.js";
 import { setChatBroadcast } from "./server/chat/broadcast.js";
 import { setNotificationBroadcast } from "./server/notifications/service.js";
@@ -1622,8 +1625,16 @@ app.delete("/api/users/:id", requireAuth, requireMinRole("admin"), async (req, r
     const target = await getUserById(id);
     if (!target) return res.status(404).json({ error: "User not found" });
 
+    const avatarFile = target.has_avatar ? await getUserAvatarFile(id).catch(() => null) : null;
     const ok = await deleteUser(id, actor.id);
     if (!ok) return res.status(404).json({ error: "User not found" });
+    if (avatarFile?.absolutePath) {
+      try {
+        fs.unlinkSync(avatarFile.absolutePath);
+      } catch {
+        /* best-effort disk cleanup */
+      }
+    }
     await logEvent(req as AuthRequest, st("admin.users.deleted"), "system", st("admin.users.deletedDetails", { username: target.username }));
     res.json({ status: "success" });
   } catch (error) {
@@ -1832,6 +1843,7 @@ registerNotificationRoutes(app);
 registerTaskRoutes(app);
 registerSupportRoutes(app);
 registerShipmentLogisticsRoutes(app);
+registerUserAvatarRoutes(app);
 
 app.get("/api/carriers", requireAuth, async (req, res) => {
   try {

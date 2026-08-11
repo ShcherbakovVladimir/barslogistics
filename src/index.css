@@ -4294,20 +4294,39 @@ html.compact-laptop .audit-logs-filters-grid {
   max-width: 100%;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+  overflow: visible;
 }
 
 .app-header-inner {
   width: 100%;
   max-width: none;
+  overflow: visible;
 }
 
 .app-header-row {
-  overflow: hidden;
+  /* Must stay visible so notification / user popovers can extend below the bar */
+  overflow: visible;
 }
 
 .app-header-brand {
   min-width: 0;
   max-width: 100%;
+  overflow: hidden;
+}
+
+.app-header-actions {
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}
+
+.app-header-popover {
+  z-index: 1300;
+}
+
+/* Lift entire header above chat portal / map chrome while a desktop popover is open */
+.app-header.is-popover-open {
+  z-index: 1300;
 }
 
 .app-header-brand-lockup {
@@ -4555,7 +4574,7 @@ html.layout-fold.app-tab-map .app-header-nav {
     box-shadow:
       0 -16px 48px rgb(0 0 0 / 0.52),
       0 0 0 1px rgb(99 102 241 / 0.12);
-    z-index: 1250;
+    z-index: 1350;
   }
 
   html.layout-mobile:not([data-theme="light"]) .header-nav-inline-panel,
@@ -6348,6 +6367,8 @@ html.compact-laptop.app-side-rail-active:not(.app-side-rail-mobile-dock)
   margin-left: auto;
 }
 
+/* Shared user avatars (header, chat, tasks, admin) */
+.user-avatar,
 .chat-widget-avatar {
   flex-shrink: 0;
   display: inline-flex;
@@ -6362,32 +6383,104 @@ html.compact-laptop.app-side-rail-active:not(.app-side-rail-mobile-dock)
   color: #e2e8f0;
   background: linear-gradient(145deg, rgb(67 56 202 / 0.85), rgb(30 41 59 / 0.95));
   border: 1px solid rgb(99 102 241 / 0.35);
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
 }
 
+.user-avatar--xs {
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 0.5rem;
+}
+
+.user-avatar--sm,
 .chat-widget-avatar--sm {
   width: 2.15rem;
   height: 2.15rem;
   font-size: 0.6875rem;
 }
 
+.user-avatar--md {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 0.75rem;
+}
+
+.user-avatar--lg {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1rem;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.user-avatar--image,
+.chat-widget-avatar.user-avatar--image {
+  background: #1e293b;
+  border-color: rgb(148 163 184 / 0.35);
+  color: transparent;
+}
+
+.user-avatar--tone-0,
 .chat-widget-avatar--tone-0 {
   background: linear-gradient(145deg, rgb(79 70 229 / 0.9), rgb(30 41 59 / 0.95));
 }
 
+.user-avatar--tone-1,
 .chat-widget-avatar--tone-1 {
   background: linear-gradient(145deg, rgb(14 165 233 / 0.85), rgb(30 41 59 / 0.95));
 }
 
+.user-avatar--tone-2,
 .chat-widget-avatar--tone-2 {
   background: linear-gradient(145deg, rgb(16 185 129 / 0.8), rgb(30 41 59 / 0.95));
 }
 
+.user-avatar--tone-3,
 .chat-widget-avatar--tone-3 {
   background: linear-gradient(145deg, rgb(245 158 11 / 0.8), rgb(30 41 59 / 0.95));
 }
 
+.user-avatar--tone-4,
 .chat-widget-avatar--tone-4 {
   background: linear-gradient(145deg, rgb(236 72 153 / 0.8), rgb(30 41 59 / 0.95));
+}
+
+.app-header-user-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.625rem;
+}
+
+.admin-users-avatar-field {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.admin-users-avatar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-users-avatar-hint {
+  color: #94a3b8;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+}
+
+.admin-users-row-avatar {
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.625rem;
 }
 
 .chat-widget-sidebar {

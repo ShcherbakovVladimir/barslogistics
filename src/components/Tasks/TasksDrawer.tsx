@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  X, Plus, LayoutGrid, Trash2, UserRound, Calendar, ChevronLeft, Loader2, ListTodo, LifeBuoy,
+  X, Plus, LayoutGrid, Trash2, Calendar, ChevronLeft, Loader2, ListTodo, LifeBuoy,
 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
 import { SearchableSelect } from '../UI/SearchableSelect';
+import { UserAvatar } from '../UI/UserAvatar';
 import {
   TasksDatePicker,
   formatDueDateLabel,
@@ -1056,15 +1057,45 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
               </div>
               <div className="tasks-field">
                 <span>{t('tasks.assignee')}</span>
-                <SearchableSelect
-                  value={taskDraft.assignee_id}
-                  onChange={v => setTaskDraft(d => ({ ...d, assignee_id: v }))}
-                  options={assigneeOptions}
-                  searchable={assigneeOptions.length > 6}
-                  className="tasks-select"
-                  panelClassName="tasks-dropdown-panel"
-                  triggerClassName="tasks-select-trigger"
-                />
+                <div className="flex items-center gap-2 min-w-0">
+                  {taskDraft.assignee_id ? (
+                    <UserAvatar
+                      userId={taskDraft.assignee_id}
+                      name={
+                        taskDraft.assignee_id === currentUser.id
+                          ? currentUser.name
+                          : (users.find(u => u.id === taskDraft.assignee_id)?.name
+                            || editingTask?.assignee_name
+                            || '?')
+                      }
+                      hasAvatar={
+                        taskDraft.assignee_id === currentUser.id
+                          ? Boolean(currentUser.has_avatar)
+                          : Boolean(
+                            users.find(u => u.id === taskDraft.assignee_id)?.has_avatar
+                            ?? editingTask?.assignee_has_avatar,
+                          )
+                      }
+                      avatarVersion={
+                        taskDraft.assignee_id === currentUser.id
+                          ? currentUser.avatar_version
+                          : (users.find(u => u.id === taskDraft.assignee_id)?.avatar_version
+                            ?? editingTask?.assignee_avatar_version)
+                      }
+                      size="sm"
+                      className="shrink-0"
+                    />
+                  ) : null}
+                  <SearchableSelect
+                    value={taskDraft.assignee_id}
+                    onChange={v => setTaskDraft(d => ({ ...d, assignee_id: v }))}
+                    options={assigneeOptions}
+                    searchable={assigneeOptions.length > 6}
+                    className="tasks-select flex-1 min-w-0"
+                    panelClassName="tasks-dropdown-panel"
+                    triggerClassName="tasks-select-trigger"
+                  />
+                </div>
               </div>
                 <div className="tasks-field">
                 <span>
@@ -1221,9 +1252,16 @@ function TaskCard({
         <div className="tasks-card-meta">
           <span className="tasks-cos-badge">{cosLabel}</span>
           {task.assignee_name ? (
-            <span className="inline-flex items-center gap-0.5 truncate">
-              <UserRound className="w-3 h-3 shrink-0" />
-              {task.assignee_name}
+            <span className="inline-flex items-center gap-1 truncate min-w-0">
+              <UserAvatar
+                userId={task.assignee_id}
+                name={task.assignee_name}
+                hasAvatar={Boolean(task.assignee_has_avatar)}
+                avatarVersion={task.assignee_avatar_version}
+                size="xs"
+                className="shrink-0"
+              />
+              <span className="truncate">{task.assignee_name}</span>
             </span>
           ) : null}
           {task.due_date ? (

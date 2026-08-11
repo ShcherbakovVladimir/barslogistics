@@ -131,6 +131,10 @@ write_env_file() {
       log "Adding CHAT_FILES_DIR to $APP_DIR/.env"
       echo "CHAT_FILES_DIR=${APP_DIR}/data/chat-files" >> "$APP_DIR/.env"
     fi
+    if ! grep -q '^AVATAR_FILES_DIR=' "$APP_DIR/.env"; then
+      log "Adding AVATAR_FILES_DIR to $APP_DIR/.env"
+      echo "AVATAR_FILES_DIR=${APP_DIR}/data/avatars" >> "$APP_DIR/.env"
+    fi
     if ! grep -q '^AUTH_VALIDATE_URL=' "$APP_DIR/.env"; then
       log "Adding AUTH_VALIDATE_URL for Bars portal JWT"
       echo "AUTH_VALIDATE_URL=https://requestchainrestproxy.almaz-t.ru/v1/auth/validate" >> "$APP_DIR/.env"
@@ -159,6 +163,7 @@ BACKUP_DIR=${APP_DIR}/data/backups
 CHAT_FILES_DIR=${APP_DIR}/data/chat-files
 TASK_FILES_DIR=${APP_DIR}/data/task-files
 SHIPMENT_FILES_DIR=${APP_DIR}/data/shipment-files
+AVATAR_FILES_DIR=${APP_DIR}/data/avatars
 AUTH_VALIDATE_URL=https://requestchainrestproxy.almaz-t.ru/v1/auth/validate
 CORS_ORIGINS=https://portal.almaz-t.ru,https://${DOMAIN}
 EOF

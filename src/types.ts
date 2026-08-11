@@ -236,6 +236,10 @@ export interface User {
   assigned_site_ids?: string[];
   email_verified?: boolean;
   account_status?: AccountStatus;
+  /** True when a profile image is stored for this user. */
+  has_avatar?: boolean;
+  /** Cache-buster / version for avatar fetch (ISO timestamp). */
+  avatar_version?: string;
 }
 
 export const USER_ROLES: UserRole[] = ['admin', 'key_person', 'manager', 'site_manager', 'local_employee'];
@@ -438,6 +442,8 @@ export interface ChatConversationSummary {
   peer_name: string;
   peer_username: string;
   peer_role: UserRole;
+  peer_has_avatar?: boolean;
+  peer_avatar_version?: string;
   last_message?: string;
   last_message_at?: string;
   unread_count: number;
@@ -449,6 +455,8 @@ export interface ChatUserDirectoryEntry {
   name: string;
   role: UserRole;
   has_conversation: boolean;
+  has_avatar?: boolean;
+  avatar_version?: string;
 }
 
 export type CarrierAuthType = 'none' | 'bearer' | 'header' | 'query';
@@ -971,6 +979,8 @@ export interface KanbanTask {
   class_of_service: KanbanClassOfService;
   assignee_id: string | null;
   assignee_name?: string | null;
+  assignee_has_avatar?: boolean;
+  assignee_avatar_version?: string | null;
   creator_id: string;
   creator_name?: string | null;
   due_date: string | null;

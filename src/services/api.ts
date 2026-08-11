@@ -472,6 +472,40 @@ export class ApiService {
     return json.data;
   }
 
+  static async uploadUserAvatar(id: string, file: File): Promise<User> {
+    const form = new FormData();
+    form.append('file', file);
+    const headers = await this.headers();
+    delete headers['Content-Type'];
+    const res = await fetch(this.apiUrl(`${this.baseUrl}/users/${id}/avatar`), {
+      method: 'POST',
+      headers,
+      body: form,
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || 'Avatar upload failed');
+    return json.data as User;
+  }
+
+  static async deleteUserAvatar(id: string): Promise<User> {
+    const json = await this.request<{ status: string; data: User }>(`${this.baseUrl}/users/${id}/avatar`, {
+      method: 'DELETE',
+    });
+    return json.data;
+  }
+
+  /** Authenticated avatar fetch → object URL for <img>. */
+  static async fetchUserAvatarObjectUrl(id: string, version?: string | null): Promise<string | null> {
+    const qs = version ? `?v=${encodeURIComponent(version)}` : '';
+    const headers = await this.headers();
+    delete headers.Accept;
+    const res = await fetch(this.apiUrl(`${this.baseUrl}/users/${id}/avatar${qs}`), { headers });
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    if (!blob.size) return null;
+    return URL.createObjectURL(blob);
+  }
+
   static async getBackups(): Promise<BackupItem[]> {
     const json = await this.request<{ status: string; data: BackupItem[] }>(`${this.baseUrl}/backups`);
     return json.data;

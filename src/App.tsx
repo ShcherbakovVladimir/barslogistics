@@ -197,6 +197,17 @@ export default function App() {
   const refreshAdminUsers = useCallback(async () => {
     const usersList = await ApiService.getUsers();
     setAdminUsers(usersList);
+    setCurrentUser((prev) => {
+      if (!prev) return prev;
+      const updated = usersList.find((u) => u.id === prev.id);
+      if (!updated) return prev;
+      return {
+        ...prev,
+        ...updated,
+        has_avatar: updated.has_avatar,
+        avatar_version: updated.avatar_version,
+      };
+    });
   }, []);
 
   const refreshProducts = useCallback(async () => {

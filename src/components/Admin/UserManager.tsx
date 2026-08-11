@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Plus, Pencil, Trash2, X, Save, Check, Ban } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Plus, Pencil, Trash2, X, Save, Check, Ban, ImagePlus } from 'lucide-react';
 import type { Factory, User, UserCreateInput, UserRole, UserUpdateInput } from '../../types';
 import { USER_ROLES } from '../../types';
 import { useI18n } from '../../i18n';
@@ -8,6 +8,8 @@ import { AppBottomSheetHandle } from '../UI/AppBottomSheetHandle';
 import { useAppBottomSheet } from '../../hooks/useAppBottomSheet';
 import { SearchableSelect } from '../UI/SearchableSelect';
 import { adminDropdownSelectProps } from './adminDropdown';
+import { UserAvatar } from '../UI/UserAvatar';
+import { invalidateUserAvatarCache } from '../../utils/userAvatar';
 
 interface UserManagerProps {
   users: User[];
@@ -105,9 +107,19 @@ const UserCard = ({
 }: UserCardProps) => (
   <article className="admin-users-card">
     <div className="admin-users-card-header">
-      <div className="min-w-0">
-        <div className="admin-users-card-name">{user.name}</div>
-        <div className="admin-users-card-username">@{user.username}</div>
+      <div className="flex items-center gap-2.5 min-w-0">
+        <UserAvatar
+          userId={user.id}
+          name={user.name}
+          hasAvatar={Boolean(user.has_avatar)}
+          avatarVersion={user.avatar_version}
+          size="sm"
+          className="admin-users-row-avatar shrink-0"
+        />
+        <div className="min-w-0">
+          <div className="admin-users-card-name">{user.name}</div>
+          <div className="admin-users-card-username">@{user.username}</div>
+        </div>
       </div>
       <span className="admin-users-card-role px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] font-bold uppercase shrink-0">
         {t(`roles.${user.role}.title`)}
@@ -177,6 +189,15 @@ const UserCard = ({
   </article>
 );
 
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
+const AVATAR_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif';
+
+function isAvatarFileValid(file: File): boolean {
+  if (!AVATAR_ACCEPT.split(',').includes(file.type)) return false;
+  if (file.size <= 0 || file.size > AVATAR_MAX_BYTES) return false;
+  return true;
+}
+
 export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, onRefresh }) => {
   const { t } = useI18n();
   const [factories, setFactories] = useState<Factory[]>([]);
@@ -186,6 +207,10 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [removeAvatar, setRemoveAvatar] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const ourSites = useMemo(() => factories.filter(f => f.is_ours), [factories]);
 
@@ -206,10 +231,21 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
     ApiService.getFactories().then(setFactories).catch(() => {});
   }, []);
 
+  const clearAvatarDraft = () => {
+    setAvatarFile(null);
+    setRemoveAvatar(false);
+    setAvatarPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+    if (avatarInputRef.current) avatarInputRef.current.value = '';
+  };
+
   const openCreate = () => {
     setEditing(null);
     setCreating(true);
     setForm(emptyForm());
+    clearAvatarDraft();
     setError('');
   };
 
@@ -227,6 +263,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
       site_id: user.site_id || '',
       assigned_site_ids: user.assigned_site_ids || [],
     });
+    clearAvatarDraft();
     setError('');
   };
 
@@ -234,7 +271,23 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
     setCreating(false);
     setEditing(null);
     setForm(emptyForm());
+    clearAvatarDraft();
     setError('');
+  };
+
+  const onAvatarPicked = (file: File | null) => {
+    if (!file) return;
+    if (!isAvatarFileValid(file)) {
+      setError(t('admin.users.avatarInvalid'));
+      return;
+    }
+    setError('');
+    setRemoveAvatar(false);
+    setAvatarFile(file);
+    setAvatarPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(file);
+    });
   };
 
   const toggleAssignedSite = (siteId: string) => {
@@ -251,6 +304,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
     setError('');
     setSaving(true);
     try {
+      let userId = editing?.id;
       if (creating) {
         if (!form.password) {
           setError(t('admin.users.passwordRequired'));
@@ -268,7 +322,8 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
           site_id: form.site_id || undefined,
           assigned_site_ids: form.role === 'manager' ? form.assigned_site_ids : undefined,
         };
-        await ApiService.createUser(payload);
+        const created = await ApiService.createUser(payload);
+        userId = created.id;
       } else if (editing) {
         const payload: UserUpdateInput = {
           username: form.username,
@@ -283,6 +338,24 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
         if (form.password) payload.password = form.password;
         await ApiService.updateUser(editing.id, payload);
       }
+
+      if (userId) {
+        try {
+          if (avatarFile) {
+            await ApiService.uploadUserAvatar(userId, avatarFile);
+            invalidateUserAvatarCache(userId);
+          } else if (removeAvatar && editing?.has_avatar) {
+            await ApiService.deleteUserAvatar(userId);
+            invalidateUserAvatarCache(userId);
+          }
+        } catch (avatarErr) {
+          setError(avatarErr instanceof Error ? avatarErr.message : t('admin.users.avatarFailed'));
+          await onRefresh();
+          setSaving(false);
+          return;
+        }
+      }
+
       await onRefresh();
       closeForm();
     } catch (err) {
@@ -342,9 +415,67 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
 
   const showSiteField = form.role === 'site_manager' || form.role === 'local_employee';
   const showAssignedSites = form.role === 'manager';
+  const showExistingAvatar = Boolean(editing?.has_avatar) && !removeAvatar && !avatarPreview;
 
   const formBody = (
     <>
+      <div className="admin-users-avatar-field sm:col-span-2">
+        {avatarPreview ? (
+          <img src={avatarPreview} alt="" className="user-avatar user-avatar--lg user-avatar--image" />
+        ) : showExistingAvatar && editing ? (
+          <UserAvatar
+            userId={editing.id}
+            name={form.name || editing.name}
+            hasAvatar
+            avatarVersion={editing.avatar_version}
+            size="lg"
+          />
+        ) : (
+          <UserAvatar
+            userId={editing?.id}
+            name={form.name || editing?.name || '?'}
+            hasAvatar={false}
+            size="lg"
+          />
+        )}
+        <div className="min-w-0 space-y-1.5">
+          <div className="text-xs text-slate-300 font-medium">{t('admin.users.avatar')}</div>
+          <p className="admin-users-avatar-hint">{t('admin.users.avatarHint')}</p>
+          <div className="admin-users-avatar-actions">
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept={AVATAR_ACCEPT}
+              className="hidden"
+              onChange={(e) => onAvatarPicked(e.target.files?.[0] ?? null)}
+            />
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-semibold hover:bg-slate-750 hover:border-slate-600"
+            >
+              <ImagePlus className="w-3.5 h-3.5 shrink-0" />
+              {avatarPreview || showExistingAvatar ? t('admin.users.avatarChange') : t('admin.users.avatarUpload')}
+            </button>
+            {(avatarPreview || showExistingAvatar) && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (avatarPreview || avatarFile) {
+                    clearAvatarDraft();
+                    return;
+                  }
+                  setRemoveAvatar(true);
+                }}
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/30"
+              >
+                {t('admin.users.avatarRemove')}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="admin-users-form-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label className="block space-y-1 text-xs">
           <span className="text-slate-400">{t('auth.username')}</span>
@@ -451,8 +582,20 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
                 return (
                   <tr key={u.id} className="border-t border-slate-800 text-slate-200">
                     <td className="p-3">
-                      <div className="font-semibold text-white">{u.name}</div>
-                      <div className="text-slate-500">@{u.username}</div>
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <UserAvatar
+                          userId={u.id}
+                          name={u.name}
+                          hasAvatar={Boolean(u.has_avatar)}
+                          avatarVersion={u.avatar_version}
+                          size="sm"
+                          className="admin-users-row-avatar shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-semibold text-white truncate">{u.name}</div>
+                          <div className="text-slate-500 truncate">@{u.username}</div>
+                        </div>
+                      </div>
                     </td>
                     <td className="p-3">
                       <span className="px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] font-bold uppercase">
