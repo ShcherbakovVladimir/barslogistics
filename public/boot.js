@@ -18,6 +18,15 @@
     html.style.setProperty('--layout-vw', w + 'px');
     html.style.setProperty('--layout-vh', h + 'px');
 
+    /* Safari bottom chrome — map paints under it; FABs sit above */
+    if (vv && vv.height) {
+      var layoutH = Math.max(window.innerHeight || 0, html.clientHeight || 0);
+      var chromeTop = Math.max(0, vv.offsetTop || 0);
+      var chromeBottom = Math.max(0, layoutH - chromeTop - vv.height);
+      html.style.setProperty('--browser-chrome-top', Math.round(chromeTop) + 'px');
+      html.style.setProperty('--browser-chrome-bottom', Math.round(chromeBottom) + 'px');
+    }
+
     var coarse = window.matchMedia('(pointer: coarse)').matches;
     var noHover = window.matchMedia('(hover: none)').matches;
     var touch = coarse && noHover;
