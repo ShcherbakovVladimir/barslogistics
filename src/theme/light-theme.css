@@ -3213,7 +3213,7 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 /* ── App header — match Kanban / tasks drawer surface ── */
 [data-theme="light"] .app-header-popover,
 [data-theme="light"] .app-header-nav {
-  background-color: rgb(255 255 255 / 0.95) !important;
+  background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
 }
 
@@ -3417,6 +3417,34 @@ html.layout-fold[data-theme="light"] .chat-widget-panel {
 [data-theme="light"] html.layout-mobile .app-header-nav .header-nav-item-label,
 [data-theme="light"] html.layout-fold .app-header-nav .header-nav-item-label {
   color: inherit;
+}
+
+/* Mobile nav drawer — solid light surface (map must not bleed through blur) */
+[data-theme="light"] html.layout-mobile .app-header-nav,
+[data-theme="light"] html.layout-fold .app-header-nav {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-header-nav .header-nav-scroll,
+[data-theme="light"] html.layout-fold .app-header-nav .header-nav-scroll {
+  background-color: #ffffff;
+}
+
+[data-theme="light"] html.layout-mobile .app-header-nav .bg-slate-900\/95,
+[data-theme="light"] html.layout-fold .app-header-nav .bg-slate-900\/95 {
+  background-color: #ffffff !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-header-nav .text-slate-100,
+[data-theme="light"] html.layout-fold .app-header-nav .text-slate-100 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-header-nav .text-slate-400,
+[data-theme="light"] html.layout-fold .app-header-nav .text-slate-400 {
+  color: #64748b !important;
 }
 
 [data-theme="light"] .app-header .text-slate-100 {
