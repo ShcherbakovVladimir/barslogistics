@@ -5606,7 +5606,7 @@ html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
 }
 
 .chat-widget-root--rail {
-  /* Panel only — launcher lives in the side rail */
+  /* Keep FAB / panel clear of the side rail (desktop) or dock launcher */
   right: calc(var(--app-side-rail-width) + 0.5rem + env(safe-area-inset-right, 0px));
   bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
 }
@@ -5629,6 +5629,23 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
 
 .chat-widget-root--above-zoom {
   bottom: calc(var(--map-chat-bottom) + env(safe-area-inset-bottom, 0px));
+}
+
+/* Desktop / tablet: floating FAB like on map — hide duplicate rail chat button */
+html.layout-desktop .app-side-rail-btn--chat,
+html.layout-tablet .app-side-rail-btn--chat {
+  display: none !important;
+}
+
+/* Open panel sits above the FAB (column-reverse + gap) — keep FAB clickable */
+html.layout-desktop .chat-widget-root--open,
+html.layout-tablet .chat-widget-root--open {
+  pointer-events: none;
+}
+
+html.layout-desktop .chat-widget-root--open > *,
+html.layout-tablet .chat-widget-root--open > * {
+  pointer-events: auto;
 }
 
 .chat-widget-root > * {
@@ -5683,10 +5700,9 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
   height: min(72vh, 32rem);
   border-radius: 0.875rem;
   border: 1px solid rgb(51 65 85 / 0.9);
-  background: rgb(15 23 42 / 0.97);
+  background: #0f172a;
   box-shadow: 0 16px 48px rgb(0 0 0 / 0.45);
   overflow: hidden;
-  backdrop-filter: blur(12px);
 }
 
 .chat-widget-panel-body {
@@ -5707,7 +5723,7 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
   border-right: 1px solid rgb(51 65 85 / 0.8);
   display: flex;
   flex-direction: column;
-  background: rgb(15 23 42 / 0.85);
+  background: #0f172a;
 }
 
 .chat-widget-sidebar-head {
@@ -5788,7 +5804,7 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
   padding: 0.35rem 0.5rem;
   border-radius: 0.5rem;
   border: 1px solid rgb(51 65 85 / 0.8);
-  background: rgb(2 6 23 / 0.5);
+  background: rgb(30 41 59 / 0.65);
   color: #94a3b8;
 }
 
@@ -5891,7 +5907,7 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: rgb(2 6 23 / 0.35);
+  background: #0f172a;
 }
 
 .chat-widget-thread-head {
@@ -6146,6 +6162,7 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
     border-left: none;
     border-right: none;
     border-bottom: none;
+    background: #0f172a;
     box-shadow: 0 -10px 40px rgb(0 0 0 / 0.45);
     z-index: 1;
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -6166,28 +6183,32 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
   }
 
   .chat-widget-sidebar {
-    width: 100%;
-    min-width: 0;
-    border-right: none;
+    width: min(42%, 13.5rem);
+    min-width: 10.5rem;
+    max-width: 14.5rem;
+    border-right: 1px solid rgb(51 65 85 / 0.8);
+    display: flex !important;
   }
 
+  /* Dual pane on mobile: list left + thread right (do not hide either) */
   .chat-widget-sidebar--hidden-mobile {
-    display: none;
+    display: flex !important;
   }
 
   .chat-widget-thread {
-    display: none;
+    display: flex !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
   }
 
   .chat-widget-thread--visible-mobile {
-    display: flex;
-    width: 100%;
+    display: flex !important;
+    width: auto;
   }
 
   .chat-widget-back-mobile {
-    display: inline-flex;
-    width: 2.5rem;
-    height: 2.5rem;
+    display: none;
   }
 
   .chat-widget-sidebar-head,

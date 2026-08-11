@@ -18,7 +18,7 @@ import { DEFAULT_PRODUCT_CATALOG, activeProducts } from './constants/products';
 import { activeCarriers } from './constants/carriers';
 import { activeSalesManagers } from './constants/salesManagers';
 import { applyMapChromeDensityClass, subscribeViewportChange } from './utils/viewport';
-import { applyLayoutViewportVars } from './utils/deviceLayout';
+import { applyLayoutViewportVars, isMobileLayout, subscribeDeviceLayout } from './utils/deviceLayout';
 
 import { LoginPage } from './components/Auth/LoginPage';
 import { Header } from './components/Header';
@@ -114,6 +114,7 @@ export default function App() {
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [chatUnread, setChatUnread] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
+  const [mobileLayout, setMobileLayout] = useState(() => isMobileLayout());
   const [tasksOpenCount, setTasksOpenCount] = useState(0);
   const [tasksBoardSync, setTasksBoardSync] = useState<KanbanBoardDetail | null>(null);
   const [tasksFocusTaskId, setTasksFocusTaskId] = useState<string | null>(null);
@@ -302,6 +303,12 @@ export default function App() {
     const apply = () => applyMapChromeDensityClass();
     apply();
     return subscribeViewportChange(apply);
+  }, []);
+
+  useEffect(() => {
+    const sync = () => setMobileLayout(isMobileLayout());
+    sync();
+    return subscribeDeviceLayout(sync);
   }, []);
 
   useEffect(() => {
@@ -1295,7 +1302,8 @@ export default function App() {
       {currentUser && (
         <ChatWidget
           currentUser={currentUser}
-          hideLauncher={activeTab !== 'map'}
+          /* Floating FAB on desktop (all pages) + map; dock button only on mobile non-map */
+          hideLauncher={mobileLayout && activeTab !== 'map'}
           onUnreadChange={setChatUnread}
           onOpenChange={setChatOpen}
         />

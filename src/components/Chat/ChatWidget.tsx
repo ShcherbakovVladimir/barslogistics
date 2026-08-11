@@ -266,7 +266,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   }, [openConversation]);
 
   const wasOpenRef = useRef(false);
-  /** On open: refresh list and auto-load the right thread (unread → last active → first). */
+  /** On open: refresh list and load last/unread thread (mobile keeps list+thread side by side). */
   useEffect(() => {
     if (!open) {
       wasOpenRef.current = false;
@@ -819,7 +819,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
     <div
       className={[
         'chat-widget-root',
-        hideLauncher ? 'chat-widget-root--rail' : '',
+        /* Offset from side rail on non-map pages (desktop FAB + mobile dock) */
+        aboveMapZoom ? '' : 'chat-widget-root--rail',
         aboveMapZoom ? 'chat-widget-root--above-zoom' : '',
         open ? 'chat-widget-root--open' : '',
       ].filter(Boolean).join(' ')}
