@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import type { ThemeMode } from '../../store/themeSlice';
+import { isAndroidDevice } from '../../utils/deviceLayout';
+import { syncSafeAreaCssVars } from '../../utils/androidSafeArea';
 
 /** Browser / PWA chrome colors — match header & safe-area fills */
 export const BROWSER_THEME = {
@@ -15,11 +17,6 @@ export const BROWSER_THEME = {
 } as const;
 
 function upsertNamedMeta(name: string, content: string) {
-  if (name === 'theme-color') {
-    /* Drop prefers-color-scheme variants — site theme is explicit */
-    document.querySelectorAll('meta[name="theme-color"][media]').forEach((node) => node.remove());
-  }
-
   let meta = document.querySelector(
     `meta[name="${name}"]:not([media])`,
   ) as HTMLMetaElement | null;
@@ -33,8 +30,32 @@ function upsertNamedMeta(name: string, content: string) {
 }
 
 /**
+ * Chrome Android often ignores in-place theme-color updates.
+ * Remove + recreate (and set matching media variants) so the toolbar repaints.
+ */
+function setThemeColorForBrowser(color: string) {
+  document.querySelectorAll('meta[name="theme-color"]').forEach((node) => node.remove());
+
+  const primary = document.createElement('meta');
+  primary.name = 'theme-color';
+  primary.content = color;
+  document.head.appendChild(primary);
+
+  /* Android Chrome may pick media-qualified tags based on OS scheme — force both. */
+  if (isAndroidDevice()) {
+    for (const scheme of ['light', 'dark'] as const) {
+      const m = document.createElement('meta');
+      m.name = 'theme-color';
+      m.content = color;
+      m.media = `(prefers-color-scheme: ${scheme})`;
+      document.head.appendChild(m);
+    }
+  }
+}
+
+/**
  * Sync page theme → browser UI chrome
- * (address bar, PWA title bar, Safari status bar, native form controls).
+ * (Chrome/Android address bar, PWA title bar, Safari status bar, form controls).
  */
 export function applyBrowserTheme(mode: ThemeMode) {
   const cfg = BROWSER_THEME[mode];
@@ -47,11 +68,17 @@ export function applyBrowserTheme(mode: ThemeMode) {
     document.body.style.colorScheme = mode;
   }
 
-  upsertNamedMeta('theme-color', cfg.themeColor);
+  setThemeColorForBrowser(cfg.themeColor);
   upsertNamedMeta('color-scheme', mode);
   upsertNamedMeta('apple-mobile-web-app-status-bar-style', cfg.statusBar);
   upsertNamedMeta('msapplication-navbutton-color', cfg.themeColor);
   upsertNamedMeta('msapplication-TileColor', cfg.themeColor);
+
+  try {
+    syncSafeAreaCssVars();
+  } catch {
+    /* ignore */
+  }
 }
 
 /** Applies Redux theme to <html> and browser chrome when the user toggles theme */

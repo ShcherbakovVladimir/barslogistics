@@ -14,7 +14,7 @@ html.app-side-rail-mobile-dock.app-side-rail-active .app-shell > main,
 html.app-side-rail-mobile-dock.app-side-rail-active .app-shell > #main-content {
   padding-right: 0 !important;
   padding-bottom: calc(
-    var(--app-side-rail-mobile-height) + env(safe-area-inset-bottom, 0px)
+    var(--app-side-rail-mobile-height) + max(env(safe-area-inset-bottom, 0px), var(--bars-safe-bottom, 0px))
   );
 }
 
@@ -44,9 +44,9 @@ html.layout-fold .app-side-rail.is-mobile-dock {
   gap: 0.5rem;
   padding:
     0.35rem
-    max(0.65rem, env(safe-area-inset-right, 0px))
-    calc(0.35rem + env(safe-area-inset-bottom, 0px))
-    max(0.65rem, env(safe-area-inset-left, 0px));
+    max(0.65rem, env(safe-area-inset-right, 0px), var(--bars-safe-right, 0px))
+    calc(0.35rem + max(env(safe-area-inset-bottom, 0px), var(--bars-safe-bottom, 0px)))
+    max(0.65rem, env(safe-area-inset-left, 0px), var(--bars-safe-left, 0px));
   border-top: 1px solid var(--app-chrome-border);
   z-index: 45;
   box-sizing: border-box;
@@ -80,6 +80,49 @@ html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn,
 html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn {
   width: 2.65rem;
   height: 2.65rem;
+}
+
+/* Chat icon matches other dock icons (no FAB gradient / shadow) */
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat {
+  border-color: rgb(71 85 105 / 0.95);
+  background: rgb(30 41 59 / 0.95);
+  box-shadow: none;
+  color: #cbd5e1;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover {
+  transform: translateY(-1px);
+  color: #fff;
+  border-color: rgb(129 140 248 / 0.65);
+  background: rgb(51 65 85);
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active {
+  border-color: rgb(129 140 248 / 0.65);
+  background: rgb(51 65 85);
+  color: #fff;
+  box-shadow: none;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat,
+[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover,
+[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat:hover,
+[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active,
+[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn--chat.is-active {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  box-shadow: none !important;
 }
 
 html.portal-embed.layout-mobile .app-notifications-drawer-root,

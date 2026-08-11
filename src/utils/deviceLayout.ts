@@ -80,6 +80,7 @@ export type DeviceLayoutClass =
   | 'layout-fold'
   | 'layout-landscape-phone'
   | 'layout-ios'
+  | 'layout-android'
   | 'layout-portrait'
   | 'layout-portrait-inverted'
   | 'layout-landscape'
@@ -218,6 +219,12 @@ export function isIosDevice(): boolean {
     || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
+/** Android (Chrome / WebView) — edge-to-edge + theme-color quirks. */
+export function isAndroidDevice(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Android/i.test(navigator.userAgent);
+}
+
 export function isMobileLayout(): boolean {
   return isMobilePhoneViewport() || isFoldableViewport();
 }
@@ -236,6 +243,7 @@ export function getDeviceLayoutSnapshot() {
     tablet,
     desktop: !mobile && !fold && !tablet,
     ios: isIosDevice(),
+    android: isAndroidDevice(),
     orientationAngle,
     orientationKind,
     landscapePhone: touchMobile && isLandscapeOrientation(),
@@ -258,6 +266,7 @@ export function applyDeviceLayoutClasses(): void {
   root.classList.toggle('layout-desktop', s.desktop);
   root.classList.toggle('layout-landscape-phone', s.landscapePhone);
   root.classList.toggle('layout-ios', s.ios);
+  root.classList.toggle('layout-android', s.android);
 
   root.classList.toggle('layout-portrait', s.orientationKind === 'portrait' || s.orientationKind === 'portrait-inverted');
   root.classList.toggle('layout-portrait-inverted', s.orientationKind === 'portrait-inverted');

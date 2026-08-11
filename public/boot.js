@@ -36,6 +36,7 @@
       html.classList.remove('layout-desktop', 'compact-laptop');
       html.dataset.mapChrome = 'comfortable';
       if (ios) html.classList.add('layout-ios');
+      if (/Android/i.test(navigator.userAgent)) html.classList.add('layout-android');
     }
 
     var angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
@@ -60,21 +61,31 @@
 
     var color = t === 'light' ? '#ffffff' : '#0f172a';
     var statusBar = t === 'light' ? 'default' : 'black-translucent';
+    var isAndroid = /Android/i.test(navigator.userAgent);
 
-    function setMeta(name, content) {
-      var m = document.querySelector('meta[name="' + name + '"]:not([media])');
+    function setMeta(name, content, media) {
+      var sel = 'meta[name="' + name + '"]';
+      if (media) sel += '[media="' + media + '"]';
+      else sel += ':not([media])';
+      var m = document.querySelector(sel);
       if (!m) {
         m = document.createElement('meta');
         m.setAttribute('name', name);
+        if (media) m.setAttribute('media', media);
         document.head.appendChild(m);
       }
       m.setAttribute('content', content);
     }
 
-    document.querySelectorAll('meta[name="theme-color"][media]').forEach(function (n) {
+    /* Chrome Android: recreate theme-color so the toolbar actually repaints */
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (n) {
       n.parentNode && n.parentNode.removeChild(n);
     });
     setMeta('theme-color', color);
+    if (isAndroid) {
+      setMeta('theme-color', color, '(prefers-color-scheme: light)');
+      setMeta('theme-color', color, '(prefers-color-scheme: dark)');
+    }
     setMeta('color-scheme', t);
     setMeta('apple-mobile-web-app-status-bar-style', statusBar);
   } catch (e) {}

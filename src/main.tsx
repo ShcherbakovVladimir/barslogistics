@@ -12,6 +12,7 @@ import {
   scheduleLayoutBootstrap,
   subscribeDeviceLayout,
 } from './utils/deviceLayout';
+import { subscribeSafeAreaSync, syncSafeAreaCssVars } from './utils/androidSafeArea';
 import { subscribePortalShellResize } from './utils/portalShell';
 import {
   getOrCreateReactRoot,
@@ -43,12 +44,16 @@ if (import.meta.env.DEV && import.meta.env.VITE_DEV_JWT && !window.__BARS_PORTAL
 applyPortalEmbedClass();
 bootstrapDeviceLayout();
 applyMapChromeDensityClass();
+syncSafeAreaCssVars();
+subscribeSafeAreaSync();
 scheduleLayoutBootstrap(() => {
   applyMapChromeDensityClass();
+  syncSafeAreaCssVars();
 });
 subscribeDeviceLayout(() => {
   applyDeviceLayoutClasses();
   applyMapChromeDensityClass();
+  syncSafeAreaCssVars();
 });
 
 if ('serviceWorker' in navigator) {
