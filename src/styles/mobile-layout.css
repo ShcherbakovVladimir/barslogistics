@@ -711,6 +711,135 @@ html.layout-fold .header-nav-item--search {
 html.layout-mobile .header-nav-scroll,
 html.layout-fold .header-nav-scroll {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  scroll-behavior: smooth;
+}
+
+/* Mobile menu: collapse nav sections & expand notifications with animation */
+html.layout-mobile .header-nav-sections-wrap,
+html.layout-fold .header-nav-sections-wrap {
+  max-height: 120vh;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    max-height 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.28s ease,
+    transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
+    margin 0.38s ease;
+}
+
+html.layout-mobile .header-nav-scroll.is-notifications-open .header-nav-sections-wrap,
+html.layout-fold .header-nav-scroll.is-notifications-open .header-nav-sections-wrap,
+html.layout-mobile .header-nav-scroll.is-user-open .header-nav-sections-wrap,
+html.layout-fold .header-nav-scroll.is-user-open .header-nav-sections-wrap {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-0.35rem);
+  margin-top: 0;
+  pointer-events: none;
+}
+
+html.layout-mobile .header-nav-scroll.is-notifications-open .header-nav-tools-block,
+html.layout-fold .header-nav-scroll.is-notifications-open .header-nav-tools-block,
+html.layout-mobile .header-nav-scroll.is-user-open .header-nav-tools-block,
+html.layout-fold .header-nav-scroll.is-user-open .header-nav-tools-block {
+  margin-top: 0;
+  padding-top: 0.35rem;
+  border-top: none;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--mobile-chrome-bg, rgb(15 23 42 / 0.98));
+  padding-bottom: 0.15rem;
+}
+
+html.layout-mobile .header-nav-notifications-sheet,
+html.layout-fold .header-nav-notifications-sheet,
+html.layout-mobile .header-nav-user-sheet,
+html.layout-fold .header-nav-user-sheet {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(0.35rem);
+  transition:
+    grid-template-rows 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.32s ease,
+    transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
+    margin 0.38s ease;
+  margin-top: 0;
+}
+
+html.layout-mobile .header-nav-notifications-sheet.is-open,
+html.layout-fold .header-nav-notifications-sheet.is-open,
+html.layout-mobile .header-nav-user-sheet.is-open,
+html.layout-fold .header-nav-user-sheet.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 0.35rem;
+}
+
+html.layout-mobile .header-nav-scroll.is-notifications-open .header-nav-notifications-panel,
+html.layout-fold .header-nav-scroll.is-notifications-open .header-nav-notifications-panel {
+  margin-top: 0;
+  animation: header-nav-notifications-reveal 0.38s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+html.layout-mobile .header-nav-scroll.is-notifications-open .header-nav-inline-panel-body,
+html.layout-fold .header-nav-scroll.is-notifications-open .header-nav-inline-panel-body {
+  max-height: min(52dvh, calc(var(--bars-viewport-height, 100dvh) - 13rem));
+}
+
+html.layout-mobile .header-nav-item--notify.is-active,
+html.layout-fold .header-nav-item--notify.is-active {
+  box-shadow: inset 0 0 0 1px rgb(99 102 241 / 0.35);
+}
+
+@keyframes header-nav-notifications-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.layout-mobile .header-nav-sections-wrap,
+  html.layout-fold .header-nav-sections-wrap,
+  html.layout-mobile .header-nav-notifications-sheet,
+  html.layout-fold .header-nav-notifications-sheet,
+  html.layout-mobile .header-nav-user-sheet,
+  html.layout-fold .header-nav-user-sheet {
+    transition-duration: 0.01ms !important;
+  }
+
+  html.layout-mobile .header-nav-scroll,
+  html.layout-fold .header-nav-scroll {
+    scroll-behavior: auto;
+  }
+
+  html.layout-mobile .header-nav-scroll.is-notifications-open .header-nav-notifications-panel,
+  html.layout-fold .header-nav-scroll.is-notifications-open .header-nav-notifications-panel {
+    animation: none;
+  }
+}
+
+/* Desktop dropdown: keep simple show/hide for inline sheets */
+@media (min-width: 640px) {
+  .header-nav-notifications-sheet:not(.is-open),
+  .header-nav-user-sheet:not(.is-open) {
+    display: none;
+  }
+
+  .header-nav-notifications-sheet.is-open,
+  .header-nav-user-sheet.is-open {
+    display: block;
+    opacity: 1;
+    transform: none;
+    margin-top: 0.5rem;
+  }
 }
 
 @keyframes map-search-slide-down {

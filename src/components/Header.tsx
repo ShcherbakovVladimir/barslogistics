@@ -87,6 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [navOpen, setNavOpen] = useState(false);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const navScrollRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -123,6 +124,15 @@ export const Header: React.FC<HeaderProps> = ({
     setShowNotifications(false);
     setShowUserMenu(false);
   }, [setActiveTab]);
+
+  useEffect(() => {
+    const el = navScrollRef.current;
+    if (!el || !navOpen) return;
+    const isMobileNav = document.documentElement.classList.contains('layout-mobile')
+      || document.documentElement.classList.contains('layout-fold');
+    if (!isMobileNav) return;
+    el.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [showNotifications, navOpen]);
 
   useEffect(() => {
     if (!navOpen) return;
@@ -176,15 +186,15 @@ export const Header: React.FC<HeaderProps> = ({
   const activeNavItem = navItems.find(item => item.id === activeTab);
 
   const notificationsPanel = (
-    <div className="header-nav-inline-panel">
+    <div className="header-nav-inline-panel header-nav-notifications-panel">
       <div className="header-nav-inline-panel-title flex items-center justify-between gap-2">
-        <span>{t('header.notificationsPanel')}</span>
+        <span className="header-nav-notifications-panel-heading">{t('header.notificationsPanel')}</span>
         {notifications.length > 0 ? (
-          <div className="flex items-center gap-1">
+          <div className="header-nav-notifications-panel-actions flex items-center gap-1">
             {unreadCount > 0 ? (
               <button
                 type="button"
-                className="text-[10px] text-indigo-300 hover:text-indigo-200 px-1.5 py-0.5 rounded"
+                className="header-nav-notifications-action"
                 onClick={(e) => {
                   e.stopPropagation();
                   onMarkAllNotificationsRead();
@@ -195,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({
             ) : null}
             <button
               type="button"
-              className="text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+              className="header-nav-notifications-action header-nav-notifications-action--danger"
               onClick={(e) => {
                 e.stopPropagation();
                 onClearAllNotifications();
@@ -614,41 +624,51 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
 
-            <div className="header-nav-scroll overflow-y-auto overscroll-contain">
-              <div className="header-nav-grid header-nav-grid--sections">
-                {onOpenGlobalSearch && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onOpenGlobalSearch();
-                      closeNav();
-                    }}
-                    className="header-nav-item header-nav-item--search"
-                  >
-                    <Search className="header-nav-item-icon" aria-hidden="true" />
-                    <span className="header-nav-item-label">{t('nav.search')}</span>
-                  </button>
-                )}
-                {navItems.map(item => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => selectTab(item.id)}
-                      className={`header-nav-item${isActive ? ' is-active' : ''}`}
-                    >
-                      <Icon className="header-nav-item-icon" aria-hidden="true" />
-                      <span className="header-nav-item-label">{item.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+            <div
+              ref={navScrollRef}
+              className={[
+                'header-nav-scroll overflow-y-auto overscroll-contain',
+                showNotifications ? 'is-notifications-open' : '',
+                showUserMenu ? 'is-user-open' : '',
+              ].filter(Boolean).join(' ')}
+            >
+              <div className="header-nav-scroll-inner">
+                <div className="header-nav-sections-wrap">
+                  <div className="header-nav-grid header-nav-grid--sections">
+                    {onOpenGlobalSearch && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onOpenGlobalSearch();
+                          closeNav();
+                        }}
+                        className="header-nav-item header-nav-item--search"
+                      >
+                        <Search className="header-nav-item-icon" aria-hidden="true" />
+                        <span className="header-nav-item-label">{t('nav.search')}</span>
+                      </button>
+                    )}
+                    {navItems.map(item => {
+                      const Icon = item.icon;
+                      const isActive = activeTab === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => selectTab(item.id)}
+                          className={`header-nav-item${isActive ? ' is-active' : ''}`}
+                        >
+                          <Icon className="header-nav-item-icon" aria-hidden="true" />
+                          <span className="header-nav-item-label">{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-              <div className="header-nav-tools-block">
-                <p className="header-nav-section-title">{t('header.toolsMenuTitle')}</p>
-                <div className="header-nav-grid header-nav-grid--tools">
+                <div className="header-nav-tools-block">
+                  <p className="header-nav-section-title">{t('header.toolsMenuTitle')}</p>
+                  <div className="header-nav-grid header-nav-grid--tools">
                   <button
                     type="button"
                     onClick={() => dispatch(setTheme('dark'))}
@@ -693,6 +713,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setShowNotifications(v => !v);
                     }}
                     className={`header-nav-item header-nav-item--tool header-nav-item--notify${showNotifications ? ' is-active' : ''}`}
+                    aria-expanded={showNotifications}
                   >
                     <span className="header-nav-item-icon-wrap">
                       <Bell className="header-nav-item-icon" aria-hidden="true" />
@@ -711,6 +732,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setShowUserMenu(v => !v);
                     }}
                     className={`header-nav-item header-nav-item--tool${showUserMenu ? ' is-active' : ''}`}
+                    aria-expanded={showUserMenu}
                   >
                     <Shield className="header-nav-item-icon" aria-hidden="true" />
                     <span className="header-nav-item-label">{currentUser.name.split(' ')[0]}</span>
@@ -718,8 +740,24 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               </div>
 
-              {showNotifications && notificationsPanel}
-              {showUserMenu && userPanel}
+                <div
+                  className={`header-nav-notifications-sheet${showNotifications ? ' is-open' : ''}`}
+                  aria-hidden={!showNotifications}
+                >
+                  <div className="header-nav-notifications-sheet-inner">
+                    {notificationsPanel}
+                  </div>
+                </div>
+
+                <div
+                  className={`header-nav-user-sheet${showUserMenu ? ' is-open' : ''}`}
+                  aria-hidden={!showUserMenu}
+                >
+                  <div className="header-nav-user-sheet-inner">
+                    {userPanel}
+                  </div>
+                </div>
+              </div>
             </div>
           </nav>
         </div>

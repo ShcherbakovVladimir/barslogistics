@@ -197,6 +197,53 @@ html.portal-embed .map-filter-panel-scroll {
   overflow-y: auto;
 }
 
+.header-nav-scroll-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: min-content;
+}
+
+.header-nav-sections-wrap {
+  overflow: hidden;
+}
+
+.header-nav-notifications-sheet,
+.header-nav-user-sheet {
+  overflow: hidden;
+}
+
+.header-nav-notifications-sheet-inner,
+.header-nav-user-sheet-inner {
+  min-height: 0;
+}
+
+.header-nav-notifications-panel-heading {
+  min-width: 0;
+}
+
+.header-nav-notifications-action {
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
+  color: rgb(165 180 252);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.header-nav-notifications-action:hover {
+  color: rgb(199 210 254);
+  background: rgb(99 102 241 / 0.12);
+}
+
+.header-nav-notifications-action--danger {
+  color: rgb(148 163 184);
+}
+
+.header-nav-notifications-action--danger:hover {
+  color: rgb(252 165 165);
+  background: rgb(239 68 68 / 0.1);
+}
+
 .header-nav-notify-item {
   padding: 0.625rem;
   border-radius: 0.5rem;
