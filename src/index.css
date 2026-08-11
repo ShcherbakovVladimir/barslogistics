@@ -5606,7 +5606,7 @@ html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
 }
 
 .chat-widget-root--rail {
-  /* Keep FAB / panel clear of the side rail (desktop) or dock launcher */
+  /* Panel only — launcher lives in the side rail / mobile dock */
   right: calc(var(--app-side-rail-width) + 0.5rem + env(safe-area-inset-right, 0px));
   bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
 }
@@ -5629,23 +5629,6 @@ html.app-side-rail-collapsed .chat-widget-root--rail {
 
 .chat-widget-root--above-zoom {
   bottom: calc(var(--map-chat-bottom) + env(safe-area-inset-bottom, 0px));
-}
-
-/* Desktop / tablet: floating FAB like on map — hide duplicate rail chat button */
-html.layout-desktop .app-side-rail-btn--chat,
-html.layout-tablet .app-side-rail-btn--chat {
-  display: none !important;
-}
-
-/* Open panel sits above the FAB (column-reverse + gap) — keep FAB clickable */
-html.layout-desktop .chat-widget-root--open,
-html.layout-tablet .chat-widget-root--open {
-  pointer-events: none;
-}
-
-html.layout-desktop .chat-widget-root--open > *,
-html.layout-tablet .chat-widget-root--open > * {
-  pointer-events: auto;
 }
 
 .chat-widget-root > * {
@@ -6183,32 +6166,29 @@ html.layout-tablet .chat-widget-root--open > * {
   }
 
   .chat-widget-sidebar {
-    width: min(42%, 13.5rem);
-    min-width: 10.5rem;
-    max-width: 14.5rem;
-    border-right: 1px solid rgb(51 65 85 / 0.8);
-    display: flex !important;
+    width: 100%;
+    min-width: 0;
+    border-right: none;
   }
 
-  /* Dual pane on mobile: list left + thread right (do not hide either) */
+  /* Telegram-style: list OR thread (not both) */
   .chat-widget-sidebar--hidden-mobile {
-    display: flex !important;
+    display: none;
   }
 
   .chat-widget-thread {
-    display: flex !important;
-    flex: 1 1 auto;
-    min-width: 0;
-    width: auto;
+    display: none;
   }
 
   .chat-widget-thread--visible-mobile {
-    display: flex !important;
-    width: auto;
+    display: flex;
+    width: 100%;
   }
 
   .chat-widget-back-mobile {
-    display: none;
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .chat-widget-sidebar-head,

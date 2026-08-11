@@ -235,10 +235,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   const openConversation = useCallback(async (
     conversationId: string,
     peer: Pick<ChatConversationSummary, 'peer_id' | 'peer_name' | 'peer_username' | 'peer_role'>,
+    options?: { showMobileThread?: boolean },
   ) => {
     setActiveConversationId(conversationId);
     setActivePeer(peer);
-    setMobileShowThread(true);
+    if (options?.showMobileThread !== false) {
+      setMobileShowThread(true);
+    }
     setLeftTab('chats');
     setLoadingThread(true);
     try {
@@ -266,7 +269,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
   }, [openConversation]);
 
   const wasOpenRef = useRef(false);
-  /** On open: refresh list and load last/unread thread (mobile keeps list+thread side by side). */
+  /** On open: refresh list; desktop loads thread in side pane; mobile stays on list (Telegram-style). */
   useEffect(() => {
     if (!open) {
       wasOpenRef.current = false;
@@ -274,6 +277,12 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
     }
     if (wasOpenRef.current) return;
     wasOpenRef.current = true;
+
+    const isMobile = typeof window !== 'undefined' && (
+      window.matchMedia('(max-width: 640px)').matches
+      || document.documentElement.classList.contains('layout-mobile')
+      || document.documentElement.classList.contains('layout-fold')
+    );
 
     let cancelled = false;
     void (async () => {
@@ -294,7 +303,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
           peer_name: pick.peer_name,
           peer_username: pick.peer_username,
           peer_role: pick.peer_role,
-        });
+        }, { showMobileThread: !isMobile });
       } catch (e) {
         console.error('chat auto-open:', e);
       }
@@ -819,8 +828,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({
     <div
       className={[
         'chat-widget-root',
-        /* Offset from side rail on non-map pages (desktop FAB + mobile dock) */
-        aboveMapZoom ? '' : 'chat-widget-root--rail',
+        hideLauncher ? 'chat-widget-root--rail' : '',
         aboveMapZoom ? 'chat-widget-root--above-zoom' : '',
         open ? 'chat-widget-root--open' : '',
       ].filter(Boolean).join(' ')}
