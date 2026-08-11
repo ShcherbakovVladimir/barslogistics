@@ -105,9 +105,34 @@ html.layout-fold:not(.portal-embed) .app-shell {
   background-color: var(--safe-fill-bottom);
 }
 
+/*
+ * Map tab — native-app edge-to-edge:
+ * stretch shell to the large viewport (under Safari URL bar / home indicator).
+ * FABs / zoom stay inset via env(safe-area-inset-*); bottom paint strip is off
+ * so Leaflet tiles show through the home-indicator zone.
+ */
+html.layout-mobile.app-tab-map:not(.portal-embed),
+html.layout-mobile.app-tab-map:not(.portal-embed) body,
+html.layout-mobile.app-tab-map:not(.portal-embed) #root,
+html.layout-fold.app-tab-map:not(.portal-embed),
+html.layout-fold.app-tab-map:not(.portal-embed) body,
+html.layout-fold.app-tab-map:not(.portal-embed) #root {
+  height: max(var(--layout-vh, 100dvh), 100dvh, 100lvh);
+  min-height: max(var(--layout-vh, 100dvh), 100dvh, 100lvh);
+  max-height: none;
+}
+
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
   background-color: var(--safe-fill-map);
+  height: 100%;
+  min-height: 100%;
+  max-height: none;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed)::after,
+html.layout-fold.app-tab-map:not(.portal-embed)::after {
+  display: none;
 }
 
 html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
@@ -121,6 +146,14 @@ html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map,
 html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
 html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
   background-color: var(--safe-fill-map) !important;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* Android Chrome: slightly stronger opaque toolbar fill when theme toggles */

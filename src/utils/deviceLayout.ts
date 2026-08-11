@@ -1,11 +1,20 @@
 import { getPortalShellElement, measurePortalAppHeight } from './portalShell.js';
 
-/** Reliable layout viewport — smallest consistent CSS px (avoids inflated first paint). */
-export function getLayoutViewportSize(): { width: number; height: number } {
+export type LayoutViewportHeightMode = 'stable' | 'large';
+
+/**
+ * Reliable layout viewport in CSS px.
+ * - stable: min of candidates (avoids inflated first paint / Safari URL-bar jump)
+ * - large: max of candidates (edge-to-edge map under Safari chrome)
+ */
+export function getLayoutViewportSize(
+  options?: { heightMode?: LayoutViewportHeightMode },
+): { width: number; height: number } {
   if (typeof window === 'undefined') return { width: 0, height: 0 };
 
   const vv = window.visualViewport;
   const docEl = document.documentElement;
+  const heightMode = options?.heightMode ?? 'stable';
 
   const widthCandidates = [
     vv?.width,
@@ -23,7 +32,9 @@ export function getLayoutViewportSize(): { width: number; height: number } {
   ].filter((n): n is number => typeof n === 'number' && n > 0);
 
   const width = widthCandidates.length > 0 ? Math.min(...widthCandidates) : 0;
-  const height = heightCandidates.length > 0 ? Math.min(...heightCandidates) : 0;
+  const height = heightCandidates.length > 0
+    ? (heightMode === 'large' ? Math.max(...heightCandidates) : Math.min(...heightCandidates))
+    : 0;
 
   return { width, height };
 }
@@ -66,11 +77,18 @@ export function applyLayoutViewportVars(): void {
     return;
   }
 
-  const { width, height } = getLayoutViewportSize();
+  const isTouchShell =
+    root.classList.contains('layout-mobile') || root.classList.contains('layout-fold');
+  /* Map tab: fill large viewport so tiles reach the physical bottom under Safari chrome */
+  const edgeToEdgeMap = isTouchShell && root.classList.contains('app-tab-map');
+  const { width, height } = getLayoutViewportSize({
+    heightMode: edgeToEdgeMap ? 'large' : 'stable',
+  });
   if (width > 0) root.style.setProperty('--layout-vw', `${width}px`);
   if (height > 0) root.style.setProperty('--layout-vh', `${height}px`);
   root.dataset.layoutVw = width > 0 ? String(Math.round(width)) : '';
   root.dataset.layoutVh = height > 0 ? String(Math.round(height)) : '';
+  root.dataset.layoutVhMode = edgeToEdgeMap ? 'large' : 'stable';
 }
 
 export type DeviceLayoutClass =

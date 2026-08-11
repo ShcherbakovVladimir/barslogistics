@@ -18,6 +18,7 @@ import { DEFAULT_PRODUCT_CATALOG, activeProducts } from './constants/products';
 import { activeCarriers } from './constants/carriers';
 import { activeSalesManagers } from './constants/salesManagers';
 import { applyMapChromeDensityClass, subscribeViewportChange } from './utils/viewport';
+import { applyLayoutViewportVars } from './utils/deviceLayout';
 
 import { LoginPage } from './components/Auth/LoginPage';
 import { Header } from './components/Header';
@@ -314,8 +315,10 @@ export default function App() {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('app-tab-map', activeTab === 'map');
+    applyLayoutViewportVars();
     return () => {
       root.classList.remove('app-tab-map');
+      applyLayoutViewportVars();
     };
   }, [activeTab]);
 
