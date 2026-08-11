@@ -71,8 +71,8 @@ const ru = {
   header: {
     brandTitle: 'Логистическая Карта',
     brandSubtitle: 'Мониторинг перевозок и геоданных в реальном времени',
-    wsLive: 'WebSocket Live',
-    pollingSync: 'Polling Sync',
+    wsLive: 'Сервер доступен',
+    pollingSync: 'Сервер не доступен',
     exportTitle: 'Экспорт отчета в Excel / PDF',
     exportButton: 'Экспорт отчетов',
     notificationsTitle: 'Уведомления',
