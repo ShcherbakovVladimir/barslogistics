@@ -44,12 +44,6 @@ html.layout-fold:not(.portal-embed) {
 html.layout-mobile.app-tab-map:not(.portal-embed),
 html.layout-fold.app-tab-map:not(.portal-embed) {
   --safe-fill-bottom: var(--safe-fill-map);
-  /* Physical bottom under Safari URL bar + home indicator */
-  --map-bottom-fill-height: max(
-    var(--safe-bottom, 0px),
-    calc(100lvh - 100dvh),
-    var(--browser-chrome-bottom, 0px)
-  );
   background-image: linear-gradient(
     to bottom,
     var(--safe-fill-top) 0%,
@@ -121,11 +115,9 @@ html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
   background-color: transparent;
 }
 
-/* Theme-colored strip under Safari address bar / home indicator (map tab only) */
 html.layout-mobile.app-tab-map:not(.portal-embed)::after,
 html.layout-fold.app-tab-map:not(.portal-embed)::after {
-  height: var(--map-bottom-fill-height, var(--safe-bottom));
-  background-color: var(--safe-fill-map);
+  display: none;
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-header,
