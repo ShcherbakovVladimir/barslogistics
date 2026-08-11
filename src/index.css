@@ -253,6 +253,82 @@ html.portal-embed .map-filter-panel-scroll {
   background: rgb(30 41 59 / 0.6);
 }
 
+.header-nav-notify-empty {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.header-nav-notify-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.header-nav-notify-item-title {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #a5b4fc;
+}
+
+.header-nav-notify-item-title--alert {
+  color: #f87171;
+}
+
+.header-nav-notify-item-title--success {
+  color: #34d399;
+}
+
+.header-nav-notify-item-title--info {
+  color: #a5b4fc;
+}
+
+.header-nav-notify-item-time {
+  font-size: 0.625rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.header-nav-notify-item-message {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.header-nav-notify-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+}
+
+.header-nav-notify-item-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  color: #94a3b8;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.header-nav-notify-item-action:hover {
+  color: #a5b4fc;
+  background: rgb(99 102 241 / 0.1);
+}
+
+.header-nav-notify-item-action--danger:hover {
+  color: #fca5a5;
+  background: rgb(239 68 68 / 0.1);
+}
+
 .header-nav-notify-item + .header-nav-notify-item {
   margin-top: 0.375rem;
 }

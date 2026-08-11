@@ -137,11 +137,17 @@ export const Header: React.FC<HeaderProps> = ({
   useEffect(() => {
     if (!navOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeNav();
+      if (e.key !== 'Escape') return;
+      if (showNotifications || showUserMenu) {
+        setShowNotifications(false);
+        setShowUserMenu(false);
+        return;
+      }
+      closeNav();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [navOpen, closeNav]);
+  }, [navOpen, closeNav, showNotifications, showUserMenu]);
 
   useEffect(() => {
     if (!navOpen) return;
@@ -156,6 +162,11 @@ export const Header: React.FC<HeaderProps> = ({
     if (!showNotifications && !showUserMenu) return;
 
     const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      const isMobileNav = document.documentElement.classList.contains('layout-mobile')
+        || document.documentElement.classList.contains('layout-fold');
+      /* Mobile drawer: notifications close only via the bell (or closing the menu). */
+      if (isMobileNav && navOpen) return;
+
       const target = e.target as Node;
       if (showNotifications && notificationsRef.current && !notificationsRef.current.contains(target)) {
         setShowNotifications(false);
@@ -165,21 +176,13 @@ export const Header: React.FC<HeaderProps> = ({
       }
     };
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return;
-      setShowNotifications(false);
-      setShowUserMenu(false);
-    };
-
     document.addEventListener('mousedown', onPointerDown);
     document.addEventListener('touchstart', onPointerDown, { passive: true });
-    window.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('touchstart', onPointerDown);
-      window.removeEventListener('keydown', onKey);
     };
-  }, [showNotifications, showUserMenu]);
+  }, [showNotifications, showUserMenu, navOpen]);
 
   const toggleLocale = () => setLocale(locale === 'ru' ? 'en' : 'ru');
 
@@ -218,15 +221,15 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
       <div className="header-nav-inline-panel-body theme-scrollbar">
         {notifications.length === 0 ? (
-          <p className="text-xs text-slate-500 text-center py-4">{t('header.notificationsEmpty')}</p>
+          <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
         ) : (
           notifications.map(n => (
             <div
               key={n.id}
-              className={`header-nav-notify-item ${n.read ? 'is-read' : ''}`}
+              className={`header-nav-notify-item${n.read ? ' is-read' : ''}`}
             >
               <div
-                className="cursor-pointer"
+                className="header-nav-notify-item-main cursor-pointer"
                 onClick={() => {
                   onMarkNotificationRead(n.id);
                   if (n.link_type === 'chat' && n.link_id) {
@@ -247,11 +250,11 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                 }}
               >
-                <div className="flex justify-between items-start gap-2">
-                  <span className={`font-semibold ${n.type === 'alert' ? 'text-red-400' : n.type === 'success' ? 'text-emerald-400' : 'text-indigo-300'}`}>
+                <div className="header-nav-notify-item-top">
+                  <span className={`header-nav-notify-item-title header-nav-notify-item-title--${n.type === 'alert' || n.type === 'success' ? n.type : 'info'}`}>
                     {n.title}
                   </span>
-                  <span className="text-[10px] text-slate-500 shrink-0">
+                  <span className="header-nav-notify-item-time">
                     {new Date(n.timestamp).toLocaleString(localeTag, {
                       day: '2-digit',
                       month: '2-digit',
@@ -260,13 +263,13 @@ export const Header: React.FC<HeaderProps> = ({
                     })}
                   </span>
                 </div>
-                <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
+                <p className="header-nav-notify-item-message">{n.message}</p>
               </div>
-              <div className="flex justify-end gap-1 mt-1.5">
+              <div className="header-nav-notify-item-actions">
                 {!n.read ? (
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
+                    className="header-nav-notify-item-action"
                     onClick={(e) => {
                       e.stopPropagation();
                       onMarkNotificationRead(n.id);
@@ -279,7 +282,7 @@ export const Header: React.FC<HeaderProps> = ({
                 ) : null}
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+                  className="header-nav-notify-item-action header-nav-notify-item-action--danger"
                   onClick={(e) => {
                     e.stopPropagation();
                     onDeleteNotification(n.id);
