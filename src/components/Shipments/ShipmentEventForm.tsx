@@ -20,6 +20,7 @@ import {
   type DelayReasonKey,
 } from '../../constants/shipmentEvents';
 import { SearchableSelect } from '../UI/SearchableSelect';
+import { ShipmentDateTimePicker } from './ShipmentDateTimePicker';
 
 interface ShipmentEventFormProps {
   shipments: SupplyLink[];
@@ -445,30 +446,29 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
                 {t('shipmentEvents.etaAfter')}
                 {eventType === 'eta_update' ? ' *' : ''}
               </span>
-              <input
-                type="datetime-local"
+              <ShipmentDateTimePicker
                 value={etaAfter}
-                onChange={e => setEtaAfter(e.target.value)}
-                required={eventType === 'eta_update'}
+                onChange={setEtaAfter}
+                aria-label={t('shipmentEvents.etaAfter')}
               />
             </label>
           )}
 
           <label className="space-y-1">
             <span className="text-slate-400">{t('shipmentEvents.actualDeparture')}</span>
-            <input
-              type="datetime-local"
+            <ShipmentDateTimePicker
               value={actualDepartureAt}
-              onChange={e => setActualDepartureAt(e.target.value)}
+              onChange={setActualDepartureAt}
+              aria-label={t('shipmentEvents.actualDeparture')}
             />
           </label>
 
           <label className="space-y-1">
             <span className="text-slate-400">{t('shipmentEvents.actualArrival')}</span>
-            <input
-              type="datetime-local"
+            <ShipmentDateTimePicker
               value={actualArrivalAt}
-              onChange={e => setActualArrivalAt(e.target.value)}
+              onChange={setActualArrivalAt}
+              aria-label={t('shipmentEvents.actualArrival')}
             />
           </label>
         </div>

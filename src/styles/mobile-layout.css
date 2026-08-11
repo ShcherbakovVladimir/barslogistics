@@ -1392,49 +1392,11 @@ html.layout-fold .shipments-cards-mobile {
   gap: 0.625rem;
 }
 
-html.layout-mobile .shipment-events-hub,
-html.layout-fold .shipment-events-hub {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-html.layout-mobile .shipment-events-hub-toggle,
-html.layout-fold .shipment-events-hub-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border-radius: 1rem;
-  border: 1px solid var(--shipment-events-toggle-border);
-  background: var(--shipment-events-toggle-bg);
-  color: var(--shipment-events-toggle-text);
-  text-align: left;
-}
-
-html.layout-mobile .shipment-events-hub-chevron,
-html.layout-fold .shipment-events-hub-chevron {
-  flex-shrink: 0;
-  color: var(--shipment-events-toggle-chevron);
-}
-
-html.layout-mobile .shipment-events-hub-body:not(.is-open),
-html.layout-fold .shipment-events-hub-body:not(.is-open) {
-  display: none;
-}
-
-html.layout-mobile .shipment-events-hub-head,
-html.layout-fold .shipment-events-hub-head {
-  display: none;
-}
-
-html.layout-mobile .shipment-events-tabs,
-html.layout-fold .shipment-events-tabs {
+html.layout-mobile .shipment-page-modes,
+html.layout-fold .shipment-page-modes {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 3;
   gap: 0.25rem;
   padding: 0.25rem;
   border-radius: 0.875rem;
@@ -1442,34 +1404,70 @@ html.layout-fold .shipment-events-tabs {
   background: var(--shipment-events-toggle-bg);
 }
 
-html.layout-mobile .shipment-events-tab,
-html.layout-fold .shipment-events-tab {
+html.layout-mobile .shipment-page-mode-tab,
+html.layout-fold .shipment-page-mode-tab {
   min-height: 2.75rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem;
   font-size: 0.8125rem;
   border-radius: 0.625rem;
 }
 
-html.layout-mobile .shipment-events-tab-label-full,
-html.layout-fold .shipment-events-tab-label-full {
+html.layout-mobile .shipment-page-mode-label-full,
+html.layout-fold .shipment-page-mode-label-full {
   display: none;
 }
 
-html.layout-mobile .shipment-events-tab-label-short,
-html.layout-fold .shipment-events-tab-label-short {
+html.layout-mobile .shipment-page-mode-label-short,
+html.layout-fold .shipment-page-mode-label-short {
   display: inline;
 }
 
-html.layout-mobile .shipment-events-tabpanel-hint,
-html.layout-fold .shipment-events-tabpanel-hint {
-  margin-bottom: 0.5rem;
-  font-size: 0.6875rem;
-}
-
-html.layout-mobile .shipment-events-hub .shipment-events-panel,
-html.layout-fold .shipment-events-hub .shipment-events-panel {
+html.layout-mobile .shipment-page-panel-add .shipment-events-panel,
+html.layout-fold .shipment-page-panel-add .shipment-events-panel {
   border-radius: 1rem;
   padding: 0.875rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-trigger,
+html.layout-fold .shipment-datetime-picker-trigger {
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: 0.75rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-panel,
+html.layout-fold .shipment-datetime-picker-panel {
+  padding: 0.875rem;
+  border-radius: 1rem;
+  width: min(20.5rem, calc(100vw - 1rem)) !important;
+}
+
+html.layout-mobile .shipment-datetime-picker-day,
+html.layout-fold .shipment-datetime-picker-day {
+  min-height: 2.5rem;
+  font-size: 0.8125rem;
+  border-radius: 0.55rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-nav-btn,
+html.layout-fold .shipment-datetime-picker-nav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-time-field input,
+html.layout-fold .shipment-datetime-picker-time-field input {
+  width: 3.75rem;
+  min-height: 2.5rem;
+  font-size: 0.9375rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-footer-btn,
+html.layout-fold .shipment-datetime-picker-footer-btn {
+  min-height: 2.35rem;
+  font-size: 0.75rem;
+  border-radius: 0.55rem;
 }
 
 html.layout-mobile .shipment-events-recent,
