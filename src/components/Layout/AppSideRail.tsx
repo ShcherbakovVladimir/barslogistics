@@ -372,7 +372,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
               aria-expanded={chatOpen}
               aria-label={chatOpen ? t('common.close') : `${t('chat.title')} — ${t('chat.brand')}`}
             >
-              <MessageCircle className="w-5 h-5" />
+              {chatOpen ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
               {chatUnread > 0 && !chatOpen ? (
                 <span className="app-side-rail-badge app-side-rail-badge--alert">
                   {chatUnread > 99 ? '99+' : chatUnread}
