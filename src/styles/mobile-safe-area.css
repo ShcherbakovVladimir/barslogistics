@@ -41,21 +41,6 @@ html.layout-fold:not(.portal-embed) {
   );
 }
 
-html.layout-mobile.app-tab-map:not(.portal-embed),
-html.layout-fold.app-tab-map:not(.portal-embed) {
-  --safe-fill-bottom: var(--safe-fill-map);
-  /* Physical bottom (under Safari chrome) — theme fill via page bg, not overlays */
-  background-color: var(--safe-fill-map);
-  min-height: 100lvh;
-  background-image: linear-gradient(
-    to bottom,
-    var(--safe-fill-top) 0%,
-    var(--safe-fill-top) 38%,
-    var(--safe-fill-map) 48%,
-    var(--safe-fill-map) 100%
-  );
-}
-
 html.layout-mobile:not(.portal-embed) body,
 html.layout-fold:not(.portal-embed) body,
 html.layout-mobile:not(.portal-embed) #root,
@@ -66,6 +51,7 @@ html.layout-fold:not(.portal-embed) #root {
 /*
  * Non-interactive paint strips.
  * System gestures (Android nav / iOS home) still owned by the OS.
+ * Same on all tabs including Interactive Map (do not disable on app-tab-map).
  */
 html.layout-mobile:not(.portal-embed)::before,
 html.layout-fold:not(.portal-embed)::before {
@@ -108,59 +94,10 @@ html.layout-fold:not(.portal-embed) .app-shell {
   background-color: var(--safe-fill-bottom);
 }
 
-/*
- * Map tab — bottom theme fill under Safari chrome (same colors as other tabs).
- * Strip lives inside .logistics-map stacking context (z-index 8) so FABs /
- * chat / zoom (30+) stay clickable — html::after at 10000 covered them on iOS.
- */
-html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
-html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
-  background-color: var(--safe-fill-map);
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed)::after,
-html.layout-fold.app-tab-map:not(.portal-embed)::after {
-  display: none;
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map::after,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map::after {
-  content: "";
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  /* Home-indicator only — same as html::after on other tabs; no lvh−dvh (overlapped FABs) */
-  height: var(--safe-bottom, env(safe-area-inset-bottom, 0px));
-  background-color: var(--safe-fill-map);
-  z-index: 8;
-  pointer-events: none;
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed) .app-header,
-html.layout-fold.app-tab-map:not(.portal-embed) .app-header {
-  position: relative;
-  z-index: 40;
-}
-
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map {
-  background-color: transparent !important;
-}
-
+/* Map canvas fill (tiles) — chrome strips stay --safe-fill-top / --safe-fill-bottom */
 html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container,
 html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-container {
   background-color: var(--safe-fill-map) !important;
-}
-
-/* Zoom sits inside Leaflet (z-index 7) — pin above the bottom fill strip (z-index 8) */
-html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar,
-html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom.leaflet-bar {
-  position: fixed !important;
-  right: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-right, 0px)) !important;
-  bottom: calc(var(--map-fab-inset, 0.75rem) + env(safe-area-inset-bottom, 0px)) !important;
-  margin: 0 !important;
-  z-index: 35;
 }
 
 html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
