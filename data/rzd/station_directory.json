@@ -1,0 +1,5305 @@
+[
+  {
+    "id": "rzd_esr_82850",
+    "esr_code": "82850",
+    "name": "КУРГАН",
+    "region": "Курганская область",
+    "latitude": 55.441824,
+    "longitude": 65.3195524,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80520",
+    "esr_code": "80520",
+    "name": "ЧЕБАРКУЛЬ",
+    "region": "Челябинская область",
+    "latitude": 54.9846214,
+    "longitude": 60.3618591,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_82780",
+    "esr_code": "82780",
+    "name": "ШАДРИНСК",
+    "region": "Курганская область",
+    "latitude": 56.0941686,
+    "longitude": 63.6095267,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81420",
+    "esr_code": "81420",
+    "name": "НОВОТРОИЦК",
+    "region": "Оренбургская область",
+    "latitude": 51.2022967,
+    "longitude": 58.3403184,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81400",
+    "esr_code": "81400",
+    "name": "КРУТОРОЖИНО",
+    "region": "Оренбургская область",
+    "latitude": 51.2919203,
+    "longitude": 58.4314044,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_82690",
+    "esr_code": "82690",
+    "name": "ВАРГАШИ",
+    "region": "Курганская область",
+    "latitude": 55.3732062,
+    "longitude": 65.8139577,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81360",
+    "esr_code": "81360",
+    "name": "МЕДНОГОРСК",
+    "region": "Оренбургская область",
+    "latitude": 51.4062357,
+    "longitude": 57.5859571,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81190",
+    "esr_code": "81190",
+    "name": "ОРЕНБУРГ",
+    "region": "Оренбургская область",
+    "latitude": 51.7765774,
+    "longitude": 55.0746418,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80530",
+    "esr_code": "80530",
+    "name": "МИАСС 1",
+    "region": "Челябинская область",
+    "latitude": 55.0333954,
+    "longitude": 60.1108355,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80250",
+    "esr_code": "80250",
+    "name": "КЫШТЫМ",
+    "region": "Челябинская область",
+    "latitude": 55.7268511,
+    "longitude": 60.5498738,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80610",
+    "esr_code": "80610",
+    "name": "УРЖУМКА",
+    "region": "Челябинская область",
+    "latitude": 55.1175573,
+    "longitude": 59.767513,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80620",
+    "esr_code": "80620",
+    "name": "ЗЛАТОУСТ",
+    "region": "Челябинская область",
+    "latitude": 55.1982441,
+    "longitude": 59.7175494,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_80060",
+    "esr_code": "80060",
+    "name": "ЧЕЛЯБИНСК-ЮЖ",
+    "region": "Челябинская область",
+    "latitude": 55.0927441,
+    "longitude": 61.5529203,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81410",
+    "esr_code": "81410",
+    "name": "ГАЙ",
+    "region": "Оренбургская область",
+    "latitude": 51.4730908,
+    "longitude": 58.4338523,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81430",
+    "esr_code": "81430",
+    "name": "НИКЕЛЬ",
+    "region": "Оренбургская область",
+    "latitude": 51.2484411,
+    "longitude": 58.5645422,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81120",
+    "esr_code": "81120",
+    "name": "СОРОЧИНСКАЯ",
+    "region": "Оренбургская область",
+    "latitude": 52.4284824,
+    "longitude": 53.1485993,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_81000",
+    "esr_code": "81000",
+    "name": "ОРСК",
+    "region": "Оренбургская область",
+    "latitude": 51.2136536,
+    "longitude": 58.6193909,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60150",
+    "esr_code": "60150",
+    "name": "БОКИНО",
+    "region": "Тамбовская область",
+    "latitude": 52.6472882,
+    "longitude": 41.4406992,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59720",
+    "esr_code": "59720",
+    "name": "МАСЛОВКА",
+    "region": "Воронежская область",
+    "latitude": 51.5611026,
+    "longitude": 39.2462508,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59220",
+    "esr_code": "59220",
+    "name": "НОВОЛИПЕЦК",
+    "region": "Липецкая область",
+    "latitude": 52.5584506,
+    "longitude": 39.6970916,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_43590",
+    "esr_code": "43590",
+    "name": "КРЕЙДА",
+    "region": "Белгородская область",
+    "latitude": 50.5822698,
+    "longitude": 36.6514074,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59630",
+    "esr_code": "59630",
+    "name": "ПОДКЛЕТНОЕ",
+    "region": "Воронежская область",
+    "latitude": 51.6853493,
+    "longitude": 39.0597292,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59000",
+    "esr_code": "59000",
+    "name": "ОТРОЖКА",
+    "region": "Воронежская область",
+    "latitude": 51.7260048,
+    "longitude": 39.2763645,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60190",
+    "esr_code": "60190",
+    "name": "РЖАКСА",
+    "region": "Тамбовская область",
+    "latitude": 52.136564,
+    "longitude": 42.0205474,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59300",
+    "esr_code": "59300",
+    "name": "ЕЛЕЦ",
+    "region": "Липецкая область",
+    "latitude": 52.6059442,
+    "longitude": 38.5257454,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60760",
+    "esr_code": "60760",
+    "name": "РТИЩЕВО 1",
+    "region": "Саратовская область",
+    "latitude": 52.2606451,
+    "longitude": 43.7882602,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59710",
+    "esr_code": "59710",
+    "name": "ПРИДАЧА",
+    "region": "Воронежская область",
+    "latitude": 51.6423584,
+    "longitude": 39.2604172,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60240",
+    "esr_code": "60240",
+    "name": "ПЛАТОНОВКА",
+    "region": "Тамбовская область",
+    "latitude": 52.7175674,
+    "longitude": 41.9537643,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60090",
+    "esr_code": "60090",
+    "name": "МИЧУРИНСК-УР",
+    "region": "Тамбовская область",
+    "latitude": 52.8987504,
+    "longitude": 40.496453,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_43840",
+    "esr_code": "43840",
+    "name": "СТОЙЛЕНСКАЯ",
+    "region": "Белгородская область",
+    "latitude": 51.2985419,
+    "longitude": 37.7842757,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_59760",
+    "esr_code": "59760",
+    "name": "БОДЕЕВО",
+    "region": "Воронежская область",
+    "latitude": 51.0575327,
+    "longitude": 39.4863586,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_58200",
+    "esr_code": "58200",
+    "name": "ЛИСКИ",
+    "region": "Воронежская область",
+    "latitude": 50.9795019,
+    "longitude": 39.5090607,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_60000",
+    "esr_code": "60000",
+    "name": "КОЧЕТОВКА 1",
+    "region": "Тамбовская область",
+    "latitude": 52.9601342,
+    "longitude": 40.4798757,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93090",
+    "esr_code": "93090",
+    "name": "ЧЕРЕМХОВО",
+    "region": "Иркутская область",
+    "latitude": 53.1490229,
+    "longitude": 103.0850785,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92710",
+    "esr_code": "92710",
+    "name": "ЛЕНА",
+    "region": "Иркутская область",
+    "latitude": 56.7819961,
+    "longitude": 105.7454701,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92640",
+    "esr_code": "92640",
+    "name": "УСТЬ-ИЛИМСК",
+    "region": "Иркутская область",
+    "latitude": 57.9099934,
+    "longitude": 102.776147,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92310",
+    "esr_code": "92310",
+    "name": "ЗИМА",
+    "region": "Иркутская область",
+    "latitude": 53.9251424,
+    "longitude": 102.0513179,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92450",
+    "esr_code": "92450",
+    "name": "БАГУЛЬНАЯ",
+    "region": "Иркутская область",
+    "latitude": 56.1243644,
+    "longitude": 101.4460224,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92120",
+    "esr_code": "92120",
+    "name": "НИЖНЕУДИНСК",
+    "region": "Иркутская область",
+    "latitude": 54.8933182,
+    "longitude": 99.027983,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92000",
+    "esr_code": "92000",
+    "name": "ТАЙШЕТ",
+    "region": "Иркутская область",
+    "latitude": 55.9384829,
+    "longitude": 98.0005364,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_90430",
+    "esr_code": "90430",
+    "name": "НОВАЯ ЧАРА",
+    "region": "Забайкальский край",
+    "latitude": 56.8000016,
+    "longitude": 118.2748483,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92490",
+    "esr_code": "92490",
+    "name": "АНЗЕБИ",
+    "region": "Иркутская область",
+    "latitude": 56.152536,
+    "longitude": 101.475715,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93280",
+    "esr_code": "93280",
+    "name": "КАЯ",
+    "region": "Иркутская область",
+    "latitude": 52.2688725,
+    "longitude": 104.2189042,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92220",
+    "esr_code": "92220",
+    "name": "АЗЕЙ",
+    "region": "Иркутская область",
+    "latitude": 54.5102138,
+    "longitude": 100.7589921,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93580",
+    "esr_code": "93580",
+    "name": "МЕДВЕДЧИКОВО",
+    "region": "Республика Бурятия",
+    "latitude": 51.7760797,
+    "longitude": 107.553144,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93170",
+    "esr_code": "93170",
+    "name": "МАЛЬТА",
+    "region": "Иркутская область",
+    "latitude": 52.8260487,
+    "longitude": 103.5226561,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93000",
+    "esr_code": "93000",
+    "name": "ИРКУТСК-СОРТ",
+    "region": "Иркутская область",
+    "latitude": 52.3370015,
+    "longitude": 104.213975,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93460",
+    "esr_code": "93460",
+    "name": "МЫСОВАЯ",
+    "region": "Республика Бурятия",
+    "latitude": 51.7183817,
+    "longitude": 105.8634541,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93290",
+    "esr_code": "93290",
+    "name": "ГОНЧАРОВО",
+    "region": "Иркутская область",
+    "latitude": 52.2009041,
+    "longitude": 104.105847,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92200",
+    "esr_code": "92200",
+    "name": "ТУЛУН",
+    "region": "Иркутская область",
+    "latitude": 54.5947724,
+    "longitude": 100.5363637,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_92390",
+    "esr_code": "92390",
+    "name": "ЧУНА",
+    "region": "Иркутская область",
+    "latitude": 56.0829062,
+    "longitude": 99.6385819,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_93550",
+    "esr_code": "93550",
+    "name": "УЛАН-УДЭ",
+    "region": "Республика Бурятия",
+    "latitude": 51.8406836,
+    "longitude": 107.5825807,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95470",
+    "esr_code": "95470",
+    "name": "БЛАГОВЕЩЕНСК",
+    "region": "Амурская область",
+    "latitude": 50.2876193,
+    "longitude": 127.5422736,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94000",
+    "esr_code": "94000",
+    "name": "ЧИТА 1",
+    "region": "Забайкальский край",
+    "latitude": 52.0352541,
+    "longitude": 113.4562588,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94210",
+    "esr_code": "94210",
+    "name": "КАДАЛА",
+    "region": "Забайкальский край",
+    "latitude": 52.0159273,
+    "longitude": 113.3293895,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95170",
+    "esr_code": "95170",
+    "name": "СКОВОРОДИНО",
+    "region": "Амурская область",
+    "latitude": 53.986994,
+    "longitude": 123.9373895,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94470",
+    "esr_code": "94470",
+    "name": "БОРЗЯ",
+    "region": "Забайкальский край",
+    "latitude": 50.3891359,
+    "longitude": 116.5190009,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95320",
+    "esr_code": "95320",
+    "name": "ШИМАНОВСКАЯ",
+    "region": "Амурская область",
+    "latitude": 52.0034553,
+    "longitude": 127.6835976,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94810",
+    "esr_code": "94810",
+    "name": "ПРИИСКОВАЯ",
+    "region": "Забайкальский край",
+    "latitude": 51.9169529,
+    "longitude": 116.6181114,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95080",
+    "esr_code": "95080",
+    "name": "МОГОЧА",
+    "region": "Забайкальский край",
+    "latitude": 53.7384402,
+    "longitude": 119.7678705,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95630",
+    "esr_code": "95630",
+    "name": "БУРЕЯ",
+    "region": "Амурская область",
+    "latitude": 49.8111616,
+    "longitude": 129.8112901,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95290",
+    "esr_code": "95290",
+    "name": "УШУМУН",
+    "region": "Амурская область",
+    "latitude": 52.7879219,
+    "longitude": 126.5402537,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94090",
+    "esr_code": "94090",
+    "name": "ХИЛОК",
+    "region": "Забайкальский край",
+    "latitude": 51.361796,
+    "longitude": 110.4540928,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94230",
+    "esr_code": "94230",
+    "name": "АНТИПИХА",
+    "region": "Забайкальский край",
+    "latitude": 51.9894798,
+    "longitude": 113.546039,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95250",
+    "esr_code": "95250",
+    "name": "МАГДАГАЧИ",
+    "region": "Амурская область",
+    "latitude": 53.4511559,
+    "longitude": 125.8071791,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95270",
+    "esr_code": "95270",
+    "name": "ТЫГДА",
+    "region": "Амурская область",
+    "latitude": 53.1128548,
+    "longitude": 126.3330372,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94340",
+    "esr_code": "94340",
+    "name": "МОГОЙТУЙ",
+    "region": "Забайкальский край",
+    "latitude": 51.281986,
+    "longitude": 114.9232052,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94960",
+    "esr_code": "94960",
+    "name": "ЗИЛОВО",
+    "region": "Забайкальский край",
+    "latitude": 53.0661192,
+    "longitude": 117.5055384,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95110",
+    "esr_code": "95110",
+    "name": "АМАЗАР",
+    "region": "Забайкальский край",
+    "latitude": 53.8622805,
+    "longitude": 120.8772487,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94310",
+    "esr_code": "94310",
+    "name": "КАРЫМСКАЯ",
+    "region": "Забайкальский край",
+    "latitude": 51.6242422,
+    "longitude": 114.3505047,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95000",
+    "esr_code": "95000",
+    "name": "БЕЛОГОРСК",
+    "region": "Амурская область",
+    "latitude": 50.9205677,
+    "longitude": 128.4613251,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_95220",
+    "esr_code": "95220",
+    "name": "ТАЛДАН",
+    "region": "Амурская область",
+    "latitude": 53.693354,
+    "longitude": 124.8229022,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_94130",
+    "esr_code": "94130",
+    "name": "МОГЗОН",
+    "region": "Забайкальский край",
+    "latitude": 51.73627,
+    "longitude": 111.9626889,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83140",
+    "esr_code": "83140",
+    "name": "ОМСК-СЕВ.",
+    "region": "Омская область",
+    "latitude": 55.0301006,
+    "longitude": 73.4396691,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83150",
+    "esr_code": "83150",
+    "name": "КОМБИНАТСКАЯ",
+    "region": "Омская область",
+    "latitude": 55.0612381,
+    "longitude": 73.2979666,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85030",
+    "esr_code": "85030",
+    "name": "ЧЕМСКОЙ",
+    "region": "Новосибирская область",
+    "latitude": 54.9518589,
+    "longitude": 82.9623087,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_87130",
+    "esr_code": "87130",
+    "name": "ПРЕДКОМБИНАТ",
+    "region": "Кемеровская область",
+    "latitude": 55.3601697,
+    "longitude": 86.0310118,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83030",
+    "esr_code": "83030",
+    "name": "КАРБЫШЕВО 1",
+    "region": "Омская область",
+    "latitude": 54.9379412,
+    "longitude": 73.3287161,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_84010",
+    "esr_code": "84010",
+    "name": "БАРНАУЛ",
+    "region": "Алтайский край",
+    "latitude": 53.3513681,
+    "longitude": 83.7564998,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83260",
+    "esr_code": "83260",
+    "name": "КАРБЫШЕВО 2",
+    "region": "Омская область",
+    "latitude": 54.9081756,
+    "longitude": 73.2573139,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_84320",
+    "esr_code": "84320",
+    "name": "БИЙСК",
+    "region": "Алтайский край",
+    "latitude": 52.5355555,
+    "longitude": 85.1797837,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85310",
+    "esr_code": "85310",
+    "name": "БЕРДСК",
+    "region": "Новосибирская область",
+    "latitude": 54.763819,
+    "longitude": 83.1138159,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83120",
+    "esr_code": "83120",
+    "name": "ОМСК-ВОСТ",
+    "region": "Омская область",
+    "latitude": 54.9467032,
+    "longitude": 73.4416857,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_84000",
+    "esr_code": "84000",
+    "name": "АЛТАЙСКАЯ",
+    "region": "Алтайский край",
+    "latitude": 53.3916294,
+    "longitude": 83.9306735,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83560",
+    "esr_code": "83560",
+    "name": "КАРАСУК 1",
+    "region": "Новосибирская область",
+    "latitude": 53.7305265,
+    "longitude": 78.0366344,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85020",
+    "esr_code": "85020",
+    "name": "КЛЕЩИХА",
+    "region": "Новосибирская область",
+    "latitude": 54.9660527,
+    "longitude": 82.8194172,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_87010",
+    "esr_code": "87010",
+    "name": "КЕМЕРОВО",
+    "region": "Кемеровская область",
+    "latitude": 55.3442112,
+    "longitude": 86.0592156,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85390",
+    "esr_code": "85390",
+    "name": "ТОГУЧИН",
+    "region": "Новосибирская область",
+    "latitude": 55.2316416,
+    "longitude": 84.4013612,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83160",
+    "esr_code": "83160",
+    "name": "НАЗЫВАЕВСКАЯ",
+    "region": "Омская область",
+    "latitude": 55.5676641,
+    "longitude": 71.3559136,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83360",
+    "esr_code": "83360",
+    "name": "БАРАБИНСК",
+    "region": "Новосибирская область",
+    "latitude": 55.3552302,
+    "longitude": 78.3510838,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83760",
+    "esr_code": "83760",
+    "name": "КУПИНО",
+    "region": "Новосибирская область",
+    "latitude": 54.3576307,
+    "longitude": 77.2775419,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_86250",
+    "esr_code": "86250",
+    "name": "ГУРЬЕВСК",
+    "region": "Кемеровская область",
+    "latitude": 54.2880306,
+    "longitude": 85.965495,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_86230",
+    "esr_code": "86230",
+    "name": "БЕЛОВО",
+    "region": "Кемеровская область",
+    "latitude": 54.4115039,
+    "longitude": 86.3131868,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83200",
+    "esr_code": "83200",
+    "name": "ИСИЛЬКУЛЬ",
+    "region": "Омская область",
+    "latitude": 54.9097491,
+    "longitude": 71.261565,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85440",
+    "esr_code": "85440",
+    "name": "БОЛОТНАЯ",
+    "region": "Новосибирская область",
+    "latitude": 55.6677948,
+    "longitude": 84.3943361,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_84340",
+    "esr_code": "84340",
+    "name": "РУБЦОВСК",
+    "region": "Алтайский край",
+    "latitude": 51.5159248,
+    "longitude": 81.2026112,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_86300",
+    "esr_code": "86300",
+    "name": "ЕРУНАКОВО",
+    "region": "Кемеровская область",
+    "latitude": 53.9981532,
+    "longitude": 87.1861324,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83680",
+    "esr_code": "83680",
+    "name": "СУЗУН",
+    "region": "Новосибирская область",
+    "latitude": 53.8083667,
+    "longitude": 82.3084603,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_83280",
+    "esr_code": "83280",
+    "name": "КАЛАЧИНСКАЯ",
+    "region": "Омская область",
+    "latitude": 55.0434022,
+    "longitude": 74.5782085,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_87510",
+    "esr_code": "87510",
+    "name": "АСИНО",
+    "region": "Томская область",
+    "latitude": 56.9964981,
+    "longitude": 86.157603,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85010",
+    "esr_code": "85010",
+    "name": "ОБЬ",
+    "region": "Новосибирская область",
+    "latitude": 54.9922275,
+    "longitude": 82.7262555,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_86410",
+    "esr_code": "86410",
+    "name": "ОБНОРСКАЯ",
+    "region": "Кемеровская область",
+    "latitude": 53.7722731,
+    "longitude": 87.2351246,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_84140",
+    "esr_code": "84140",
+    "name": "ЗАРИНСКАЯ",
+    "region": "Алтайский край",
+    "latitude": 53.7044874,
+    "longitude": 84.9406129,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_87170",
+    "esr_code": "87170",
+    "name": "ЛАТЫШИ",
+    "region": "Кемеровская область",
+    "latitude": 55.5329923,
+    "longitude": 86.166082,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_86120",
+    "esr_code": "86120",
+    "name": "ПРОМЫШЛЕННАЯ",
+    "region": "Кемеровская область",
+    "latitude": 54.9135802,
+    "longitude": 85.6422916,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85000",
+    "esr_code": "85000",
+    "name": "ИНСКАЯ",
+    "region": "Новосибирская область",
+    "latitude": 54.9643499,
+    "longitude": 83.1196295,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_85240",
+    "esr_code": "85240",
+    "name": "ЧЕРЕПАНОВО",
+    "region": "Новосибирская область",
+    "latitude": 54.2296502,
+    "longitude": 83.3779961,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_96160",
+    "esr_code": "96160",
+    "name": "ИЗВЕСТКОВАЯ",
+    "region": "Еврейская Автономная область",
+    "latitude": 48.9836058,
+    "longitude": 131.5568022,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91000",
+    "esr_code": "91000",
+    "name": "ТЫНДА",
+    "region": "Амурская область",
+    "latitude": 55.1390532,
+    "longitude": 124.739009,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91310",
+    "esr_code": "91310",
+    "name": "УЛАК",
+    "region": "Амурская область",
+    "latitude": 54.7046445,
+    "longitude": 128.4661522,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97620",
+    "esr_code": "97620",
+    "name": "АРСЕНЬЕВ",
+    "region": "Приморский край",
+    "latitude": 44.1789027,
+    "longitude": 133.27096,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91720",
+    "esr_code": "91720",
+    "name": "ЧЕГДОМЫН",
+    "region": "Хабаровский край",
+    "latitude": 51.1315034,
+    "longitude": 132.9457182,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98130",
+    "esr_code": "98130",
+    "name": "ПЕРВАЯ РЕЧКА",
+    "region": "Приморский край",
+    "latitude": 43.1371018,
+    "longitude": 131.902707,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98830",
+    "esr_code": "98830",
+    "name": "УССУРИЙСК",
+    "region": "Приморский край",
+    "latitude": 43.8015626,
+    "longitude": 131.9812423,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91710",
+    "esr_code": "91710",
+    "name": "НОВЫЙ УРГАЛ",
+    "region": "Хабаровский край",
+    "latitude": 51.078042,
+    "longitude": 132.609679,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98590",
+    "esr_code": "98590",
+    "name": "НАХОДКА-ВОСТ",
+    "region": "Приморский край",
+    "latitude": 42.7748193,
+    "longitude": 133.1007241,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98210",
+    "esr_code": "98210",
+    "name": "УГОЛЬНАЯ",
+    "region": "Приморский край",
+    "latitude": 43.3043429,
+    "longitude": 132.0606277,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91110",
+    "esr_code": "91110",
+    "name": "МОГОТ",
+    "region": "Амурская область",
+    "latitude": 55.6082285,
+    "longitude": 124.9257135,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91670",
+    "esr_code": "91670",
+    "name": "ЭТЫРКЭН",
+    "region": "Хабаровский край",
+    "latitude": 51.518689,
+    "longitude": 131.5280514,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_96650",
+    "esr_code": "96650",
+    "name": "ВЫСОКОГОРНАЯ",
+    "region": "Хабаровский край",
+    "latitude": 50.100469,
+    "longitude": 139.1253608,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97220",
+    "esr_code": "97220",
+    "name": "БИКИН",
+    "region": "Хабаровский край",
+    "latitude": 46.8183516,
+    "longitude": 134.250967,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_96340",
+    "esr_code": "96340",
+    "name": "ИН",
+    "region": "Еврейская Автономная область",
+    "latitude": 48.5942472,
+    "longitude": 133.813918,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97480",
+    "esr_code": "97480",
+    "name": "СИБИРЦЕВО",
+    "region": "Приморский край",
+    "latitude": 44.2062223,
+    "longitude": 132.4395824,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98380",
+    "esr_code": "98380",
+    "name": "ПАРТИЗАНСК",
+    "region": "Приморский край",
+    "latitude": 43.1481175,
+    "longitude": 133.1402393,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91610",
+    "esr_code": "91610",
+    "name": "ФЕВРАЛЬСК",
+    "region": "Амурская область",
+    "latitude": 52.455896,
+    "longitude": 130.8466249,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91230",
+    "esr_code": "91230",
+    "name": "ДИПКУН",
+    "region": "Амурская область",
+    "latitude": 55.1310797,
+    "longitude": 126.7874508,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97120",
+    "esr_code": "97120",
+    "name": "КОРФОВСКАЯ",
+    "region": "Хабаровский край",
+    "latitude": 48.2220031,
+    "longitude": 135.0796268,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97370",
+    "esr_code": "97370",
+    "name": "РУЖИНО",
+    "region": "Приморский край",
+    "latitude": 45.4940143,
+    "longitude": 133.4378096,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_96620",
+    "esr_code": "96620",
+    "name": "ГУРСКОЕ",
+    "region": "Хабаровский край",
+    "latitude": 50.3186477,
+    "longitude": 138.1027576,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_96250",
+    "esr_code": "96250",
+    "name": "БИРА",
+    "region": "Еврейская Автономная область",
+    "latitude": 49.0000955,
+    "longitude": 132.4631028,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_90470",
+    "esr_code": "90470",
+    "name": "ЮКТАЛИ",
+    "region": "Амурская область",
+    "latitude": 56.5948579,
+    "longitude": 121.6296,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98280",
+    "esr_code": "98280",
+    "name": "СМОЛЯНИНОВО",
+    "region": "Приморский край",
+    "latitude": 43.2874424,
+    "longitude": 132.457197,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_97040",
+    "esr_code": "97040",
+    "name": "ХАБАРОВСК 1",
+    "region": "Хабаровский край",
+    "latitude": 48.497129,
+    "longitude": 135.0731001,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_91140",
+    "esr_code": "91140",
+    "name": "БЕРКАКИТ",
+    "region": "Республика Саха (Якутия)",
+    "latitude": 56.574916,
+    "longitude": 124.7684862,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_98650",
+    "esr_code": "98650",
+    "name": "НАДЕЖДИНСКАЯ",
+    "region": "Приморский край",
+    "latitude": 43.3693178,
+    "longitude": 131.9920431,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27130",
+    "esr_code": "27130",
+    "name": "ДОЛГУШИНО",
+    "region": "Кировская область",
+    "latitude": 58.6397599,
+    "longitude": 49.7325264,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27360",
+    "esr_code": "27360",
+    "name": "ЧЕПЕЦКАЯ",
+    "region": "Кировская область",
+    "latitude": 58.5368474,
+    "longitude": 49.9868007,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25240",
+    "esr_code": "25240",
+    "name": "ЙОШКАР-ОЛА",
+    "region": "Республика Марий Эл",
+    "latitude": 56.6216533,
+    "longitude": 47.8797669,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_24850",
+    "esr_code": "24850",
+    "name": "ЧЕБОКСАРЫ",
+    "region": "Чувашская Республика-Чаваш Республики",
+    "latitude": 56.1131532,
+    "longitude": 47.2644858,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25090",
+    "esr_code": "25090",
+    "name": "ВОССТАНИЕ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.8392578,
+    "longitude": 49.0414106,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25060",
+    "esr_code": "25060",
+    "name": "ТИХОРЕЦКАЯ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.7376227,
+    "longitude": 49.1280249,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27010",
+    "esr_code": "27010",
+    "name": "ЧУХЛОМИНСКИЙ",
+    "region": "Кировская область",
+    "latitude": 58.5516407,
+    "longitude": 49.543683,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25760",
+    "esr_code": "25760",
+    "name": "НЕФТЕКАМСК",
+    "region": "Республика Башкортостан",
+    "latitude": 56.1350663,
+    "longitude": 54.286991,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26240",
+    "esr_code": "26240",
+    "name": "УНДОЛ",
+    "region": "Владимирская область",
+    "latitude": 56.0199463,
+    "longitude": 39.9824801,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25670",
+    "esr_code": "25670",
+    "name": "САЙГАТКА",
+    "region": "Пермский край",
+    "latitude": 56.7724594,
+    "longitude": 54.1391295,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25800",
+    "esr_code": "25800",
+    "name": "КУЕДА",
+    "region": "Пермский край",
+    "latitude": 56.4283435,
+    "longitude": 55.5965833,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25120",
+    "esr_code": "25120",
+    "name": "ЗЕЛЕНЫЙ ДОЛ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.8418864,
+    "longitude": 48.5612568,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_24360",
+    "esr_code": "24360",
+    "name": "НАВАШИНО",
+    "region": "Нижегородская область",
+    "latitude": 55.5393917,
+    "longitude": 42.1914603,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25030",
+    "esr_code": "25030",
+    "name": "КАЗАНЬ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.7886328,
+    "longitude": 49.0997021,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25100",
+    "esr_code": "25100",
+    "name": "ДЕРБЫШКИ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.8537996,
+    "longitude": 49.1964536,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26550",
+    "esr_code": "26550",
+    "name": "КАЛИКИНО",
+    "region": "Нижегородская область",
+    "latitude": 56.5459019,
+    "longitude": 44.0611528,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25620",
+    "esr_code": "25620",
+    "name": "САРАПУЛ",
+    "region": "Удмуртская Республика",
+    "latitude": 56.4502204,
+    "longitude": 53.7809575,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26130",
+    "esr_code": "26130",
+    "name": "ПОЧИНКИ",
+    "region": "Нижегородская область",
+    "latitude": 56.3668762,
+    "longitude": 43.8287618,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25540",
+    "esr_code": "25540",
+    "name": "ИЖЕВСК",
+    "region": "Удмуртская Республика",
+    "latitude": 56.8019011,
+    "longitude": 53.1899435,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_24810",
+    "esr_code": "24810",
+    "name": "КАНАШ",
+    "region": "Чувашская Республика-Чаваш Республики",
+    "latitude": 55.5101327,
+    "longitude": 47.4773325,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25780",
+    "esr_code": "25780",
+    "name": "ЯНАУЛ",
+    "region": "Республика Башкортостан",
+    "latitude": 56.2719722,
+    "longitude": 54.9286499,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27740",
+    "esr_code": "27740",
+    "name": "ИГРА",
+    "region": "Удмуртская Республика",
+    "latitude": 57.5582092,
+    "longitude": 53.0499898,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25810",
+    "esr_code": "25810",
+    "name": "ЧЕРНУШКА",
+    "region": "Пермский край",
+    "latitude": 56.498105,
+    "longitude": 56.0789184,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26620",
+    "esr_code": "26620",
+    "name": "ВЕТЛУЖСКАЯ",
+    "region": "Нижегородская область",
+    "latitude": 57.1716241,
+    "longitude": 45.1230101,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26270",
+    "esr_code": "26270",
+    "name": "ВЛАДИМИР",
+    "region": "Владимирская область",
+    "latitude": 56.1295267,
+    "longitude": 40.4199873,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_24530",
+    "esr_code": "24530",
+    "name": "ШУМЕРЛЯ",
+    "region": "Чувашская Республика-Чаваш Республики",
+    "latitude": 55.4908491,
+    "longitude": 46.4112436,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25890",
+    "esr_code": "25890",
+    "name": "КРАСНОУФИМСК",
+    "region": "Свердловская область",
+    "latitude": 56.5974527,
+    "longitude": 57.7579826,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25560",
+    "esr_code": "25560",
+    "name": "ВОЖОЙ",
+    "region": "Удмуртская Республика",
+    "latitude": 56.8713312,
+    "longitude": 53.4515099,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26700",
+    "esr_code": "26700",
+    "name": "ШАХУНЬЯ",
+    "region": "Нижегородская область",
+    "latitude": 57.671724,
+    "longitude": 46.6179471,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25130",
+    "esr_code": "25130",
+    "name": "ПАРАТСК",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.842257,
+    "longitude": 48.5025873,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_24660",
+    "esr_code": "24660",
+    "name": "УЖОВКА",
+    "region": "Нижегородская область",
+    "latitude": 54.7927185,
+    "longitude": 44.908146,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26910",
+    "esr_code": "26910",
+    "name": "МЕТАЛЛИСТ",
+    "region": "Нижегородская область",
+    "latitude": 55.9719943,
+    "longitude": 43.0965782,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26470",
+    "esr_code": "26470",
+    "name": "ДЗЕРЖИНСК",
+    "region": "Нижегородская область",
+    "latitude": 56.2281668,
+    "longitude": 43.4544854,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26260",
+    "esr_code": "26260",
+    "name": "ЮРЬЕВЕЦ",
+    "region": "Владимирская область",
+    "latitude": 56.0927418,
+    "longitude": 40.2801269,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25490",
+    "esr_code": "25490",
+    "name": "АГРЫЗ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 56.5256235,
+    "longitude": 53.0123045,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27460",
+    "esr_code": "27460",
+    "name": "СТАЛЬНАЯ",
+    "region": "Кировская область",
+    "latitude": 58.6809787,
+    "longitude": 52.2093971,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27400",
+    "esr_code": "27400",
+    "name": "ЗУЕВКА",
+    "region": "Кировская область",
+    "latitude": 58.4039909,
+    "longitude": 51.1340427,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_26960",
+    "esr_code": "26960",
+    "name": "ЗЕЛЕЦИНО",
+    "region": "Нижегородская область",
+    "latitude": 56.1375856,
+    "longitude": 44.1348325,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_27580",
+    "esr_code": "27580",
+    "name": "БАЛЕЗИНО",
+    "region": "Удмуртская Республика",
+    "latitude": 57.9743015,
+    "longitude": 53.0051389,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_25000",
+    "esr_code": "25000",
+    "name": "ЮДИНО",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.816435,
+    "longitude": 48.8921598,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63030",
+    "esr_code": "63030",
+    "name": "ПЕНЗА 4",
+    "region": "Пензенская область",
+    "latitude": 53.2183929,
+    "longitude": 45.0155686,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65260",
+    "esr_code": "65260",
+    "name": "КОСЯКОВКА",
+    "region": "Республика Башкортостан",
+    "latitude": 53.7054809,
+    "longitude": 56.0060294,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65450",
+    "esr_code": "65450",
+    "name": "УФА",
+    "region": "Республика Башкортостан",
+    "latitude": 54.7486045,
+    "longitude": 55.9478039,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65490",
+    "esr_code": "65490",
+    "name": "БЕНЗИН",
+    "region": "Республика Башкортостан",
+    "latitude": 54.8324172,
+    "longitude": 56.0906975,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65770",
+    "esr_code": "65770",
+    "name": "САМАРКА",
+    "region": "Самарская область",
+    "latitude": 53.2112433,
+    "longitude": 50.2944756,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64160",
+    "esr_code": "64160",
+    "name": "САРАНСК",
+    "region": "Республика Мордовия",
+    "latitude": 54.1957118,
+    "longitude": 45.191367,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64510",
+    "esr_code": "64510",
+    "name": "УЛЬЯНОВСК 3",
+    "region": "Ульяновская область",
+    "latitude": 54.3016132,
+    "longitude": 48.3114825,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65590",
+    "esr_code": "65590",
+    "name": "АША",
+    "region": "Челябинская область",
+    "latitude": 54.99598,
+    "longitude": 57.2667746,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63370",
+    "esr_code": "63370",
+    "name": "СЕЛИКСА",
+    "region": "Пензенская область",
+    "latitude": 53.2045535,
+    "longitude": 45.1970807,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63000",
+    "esr_code": "63000",
+    "name": "ПЕНЗА 3",
+    "region": "Пензенская область",
+    "latitude": 53.1843136,
+    "longitude": 45.0329724,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64840",
+    "esr_code": "64840",
+    "name": "КРУГЛОЕ ПОЛЕ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.6194,
+    "longitude": 52.173,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65430",
+    "esr_code": "65430",
+    "name": "БЕЛОРЕЦК",
+    "region": "Республика Башкортостан",
+    "latitude": 53.9268086,
+    "longitude": 58.3220671,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65700",
+    "esr_code": "65700",
+    "name": "РАЕВКА",
+    "region": "Республика Башкортостан",
+    "latitude": 54.061148,
+    "longitude": 54.932283,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63730",
+    "esr_code": "63730",
+    "name": "ТОЛЬЯТТИ",
+    "region": "Самарская область",
+    "latitude": 53.5658875,
+    "longitude": 49.2977936,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64580",
+    "esr_code": "64580",
+    "name": "ВЕРХ.ТЕРРАСА",
+    "region": "Ульяновская область",
+    "latitude": 54.3355,
+    "longitude": 48.5397777,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63020",
+    "esr_code": "63020",
+    "name": "ПЕНЗА 2",
+    "region": "Пензенская область",
+    "latitude": 53.2066317,
+    "longitude": 45.0420595,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63550",
+    "esr_code": "63550",
+    "name": "СЫЗРАНЬ 2",
+    "region": "Самарская область",
+    "latitude": 53.1675288,
+    "longitude": 48.4386568,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64620",
+    "esr_code": "64620",
+    "name": "ДИМИТРОВГРАД",
+    "region": "Ульяновская область",
+    "latitude": 54.2257417,
+    "longitude": 49.6010672,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65730",
+    "esr_code": "65730",
+    "name": "КИНЕЛЬ",
+    "region": "Самарская область",
+    "latitude": 53.2306862,
+    "longitude": 50.6331003,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_64780",
+    "esr_code": "64780",
+    "name": "КУЛЬШАРИПОВО",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 54.8616013,
+    "longitude": 52.1577948,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63310",
+    "esr_code": "63310",
+    "name": "НИЖНИЙ ЛОМОВ",
+    "region": "Пензенская область",
+    "latitude": 53.517548,
+    "longitude": 43.6774027,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65270",
+    "esr_code": "65270",
+    "name": "СТЕРЛИТАМАК",
+    "region": "Республика Башкортостан",
+    "latitude": 53.6335313,
+    "longitude": 55.9508572,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65640",
+    "esr_code": "65640",
+    "name": "ПРИЮТОВО",
+    "region": "Республика Башкортостан",
+    "latitude": 53.8960482,
+    "longitude": 53.934547,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_63710",
+    "esr_code": "63710",
+    "name": "ХИМИЧЕСКАЯ",
+    "region": "Самарская область",
+    "latitude": 53.5277785,
+    "longitude": 49.4794255,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65760",
+    "esr_code": "65760",
+    "name": "СМЫШЛЯЕВКА",
+    "region": "Самарская область",
+    "latitude": 53.259944,
+    "longitude": 50.3839832,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65000",
+    "esr_code": "65000",
+    "name": "ДЕМА",
+    "region": "Республика Башкортостан",
+    "latitude": 54.6958792,
+    "longitude": 55.8356952,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_65320",
+    "esr_code": "65320",
+    "name": "МЕЛЕУЗ",
+    "region": "Республика Башкортостан",
+    "latitude": 52.9686018,
+    "longitude": 55.9185086,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88380",
+    "esr_code": "88380",
+    "name": "АЧИНСК 2",
+    "region": "Красноярский край",
+    "latitude": 56.2499688,
+    "longitude": 90.5151712,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89210",
+    "esr_code": "89210",
+    "name": "БАЗАИХА",
+    "region": "Красноярский край",
+    "latitude": 56.0221688,
+    "longitude": 93.0654314,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88680",
+    "esr_code": "88680",
+    "name": "ТЕЯ",
+    "region": "Республика Хакасия",
+    "latitude": 53.2923981,
+    "longitude": 89.5737449,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88510",
+    "esr_code": "88510",
+    "name": "УЖУР",
+    "region": "Красноярский край",
+    "latitude": 55.3047057,
+    "longitude": 89.8303122,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88800",
+    "esr_code": "88800",
+    "name": "АБАКАН",
+    "region": "Республика Хакасия",
+    "latitude": 53.7145354,
+    "longitude": 91.440353,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88750",
+    "esr_code": "88750",
+    "name": "АБАЗА",
+    "region": "Республика Хакасия",
+    "latitude": 52.6551135,
+    "longitude": 90.1189942,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89090",
+    "esr_code": "89090",
+    "name": "БУГАЧ",
+    "region": "Красноярский край",
+    "latitude": 56.0427235,
+    "longitude": 92.7616619,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89180",
+    "esr_code": "89180",
+    "name": "ЗЛОБИНО",
+    "region": "Красноярский край",
+    "latitude": 55.9984412,
+    "longitude": 92.9516756,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88780",
+    "esr_code": "88780",
+    "name": "ТАШЕБА",
+    "region": "Республика Хакасия",
+    "latitude": 53.6748402,
+    "longitude": 91.2983883,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89360",
+    "esr_code": "89360",
+    "name": "ИЛАНКА",
+    "region": "Красноярский край",
+    "latitude": 56.2304663,
+    "longitude": 95.7514121,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89010",
+    "esr_code": "89010",
+    "name": "КРАСНОЯРСК-С",
+    "region": "Красноярский край",
+    "latitude": 56.0730958,
+    "longitude": 92.9326126,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88830",
+    "esr_code": "88830",
+    "name": "МИНУСИНСК",
+    "region": "Красноярский край",
+    "latitude": 53.6280832,
+    "longitude": 91.6353596,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88250",
+    "esr_code": "88250",
+    "name": "ЛЕСОСИБИРСК",
+    "region": "Красноярский край",
+    "latitude": 58.228894,
+    "longitude": 92.4711061,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89310",
+    "esr_code": "89310",
+    "name": "ЗАОЗЕРНАЯ",
+    "region": "Красноярский край",
+    "latitude": 55.956068,
+    "longitude": 94.7079024,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88910",
+    "esr_code": "88910",
+    "name": "САЯНСКАЯ",
+    "region": "Красноярский край",
+    "latitude": 55.5452711,
+    "longitude": 94.7036569,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88960",
+    "esr_code": "88960",
+    "name": "ТАГУЛ",
+    "region": "Иркутская область",
+    "latitude": 55.9419848,
+    "longitude": 97.8387741,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88400",
+    "esr_code": "88400",
+    "name": "НАЗАРОВО",
+    "region": "Красноярский край",
+    "latitude": 55.9996127,
+    "longitude": 90.3728865,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88700",
+    "esr_code": "88700",
+    "name": "АСКИЗ",
+    "region": "Республика Хакасия",
+    "latitude": 53.1339005,
+    "longitude": 90.416037,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88840",
+    "esr_code": "88840",
+    "name": "КУРАГИНО",
+    "region": "Красноярский край",
+    "latitude": 53.8918972,
+    "longitude": 92.7418216,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89550",
+    "esr_code": "89550",
+    "name": "ПИХТОВАЯ",
+    "region": "Красноярский край",
+    "latitude": 57.9568286,
+    "longitude": 97.4349546,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89370",
+    "esr_code": "89370",
+    "name": "ИЛАНСКАЯ",
+    "region": "Красноярский край",
+    "latitude": 56.2392469,
+    "longitude": 96.0706559,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_88080",
+    "esr_code": "88080",
+    "name": "БОГОТОЛ",
+    "region": "Красноярский край",
+    "latitude": 56.2128798,
+    "longitude": 89.527612,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_89410",
+    "esr_code": "89410",
+    "name": "РЕШОТЫ",
+    "region": "Красноярский край",
+    "latitude": 56.1577225,
+    "longitude": 97.2064884,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23790",
+    "esr_code": "23790",
+    "name": "ЛОБНЯ",
+    "region": "Московская область",
+    "latitude": 56.0135144,
+    "longitude": 37.4848762,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23540",
+    "esr_code": "23540",
+    "name": "СОКОЛОВСКАЯ",
+    "region": "Московская область",
+    "latitude": 55.9271205,
+    "longitude": 37.9461788,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19080",
+    "esr_code": "19080",
+    "name": "ГРИВНО",
+    "region": "Московская область",
+    "latitude": 55.3566852,
+    "longitude": 37.5268085,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23380",
+    "esr_code": "23380",
+    "name": "ГОЛУТВИН",
+    "region": "Московская область",
+    "latitude": 55.0861808,
+    "longitude": 38.8052754,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23410",
+    "esr_code": "23410",
+    "name": "ЩУРОВО",
+    "region": "Московская область",
+    "latitude": 55.0647716,
+    "longitude": 38.8515278,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23480",
+    "esr_code": "23480",
+    "name": "МЫТИЩИ",
+    "region": "Московская область",
+    "latitude": 55.9148226,
+    "longitude": 37.7617421,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23090",
+    "esr_code": "23090",
+    "name": "ЭЛЕКТРОСТАЛЬ",
+    "region": "Московская область",
+    "latitude": 55.7867629,
+    "longitude": 38.4610226,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19140",
+    "esr_code": "19140",
+    "name": "КР.СТРОИТЕЛЬ",
+    "region": "Москва",
+    "latitude": 55.5903775,
+    "longitude": 37.615322,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_21390",
+    "esr_code": "21390",
+    "name": "ЯСНАЯ ПОЛЯНА",
+    "region": "Тульская область",
+    "latitude": 54.0965421,
+    "longitude": 37.5689479,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18220",
+    "esr_code": "18220",
+    "name": "ОДИНЦОВО",
+    "region": "Московская область",
+    "latitude": 55.6719892,
+    "longitude": 37.2818162,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18350",
+    "esr_code": "18350",
+    "name": "ВОРСИНО",
+    "region": "Калужская область",
+    "latitude": 55.2409895,
+    "longitude": 36.6677524,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19440",
+    "esr_code": "19440",
+    "name": "МАЛЬЧИКИ",
+    "region": "Московская область",
+    "latitude": 55.6738379,
+    "longitude": 37.9028611,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19450",
+    "esr_code": "19450",
+    "name": "ЯНИЧКИНО",
+    "region": "Московская область",
+    "latitude": 55.6534701,
+    "longitude": 37.8596249,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19290",
+    "esr_code": "19290",
+    "name": "ДОМОДЕДОВО",
+    "region": "Московская область",
+    "latitude": 55.4400646,
+    "longitude": 37.7731873,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_21600",
+    "esr_code": "21600",
+    "name": "ОРЕЛ",
+    "region": "Орловская область",
+    "latitude": 52.9792652,
+    "longitude": 36.1121037,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_22020",
+    "esr_code": "22020",
+    "name": "ДЯГИЛЕВО",
+    "region": "Рязанская область",
+    "latitude": 54.6571958,
+    "longitude": 39.6308884,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_22050",
+    "esr_code": "22050",
+    "name": "ЛЕСОК",
+    "region": "Рязанская область",
+    "latitude": 54.5854401,
+    "longitude": 39.7957133,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_22150",
+    "esr_code": "22150",
+    "name": "КАСИМОВ",
+    "region": "Рязанская область",
+    "latitude": 54.8967882,
+    "longitude": 41.3239159,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_22280",
+    "esr_code": "22280",
+    "name": "РЯЗАНЬ 2",
+    "region": "Рязанская область",
+    "latitude": 54.6283653,
+    "longitude": 39.6987885,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23050",
+    "esr_code": "23050",
+    "name": "КУПАВНА",
+    "region": "Московская область",
+    "latitude": 55.7531599,
+    "longitude": 38.1210763,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23360",
+    "esr_code": "23360",
+    "name": "ВОСКРЕСЕНСК",
+    "region": "Московская область",
+    "latitude": 55.3129901,
+    "longitude": 38.7019393,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23100",
+    "esr_code": "23100",
+    "name": "НОГИНСК",
+    "region": "Московская область",
+    "latitude": 55.8507515,
+    "longitude": 38.4435721,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23760",
+    "esr_code": "23760",
+    "name": "ПОТОЧИНО",
+    "region": "Московская область",
+    "latitude": 55.8506022,
+    "longitude": 39.0223772,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18360",
+    "esr_code": "18360",
+    "name": "БАЛАБАНОВО",
+    "region": "Калужская область",
+    "latitude": 55.1788955,
+    "longitude": 36.662441,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_17160",
+    "esr_code": "17160",
+    "name": "КРАСНЫЙ БОР",
+    "region": "Смоленская область",
+    "latitude": 54.8005999,
+    "longitude": 31.9063302,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20170",
+    "esr_code": "20170",
+    "name": "ПОЧЕП",
+    "region": "Брянская область",
+    "latitude": 52.9133843,
+    "longitude": 33.4623322,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20210",
+    "esr_code": "20210",
+    "name": "КЛИНЦЫ",
+    "region": "Брянская область",
+    "latitude": 52.7344724,
+    "longitude": 32.2335483,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_21620",
+    "esr_code": "21620",
+    "name": "ЦОН",
+    "region": "Орловская область",
+    "latitude": 52.9261601,
+    "longitude": 36.0285843,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23800",
+    "esr_code": "23800",
+    "name": "КАТУАР",
+    "region": "Московская область",
+    "latitude": 56.0909059,
+    "longitude": 37.5043128,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23510",
+    "esr_code": "23510",
+    "name": "ЗЕЛЕНЫЙ БОР",
+    "region": "Московская область",
+    "latitude": 55.9629458,
+    "longitude": 37.8786755,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23550",
+    "esr_code": "23550",
+    "name": "ЩЕЛКОВО",
+    "region": "Московская область",
+    "latitude": 55.909255,
+    "longitude": 38.0093451,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20200",
+    "esr_code": "20200",
+    "name": "УНЕЧА",
+    "region": "Брянская область",
+    "latitude": 52.8419936,
+    "longitude": 32.6785251,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20220",
+    "esr_code": "20220",
+    "name": "НОВОЗЫБКОВ",
+    "region": "Брянская область",
+    "latitude": 52.5232991,
+    "longitude": 31.9478888,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_22970",
+    "esr_code": "22970",
+    "name": "ОЖЕРЕЛЬЕ",
+    "region": "Московская область",
+    "latitude": 54.8013576,
+    "longitude": 38.2729159,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19580",
+    "esr_code": "19580",
+    "name": "БЕСКУДНИКОВО",
+    "region": "Москва",
+    "latitude": 55.882782,
+    "longitude": 37.5677763,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19660",
+    "esr_code": "19660",
+    "name": "НАХАБИНО",
+    "region": "Московская область",
+    "latitude": 55.8415879,
+    "longitude": 37.184911,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20820",
+    "esr_code": "20820",
+    "name": "КУРСК",
+    "region": "Курская область",
+    "latitude": 51.7498104,
+    "longitude": 36.2286115,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23850",
+    "esr_code": "23850",
+    "name": "КАНАЛСТРОЙ",
+    "region": "Московская область",
+    "latitude": 56.3834953,
+    "longitude": 37.5156076,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_21190",
+    "esr_code": "21190",
+    "name": "ПРИСАДЫ",
+    "region": "Тульская область",
+    "latitude": 54.1198706,
+    "longitude": 37.8109556,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18820",
+    "esr_code": "18820",
+    "name": "КАЛУГА 1",
+    "region": "Калужская область",
+    "latitude": 54.5334668,
+    "longitude": 36.2790038,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19020",
+    "esr_code": "19020",
+    "name": "СЕРПУХОВ",
+    "region": "Московская область",
+    "latitude": 54.9347142,
+    "longitude": 37.4518444,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20540",
+    "esr_code": "20540",
+    "name": "КУРБАКИНСКАЯ",
+    "region": "Курская область",
+    "latitude": 52.4332448,
+    "longitude": 35.5577856,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23570",
+    "esr_code": "23570",
+    "name": "МОНИНО",
+    "region": "Московская область",
+    "latitude": 55.843453,
+    "longitude": 38.1976948,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18320",
+    "esr_code": "18320",
+    "name": "МОЖАЙСК",
+    "region": "Московская область",
+    "latitude": 55.4940675,
+    "longitude": 36.0334786,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_19090",
+    "esr_code": "19090",
+    "name": "ПОДОЛЬСК",
+    "region": "Московская область",
+    "latitude": 55.4317986,
+    "longitude": 37.5654172,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_17250",
+    "esr_code": "17250",
+    "name": "САФОНОВО",
+    "region": "Смоленская область",
+    "latitude": 55.1056234,
+    "longitude": 33.2476943,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20810",
+    "esr_code": "20810",
+    "name": "РЫШКОВО",
+    "region": "Курская область",
+    "latitude": 51.6554261,
+    "longitude": 36.1368735,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_18620",
+    "esr_code": "18620",
+    "name": "ФАЯНСОВАЯ",
+    "region": "Калужская область",
+    "latitude": 54.0651429,
+    "longitude": 34.3751715,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23700",
+    "esr_code": "23700",
+    "name": "АЛЕКСАНДРОВ",
+    "region": "Владимирская область",
+    "latitude": 56.3972452,
+    "longitude": 38.7029684,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_20420",
+    "esr_code": "20420",
+    "name": "СУЗЕМКА",
+    "region": "Брянская область",
+    "latitude": 52.3179163,
+    "longitude": 34.0733765,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_23180",
+    "esr_code": "23180",
+    "name": "КУРОВСКАЯ",
+    "region": "Московская область",
+    "latitude": 55.5731427,
+    "longitude": 38.9215575,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_21770",
+    "esr_code": "21770",
+    "name": "ВЕРХОВЬЕ",
+    "region": "Орловская область",
+    "latitude": 52.8134871,
+    "longitude": 37.2370594,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_6090",
+    "esr_code": "6090",
+    "name": "КЛИН",
+    "region": "Московская область",
+    "latitude": 56.330954,
+    "longitude": 36.7115625,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_6150",
+    "esr_code": "6150",
+    "name": "ТВЕРЬ",
+    "region": "Тверская область",
+    "latitude": 56.8351458,
+    "longitude": 35.8929604,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_1630",
+    "esr_code": "1630",
+    "name": "ОЛЕНЕГОРСК",
+    "region": "Мурманская область",
+    "latitude": 68.1360088,
+    "longitude": 33.3127322,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_1540",
+    "esr_code": "1540",
+    "name": "КОВДОР",
+    "region": "Мурманская область",
+    "latitude": 67.549329,
+    "longitude": 30.4816104,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_3770",
+    "esr_code": "3770",
+    "name": "ПЕРИ",
+    "region": "Ленинградская область",
+    "latitude": 60.2472145,
+    "longitude": 30.4643835,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_1380",
+    "esr_code": "1380",
+    "name": "ЛОУХИ",
+    "region": "Республика Карелия",
+    "latitude": 66.0753438,
+    "longitude": 33.0590356,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_1090",
+    "esr_code": "1090",
+    "name": "НИГОЗЕРО",
+    "region": "Республика Карелия",
+    "latitude": 62.2239211,
+    "longitude": 34.3434056,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_6600",
+    "esr_code": "6600",
+    "name": "ВЕЛИКИЕ ЛУКИ",
+    "region": "Псковская область",
+    "latitude": 56.3396972,
+    "longitude": 30.563608,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_7040",
+    "esr_code": "7040",
+    "name": "ЧЕРЕХА",
+    "region": "Псковская область",
+    "latitude": 57.7471188,
+    "longitude": 28.3698701,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_3020",
+    "esr_code": "3020",
+    "name": "МГА",
+    "region": "Ленинградская область",
+    "latitude": 59.7554209,
+    "longitude": 31.0616492,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_7630",
+    "esr_code": "7630",
+    "name": "ЛУЖСКАЯ",
+    "region": "Ленинградская область",
+    "latitude": 59.6585658,
+    "longitude": 28.3979664,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_1320",
+    "esr_code": "1320",
+    "name": "КЕМЬ",
+    "region": "Республика Карелия",
+    "latitude": 64.9552975,
+    "longitude": 34.5691573,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_2410",
+    "esr_code": "2410",
+    "name": "ВЯРТСИЛЯ",
+    "region": "Республика Карелия",
+    "latitude": 62.1674258,
+    "longitude": 30.644535,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_5000",
+    "esr_code": "5000",
+    "name": "БОЛОГОЕ-МОСК",
+    "region": "Тверская область",
+    "latitude": 57.886008,
+    "longitude": 34.0609287,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_7000",
+    "esr_code": "7000",
+    "name": "БЕРЕЗКИ",
+    "region": "Псковская область",
+    "latitude": 57.8050357,
+    "longitude": 28.4135708,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_61690",
+    "esr_code": "61690",
+    "name": "АСТРАХАНЬ 2",
+    "region": "Астраханская область",
+    "latitude": 46.2873096,
+    "longitude": 47.9998025,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_61640",
+    "esr_code": "61640",
+    "name": "ТРУСОВО",
+    "region": "Астраханская область",
+    "latitude": 46.3426381,
+    "longitude": 47.9511,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_62550",
+    "esr_code": "62550",
+    "name": "АНИСОВКА",
+    "region": "Саратовская область",
+    "latitude": 51.4093652,
+    "longitude": 46.0821844,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_62510",
+    "esr_code": "62510",
+    "name": "БАЛАКОВО",
+    "region": "Саратовская область",
+    "latitude": 52.0027773,
+    "longitude": 47.7884495,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_62400",
+    "esr_code": "62400",
+    "name": "СЕННАЯ",
+    "region": "Саратовская область",
+    "latitude": 52.1604704,
+    "longitude": 46.9673513,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_61080",
+    "esr_code": "61080",
+    "name": "БЕТОННАЯ",
+    "region": "Волгоградская область",
+    "latitude": 48.7650938,
+    "longitude": 44.4097572,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_61820",
+    "esr_code": "61820",
+    "name": "В.БАСКУНЧАК",
+    "region": "Астраханская область",
+    "latitude": 48.2294775,
+    "longitude": 46.7251127,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31880",
+    "esr_code": "31880",
+    "name": "ГОРИНО",
+    "region": "Ивановская область",
+    "latitude": 56.9833436,
+    "longitude": 41.0636185,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31900",
+    "esr_code": "31900",
+    "name": "ШУЯ",
+    "region": "Ивановская область",
+    "latitude": 56.8506692,
+    "longitude": 41.3515447,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30510",
+    "esr_code": "30510",
+    "name": "КОСТРОМА НОВ",
+    "region": "Костромская область",
+    "latitude": 57.7589328,
+    "longitude": 40.9799106,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31060",
+    "esr_code": "31060",
+    "name": "ПРИВОЛЖЬЕ",
+    "region": "Ярославская область",
+    "latitude": 57.6432012,
+    "longitude": 39.8621821,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28950",
+    "esr_code": "28950",
+    "name": "ВОРКУТА",
+    "region": "Республика Коми",
+    "latitude": 67.4699839,
+    "longitude": 64.0280335,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30030",
+    "esr_code": "30030",
+    "name": "ВОЛОГДА 2",
+    "region": "Вологодская область",
+    "latitude": 59.2280103,
+    "longitude": 39.8463353,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29360",
+    "esr_code": "29360",
+    "name": "НЯНДОМА",
+    "region": "Архангельская область",
+    "latitude": 61.6620583,
+    "longitude": 40.2062897,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30230",
+    "esr_code": "30230",
+    "name": "ЧЕРЕПОВЕЦ 1",
+    "region": "Вологодская область",
+    "latitude": 59.1408734,
+    "longitude": 37.9266635,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29770",
+    "esr_code": "29770",
+    "name": "ВЕЛЬСК",
+    "region": "Архангельская область",
+    "latitude": 61.0631527,
+    "longitude": 42.0863836,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31670",
+    "esr_code": "31670",
+    "name": "КИНЕШМА",
+    "region": "Ивановская область",
+    "latitude": 57.4414053,
+    "longitude": 42.1447851,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31070",
+    "esr_code": "31070",
+    "name": "ФИЛИНО",
+    "region": "Ярославская область",
+    "latitude": 57.6558675,
+    "longitude": 39.9332677,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29000",
+    "esr_code": "29000",
+    "name": "ИСАКОГОРКА",
+    "region": "Архангельская область",
+    "latitude": 64.4292667,
+    "longitude": 40.608231,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28090",
+    "esr_code": "28090",
+    "name": "НИЗОВКА",
+    "region": "Архангельская область",
+    "latitude": 61.2611308,
+    "longitude": 47.1038917,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28400",
+    "esr_code": "28400",
+    "name": "ЧОВЬЮ",
+    "region": "Республика Коми",
+    "latitude": 61.7302053,
+    "longitude": 50.7746315,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28830",
+    "esr_code": "28830",
+    "name": "УСИНСК",
+    "region": "Республика Коми",
+    "latitude": 66.0245036,
+    "longitude": 57.5473904,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30750",
+    "esr_code": "30750",
+    "name": "ШАРЬЯ",
+    "region": "Костромская область",
+    "latitude": 58.3660284,
+    "longitude": 45.5238787,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31270",
+    "esr_code": "31270",
+    "name": "ТЕНИНО",
+    "region": "Ярославская область",
+    "latitude": 57.7090663,
+    "longitude": 39.6878516,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30260",
+    "esr_code": "30260",
+    "name": "КОШТА",
+    "region": "Вологодская область",
+    "latitude": 59.1416995,
+    "longitude": 37.749045,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28050",
+    "esr_code": "28050",
+    "name": "КОТЛАС-СЕВ.",
+    "region": "Архангельская область",
+    "latitude": 61.2572853,
+    "longitude": 46.6815145,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28570",
+    "esr_code": "28570",
+    "name": "ВЕТЛАСЯН",
+    "region": "Республика Коми",
+    "latitude": 63.5733744,
+    "longitude": 53.7770618,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29460",
+    "esr_code": "29460",
+    "name": "ПЛЕСЕЦКАЯ",
+    "region": "Архангельская область",
+    "latitude": 62.7087805,
+    "longitude": 40.2951119,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29580",
+    "esr_code": "29580",
+    "name": "МАЛОШУЙКА",
+    "region": "Архангельская область",
+    "latitude": 63.7061259,
+    "longitude": 37.4643258,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29610",
+    "esr_code": "29610",
+    "name": "ОНЕГА",
+    "region": "Архангельская область",
+    "latitude": 62.4033497,
+    "longitude": 39.6838343,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30250",
+    "esr_code": "30250",
+    "name": "ЧЕРЕПОВЕЦ 2",
+    "region": "Вологодская область",
+    "latitude": 59.1525593,
+    "longitude": 37.8835298,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30710",
+    "esr_code": "30710",
+    "name": "МАНТУРОВО",
+    "region": "Костромская область",
+    "latitude": 58.3340576,
+    "longitude": 44.7426598,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28520",
+    "esr_code": "28520",
+    "name": "ЧИНЬЯВОРЫК",
+    "region": "Республика Коми",
+    "latitude": 63.2129974,
+    "longitude": 52.6887588,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29310",
+    "esr_code": "29310",
+    "name": "КОНОША 2",
+    "region": "Архангельская область",
+    "latitude": 60.9900908,
+    "longitude": 40.3365187,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_31840",
+    "esr_code": "31840",
+    "name": "ТЕКСТИЛЬНЫЙ",
+    "region": "Ивановская область",
+    "latitude": 56.9969659,
+    "longitude": 40.8874564,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30460",
+    "esr_code": "30460",
+    "name": "БУЙ",
+    "region": "Костромская область",
+    "latitude": 58.4669747,
+    "longitude": 41.5453353,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28860",
+    "esr_code": "28860",
+    "name": "ИНТА 1",
+    "region": "Республика Коми",
+    "latitude": 65.9925049,
+    "longitude": 60.3246084,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28390",
+    "esr_code": "28390",
+    "name": "СЫКТЫВКАР",
+    "region": "Республика Коми",
+    "latitude": 61.6579899,
+    "longitude": 50.7908982,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28560",
+    "esr_code": "28560",
+    "name": "УХТА",
+    "region": "Республика Коми",
+    "latitude": 63.5568757,
+    "longitude": 53.7381212,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28010",
+    "esr_code": "28010",
+    "name": "КОТЛАС-ЮЖНЫЙ",
+    "region": "Архангельская область",
+    "latitude": 61.2569543,
+    "longitude": 46.6294444,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29300",
+    "esr_code": "29300",
+    "name": "КОНОША 1",
+    "region": "Архангельская область",
+    "latitude": 60.9739677,
+    "longitude": 40.2468483,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_28800",
+    "esr_code": "28800",
+    "name": "ПЕЧОРА",
+    "region": "Республика Коми",
+    "latitude": 65.1585959,
+    "longitude": 57.2341378,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_29030",
+    "esr_code": "29030",
+    "name": "БАКАРИЦА",
+    "region": "Архангельская область",
+    "latitude": 64.46939,
+    "longitude": 40.608456,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_30010",
+    "esr_code": "30010",
+    "name": "ВОЛОГДА 1",
+    "region": "Вологодская область",
+    "latitude": 59.2065726,
+    "longitude": 39.8839733,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_52160",
+    "esr_code": "52160",
+    "name": "КРЫМСКАЯ",
+    "region": "Краснодарский край",
+    "latitude": 44.912424,
+    "longitude": 38.0039097,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_54350",
+    "esr_code": "54350",
+    "name": "ТАРКИ",
+    "region": "Республика Дагестан",
+    "latitude": 42.8974799,
+    "longitude": 47.552055,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_51210",
+    "esr_code": "51210",
+    "name": "СУЛИН",
+    "region": "Ростовская область",
+    "latitude": 47.8814598,
+    "longitude": 40.0930921,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_53590",
+    "esr_code": "53590",
+    "name": "ШЕДОК",
+    "region": "Краснодарский край",
+    "latitude": 44.2188866,
+    "longitude": 40.8514526,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_51000",
+    "esr_code": "51000",
+    "name": "БАТАЙСК",
+    "region": "Ростовская область",
+    "latitude": 47.1382493,
+    "longitude": 39.7559688,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_51150",
+    "esr_code": "51150",
+    "name": "ТАГАНРОГ",
+    "region": "Ростовская область",
+    "latitude": 47.2213193,
+    "longitude": 38.9144901,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78420",
+    "esr_code": "78420",
+    "name": "ЛЫСЬВА",
+    "region": "Пермский край",
+    "latitude": 58.1117833,
+    "longitude": 57.7809944,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76370",
+    "esr_code": "76370",
+    "name": "КУНГУР",
+    "region": "Пермский край",
+    "latitude": 57.4233434,
+    "longitude": 56.9983259,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76030",
+    "esr_code": "76030",
+    "name": "КРАСНОКАМСК",
+    "region": "Пермский край",
+    "latitude": 58.0748423,
+    "longitude": 55.7710247,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76140",
+    "esr_code": "76140",
+    "name": "БАХАРЕВКА",
+    "region": "Пермский край",
+    "latitude": 57.9532005,
+    "longitude": 56.2348738,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77330",
+    "esr_code": "77330",
+    "name": "ВЕРХНЯЯ",
+    "region": "Свердловская область",
+    "latitude": 58.7620051,
+    "longitude": 59.5191385,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79540",
+    "esr_code": "79540",
+    "name": "УАЗ",
+    "region": "Свердловская область",
+    "latitude": 56.3537419,
+    "longitude": 61.945123,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79040",
+    "esr_code": "79040",
+    "name": "ВОЙНОВКА",
+    "region": "Тюменская область",
+    "latitude": 57.1018011,
+    "longitude": 65.6400506,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77000",
+    "esr_code": "77000",
+    "name": "СМЫЧКА",
+    "region": "Свердловская область",
+    "latitude": 57.940148,
+    "longitude": 59.9823136,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76700",
+    "esr_code": "76700",
+    "name": "ПАШИЯ",
+    "region": "Пермский край",
+    "latitude": 58.380153,
+    "longitude": 58.3236044,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79560",
+    "esr_code": "79560",
+    "name": "ТУРИНСКИЙ",
+    "region": "Тюменская область",
+    "latitude": 57.1742403,
+    "longitude": 65.8713819,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77300",
+    "esr_code": "77300",
+    "name": "КАЧКАНАР",
+    "region": "Свердловская область",
+    "latitude": 58.7001784,
+    "longitude": 59.5093916,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78090",
+    "esr_code": "78090",
+    "name": "ЗВЕЗДА",
+    "region": "Свердловская область",
+    "latitude": 56.8685676,
+    "longitude": 60.5778852,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78020",
+    "esr_code": "78020",
+    "name": "ШУВАКИШ",
+    "region": "Свердловская область",
+    "latitude": 56.9203449,
+    "longitude": 60.4818442,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77520",
+    "esr_code": "77520",
+    "name": "ВОРОНЦОВКА",
+    "region": "Свердловская область",
+    "latitude": 59.7321177,
+    "longitude": 60.2038698,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79290",
+    "esr_code": "79290",
+    "name": "КАМЫШЛОВ",
+    "region": "Свердловская область",
+    "latitude": 56.848897,
+    "longitude": 62.7129359,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76940",
+    "esr_code": "76940",
+    "name": "ЗАЯЧЬЯ ГОРКА",
+    "region": "Пермский край",
+    "latitude": 59.4401215,
+    "longitude": 56.7487602,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76160",
+    "esr_code": "76160",
+    "name": "ОСЕНЦЫ",
+    "region": "Пермский край",
+    "latitude": 57.9024918,
+    "longitude": 56.1810457,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76230",
+    "esr_code": "76230",
+    "name": "ВЕРЕЩАГИНО",
+    "region": "Пермский край",
+    "latitude": 58.0784571,
+    "longitude": 54.653984,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76010",
+    "esr_code": "76010",
+    "name": "КУРЬЯ",
+    "region": "Пермский край",
+    "latitude": 58.0471403,
+    "longitude": 56.0213899,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76000",
+    "esr_code": "76000",
+    "name": "ПЕРМЬ-СОРТ.",
+    "region": "Пермский край",
+    "latitude": 58.0347459,
+    "longitude": 56.1317474,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78080",
+    "esr_code": "78080",
+    "name": "АППАРАТНАЯ",
+    "region": "Свердловская область",
+    "latitude": 56.8715635,
+    "longitude": 60.6745251,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76290",
+    "esr_code": "76290",
+    "name": "НЫТВА",
+    "region": "Пермский край",
+    "latitude": 57.9262158,
+    "longitude": 55.3567726,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78140",
+    "esr_code": "78140",
+    "name": "РЕВДА",
+    "region": "Свердловская область",
+    "latitude": 56.8120399,
+    "longitude": 59.9263143,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78130",
+    "esr_code": "78130",
+    "name": "ПОЛЕВСКОЙ",
+    "region": "Свердловская область",
+    "latitude": 56.4396544,
+    "longitude": 60.3117385,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79380",
+    "esr_code": "79380",
+    "name": "АСБЕСТ",
+    "region": "Свердловская область",
+    "latitude": 57.0048343,
+    "longitude": 61.5126434,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79260",
+    "esr_code": "79260",
+    "name": "ТАЛИЦА",
+    "region": "Свердловская область",
+    "latitude": 57.062317,
+    "longitude": 63.7450562,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76960",
+    "esr_code": "76960",
+    "name": "СОЛИКАМСК",
+    "region": "Пермский край",
+    "latitude": 59.6332457,
+    "longitude": 56.7322804,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78180",
+    "esr_code": "78180",
+    "name": "ПОДВОЛОШНАЯ",
+    "region": "Свердловская область",
+    "latitude": 56.8995284,
+    "longitude": 59.8871584,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78070",
+    "esr_code": "78070",
+    "name": "УКТУС",
+    "region": "Свердловская область",
+    "latitude": 56.7778264,
+    "longitude": 60.6251295,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76820",
+    "esr_code": "76820",
+    "name": "УГЛЕУРАЛСКАЯ",
+    "region": "Пермский край",
+    "latitude": 58.9522417,
+    "longitude": 57.5380498,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_79460",
+    "esr_code": "79460",
+    "name": "КОЛЮТКИНО",
+    "region": "Свердловская область",
+    "latitude": 56.6418657,
+    "longitude": 61.1840124,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77250",
+    "esr_code": "77250",
+    "name": "БАРАНЧИНСКАЯ",
+    "region": "Свердловская область",
+    "latitude": 58.1836758,
+    "longitude": 59.7207984,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76050",
+    "esr_code": "76050",
+    "name": "КАБЕЛЬНАЯ",
+    "region": "Пермский край",
+    "latitude": 58.0967951,
+    "longitude": 56.3041973,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_77570",
+    "esr_code": "77570",
+    "name": "БОКСИТЫ",
+    "region": "Свердловская область",
+    "latitude": 60.0997561,
+    "longitude": 59.9474045,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76150",
+    "esr_code": "76150",
+    "name": "ФЕРМА",
+    "region": "Пермский край",
+    "latitude": 57.8943603,
+    "longitude": 56.2992024,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78170",
+    "esr_code": "78170",
+    "name": "ПЕРВОУРАЛЬСК",
+    "region": "Свердловская область",
+    "latitude": 56.8891135,
+    "longitude": 59.9777097,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_76090",
+    "esr_code": "76090",
+    "name": "БАЛМОШНАЯ",
+    "region": "Пермский край",
+    "latitude": 58.0767108,
+    "longitude": 56.3438021,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_78450",
+    "esr_code": "78450",
+    "name": "КУНАРА",
+    "region": "Свердловская область",
+    "latitude": 56.8895077,
+    "longitude": 62.0446822,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_fsf4ih",
+    "name": "РЕВДА",
+    "region": "Свердловская область",
+    "latitude": 56.8120399,
+    "longitude": 59.9263143,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_nxlwfq",
+    "name": "ИЖЕВСК",
+    "region": "Удмуртская Республика",
+    "latitude": 56.8019011,
+    "longitude": 53.1899435,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_3s4jyt",
+    "name": "ПЕРВОУРАЛЬСК",
+    "region": "Свердловская область",
+    "latitude": 56.8891135,
+    "longitude": 59.9777097,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_20crov",
+    "name": "ВОЙНОВКА",
+    "region": "Тюменская область",
+    "latitude": 57.1018011,
+    "longitude": 65.6400506,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_naaly0",
+    "name": "БАЛАКОВО",
+    "region": "Саратовская область",
+    "latitude": 52.0027773,
+    "longitude": 47.7884495,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_bjijej",
+    "name": "ПОЛЕВСКОЙ",
+    "region": "Свердловская область",
+    "latitude": 56.4396544,
+    "longitude": 60.3117385,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_930f7e",
+    "name": "САТКА",
+    "region": "Челябинская область",
+    "latitude": 55.0389433,
+    "longitude": 59.0199825,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_t9lsoa",
+    "name": "БАГУЛЬНАЯ",
+    "region": "Иркутская область",
+    "latitude": 56.1243644,
+    "longitude": 101.4460224,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ra8esn",
+    "name": "ВОЖОЙ",
+    "region": "Удмуртская Республика",
+    "latitude": 56.8713312,
+    "longitude": 53.4515099,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_fbevaz",
+    "name": "СМЫЧКА",
+    "region": "Свердловская область",
+    "latitude": 57.940148,
+    "longitude": 59.9823136,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_lu9247",
+    "name": "МИАСС 1",
+    "region": "Челябинская область",
+    "latitude": 55.0333954,
+    "longitude": 60.1108355,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_bur91r",
+    "name": "ПАШИЯ",
+    "region": "Пермский край",
+    "latitude": 58.380153,
+    "longitude": 58.3236044,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_w1lwiz",
+    "name": "НОВОЛИПЕЦК",
+    "region": "Липецкая область",
+    "latitude": 52.5584506,
+    "longitude": 39.6970916,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_fycjnl",
+    "name": "ВОРСИНО",
+    "region": "Калужская область",
+    "latitude": 55.2409895,
+    "longitude": 36.6677524,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_7mo2ev",
+    "name": "ВОЛЖСКИЙ",
+    "region": "Волгоградская область",
+    "latitude": 48.8103482,
+    "longitude": 44.7545825,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_wr25ef",
+    "name": "АБИНСКАЯ",
+    "region": "Краснодарский край",
+    "latitude": 44.8813988,
+    "longitude": 38.1458165,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_y6yxrf",
+    "name": "ТАГАНРОГ",
+    "region": "Ростовская область",
+    "latitude": 47.2213193,
+    "longitude": 38.9144901,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_s6shan",
+    "name": "ГУБКИН",
+    "region": "Белгородская область",
+    "latitude": 51.2793142,
+    "longitude": 37.5738384,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_w29nhs",
+    "name": "НАВАШИНО",
+    "region": "Нижегородская область",
+    "latitude": 55.5393917,
+    "longitude": 42.1914603,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_l3986",
+    "name": "УЛАН-УДЭ",
+    "region": "Республика Бурятия",
+    "latitude": 51.8406836,
+    "longitude": 107.5825807,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_t8sjlb",
+    "name": "АЛЗАМАЙ",
+    "region": "Иркутская область",
+    "latitude": 55.5523904,
+    "longitude": 98.6660511,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_6dhdgu",
+    "name": "РУБЦОВСК",
+    "region": "Алтайский край",
+    "latitude": 51.5159248,
+    "longitude": 81.2026112,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_xwqorg",
+    "name": "КАДАЛА",
+    "region": "Забайкальский край",
+    "latitude": 52.0159273,
+    "longitude": 113.3293895,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_n2yz0i",
+    "name": "КРУГЛОЕ ПОЛЕ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.6194,
+    "longitude": 52.173,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_97gw8r",
+    "name": "КУРГАН",
+    "region": "Курганская область",
+    "latitude": 55.441824,
+    "longitude": 65.3195524,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ffqe3h",
+    "name": "ОМСК-СЕВ.",
+    "region": "Омская область",
+    "latitude": 55.0301006,
+    "longitude": 73.4396691,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_9q8u0f",
+    "name": "ИНСКАЯ",
+    "region": "Новосибирская область",
+    "latitude": 54.9643499,
+    "longitude": 83.1196295,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_t69s9k",
+    "name": "УССУРИЙСК",
+    "region": "Приморский край",
+    "latitude": 43.8015626,
+    "longitude": 131.9812423,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_iunqmv",
+    "name": "ЧЕЛУТАЙ",
+    "region": "Республика Бурятия",
+    "latitude": 51.7607773,
+    "longitude": 108.3897116,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_9tgxbg",
+    "name": "ЧУЛЬБАСС",
+    "region": "Якутия",
+    "latitude": 56.9534315,
+    "longitude": 124.859361,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ceuz1v",
+    "name": "ДЕНИСОВСКИЙ",
+    "region": "Якутия",
+    "latitude": 56.7687076,
+    "longitude": 124.8004521,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_y2bdp1",
+    "name": "КОТЕЛ",
+    "region": "Белгородская область",
+    "latitude": 51.2245945,
+    "longitude": 37.9055612,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_w8euhe",
+    "name": "БУРАННАЯ",
+    "region": "Челябинская область",
+    "latitude": 53.3970853,
+    "longitude": 59.3024966,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_kqrzpt",
+    "name": "СТАЛЬНАЯ",
+    "region": "Кировская область",
+    "latitude": 58.6809787,
+    "longitude": 52.2093971,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_n5c1rr",
+    "name": "АША",
+    "region": "Челябинская область",
+    "latitude": 54.99598,
+    "longitude": 57.2667746,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_6qtt5d",
+    "name": "ХИМИЧЕСКАЯ",
+    "region": "Самарская область",
+    "latitude": 53.5277785,
+    "longitude": 49.4794255,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_e2lfqg",
+    "name": "ЗЕРЦАЛЫ",
+    "region": "Красноярский край",
+    "latitude": 56.3007965,
+    "longitude": 90.276432,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_hbnt1w",
+    "name": "СИБИРСКАЯ",
+    "region": "Новосибирская область",
+    "latitude": 55.042318,
+    "longitude": 82.9187054,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ys1vqb",
+    "name": "КУЙБАС",
+    "region": "Челябинская область",
+    "latitude": 53.4499598,
+    "longitude": 59.1934374,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_27ckq3",
+    "name": "КУРБАКИНСКАЯ",
+    "region": "Курская область",
+    "latitude": 52.4332448,
+    "longitude": 35.5577856,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ety21m",
+    "name": "ПОЧЕП",
+    "region": "Брянская область",
+    "latitude": 52.9133843,
+    "longitude": 33.4623322,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_o4xbfy",
+    "name": "ОРЕЛ",
+    "region": "Орловская область",
+    "latitude": 52.9792652,
+    "longitude": 36.1121037,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_tbhrcg",
+    "name": "ПРИСАДЫ",
+    "region": "Тульская область",
+    "latitude": 54.1198706,
+    "longitude": 37.8109556,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ljfhm8",
+    "name": "КИНЕШМА",
+    "region": "Ивановская область",
+    "latitude": 57.4414053,
+    "longitude": 42.1447851,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_gkoj4j",
+    "name": "ПРИВОЛЖЬЕ",
+    "region": "Ярославская область",
+    "latitude": 57.6432012,
+    "longitude": 39.8621821,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_a6cpiw",
+    "name": "СОЛОМБАЛКА",
+    "region": "Архангельская область",
+    "latitude": 64.6150967,
+    "longitude": 40.5604409,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_x4bvzs",
+    "name": "КАЗНАЧЕЕВКА",
+    "region": "Тульская область",
+    "latitude": 54.05255,
+    "longitude": 37.5455208,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_9sabjt",
+    "name": "ПРОЕКТНАЯ",
+    "region": "Кемеровская область",
+    "latitude": 54.5448977,
+    "longitude": 86.2396161,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_7xk1i6",
+    "name": "НОВОРОССИЙСК",
+    "region": "Краснодарский край",
+    "latitude": 44.7353935,
+    "longitude": 37.7748777,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_6zwtvf",
+    "name": "ЮЖНОУРАЛЬСК",
+    "region": "Челябинская область",
+    "latitude": 54.4609583,
+    "longitude": 61.2666507,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ygus5f",
+    "name": "ПЕТРОЗАВОДСК",
+    "region": "Республика Карелия",
+    "latitude": 61.7841779,
+    "longitude": 34.3437633,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_r9gffi",
+    "name": "АРЧЕДА",
+    "region": "Волгоградская область",
+    "latitude": 49.7649848,
+    "longitude": 43.6554035,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_q93kt1",
+    "name": "ПОЛОСУХИНО",
+    "region": "Кемеровская область",
+    "latitude": 53.8999814,
+    "longitude": 87.3281698,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_b8grtq",
+    "name": "ПЕНЗА 4",
+    "region": "Пензенская область",
+    "latitude": 53.2183929,
+    "longitude": 45.0155686,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_hv2jk6",
+    "name": "СЫСЕРТЬ",
+    "region": "Свердловская область",
+    "latitude": 56.677203,
+    "longitude": 60.5774733,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ar2zj6",
+    "name": "ЛИПЕЦК",
+    "region": "Липецкая область",
+    "latitude": 52.6240717,
+    "longitude": 39.5679673,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_cf1jb3",
+    "name": "КАШИН",
+    "region": "Тверская область",
+    "latitude": 57.3527192,
+    "longitude": 37.5895473,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_tdm0lx",
+    "name": "ЕЖЕВАЯ",
+    "region": "Свердловская область",
+    "latitude": 57.4299254,
+    "longitude": 60.0871226,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_rbf68b",
+    "name": "ЧЕРЕПОВЕЦ 2",
+    "region": "Вологодская область",
+    "latitude": 59.1525593,
+    "longitude": 37.8835298,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ls4y69",
+    "name": "ШЕРШНИ",
+    "region": "Челябинская область",
+    "latitude": 55.1034435,
+    "longitude": 61.3665904,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_hv9vpc",
+    "name": "АРХАНГЕЛЬСК",
+    "region": "Архангельская область",
+    "latitude": 64.5509068,
+    "longitude": 40.5744329,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_2izyu4",
+    "name": "ЛУЖСКАЯ",
+    "region": "Ленинградская область",
+    "latitude": 59.6585658,
+    "longitude": 28.3979664,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_ok2y3v",
+    "name": "ТЕНИНО",
+    "region": "Ярославская область",
+    "latitude": 57.7090663,
+    "longitude": 39.6878516,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_yqwdpn",
+    "name": "АНОСОВО",
+    "region": "Челябинская область",
+    "latitude": 55.192903,
+    "longitude": 59.6025411,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_5y0ghl",
+    "name": "МАРЦЕВО",
+    "region": "Ростовская область",
+    "latitude": 47.2629843,
+    "longitude": 38.8838059,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_a6s62f",
+    "name": "УКТУС",
+    "region": "Свердловская область",
+    "latitude": 56.7778264,
+    "longitude": 60.6251295,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_rwembg",
+    "name": "СЕБРЯКОВО",
+    "region": "Волгоградская область",
+    "latitude": 50.0720362,
+    "longitude": 43.245661,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_z95g3s",
+    "name": "УАЗ",
+    "region": "Свердловская область",
+    "latitude": 56.3537419,
+    "longitude": 61.945123,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_q6kxhp",
+    "name": "ВАГОНОЗАВОД",
+    "region": "Свердловская область",
+    "latitude": 57.9542874,
+    "longitude": 60.0886623,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_nm_qfflwz",
+    "name": "ОСЕНЦЫ",
+    "region": "Пермский край",
+    "latitude": 57.9024918,
+    "longitude": 56.1810457,
+    "geocode_source": "nominatim"
+  },
+  {
+    "id": "rzd_esr_2780",
+    "esr_code": "2780",
+    "name": "КОСТОМУКША-Т",
+    "region": "Республика Карелия",
+    "latitude": 64.589,
+    "longitude": 30.577,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3090",
+    "esr_code": "3090",
+    "name": "РЫБАЦКОЕ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.798,
+    "longitude": 30.501,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3160",
+    "esr_code": "3160",
+    "name": "КОЛПИНО",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.751,
+    "longitude": 30.588,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3310",
+    "esr_code": "3310",
+    "name": "КУПЧИНСКАЯ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.829,
+    "longitude": 30.394,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3400",
+    "esr_code": "3400",
+    "name": "ГАТЧ-ТОВ-БАЛ",
+    "region": "Ленинградская область",
+    "latitude": 59.576,
+    "longitude": 30.128,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3500",
+    "esr_code": "3500",
+    "name": "ПРЕДПОРТОВАЯ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.835,
+    "longitude": 30.154,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3600",
+    "esr_code": "3600",
+    "name": "С-ПЕТЕР-БАЛТ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.906,
+    "longitude": 30.298,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_3810",
+    "esr_code": "3810",
+    "name": "РУЧЬИ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.808,
+    "longitude": 30.169,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_4000",
+    "esr_code": "4000",
+    "name": "ВОЛХОВСТРОЙ1",
+    "region": "Ленинградская область",
+    "latitude": 59.899,
+    "longitude": 32.352,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_6270",
+    "esr_code": "6270",
+    "name": "ВЫШН.ВОЛОЧЕК",
+    "region": "Тверская область",
+    "latitude": 57.591,
+    "longitude": 34.568,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_17140",
+    "esr_code": "17140",
+    "name": "КРАСНОЕ-ЭКСП",
+    "region": "Смоленская область",
+    "latitude": 54.822,
+    "longitude": 31.936,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_17410",
+    "esr_code": "17410",
+    "name": "ВЯЗЬМА-НОВОТ",
+    "region": "Смоленская область",
+    "latitude": 55.22642517,
+    "longitude": 34.32025146,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_17640",
+    "esr_code": "17640",
+    "name": "НОВОСМОЛЕНС",
+    "region": "Смоленская область",
+    "latitude": 54.78359604,
+    "longitude": 32.10253143,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_17910",
+    "esr_code": "17910",
+    "name": "ОРДЖОНИКИДЗЕ",
+    "region": "Брянская область",
+    "latitude": 53.31458664,
+    "longitude": 34.30833054,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_18020",
+    "esr_code": "18020",
+    "name": "ОЧАКОВО 1",
+    "region": "Москва",
+    "latitude": 55.6836853,
+    "longitude": 37.4513855,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19100",
+    "esr_code": "19100",
+    "name": "СИЛИКАТНАЯ",
+    "region": "Московская область",
+    "latitude": 55.47047043,
+    "longitude": 37.55543137,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19110",
+    "esr_code": "19110",
+    "name": "ЩЕРБИНКА",
+    "region": "Московская область",
+    "latitude": 55.51012421,
+    "longitude": 37.56218338,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19330",
+    "esr_code": "19330",
+    "name": "БИРЮЛЕВО-ТОВ",
+    "region": "Москва",
+    "latitude": 55.59277344,
+    "longitude": 37.65393448,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19420",
+    "esr_code": "19420",
+    "name": "ЛЮБЕРЦЫ 1",
+    "region": "Московская область",
+    "latitude": 55.6824913,
+    "longitude": 37.89670181,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19430",
+    "esr_code": "19430",
+    "name": "ЛЮБЕРЦЫ 2",
+    "region": "Московская область",
+    "latitude": 55.6726532,
+    "longitude": 37.9333992,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_19540",
+    "esr_code": "19540",
+    "name": "ЛОСИНООСТРОВ",
+    "region": "Москва",
+    "latitude": 55.86264801,
+    "longitude": 37.6832962,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_20000",
+    "esr_code": "20000",
+    "name": "БРЯНСК-ЛЬГ.",
+    "region": "Брянская область",
+    "latitude": 53.21350479,
+    "longitude": 34.40987778,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_20120",
+    "esr_code": "20120",
+    "name": "ЗЛЫНКА-ЭКСП",
+    "region": "Брянская область",
+    "latitude": 52.426,
+    "longitude": 31.738,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_20430",
+    "esr_code": "20430",
+    "name": "ТРУБЧЕВСК",
+    "region": "Брянская область",
+    "latitude": 52.579,
+    "longitude": 33.763,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_20530",
+    "esr_code": "20530",
+    "name": "МИХ.РУДНИК",
+    "region": "Курская область",
+    "latitude": 52.35421753,
+    "longitude": 35.38962936,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_21010",
+    "esr_code": "21010",
+    "name": "ТУЛА-ЛИХВИН",
+    "region": "Тульская область",
+    "latitude": 54.204,
+    "longitude": 37.593,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_21030",
+    "esr_code": "21030",
+    "name": "ТУЛА-ВЯЗ.",
+    "region": "Тульская область",
+    "latitude": 54.20897675,
+    "longitude": 37.62889862,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_21580",
+    "esr_code": "21580",
+    "name": "СТАЛЬН.КОНЬ",
+    "region": "Орловская область",
+    "latitude": 53.03730392,
+    "longitude": 36.13269806,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_22380",
+    "esr_code": "22380",
+    "name": "РЯЖСК1",
+    "region": "Рязанская область",
+    "latitude": 53.70927811,
+    "longitude": 40.10429001,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_22420",
+    "esr_code": "22420",
+    "name": "УЗЛОВАЯ 1",
+    "region": "Тульская область",
+    "latitude": 53.97523117,
+    "longitude": 38.17418289,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_22560",
+    "esr_code": "22560",
+    "name": "БОБРИК-ДОН.",
+    "region": "Тульская область",
+    "latitude": 53.9629097,
+    "longitude": 38.31177139,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_22570",
+    "esr_code": "22570",
+    "name": "СБОРНАЯ-УГ.",
+    "region": "Тульская область",
+    "latitude": 53.99178314,
+    "longitude": 38.29480743,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_23040",
+    "esr_code": "23040",
+    "name": "ЖЕЛЕЗНОДОР-Я",
+    "region": "Московская область",
+    "latitude": 55.75246048,
+    "longitude": 38.00828171,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_23340",
+    "esr_code": "23340",
+    "name": "ЕГОРЬЕВСК 1",
+    "region": "Московская область",
+    "latitude": 55.37485504,
+    "longitude": 39.03190994,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_24090",
+    "esr_code": "24090",
+    "name": "КОВРОВ-ГРУЗ",
+    "region": "Владимирская область",
+    "latitude": 56.30454636,
+    "longitude": 41.38489532,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_24220",
+    "esr_code": "24220",
+    "name": "ГУСЬ-ХРУСТ.",
+    "region": "Владимирская область",
+    "latitude": 55.61872482,
+    "longitude": 40.65022278,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_24860",
+    "esr_code": "24860",
+    "name": "НОВОЧЕБОКС.",
+    "region": "Чувашская Республика-Чаваш Республики",
+    "latitude": 56.07427979,
+    "longitude": 47.54067612,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_26000",
+    "esr_code": "26000",
+    "name": "Н.НОВГР-СОРТ",
+    "region": "Нижегородская область",
+    "latitude": 56.2866478,
+    "longitude": 43.85425186,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_26010",
+    "esr_code": "26010",
+    "name": "Н.НОВГР-АВТ",
+    "region": "Нижегородская область",
+    "latitude": 56.218,
+    "longitude": 43.876,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_27030",
+    "esr_code": "27030",
+    "name": "КИРОВ-КОТЛС",
+    "region": "Кировская область",
+    "latitude": 58.60609055,
+    "longitude": 49.64397049,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_28000",
+    "esr_code": "28000",
+    "name": "СОЛЬВЫЧЕГОДС",
+    "region": "Архангельская область",
+    "latitude": 61.2449646,
+    "longitude": 46.87931061,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_28780",
+    "esr_code": "28780",
+    "name": "КОЖВА1",
+    "region": "Республика Коми",
+    "latitude": 65.10609436,
+    "longitude": 56.99481201,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_28970",
+    "esr_code": "28970",
+    "name": "ОБСКАЯ",
+    "region": "Ямало-Ненецкий автономный округ (Тюменск",
+    "latitude": 66.71963501,
+    "longitude": 66.23495483,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_28990",
+    "esr_code": "28990",
+    "name": "ЛАБЫТНАНГИ",
+    "region": "Ямало-Ненецкий автономный округ (Тюменск",
+    "latitude": 66.65251923,
+    "longitude": 66.40442657,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_29050",
+    "esr_code": "29050",
+    "name": "АРХАНГЕЛ-ГОР",
+    "region": "Архангельская область",
+    "latitude": 64.55090332,
+    "longitude": 40.57443237,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_29970",
+    "esr_code": "29970",
+    "name": "ВЕЛИК.УСТЮГ",
+    "region": "Вологодская область",
+    "latitude": 60.7835083,
+    "longitude": 46.27840424,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_30240",
+    "esr_code": "30240",
+    "name": "ЧЕРЕПОВЕЦ-ПР",
+    "region": "Вологодская область",
+    "latitude": 59.12398911,
+    "longitude": 37.94965744,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_31000",
+    "esr_code": "31000",
+    "name": "ЯРОСЛАВЛЬ-ГЛ",
+    "region": "Ярославская область",
+    "latitude": 57.62560272,
+    "longitude": 39.83530045,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_31020",
+    "esr_code": "31020",
+    "name": "ЯРОСЛАВЛЬ-ПР",
+    "region": "Ярославская область",
+    "latitude": 57.629,
+    "longitude": 39.874,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_31430",
+    "esr_code": "31430",
+    "name": "РОСТОВ-ЯРОС.",
+    "region": "Ярославская область",
+    "latitude": 57.19817734,
+    "longitude": 39.40748596,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_51101",
+    "esr_code": "51101",
+    "name": "УСПЕНСКАЯ-СТЫК",
+    "region": "Ростовская область",
+    "latitude": 47.697,
+    "longitude": 38.678,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_53020",
+    "esr_code": "53020",
+    "name": "АРМАВИР-РОСТ",
+    "region": "Краснодарский край",
+    "latitude": 44.99827576,
+    "longitude": 41.12443542,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_53130",
+    "esr_code": "53130",
+    "name": "НЕВИННМЫСКАЯ",
+    "region": "Ставропольский край",
+    "latitude": 44.63077927,
+    "longitude": 41.96369934,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_59240",
+    "esr_code": "59240",
+    "name": "ЧУГУН 1",
+    "region": "Липецкая область",
+    "latitude": 52.63286591,
+    "longitude": 39.665802,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_59640",
+    "esr_code": "59640",
+    "name": "ВОРОНЕЖ-КУР.",
+    "region": "Воронежская область",
+    "latitude": 51.67190552,
+    "longitude": 39.17621994,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_61100",
+    "esr_code": "61100",
+    "name": "ИМ.М.ГОРЬК.",
+    "region": "Волгоградская область",
+    "latitude": 48.68151855,
+    "longitude": 44.33682251,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_62020",
+    "esr_code": "62020",
+    "name": "ТРОФИМОВСК.2",
+    "region": "Саратовская область",
+    "latitude": 51.59859085,
+    "longitude": 45.9455986,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_62050",
+    "esr_code": "62050",
+    "name": "САРАТОВ2-ТОВ",
+    "region": "Саратовская область",
+    "latitude": 51.478,
+    "longitude": 45.938,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_62560",
+    "esr_code": "62560",
+    "name": "ПОКРОВСК-ПРВ",
+    "region": "Саратовская область",
+    "latitude": 51.48586273,
+    "longitude": 46.10056305,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_63560",
+    "esr_code": "63560",
+    "name": "СЫЗРАНЬ 1",
+    "region": "Самарская область",
+    "latitude": 53.1701889,
+    "longitude": 48.48204803,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_63680",
+    "esr_code": "63680",
+    "name": "ЖИГУЛЕВ.МОРЕ",
+    "region": "Самарская область",
+    "latitude": 53.47761536,
+    "longitude": 49.52473068,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_64850",
+    "esr_code": "64850",
+    "name": "НАБЕРЖ.ЧЕЛНЫ",
+    "region": "Республика Татарстан (Татарстан)",
+    "latitude": 55.67248535,
+    "longitude": 52.27529144,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_76110",
+    "esr_code": "76110",
+    "name": "ПЕРМЬ2",
+    "region": "Пермский край",
+    "latitude": 58.01,
+    "longitude": 56.253,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_77180",
+    "esr_code": "77180",
+    "name": "ВЕРХН.САЛДА",
+    "region": "Свердловская область",
+    "latitude": 58.05054092,
+    "longitude": 60.52027893,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_77460",
+    "esr_code": "77460",
+    "name": "СЕРОВ-ЗАВДСК",
+    "region": "Свердловская область",
+    "latitude": 59.59686279,
+    "longitude": 60.6023407,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_77470",
+    "esr_code": "77470",
+    "name": "СЕРОВ-СОРТРВ",
+    "region": "Свердловская область",
+    "latitude": 59.62501907,
+    "longitude": 60.63604736,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_77840",
+    "esr_code": "77840",
+    "name": "ГЕОЛОГИЧСКАЯ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 61.30879593,
+    "longitude": 63.32891464,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_77940",
+    "esr_code": "77940",
+    "name": "ПРИОБЬЕ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 62.53117752,
+    "longitude": 65.60722351,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_78000",
+    "esr_code": "78000",
+    "name": "ЕКАТЕРИНБ-СР",
+    "region": "Свердловская область",
+    "latitude": 56.88248825,
+    "longitude": 60.47298813,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79510",
+    "esr_code": "79510",
+    "name": "КАМЕНСК-УРЛС",
+    "region": "Свердловская область",
+    "latitude": 56.42768478,
+    "longitude": 61.92287827,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79700",
+    "esr_code": "79700",
+    "name": "ПЫТЬ-ЯХ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 60.75497818,
+    "longitude": 72.84465027,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79730",
+    "esr_code": "79730",
+    "name": "СУРГУТ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 61.29020691,
+    "longitude": 73.32350922,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79740",
+    "esr_code": "79740",
+    "name": "ЧЕРНЫЙ МЫС",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 61.2734108,
+    "longitude": 73.24299622,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79760",
+    "esr_code": "79760",
+    "name": "ЛАНГЕПАСВСКЙ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 61.27526855,
+    "longitude": 75.21899414,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79780",
+    "esr_code": "79780",
+    "name": "МЕГИОН",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 61.14207077,
+    "longitude": 75.99962616,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79800",
+    "esr_code": "79800",
+    "name": "НИЖНЕВАРТ. 1",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 60.95349121,
+    "longitude": 76.60951996,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79820",
+    "esr_code": "79820",
+    "name": "КОГАЛЫМ",
+    "region": "Ханты-Мансийский автономный округ (Тюмен",
+    "latitude": 62.25840378,
+    "longitude": 74.54484558,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_79840",
+    "esr_code": "79840",
+    "name": "НОЯБРЬСК 2",
+    "region": "Ямало-Ненецкий автономный округ (Тюменск",
+    "latitude": 63.19730759,
+    "longitude": 75.47260284,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_80010",
+    "esr_code": "80010",
+    "name": "ЧЕЛЯБИНСК-ГР",
+    "region": "Челябинская область",
+    "latitude": 55.09860229,
+    "longitude": 61.37412643,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_80120",
+    "esr_code": "80120",
+    "name": "МЕТАЛЛУРГИЧ.",
+    "region": "Челябинская область",
+    "latitude": 55.22290421,
+    "longitude": 61.44903183,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_81200",
+    "esr_code": "81200",
+    "name": "МЕНОВОЙ ДВОР",
+    "region": "Оренбургская область",
+    "latitude": 51.7195282,
+    "longitude": 55.0895462,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_81650",
+    "esr_code": "81650",
+    "name": "КАРТАЛЫ 1-ЭК",
+    "region": "Челябинская область",
+    "latitude": 53.053,
+    "longitude": 60.647,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_81760",
+    "esr_code": "81760",
+    "name": "МАГНИТОГ-ГР",
+    "region": "Челябинская область",
+    "latitude": 53.4631424,
+    "longitude": 59.07991409,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_82000",
+    "esr_code": "82000",
+    "name": "ПЕТРОПАВЛВСК",
+    "region": "Субъект РФ не определен",
+    "latitude": 54.85639191,
+    "longitude": 69.17037964,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_83600",
+    "esr_code": "83600",
+    "name": "КРАСНЗЕРСКОЕ",
+    "region": "Новосибирская область",
+    "latitude": 53.73556519,
+    "longitude": 79.2414856,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_84250",
+    "esr_code": "84250",
+    "name": "БОЛЬШ.РЕЧКА",
+    "region": "Алтайский край",
+    "latitude": 52.98232269,
+    "longitude": 84.66643524,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_84540",
+    "esr_code": "84540",
+    "name": "НВОБЛАГОВЕЩН",
+    "region": "Алтайский край",
+    "latitude": 52.8200531,
+    "longitude": 79.9021225,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_85120",
+    "esr_code": "85120",
+    "name": "НОВОСИБ-ЗАП",
+    "region": "Новосибирская область",
+    "latitude": 54.99528885,
+    "longitude": 82.85453033,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_85150",
+    "esr_code": "85150",
+    "name": "НОВОСИБ-ВОСТ",
+    "region": "Новосибирская область",
+    "latitude": 55.06794357,
+    "longitude": 82.97414398,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_86000",
+    "esr_code": "86000",
+    "name": "НОВОКУЗ.-СОР",
+    "region": "Кемеровская область",
+    "latitude": 53.74396133,
+    "longitude": 87.05935669,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_86420",
+    "esr_code": "86420",
+    "name": "НОВОКУЗ.-СЕВ",
+    "region": "Кемеровская область",
+    "latitude": 53.89293289,
+    "longitude": 87.2490387,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_87000",
+    "esr_code": "87000",
+    "name": "КЕМЕРОВО-СРТ",
+    "region": "Кемеровская область",
+    "latitude": 55.32352448,
+    "longitude": 86.03966522,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_87400",
+    "esr_code": "87400",
+    "name": "ТОМСК2",
+    "region": "Томская область",
+    "latitude": 56.50673676,
+    "longitude": 84.99835205,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_88000",
+    "esr_code": "88000",
+    "name": "АЧИНСК 1",
+    "region": "Красноярский край",
+    "latitude": 56.30448151,
+    "longitude": 90.51737213,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_88790",
+    "esr_code": "88790",
+    "name": "ЧЕРНОГ.КОПИ",
+    "region": "Республика Хакасия",
+    "latitude": 53.8086586,
+    "longitude": 91.28329468,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_89350",
+    "esr_code": "89350",
+    "name": "КАНСК-ЕНИС",
+    "region": "Красноярский край",
+    "latitude": 56.19849396,
+    "longitude": 95.70420837,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_90320",
+    "esr_code": "90320",
+    "name": "СЕВЕРОБАЙКАЛ",
+    "region": "Республика Бурятия",
+    "latitude": 55.63293457,
+    "longitude": 109.3420639,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_90440",
+    "esr_code": "90440",
+    "name": "ТАКСИМО",
+    "region": "Забайкальский край",
+    "latitude": 56.35970688,
+    "longitude": 114.83576202,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_91160",
+    "esr_code": "91160",
+    "name": "НЕРЮНГРИ-ГР",
+    "region": "Республика Саха (Якутия)",
+    "latitude": 56.71471786,
+    "longitude": 124.72949219,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_92500",
+    "esr_code": "92500",
+    "name": "ПАДУН.ПОРОГИ",
+    "region": "Иркутская область",
+    "latitude": 56.30830383,
+    "longitude": 101.72541809,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_92570",
+    "esr_code": "92570",
+    "name": "КОРШУНИХА-АН",
+    "region": "Иркутская область",
+    "latitude": 56.164,
+    "longitude": 103.111,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_93210",
+    "esr_code": "93210",
+    "name": "КИТОЙ-КОМБНТ",
+    "region": "Иркутская область",
+    "latitude": 52.603,
+    "longitude": 104.089,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_93270",
+    "esr_code": "93270",
+    "name": "ВОЕН.ГОРОДОК",
+    "region": "Иркутская область",
+    "latitude": 52.30868912,
+    "longitude": 104.23587036,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_93330",
+    "esr_code": "93330",
+    "name": "СЛЮДЯНКА 1",
+    "region": "Иркутская область",
+    "latitude": 51.65846252,
+    "longitude": 103.72377014,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_94010",
+    "esr_code": "94010",
+    "name": "ПЕТРОВ.ЗАВОД",
+    "region": "Забайкальский край",
+    "latitude": 51.29079437,
+    "longitude": 108.85827637,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_94620",
+    "esr_code": "94620",
+    "name": "КРАСНОКАМЕН.",
+    "region": "Забайкальский край",
+    "latitude": 50.14977646,
+    "longitude": 118.06092834,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_94790",
+    "esr_code": "94790",
+    "name": "ШИЛКА-ТОВ",
+    "region": "Забайкальский край",
+    "latitude": 51.85527802,
+    "longitude": 116.02558899,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_94910",
+    "esr_code": "94910",
+    "name": "ЧЕРНЫШ-ЗАБ",
+    "region": "Забайкальский край",
+    "latitude": 52.51517487,
+    "longitude": 117.01971436,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_95010",
+    "esr_code": "95010",
+    "name": "БЕЛОГОРСК 2",
+    "region": "Амурская область",
+    "latitude": 50.88296127,
+    "longitude": 128.51506042,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_95120",
+    "esr_code": "95120",
+    "name": "ЕРОФЕЙ ПАВЛ.",
+    "region": "Амурская область",
+    "latitude": 53.95448685,
+    "longitude": 121.9490509,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_95370",
+    "esr_code": "95370",
+    "name": "МИХ-ЧЕСНОК",
+    "region": "Амурская область",
+    "latitude": 51.34661102,
+    "longitude": 128.15307617,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_96000",
+    "esr_code": "96000",
+    "name": "КОМСОМ-СОРТ",
+    "region": "Хабаровский край",
+    "latitude": 50.44991684,
+    "longitude": 136.90219116,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_96010",
+    "esr_code": "96010",
+    "name": "КОМС-НА-АМУР",
+    "region": "Хабаровский край",
+    "latitude": 50.55247116,
+    "longitude": 136.98965454,
+    "geocode_source": "osm2esr"
+  },
+  {
+    "id": "rzd_esr_96280",
+    "esr_code": "96280",
+    "name": "БИРОБИДЖАН 1",
+    "region": "Еврейская Автономная область",
+    "latitude": 48.794,
+    "longitude": 132.924,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_esr_97000",
+    "esr_code": "97000",
+    "name": "ХАБАРОВСК 2",
+    "region": "Хабаровский край",
+    "latitude": 48.355,
+    "longitude": 135.074,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_dgutxd",
+    "name": "СЕРОВ-ЗАВДСК",
+    "region": "Свердловская область",
+    "latitude": 59.597,
+    "longitude": 60.602,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_6146d5",
+    "name": "НОВОРОСС-ЭКС",
+    "region": "Краснодарский край",
+    "latitude": 44.723,
+    "longitude": 37.768,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_rqtohy",
+    "name": "ЗЛЫНКА-ЭКСП",
+    "region": "Брянская область",
+    "latitude": 52.426,
+    "longitude": 31.738,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_3r62q8",
+    "name": "ЧЕЛЯБИНСК-ГР",
+    "region": "Челябинская область",
+    "latitude": 55.099,
+    "longitude": 61.374,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_ptoe5t",
+    "name": "МЕТАЛЛУРГИЧ.",
+    "region": "Челябинская область",
+    "latitude": 55.223,
+    "longitude": 61.449,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_9o61re",
+    "name": "ПЕТРОПАВ-Э-Р",
+    "region": "Субъект РФ не определен",
+    "latitude": 54.856,
+    "longitude": 69.17,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_v0ohts",
+    "name": "МАГНИТОГ-ГР",
+    "region": "Челябинская область",
+    "latitude": 53.463,
+    "longitude": 59.08,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_kco0r6",
+    "name": "ОРСК-НОВ-ГОР-ЭКС",
+    "region": "Оренбургская область",
+    "latitude": 51.204,
+    "longitude": 58.566,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_aj3ll6",
+    "name": "ВЫСОЦК-ЭКСП",
+    "region": "Ленинградская область",
+    "latitude": 60.623,
+    "longitude": 28.568,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_y8ug3z",
+    "name": "ТУАПСЕ-СОР-Э",
+    "region": "Краснодарский край",
+    "latitude": 44.099,
+    "longitude": 39.073,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_1vqcqo",
+    "name": "ТЕМРЮК-ЭКСП",
+    "region": "Краснодарский край",
+    "latitude": 45.356,
+    "longitude": 37.387,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_6oisa2",
+    "name": "КОМС-НА-АМУР",
+    "region": "Хабаровский край",
+    "latitude": 50.552,
+    "longitude": 136.99,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_smv0vy",
+    "name": "НОВОКУЗ.-СОР",
+    "region": "Кемеровская область",
+    "latitude": 53.744,
+    "longitude": 87.059,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_cosm59",
+    "name": "НОВОКУЗ.-СЕВ",
+    "region": "Кемеровская область",
+    "latitude": 53.893,
+    "longitude": 87.249,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_482bpr",
+    "name": "НОВОСИБ-ВОСТ",
+    "region": "Новосибирская область",
+    "latitude": 55.068,
+    "longitude": 82.974,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_nwu3u7",
+    "name": "МИХАЙЛО-СЕМ-ЭКС",
+    "region": "Еврейская Автономная область",
+    "latitude": 48.628,
+    "longitude": 132.5,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_8zv0m4",
+    "name": "ГРОДЕК/КИТАЙ",
+    "region": "Приморский край",
+    "latitude": 44.417,
+    "longitude": 131.15,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_2oybtf",
+    "name": "ХАБАРОВСК 2",
+    "region": "Хабаровский край",
+    "latitude": 48.355,
+    "longitude": 135.074,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_x97o3g",
+    "name": "НЕВА",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.935,
+    "longitude": 30.389,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_l80w38",
+    "name": "НОВОКУЗ.-ВОС",
+    "region": "Кемеровская область",
+    "latitude": 53.757,
+    "longitude": 87.109,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_9mk8r0",
+    "name": "ТУЛА 1-КУРС",
+    "region": "Тульская область",
+    "latitude": 54.204,
+    "longitude": 37.617,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_j8odkp",
+    "name": "ЛОК-Э-РУБ-РС",
+    "region": "Алтайский край",
+    "latitude": 52.433,
+    "longitude": 85.083,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_fkqcr2",
+    "name": "КРАСНОЕ-ЭКСП",
+    "region": "Смоленская область",
+    "latitude": 54.822,
+    "longitude": 31.936,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_2tmdko",
+    "name": "КРАСНООКТЯБР",
+    "region": "Волгоградская область",
+    "latitude": 48.52,
+    "longitude": 44.544,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_gnzjld",
+    "name": "ОЧАКОВО 1",
+    "region": "Москва",
+    "latitude": 55.684,
+    "longitude": 37.451,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_6roxqw",
+    "name": "НОВЫЙ ПОРТ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.905,
+    "longitude": 30.213,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_226aay",
+    "name": "ВЫСТРЕЛ-РЗД-СТЫК",
+    "region": "Белгородская область",
+    "latitude": 50.595,
+    "longitude": 36.587,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_gz4ggc",
+    "name": "ПЕРВОМ-ГОРК",
+    "region": "Нижегородская область",
+    "latitude": 56.326,
+    "longitude": 43.936,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_oaya5n",
+    "name": "МИХАЙЛО-ЛЕОН",
+    "region": "Ростовская область",
+    "latitude": 47.112,
+    "longitude": 39.423,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_7p8nl9",
+    "name": "МУРМАНСК-ЭКС",
+    "region": "Мурманская область",
+    "latitude": 68.979,
+    "longitude": 33.092,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_42vxs7",
+    "name": "ЗАВЕРЕЖЬЕ-ЭК",
+    "region": "Псковская область",
+    "latitude": 57.813,
+    "longitude": 28.331,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_lwhi62",
+    "name": "САРАТОВ2-ТОВ",
+    "region": "Саратовская область",
+    "latitude": 51.478,
+    "longitude": 45.938,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_gdgryy",
+    "name": "ЛАБЫТНАНГИ",
+    "region": "Ямало-Ненецкий автономный округ (Тюменск",
+    "latitude": 66.653,
+    "longitude": 66.404,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_w54oce",
+    "name": "РУЧЬИ",
+    "region": "Город Санкт-Петербург город федерального",
+    "latitude": 59.808,
+    "longitude": 30.169,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_nyfpts",
+    "name": "УСПЕНСКАЯ-СТЫК",
+    "region": "Ростовская область",
+    "latitude": 47.697,
+    "longitude": 38.678,
+    "geocode_source": "manual"
+  },
+  {
+    "id": "rzd_nm_nme0fy",
+    "name": "СЕРОВ-СОРТРВ",
+    "region": "Свердловская область",
+    "latitude": 59.625,
+    "longitude": 60.636,
+    "geocode_source": "manual"
+  }
+]

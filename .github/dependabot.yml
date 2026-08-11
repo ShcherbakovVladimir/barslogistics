@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      production:
+        patterns:
+          - '*'
+        exclude-patterns:
+          - eslint*
+          - prettier
+          - husky
+          - lint-staged
+          - typescript-eslint
+          - '@eslint/*'
+          - '@types/*'
+          - esbuild
+          - tsx
+          - vite*
+          - '@vitejs/*'
+          - autoprefixer
+          - tailwindcss

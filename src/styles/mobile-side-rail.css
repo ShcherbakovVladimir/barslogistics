@@ -1,0 +1,197 @@
+/* App side rail + tasks/active-shipment drawers + modals on phones */
+
+html.layout-mobile,
+html.layout-fold {
+  --app-side-rail-mobile-height: calc(2.65rem + 0.7rem);
+}
+
+/* Bottom dock: overlay content — no horizontal squeeze from desktop vertical rail */
+html.layout-mobile.app-side-rail-active .app-shell > main,
+html.layout-mobile.app-side-rail-active .app-shell > #main-content,
+html.layout-fold.app-side-rail-active .app-shell > main,
+html.layout-fold.app-side-rail-active .app-shell > #main-content,
+html.app-side-rail-mobile-dock.app-side-rail-active .app-shell > main,
+html.app-side-rail-mobile-dock.app-side-rail-active .app-shell > #main-content {
+  padding-right: 0 !important;
+  padding-bottom: calc(
+    var(--app-side-rail-mobile-height) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+html.layout-mobile.app-side-rail-active .app-header::after,
+html.layout-mobile.app-side-rail-active.app-side-rail-collapsed .app-header::after,
+html.layout-fold.app-side-rail-active .app-header::after,
+html.layout-fold.app-side-rail-active.app-side-rail-collapsed .app-header::after,
+html.app-side-rail-mobile-dock.app-side-rail-active .app-header::after {
+  right: 0 !important;
+}
+
+/* Bottom dock — flush with viewport bottom, centered actions */
+html.layout-mobile .app-side-rail.is-mobile-dock,
+html.layout-fold .app-side-rail.is-mobile-dock {
+  top: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  max-width: 100vw;
+  height: auto;
+  min-height: var(--app-side-rail-mobile-height);
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding:
+    0.35rem
+    max(0.65rem, env(safe-area-inset-right, 0px))
+    calc(0.35rem + env(safe-area-inset-bottom, 0px))
+    max(0.65rem, env(safe-area-inset-left, 0px));
+  border-top: 1px solid var(--app-chrome-border);
+  z-index: 45;
+  box-sizing: border-box;
+  margin: 0;
+  transform: none;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock::before,
+html.layout-fold .app-side-rail.is-mobile-dock::before {
+  display: none;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-top,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-top {
+  flex-direction: row;
+  flex: 0 1 auto;
+  margin-top: 0;
+  gap: 0.45rem;
+  width: auto;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-bottom,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-bottom {
+  flex-direction: row;
+  margin-top: 0;
+  flex: 0 0 auto;
+  width: auto;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn {
+  width: 2.65rem;
+  height: 2.65rem;
+}
+
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-popover,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-popover {
+  position: fixed;
+  top: auto;
+  bottom: calc(
+    var(--app-side-rail-mobile-height) + env(safe-area-inset-bottom, 0px) + 0.35rem
+  );
+  left: max(0.5rem, env(safe-area-inset-left, 0px));
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
+  width: auto;
+  max-height: min(50dvh, 22rem);
+  z-index: 1100;
+}
+
+html.portal-embed.layout-mobile .app-side-rail.is-mobile-dock,
+html.portal-embed.layout-fold .app-side-rail.is-mobile-dock {
+  position: absolute;
+}
+
+/* Modals — full-width bottom sheets (override side-rail / backdrop padding) */
+html.layout-mobile .modal-backdrop,
+html.layout-fold .modal-backdrop {
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: max(0.5rem, env(safe-area-inset-top, 0px)) 0 0 0 !important;
+}
+
+html.layout-mobile .modal-backdrop > *,
+html.layout-fold .modal-backdrop > *,
+html.layout-mobile .modal-backdrop .app-modal-sheet,
+html.layout-fold .modal-backdrop .app-modal-sheet,
+html.layout-mobile .modal-backdrop .modal-panel,
+html.layout-fold .modal-backdrop .modal-panel {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box;
+}
+
+html.layout-mobile.layout-landscape .modal-backdrop,
+html.layout-fold.layout-landscape .modal-backdrop {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Tasks + active shipments drawers */
+@keyframes tasks-drawer-sheet-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.88;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+html.layout-mobile .tasks-drawer-root,
+html.layout-fold .tasks-drawer-root {
+  z-index: 1300;
+}
+
+html.layout-mobile .tasks-drawer-panel,
+html.layout-fold .tasks-drawer-panel,
+html.layout-mobile.app-side-rail-active .tasks-drawer-panel,
+html.layout-mobile.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel,
+html.layout-fold.app-side-rail-active .tasks-drawer-panel,
+html.layout-fold.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel,
+html.app-side-rail-mobile-dock.app-side-rail-active .tasks-drawer-panel {
+  top: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: min(
+    88dvh,
+    calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px) - 0.5rem)
+  );
+  max-height: min(
+    92dvh,
+    calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px))
+  );
+  border-radius: 1rem 1rem 0 0;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  animation: tasks-drawer-sheet-up 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  box-sizing: border-box;
+}
+
+/* Chat — full width when open on mobile dock */
+html.layout-mobile.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open,
+html.layout-fold.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open,
+html.app-side-rail-mobile-dock .chat-widget-root--rail.chat-widget-root--open {
+  right: 0 !important;
+  left: 0 !important;
+}
+
+html.layout-mobile.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel,
+html.layout-fold.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail.is-mobile-dock,
+[data-theme="light"] html.layout-fold .app-side-rail.is-mobile-dock {
+  border-top-color: #e2e8f0;
+}

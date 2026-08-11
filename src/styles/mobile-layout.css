@@ -1,0 +1,1924 @@
+/* ── Mobile / iPhone / foldable layout (html.layout-* from deviceLayout.ts) ── */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --mobile-chrome-bg: rgb(15 23 42 / 0.98);
+  --mobile-chrome-border: rgb(51 65 85);
+  --mobile-chrome-border-soft: rgb(51 65 85 / 0.8);
+  --mobile-fab-bg: rgb(15 23 42 / 0.94);
+  --mobile-fab-border: rgb(51 65 85 / 0.9);
+  --mobile-fab-text: rgb(226 232 240);
+  --mobile-fab-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  --mobile-sheet-shadow: 0 -12px 40px rgb(0 0 0 / 0.4);
+  --mobile-backdrop: rgb(0 0 0 / 0.45);
+  --mobile-handle: rgb(71 85 105);
+  --mobile-title: rgb(248 250 252);
+  --mobile-muted: rgb(148 163 184);
+  --mobile-active-tab-text: rgb(165 180 252);
+  --mobile-active-tab-bg: rgb(79 70 229 / 0.2);
+  --mobile-active-tab-border: rgb(99 102 241 / 0.35);
+  --mobile-nav-backdrop: rgb(15 23 42 / 0.6);
+  --mobile-nav-item-text: rgb(148 163 184);
+  --mobile-nav-item-hover-bg: rgb(51 65 85 / 0.35);
+  --mobile-nav-item-hover-text: rgb(226 232 240);
+  --mobile-nav-item-active-bg: rgb(79 70 229 / 0.2);
+  --mobile-nav-item-active-text: rgb(165 180 252);
+  --mobile-nav-section-title: rgb(100 116 139);
+  --mobile-nav-tools-divider: rgb(51 65 85 / 0.5);
+  --shipment-events-toggle-bg: rgb(15 23 42 / 0.65);
+  --shipment-events-toggle-border: rgb(51 65 85);
+  --shipment-events-toggle-text: inherit;
+  --shipment-events-toggle-chevron: rgb(148 163 184);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --map-sheet-info-bg: #f8fafc;
+  --map-sheet-info-border: #e2e8f0;
+  --map-legend-divider: #e2e8f0;
+  --map-legend-text: #334155;
+  --mobile-chrome-bg: rgb(255 255 255 / 0.98);
+  --mobile-chrome-border: #cbd5e1;
+  --mobile-chrome-border-soft: rgb(203 213 225 / 0.85);
+  --mobile-fab-bg: rgb(255 255 255 / 0.94);
+  --mobile-fab-border: rgb(203 213 225 / 0.9);
+  --mobile-fab-text: #334155;
+  --mobile-fab-shadow: 0 8px 24px rgb(15 23 42 / 0.1);
+  --mobile-sheet-shadow: 0 -12px 40px rgb(15 23 42 / 0.08);
+  --mobile-backdrop: rgb(15 23 42 / 0.22);
+  --mobile-handle: #94a3b8;
+  --mobile-title: #0f172a;
+  --mobile-muted: #64748b;
+  --mobile-active-tab-text: #4338ca;
+  --mobile-active-tab-bg: rgb(99 102 241 / 0.12);
+  --mobile-active-tab-border: rgb(99 102 241 / 0.28);
+  --mobile-nav-backdrop: rgb(15 23 42 / 0.2);
+  --mobile-nav-item-text: #334155;
+  --mobile-nav-item-hover-bg: rgb(241 245 249);
+  --mobile-nav-item-hover-text: #0f172a;
+  --mobile-nav-item-active-bg: rgb(99 102 241 / 0.12);
+  --mobile-nav-item-active-text: #4338ca;
+  --mobile-nav-section-title: #475569;
+  --mobile-nav-tools-divider: rgb(203 213 225 / 0.85);
+  --shipment-events-toggle-bg: #ffffff;
+  --shipment-events-toggle-border: #e2e8f0;
+  --shipment-events-toggle-text: #0f172a;
+  --shipment-events-toggle-chevron: #64748b;
+}
+
+:root {
+  --app-header-height: 3.5rem;
+  --map-mobile-fab-size: 2.75rem;
+  --map-mobile-sheet-radius: 1rem;
+  --orientation-safe-top: env(safe-area-inset-top, 0px);
+  --orientation-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --orientation-safe-left: env(safe-area-inset-left, 0px);
+  --orientation-safe-right: env(safe-area-inset-right, 0px);
+  --layout-vw: 100vw;
+  --layout-vh: 100dvh;
+}
+
+/* Touch phones: never apply compact-laptop chrome before/after bootstrap */
+html.layout-mobile.compact-laptop,
+html.layout-mobile.map-chrome-compact,
+html.layout-mobile.map-chrome-tight,
+html.layout-mobile.map-chrome-cozy {
+  --map-filter-panel-width: min(20rem, calc(var(--layout-vw, 100vw) - 1rem));
+}
+
+html.layout-mobile.compact-laptop .map-filter-panel,
+html.layout-mobile.compact-laptop .map-legend,
+html.layout-mobile.compact-laptop .map-side-panel-width {
+  font-size: inherit;
+  max-width: min(20rem, calc(var(--layout-vw, 100vw) - 1rem));
+}
+
+@media (min-width: 640px) {
+  :root {
+    --app-header-height: 4rem;
+  }
+}
+
+html.layout-ios .app-shell {
+  min-height: -webkit-fill-available;
+}
+
+/* Full viewport shell on touch devices — stable across rotation */
+html.layout-mobile .app-shell,
+html.layout-fold .app-shell {
+  min-height: var(--layout-vh, 100dvh);
+  height: var(--layout-vh, 100dvh);
+}
+
+html.portal-embed.layout-mobile .app-shell,
+html.portal-embed.layout-fold .app-shell {
+  min-height: var(--bars-app-height, var(--layout-vh, 100%));
+  height: var(--bars-app-height, var(--layout-vh, 100%));
+  max-height: var(--bars-app-height, var(--layout-vh, 100%));
+}
+
+html.layout-mobile .app-shell > main,
+html.layout-fold .app-shell > main {
+  min-height: 0;
+}
+
+html.layout-mobile .auth-login-shell,
+html.layout-fold .auth-login-shell,
+html.layout-ios .auth-login-shell {
+  min-height: var(--bars-viewport-height, 100dvh);
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+html.layout-mobile .auth-login-theme-toggle,
+html.layout-fold .auth-login-theme-toggle,
+html.layout-ios .auth-login-theme-toggle {
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+}
+
+html.layout-mobile .auth-login-shell input,
+html.layout-fold .auth-login-shell input,
+html.layout-mobile .auth-login-shell button[type="submit"],
+html.layout-fold .auth-login-shell button[type="submit"] {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .app-header,
+html.layout-fold .app-header {
+  padding-top: env(safe-area-inset-top);
+}
+
+html.layout-mobile .app-header-row,
+html.layout-fold .app-header-row {
+  min-height: var(--app-header-height);
+}
+
+/* Active tab chip — mobile header */
+.app-header-active-tab {
+  display: none;
+}
+
+html.layout-mobile .app-header-active-tab,
+html.layout-fold .app-header-active-tab {
+  display: inline-flex;
+  align-items: center;
+  max-width: 42vw;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--mobile-active-tab-text);
+  background: var(--mobile-active-tab-bg);
+  border: 1px solid var(--mobile-active-tab-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hide cramped header toolbar on mobile — tools live in menu grid */
+html.layout-mobile .app-header-actions--bar,
+html.layout-fold .app-header-actions--bar {
+  display: none !important;
+}
+
+html.layout-mobile .app-header-nav,
+html.layout-fold .app-header-nav {
+  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
+  width: min(100%, 100vw);
+  max-width: 100%;
+  border-right: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.layout-mobile .header-nav-section-title,
+html.layout-fold .header-nav-section-title {
+  display: block;
+  color: var(--mobile-nav-section-title);
+}
+
+html.layout-mobile .header-nav-tools-block,
+html.layout-fold .header-nav-tools-block {
+  display: block;
+  margin-top: 0.5rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--mobile-nav-tools-divider);
+}
+
+html.layout-mobile .header-nav-grid,
+html.layout-fold .header-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem 0.25rem;
+  padding: 0 0.75rem;
+  align-content: start;
+}
+
+html.layout-mobile .header-nav-grid--tools,
+html.layout-fold .header-nav-grid--tools {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html.layout-mobile .app-header-nav .header-nav-item,
+html.layout-fold .app-header-nav .header-nav-item {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0.5rem 0.25rem;
+  border: none;
+  box-shadow: none;
+  border-radius: 0.625rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  color: var(--mobile-nav-item-text);
+  background: transparent;
+}
+
+html.layout-mobile .app-header-nav .header-nav-item:hover,
+html.layout-fold .app-header-nav .header-nav-item:hover {
+  background: var(--mobile-nav-item-hover-bg);
+  color: var(--mobile-nav-item-hover-text);
+}
+
+html.layout-mobile .app-header-nav .header-nav-item.is-active,
+html.layout-fold .app-header-nav .header-nav-item.is-active {
+  background: var(--mobile-nav-item-active-bg);
+  color: var(--mobile-nav-item-active-text);
+  box-shadow: none;
+}
+
+html.layout-mobile .app-header-nav .header-nav-item-icon,
+html.layout-fold .app-header-nav .header-nav-item-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex-shrink: 0;
+  margin-inline: auto;
+  color: inherit;
+}
+
+html.layout-mobile .app-header-nav .header-nav-item-label,
+html.layout-fold .app-header-nav .header-nav-item-label {
+  display: -webkit-box;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+html.layout-mobile.layout-landscape .header-nav-grid,
+html.layout-fold.layout-landscape .header-nav-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+html.layout-mobile.layout-landscape .app-header-nav .header-nav-item,
+html.layout-fold.layout-landscape .app-header-nav .header-nav-item {
+  min-height: 3.75rem;
+  font-size: 0.5625rem;
+}
+
+/* Modals — full-width bottom sheets on phone */
+html.layout-mobile .modal-backdrop--sheet,
+html.layout-fold .modal-backdrop--sheet {
+  align-items: flex-end;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+html.layout-mobile .modal-backdrop:not(.modal-backdrop--sheet),
+html.layout-fold .modal-backdrop:not(.modal-backdrop--sheet) {
+  padding-bottom: 0 !important;
+}
+
+html.layout-mobile.compact-laptop .modal-backdrop--sheet,
+html.layout-fold.compact-laptop .modal-backdrop--sheet {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Site / facility modals — mobile bottom sheets, single scroll area */
+html.layout-mobile .modal-backdrop .app-modal-sheet,
+html.layout-fold .modal-backdrop .app-modal-sheet {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  max-height: min(92dvh, calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px)));
+  border: none !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 -10px 40px rgb(0 0 0 / 0.45);
+  animation: app-modal-sheet-enter 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+html.layout-mobile .app-modal-sheet.is-sheet-dragging,
+html.layout-fold .app-modal-sheet.is-sheet-dragging {
+  animation: none;
+}
+
+html.layout-mobile .app-modal-sheet-handle-zone,
+html.layout-fold .app-modal-sheet-handle-zone {
+  display: flex;
+}
+
+html.layout-mobile .app-modal-sheet .modal-panel-header,
+html.layout-fold .app-modal-sheet .modal-panel-header {
+  padding: 0 1rem 0.625rem;
+  border-bottom: none !important;
+}
+
+html.layout-mobile .app-modal-sheet .modal-panel-body,
+html.layout-fold .app-modal-sheet .modal-panel-body {
+  padding: 0.75rem 1rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+html.layout-mobile .app-modal-sheet .modal-panel-footer,
+html.layout-fold .app-modal-sheet .modal-panel-footer {
+  padding: 0.625rem 1rem max(0.875rem, env(safe-area-inset-bottom));
+  border-top: none !important;
+}
+
+html.layout-mobile .modal-panel-footer button,
+html.layout-fold .modal-panel-footer button,
+html.layout-mobile .facility-modal-footer-actions button,
+html.layout-fold .facility-modal-footer-actions button,
+html.layout-mobile .site-directory-form-modal-footer button,
+html.layout-fold .site-directory-form-modal-footer button,
+html.layout-mobile .carrier-directory-form-modal-footer button,
+html.layout-fold .carrier-directory-form-modal-footer button,
+html.layout-mobile .product-catalog-form-modal-footer button,
+html.layout-fold .product-catalog-form-modal-footer button,
+html.layout-mobile .manager-directory-form-modal-footer button,
+html.layout-fold .manager-directory-form-modal-footer button,
+html.layout-mobile .my-data-form-modal-footer button,
+html.layout-fold .my-data-form-modal-footer button {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile[data-theme="light"] .modal-backdrop .app-modal-sheet,
+html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet {
+  box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
+}
+
+html.layout-mobile .facility-modal .facility-modal-list,
+html.layout-fold .facility-modal .facility-modal-list {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+
+html.layout-mobile .facility-modal .facility-modal-footer-actions,
+html.layout-fold .facility-modal .facility-modal-footer-actions,
+html.layout-mobile .site-directory-form-modal-footer > div,
+html.layout-fold .site-directory-form-modal-footer > div {
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .facility-modal .facility-modal-footer-actions button,
+html.layout-fold .facility-modal .facility-modal-footer-actions button,
+html.layout-mobile .site-directory-form-modal-footer button,
+html.layout-fold .site-directory-form-modal-footer button,
+html.layout-mobile .carrier-directory-form-modal-footer button,
+html.layout-fold .carrier-directory-form-modal-footer button,
+html.layout-mobile .product-catalog-form-modal-footer button,
+html.layout-fold .product-catalog-form-modal-footer button,
+html.layout-mobile .manager-directory-form-modal-footer button,
+html.layout-fold .manager-directory-form-modal-footer button,
+html.layout-mobile .my-data-form-modal-footer button,
+html.layout-fold .my-data-form-modal-footer button {
+  width: 100%;
+  justify-content: center;
+}
+
+html.layout-mobile .site-directory-form-grid,
+html.layout-fold .site-directory-form-grid,
+html.layout-mobile .manager-directory-form-grid,
+html.layout-fold .manager-directory-form-grid,
+html.layout-mobile .manager-directory-form-meta,
+html.layout-fold .manager-directory-form-meta,
+html.layout-mobile .my-data-form-grid,
+html.layout-fold .my-data-form-grid {
+  grid-template-columns: 1fr;
+}
+
+html.layout-mobile .modal-dropdown-trigger,
+html.layout-fold .modal-dropdown-trigger {
+  min-height: 2.75rem;
+}
+
+/* Map — hide desktop chrome on mobile; use FAB + sheets */
+html.layout-mobile .logistics-map .map-filter-panel-wrapper:not(.map-mobile-sheet-panel),
+html.layout-fold .logistics-map .map-filter-panel-wrapper:not(.map-mobile-sheet-panel) {
+  display: none !important;
+}
+
+html.layout-mobile .logistics-map .map-bottom-stack,
+html.layout-fold .logistics-map .map-bottom-stack {
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: max(0.5rem, env(safe-area-inset-right));
+  bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  width: auto;
+  max-width: none;
+}
+
+html.layout-mobile .logistics-map .map-ui-layer.map-side-panel-width,
+html.layout-fold .logistics-map .map-ui-layer.map-side-panel-width {
+  width: min(calc(100% - 1rem), 100%);
+  max-width: min(calc(100% - 1rem), 100%);
+}
+
+html.layout-mobile .map-legend,
+html.layout-fold .map-legend {
+  display: none;
+}
+
+html.layout-mobile .map-mobile-fab-bar,
+html.layout-fold .map-mobile-fab-bar {
+  display: flex;
+}
+
+html.layout-mobile .map-mobile-fab-bar.is-hidden,
+html.layout-fold .map-mobile-fab-bar.is-hidden {
+  display: none !important;
+}
+
+/* ── Portrait (0°) — bottom FAB column, bottom sheets ── */
+html.layout-mobile.layout-portrait:not(.layout-portrait-inverted) .map-mobile-fab-bar,
+html.layout-fold.layout-portrait:not(.layout-portrait-inverted) .map-mobile-fab-bar {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── Portrait inverted (180°) — same column; extra vertical safe padding ── */
+html.layout-mobile.layout-portrait-inverted .app-header,
+html.layout-fold.layout-portrait-inverted .app-header {
+  padding-top: max(env(safe-area-inset-top), env(safe-area-inset-bottom));
+}
+
+html.layout-mobile.layout-portrait-inverted .logistics-map .map-bottom-stack,
+html.layout-fold.layout-portrait-inverted .logistics-map .map-bottom-stack {
+  bottom: calc(4.25rem + max(env(safe-area-inset-bottom), env(safe-area-inset-top)));
+}
+
+html.layout-mobile.layout-portrait-inverted .map-mobile-fab-bar,
+html.layout-fold.layout-portrait-inverted .map-mobile-fab-bar {
+  flex-direction: column;
+  align-items: flex-start;
+  bottom: max(0.5rem, env(safe-area-inset-bottom), env(safe-area-inset-top));
+}
+
+html.layout-mobile.layout-portrait-inverted .map-mobile-sheet,
+html.layout-fold.layout-portrait-inverted .map-mobile-sheet {
+  max-height: min(
+    72dvh,
+    calc(100% - var(--orientation-safe-top) - var(--orientation-safe-bottom) - 3rem)
+  );
+  padding-bottom: max(env(safe-area-inset-bottom), env(safe-area-inset-top));
+}
+
+/* ── Landscape (90°) — horizontal FAB row on the left, side sheet from left ── */
+html.layout-mobile.layout-landscape:not(.layout-landscape-inverted) .map-mobile-fab-bar,
+html.layout-fold.layout-landscape:not(.layout-landscape-inverted) .map-mobile-fab-bar {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: auto;
+  bottom: max(0.35rem, env(safe-area-inset-bottom));
+}
+
+html.layout-mobile.layout-landscape:not(.layout-landscape-inverted) .map-mobile-fab-label,
+html.layout-fold.layout-landscape:not(.layout-landscape-inverted) .map-mobile-fab-label {
+  max-width: 4rem;
+}
+
+html.layout-mobile.layout-landscape:not(.layout-landscape-inverted) .map-mobile-sheet,
+html.layout-fold.layout-landscape:not(.layout-landscape-inverted) .map-mobile-sheet {
+  left: 0;
+  right: auto;
+  top: 0;
+  bottom: 0;
+  width: min(22rem, 58vw);
+  max-height: none;
+  border-top: none;
+  border-right: 1px solid var(--mobile-chrome-border);
+  border-radius: 0 var(--map-mobile-sheet-radius) var(--map-mobile-sheet-radius) 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  animation: map-sheet-slide-in-left 0.24s ease-out;
+}
+
+html.layout-mobile.layout-landscape:not(.layout-landscape-inverted) .map-mobile-sheet-body--filters,
+html.layout-fold.layout-landscape:not(.layout-landscape-inverted) .map-mobile-sheet-body--filters {
+  max-height: none;
+}
+
+html.layout-mobile.layout-landscape-inverted .map-mobile-sheet-body--filters,
+html.layout-fold.layout-landscape-inverted .map-mobile-sheet-body--filters {
+  max-height: none;
+}
+
+/* ── Landscape inverted (270°) — FAB row on left, side sheet from right ── */
+html.layout-mobile.layout-landscape-inverted .map-mobile-fab-bar,
+html.layout-fold.layout-landscape-inverted .map-mobile-fab-bar {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: auto;
+  bottom: max(0.35rem, env(safe-area-inset-bottom));
+}
+
+html.layout-mobile.layout-landscape-inverted .map-mobile-sheet,
+html.layout-fold.layout-landscape-inverted .map-mobile-sheet {
+  left: auto;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(22rem, 58vw);
+  max-height: none;
+  border-top: none;
+  border-left: 1px solid var(--mobile-chrome-border);
+  border-radius: var(--map-mobile-sheet-radius) 0 0 var(--map-mobile-sheet-radius);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  animation: map-sheet-slide-in-right 0.24s ease-out;
+}
+
+/* Landscape — compact chrome, narrow bottom stack */
+html.layout-mobile.layout-landscape .app-header-row,
+html.layout-fold.layout-landscape .app-header-row {
+  min-height: 3rem;
+}
+
+html.layout-mobile.layout-landscape .app-header-active-tab,
+html.layout-fold.layout-landscape .app-header-active-tab {
+  max-width: 28vw;
+}
+
+html.layout-mobile.layout-landscape .app-header-brand .hidden.md\:block,
+html.layout-fold.layout-landscape .app-header-brand .hidden.md\:block {
+  display: none !important;
+}
+
+html.layout-mobile.layout-landscape .logistics-map .map-bottom-stack,
+html.layout-fold.layout-landscape .logistics-map .map-bottom-stack {
+  bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+  max-width: min(16rem, 42vw);
+  left: max(0.5rem, env(safe-area-inset-left));
+}
+
+html.layout-mobile.layout-landscape .logistics-map .map-ui-layer.absolute.top-2,
+html.layout-fold.layout-landscape .logistics-map .map-ui-layer.absolute.top-2 {
+  top: max(0.35rem, env(safe-area-inset-top, 0px));
+}
+
+html.layout-mobile.layout-landscape .map-mobile-sheet,
+html.layout-fold.layout-landscape .map-mobile-sheet {
+  max-height: min(88dvh, calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px)), 100%);
+}
+
+html.layout-mobile.layout-landscape .app-header-nav,
+html.layout-fold.layout-landscape .app-header-nav {
+  top: calc(3rem + env(safe-area-inset-top, 0px));
+  max-height: calc(var(--bars-viewport-height, 100dvh) - 3rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+}
+
+html.layout-mobile.layout-landscape .modal-backdrop,
+html.layout-fold.layout-landscape .modal-backdrop {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+html.layout-mobile.layout-landscape.compact-laptop .modal-backdrop > *,
+html.layout-fold.layout-landscape.compact-laptop .modal-backdrop > * {
+  max-height: min(96dvh, calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px)), 100%);
+}
+
+html.layout-mobile.layout-landscape .auth-login-shell,
+html.layout-fold.layout-landscape .auth-login-shell {
+  justify-content: flex-start;
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+  overflow-y: auto;
+}
+
+html.layout-mobile.layout-landscape .auth-login-shell .max-w-md,
+html.layout-fold.layout-landscape .auth-login-shell .max-w-md {
+  max-width: min(28rem, 92vw);
+}
+
+html.layout-mobile .logistics-map .map-desktop-reset-btn,
+html.layout-fold .logistics-map .map-desktop-reset-btn {
+  display: none;
+}
+
+html.layout-mobile .logistics-map .map-search-column,
+html.layout-fold .logistics-map .map-search-column {
+  display: none !important;
+}
+
+html.layout-mobile .logistics-map .map-top-controls,
+html.layout-fold .logistics-map .map-top-controls {
+  display: none !important;
+}
+
+/* Mobile map search — opened from menu */
+.map-mobile-search-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+}
+
+.map-mobile-search-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  pointer-events: auto;
+  padding: max(0.5rem, env(safe-area-inset-top, 0px))
+    max(0.5rem, env(safe-area-inset-right, 0px))
+    0.75rem
+    max(0.5rem, env(safe-area-inset-left, 0px));
+  background: var(--mobile-chrome-bg);
+  border-bottom: 1px solid var(--mobile-chrome-border);
+  box-shadow: var(--mobile-sheet-shadow);
+  animation: map-search-slide-down 0.22s ease-out;
+}
+
+.map-mobile-search-panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.map-mobile-search-box {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.map-mobile-search-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  margin-top: 0.125rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--mobile-muted);
+}
+
+.map-mobile-search-panel .map-search-box > div {
+  box-shadow: none;
+}
+
+.header-nav-item--search {
+  display: none;
+}
+
+html.layout-mobile .header-nav-item--search,
+html.layout-fold .header-nav-item--search {
+  display: flex;
+}
+
+html.layout-mobile .header-nav-scroll,
+html.layout-fold .header-nav-scroll {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+@keyframes map-search-slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.map-mobile-fab-bar {
+  display: none;
+  position: absolute;
+  z-index: 35;
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: auto;
+  bottom: max(0.5rem, env(safe-area-inset-bottom));
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.map-mobile-fab {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: var(--map-mobile-fab-size);
+  min-width: var(--map-mobile-fab-size);
+  padding: 0 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border: 1px solid var(--mobile-fab-border);
+  background: var(--mobile-fab-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--mobile-fab-text);
+  box-shadow: var(--mobile-fab-shadow);
+}
+
+.map-mobile-fab.is-active {
+  background: rgb(79 70 229);
+  border-color: rgb(99 102 241);
+  color: #ffffff;
+}
+
+.map-mobile-fab-label {
+  max-width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Bottom sheets — filter & legend (above map-ui-layer z-index 20) */
+.map-mobile-sheet-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+}
+
+.map-mobile-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--mobile-backdrop);
+  pointer-events: auto;
+  animation: map-sheet-fade-in 0.18s ease-out;
+}
+
+.map-mobile-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  max-height: min(78dvh, calc(100% - env(safe-area-inset-top, 0px) - 3rem));
+  display: flex;
+  flex-direction: column;
+  background: var(--mobile-chrome-bg);
+  border-top: 1px solid var(--mobile-chrome-border);
+  border-radius: var(--map-mobile-sheet-radius) var(--map-mobile-sheet-radius) 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: var(--mobile-sheet-shadow);
+  pointer-events: auto;
+  isolation: isolate;
+  animation: map-sheet-slide-up 0.24s ease-out;
+}
+
+.map-mobile-sheet-handle {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0.5rem auto 0;
+  border-radius: 9999px;
+  background: var(--mobile-handle);
+}
+
+.map-mobile-sheet-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--mobile-chrome-border-soft);
+}
+
+.map-mobile-sheet-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--mobile-title);
+}
+
+.map-mobile-sheet-close {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: var(--mobile-muted);
+}
+
+.map-mobile-sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.75rem 1rem 1rem;
+  color: var(--mobile-fab-text);
+}
+
+.map-mobile-sheet-body--filters {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-mobile-sheet-body--factory {
+  overscroll-behavior: contain;
+}
+
+.map-mobile-dock-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+}
+
+.map-mobile-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--mobile-chrome-bg);
+  border-top: 1px solid var(--mobile-chrome-border);
+  border-radius: var(--map-mobile-sheet-radius) var(--map-mobile-sheet-radius) 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: var(--mobile-sheet-shadow);
+  pointer-events: auto;
+  isolation: isolate;
+  animation: map-sheet-slide-up 0.24s ease-out;
+}
+
+.map-mobile-dock--position {
+  max-height: min(78dvh, calc(100% - env(safe-area-inset-top, 0px) - 3rem));
+}
+
+.map-mobile-dock-handle {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0.5rem auto 0;
+  border-radius: 9999px;
+  background: var(--mobile-handle);
+}
+
+.map-mobile-dock-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--mobile-chrome-border-soft);
+}
+
+.map-mobile-dock-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--mobile-title);
+}
+
+.map-mobile-dock-close {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: var(--mobile-muted);
+}
+
+.map-mobile-dock-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.75rem 1rem 1rem;
+  color: var(--mobile-fab-text);
+}
+
+.map-sheet-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.map-sheet-select {
+  display: block;
+  padding: 0;
+  gap: 0;
+}
+
+html.layout-mobile .map-mobile-sheet-body--factory .map-sheet-select .modal-dropdown-trigger,
+html.layout-fold .map-mobile-sheet-body--factory .map-sheet-select .modal-dropdown-trigger {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .map-factory-highlight-actions--touch button,
+html.layout-fold .map-factory-highlight-actions--touch button {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .logistics-map.is-position-editing,
+html.layout-fold .logistics-map.is-position-editing {
+  --map-position-dock-height: 0px;
+}
+
+html.layout-mobile .logistics-map.is-position-editing .map-position-crosshair,
+html.layout-fold .logistics-map.is-position-editing .map-position-crosshair {
+  z-index: 49;
+  bottom: var(--map-position-dock-height, 0px);
+  top: 0;
+  height: auto;
+}
+
+html.layout-mobile .map-mobile-dock-body .map-position-kladr-input,
+html.layout-fold .map-mobile-dock-body .map-position-kladr-input {
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.625rem;
+}
+
+html.layout-mobile .map-mobile-dock-body .map-position-actions,
+html.layout-fold .map-mobile-dock-body .map-position-actions {
+  flex-direction: column;
+}
+
+html.layout-mobile .map-mobile-dock-body .map-position-action-btn,
+html.layout-fold .map-mobile-dock-body .map-position-action-btn {
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.map-filter-panel--mobile-sheet {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.625rem 1rem max(1rem, env(safe-area-inset-bottom));
+  gap: 0.875rem;
+  overflow: visible;
+}
+
+.map-filter-panel--mobile-sheet .map-filter-contour-block {
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-left-width: 0 !important;
+  border-radius: 0.625rem;
+  background: rgb(15 23 42 / 0.45);
+  border: 1px solid rgb(51 65 85 / 0.55);
+}
+
+.map-filter-panel--mobile-sheet .map-filter-contour-block--inner {
+  background: rgb(6 78 59 / 0.12);
+  border-color: rgb(16 185 129 / 0.35);
+}
+
+.map-filter-panel--mobile-sheet .rounded-lg.border.border-slate-800 {
+  border-color: rgb(51 65 85 / 0.65);
+  background: rgb(15 23 42 / 0.35);
+}
+
+.map-filter-panel--mobile-sheet .map-filter-collapsible-toggle {
+  min-height: 2.25rem;
+}
+
+html.layout-mobile .map-filter-panel--mobile-sheet button,
+html.layout-fold .map-filter-panel--mobile-sheet button {
+  min-height: 1.75rem;
+}
+
+.map-mobile-legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+html.layout-landscape-phone .map-mobile-sheet {
+  max-height: min(88dvh, calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px)), 100%);
+}
+
+html.layout-landscape-phone .logistics-map .map-bottom-stack {
+  bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  max-width: min(16rem, 45vw);
+}
+
+@keyframes map-sheet-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes map-sheet-slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Fold — dual-pane when very wide unfolded */
+@media (min-width: 700px) {
+  html.layout-fold .logistics-map .map-filter-panel-wrapper:not(.map-mobile-sheet-panel) {
+    display: block !important;
+    position: absolute !important;
+    left: max(0.5rem, env(safe-area-inset-left)) !important;
+    top: auto !important;
+    bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important;
+    width: min(18rem, 42vw) !important;
+    max-width: min(18rem, 42vw) !important;
+  }
+
+  html.layout-fold .map-mobile-fab-bar {
+    display: none;
+  }
+
+  html.layout-fold .map-legend {
+    display: block;
+  }
+
+  html.layout-fold .logistics-map .map-bottom-stack {
+    bottom: max(0.5rem, env(safe-area-inset-bottom));
+    max-width: min(20rem, 38vw);
+  }
+}
+
+@media (horizontal-viewport-segments: 2) {
+  html.layout-fold .logistics-map .map-ui-layer:first-of-type {
+    max-width: calc(var(--map-filter-panel-width, 18rem) + 1rem);
+  }
+}
+
+/* Data pages — tighter padding, scrollable tables */
+html.layout-mobile .scroll-area > .p-4,
+html.layout-mobile .scroll-area > .p-4.sm\:p-6,
+html.layout-mobile .factories-page,
+html.layout-mobile .shipments-page,
+html.layout-mobile .site-directory-page,
+html.layout-mobile .carrier-directory-page,
+html.layout-mobile .product-catalog-page,
+html.layout-mobile .manager-directory-page,
+html.layout-mobile .my-data-page,
+html.layout-mobile .admin-panel,
+html.layout-mobile .audit-logs-page,
+html.layout-mobile .bg-slate-950.min-h-full.p-4 {
+  padding: 0.75rem !important;
+}
+
+html.layout-mobile .shipments-page,
+html.layout-fold .shipments-page,
+html.layout-mobile .site-directory-page,
+html.layout-fold .site-directory-page,
+html.layout-mobile .carrier-directory-page,
+html.layout-fold .carrier-directory-page,
+html.layout-mobile .product-catalog-page,
+html.layout-fold .product-catalog-page,
+html.layout-mobile .manager-directory-page,
+html.layout-fold .manager-directory-page,
+html.layout-mobile .my-data-page,
+html.layout-fold .my-data-page {
+  gap: 0.75rem !important;
+}
+
+/* Factories schematic map — larger region count labels on mobile */
+html.layout-mobile .russia-regions-map-canvas.is-mobile .russia-map-region-count,
+html.layout-fold .russia-regions-map-canvas.is-mobile .russia-map-region-count {
+  stroke-width: 0.55px;
+  paint-order: stroke fill;
+}
+
+html.layout-mobile .shipments-list-toolbar,
+html.layout-mobile .factories-list-toolbar,
+html.layout-mobile .site-directory-toolbar,
+html.layout-mobile .carrier-directory-toolbar,
+html.layout-mobile .product-catalog-toolbar,
+html.layout-mobile .manager-directory-toolbar,
+html.layout-mobile .my-data-toolbar,
+html.layout-mobile .audit-logs-toolbar,
+html.layout-fold .shipments-list-toolbar,
+html.layout-fold .factories-list-toolbar,
+html.layout-fold .site-directory-toolbar,
+html.layout-fold .carrier-directory-toolbar,
+html.layout-fold .product-catalog-toolbar,
+html.layout-fold .manager-directory-toolbar,
+html.layout-fold .my-data-toolbar,
+html.layout-fold .audit-logs-toolbar {
+  padding: 0.875rem !important;
+  border-radius: 1rem !important;
+}
+
+html.layout-mobile .shipments-list-toolbar h2,
+html.layout-fold .shipments-list-toolbar h2,
+html.layout-mobile .site-directory-toolbar h2,
+html.layout-fold .site-directory-toolbar h2,
+html.layout-mobile .carrier-directory-toolbar h2,
+html.layout-fold .carrier-directory-toolbar h2,
+html.layout-mobile .product-catalog-toolbar h2,
+html.layout-fold .product-catalog-toolbar h2,
+html.layout-mobile .manager-directory-toolbar h2,
+html.layout-fold .manager-directory-toolbar h2,
+html.layout-mobile .my-data-toolbar h2,
+html.layout-fold .my-data-toolbar h2,
+html.layout-mobile .audit-logs-toolbar h2,
+html.layout-fold .audit-logs-toolbar h2 {
+  font-size: 1rem;
+}
+
+html.layout-mobile .shipments-list-filters-grid,
+html.layout-fold .shipments-list-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .shipments-list-search,
+html.layout-fold .shipments-list-search {
+  grid-column: 1 / -1;
+}
+
+html.layout-mobile .shipments-list-filter,
+html.layout-fold .shipments-list-filter {
+  min-width: 0;
+}
+
+html.layout-mobile .shipments-table-desktop,
+html.layout-fold .shipments-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .shipments-cards-mobile,
+html.layout-fold .shipments-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .shipment-events-section-toggle,
+html.layout-fold .shipment-events-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--shipment-events-toggle-border);
+  background: var(--shipment-events-toggle-bg);
+  color: var(--shipment-events-toggle-text);
+  text-align: left;
+}
+
+html.layout-mobile .shipment-events-section-chevron,
+html.layout-fold .shipment-events-section-chevron {
+  flex-shrink: 0;
+  color: var(--shipment-events-toggle-chevron);
+}
+
+html.layout-mobile .shipment-events-section-body:not(.is-open),
+html.layout-fold .shipment-events-section-body:not(.is-open) {
+  display: none;
+}
+
+html.layout-mobile .shipment-events-section,
+html.layout-fold .shipment-events-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .shipment-events-section .shipment-events-panel,
+html.layout-fold .shipment-events-section .shipment-events-panel {
+  border-radius: 1rem;
+  padding: 0.875rem;
+}
+
+html.layout-mobile .shipment-events-recent,
+html.layout-fold .shipment-events-recent {
+  border-radius: 1rem;
+  padding: 0.875rem !important;
+}
+
+/* Site directory — mobile cards, hide table */
+html.layout-mobile .site-directory-table-desktop,
+html.layout-fold .site-directory-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .site-directory-cards-mobile,
+html.layout-fold .site-directory-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .site-directory-chips-row,
+html.layout-fold .site-directory-chips-row,
+html.layout-mobile .horizontal-scroll-chips-row,
+html.layout-fold .horizontal-scroll-chips-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.125rem;
+  scrollbar-width: none;
+}
+
+html.layout-mobile .site-directory-chips-row::-webkit-scrollbar,
+html.layout-fold .site-directory-chips-row::-webkit-scrollbar,
+html.layout-mobile .horizontal-scroll-chips-row::-webkit-scrollbar,
+html.layout-fold .horizontal-scroll-chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow,
+html.layout-fold .horizontal-scroll-chips--overflow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow .horizontal-scroll-chips-row,
+html.layout-fold .horizontal-scroll-chips--overflow .horizontal-scroll-chips-row {
+  flex: 1;
+  min-width: 0;
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn,
+html.layout-fold .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(15 23 42 / 0.96);
+  color: #94a3b8;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:not(:disabled):hover,
+html.layout-fold .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:not(:disabled):hover {
+  color: #e2e8f0;
+  border-color: rgb(99 102 241 / 0.55);
+  background: rgb(30 41 59 / 0.98);
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:not(:disabled):active,
+html.layout-fold .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:not(:disabled):active {
+  color: #c7d2fe;
+  border-color: rgb(99 102 241 / 0.7);
+  background: rgb(49 46 129 / 0.35);
+}
+
+html.layout-mobile .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:disabled,
+html.layout-fold .horizontal-scroll-chips--overflow .horizontal-scroll-chips-btn:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+html.layout-mobile .site-directory-chip,
+html.layout-fold .site-directory-chip {
+  flex-shrink: 0;
+}
+
+html.layout-mobile .site-directory-filters-grid,
+html.layout-fold .site-directory-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .site-directory-search,
+html.layout-fold .site-directory-search,
+html.layout-mobile .carrier-directory-search,
+html.layout-fold .carrier-directory-search {
+  grid-column: 1 / -1;
+}
+
+/* Carrier directory — mobile cards, hide table */
+html.layout-mobile .carrier-directory-table-desktop,
+html.layout-fold .carrier-directory-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .carrier-directory-table-panel,
+html.layout-fold .carrier-directory-table-panel {
+  display: none !important;
+}
+
+html.layout-mobile .carrier-directory-cards-mobile,
+html.layout-fold .carrier-directory-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .carrier-directory-chip,
+html.layout-fold .carrier-directory-chip {
+  flex-shrink: 0;
+}
+
+html.layout-mobile .carrier-directory-filters-grid,
+html.layout-fold .carrier-directory-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .carrier-directory-toolbar-actions,
+html.layout-fold .carrier-directory-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .carrier-directory-toolbar-actions .carrier-directory-toolbar-btn,
+html.layout-fold .carrier-directory-toolbar-actions .carrier-directory-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .carrier-directory-form-modal-footer button,
+html.layout-fold .carrier-directory-form-modal-footer button,
+html.layout-mobile .product-catalog-form-modal-footer button,
+html.layout-fold .product-catalog-form-modal-footer button,
+html.layout-mobile .manager-directory-form-modal-footer button,
+html.layout-fold .manager-directory-form-modal-footer button {
+  min-height: 2.75rem;
+  flex: 1 1 auto;
+}
+
+html.layout-mobile .carrier-directory-form-modal-footer,
+html.layout-fold .carrier-directory-form-modal-footer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Product catalog — mobile cards, hide table */
+html.layout-mobile .product-catalog-table-desktop,
+html.layout-fold .product-catalog-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .product-catalog-table-panel,
+html.layout-fold .product-catalog-table-panel {
+  display: none !important;
+}
+
+html.layout-mobile .product-catalog-cards-mobile,
+html.layout-fold .product-catalog-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .product-catalog-filters-grid,
+html.layout-fold .product-catalog-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .product-catalog-toolbar-actions,
+html.layout-fold .product-catalog-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .product-catalog-toolbar-actions .product-catalog-toolbar-btn,
+html.layout-fold .product-catalog-toolbar-actions .product-catalog-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .product-catalog-form-modal-footer button,
+html.layout-fold .product-catalog-form-modal-footer button {
+  min-height: 2.75rem;
+  flex: 1 1 auto;
+}
+
+html.layout-mobile .product-catalog-form-modal-footer,
+html.layout-fold .product-catalog-form-modal-footer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Manager directory — mobile cards, hide table */
+html.layout-mobile .manager-directory-table-desktop,
+html.layout-fold .manager-directory-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .manager-directory-table-panel,
+html.layout-fold .manager-directory-table-panel {
+  display: none !important;
+}
+
+html.layout-mobile .manager-directory-cards-mobile,
+html.layout-fold .manager-directory-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+html.layout-mobile .manager-directory-filters-grid,
+html.layout-fold .manager-directory-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .manager-directory-toolbar-actions,
+html.layout-fold .manager-directory-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .manager-directory-toolbar-actions .manager-directory-toolbar-btn,
+html.layout-fold .manager-directory-toolbar-actions .manager-directory-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .manager-directory-form-modal-footer button,
+html.layout-fold .manager-directory-form-modal-footer button,
+html.layout-mobile .my-data-form-modal-footer button,
+html.layout-fold .my-data-form-modal-footer button {
+  min-height: 2.75rem;
+  flex: 1 1 auto;
+}
+
+html.layout-mobile .manager-directory-form-modal-footer,
+html.layout-fold .manager-directory-form-modal-footer,
+html.layout-mobile .my-data-form-modal-footer,
+html.layout-fold .my-data-form-modal-footer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* My data — mobile cards, hide tables */
+html.layout-mobile .my-data-toolbar-actions,
+html.layout-fold .my-data-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .my-data-toolbar-actions .my-data-toolbar-btn,
+html.layout-fold .my-data-toolbar-actions .my-data-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .my-data-table-desktop,
+html.layout-fold .my-data-table-desktop,
+html.layout-mobile .my-data-imports-table-desktop,
+html.layout-fold .my-data-imports-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .my-data-shipments-cards-mobile,
+html.layout-fold .my-data-shipments-cards-mobile,
+html.layout-mobile .my-data-imports-cards-mobile,
+html.layout-fold .my-data-imports-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem;
+}
+
+html.layout-mobile .my-data-form-modal-footer button,
+html.layout-fold .my-data-form-modal-footer button {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+/* Admin panel — mobile layout */
+html.layout-mobile .admin-panel,
+html.layout-fold .admin-panel {
+  padding: 0.75rem !important;
+}
+
+html.layout-mobile .admin-sidebar-header,
+html.layout-fold .admin-sidebar-header {
+  padding: 0.875rem !important;
+  border-radius: 1rem !important;
+}
+
+html.layout-mobile .admin-sidebar-header h2,
+html.layout-fold .admin-sidebar-header h2 {
+  font-size: 1rem;
+}
+
+html.layout-mobile .admin-nav,
+html.layout-fold .admin-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow-x: visible;
+  gap: 0.5rem;
+  padding-bottom: 0;
+}
+
+html.layout-mobile .admin-nav-btn,
+html.layout-fold .admin-nav-btn {
+  justify-content: flex-start;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.25;
+}
+
+html.layout-mobile .admin-section-title,
+html.layout-fold .admin-section-title {
+  font-size: 0.9375rem;
+  margin-bottom: 0.75rem !important;
+}
+
+html.layout-mobile .admin-users-toolbar-actions,
+html.layout-fold .admin-users-toolbar-actions,
+html.layout-mobile .admin-sites-toolbar-actions,
+html.layout-fold .admin-sites-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .admin-users-toolbar-btn,
+html.layout-fold .admin-users-toolbar-btn,
+html.layout-mobile .admin-sites-toolbar-btn,
+html.layout-fold .admin-sites-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .admin-sites-toolbar-actions .admin-sites-toolbar-btn:last-child:nth-child(odd),
+html.layout-fold .admin-sites-toolbar-actions .admin-sites-toolbar-btn:last-child:nth-child(odd) {
+  flex-basis: 100%;
+}
+
+html.layout-mobile .admin-users-table-desktop,
+html.layout-fold .admin-users-table-desktop,
+html.layout-mobile .admin-sites-table-desktop,
+html.layout-fold .admin-sites-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .admin-users-cards-mobile,
+html.layout-fold .admin-users-cards-mobile,
+html.layout-mobile .admin-sites-cards-mobile,
+html.layout-fold .admin-sites-cards-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem;
+}
+
+html.layout-mobile .admin-users-form-grid,
+html.layout-fold .admin-users-form-grid {
+  grid-template-columns: 1fr;
+}
+
+html.layout-mobile .admin-users-form-modal-footer button,
+html.layout-fold .admin-users-form-modal-footer button,
+html.layout-mobile .admin-sites-delete-footer button,
+html.layout-fold .admin-sites-delete-footer button {
+  min-height: 2.75rem;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+html.layout-mobile .admin-users-form-modal-footer,
+html.layout-fold .admin-users-form-modal-footer,
+html.layout-mobile .admin-sites-delete-footer,
+html.layout-fold .admin-sites-delete-footer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .admin-form-actions,
+html.layout-fold .admin-form-actions {
+  width: 100%;
+}
+
+html.layout-mobile .admin-form-actions button,
+html.layout-fold .admin-form-actions button,
+html.layout-mobile .admin-form-actions-btn,
+html.layout-fold .admin-form-actions-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+  min-height: 2.75rem;
+  justify-content: center;
+}
+
+html.layout-mobile .admin-carrier-sync-btn,
+html.layout-fold .admin-carrier-sync-btn {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .admin-backups-create-btn,
+html.layout-fold .admin-backups-create-btn {
+  width: 100%;
+}
+
+html.layout-mobile .admin-field,
+html.layout-fold .admin-field,
+html.layout-mobile .admin-panel .modal-dropdown-trigger,
+html.layout-fold .admin-panel .modal-dropdown-trigger {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .admin-geocoding-stats,
+html.layout-fold .admin-geocoding-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html.layout-mobile .admin-sites-chip,
+html.layout-fold .admin-sites-chip {
+  flex: 1 1 calc(50% - 0.25rem);
+  text-align: center;
+}
+
+/* Audit logs — mobile layout */
+html.layout-mobile .audit-logs-page,
+html.layout-fold .audit-logs-page {
+  gap: 0.75rem !important;
+  padding: 0.75rem !important;
+}
+
+html.layout-mobile .audit-logs-toolbar,
+html.layout-fold .audit-logs-toolbar {
+  padding: 0.875rem !important;
+  border-radius: 1rem !important;
+}
+
+html.layout-mobile .audit-logs-toolbar h2,
+html.layout-fold .audit-logs-toolbar h2 {
+  font-size: 1rem;
+}
+
+html.layout-mobile .audit-logs-export-btn,
+html.layout-fold .audit-logs-export-btn {
+  width: 100%;
+}
+
+html.layout-mobile .audit-logs-filters-grid,
+html.layout-fold .audit-logs-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .audit-logs-filter,
+html.layout-fold .audit-logs-filter {
+  width: 100%;
+}
+
+html.layout-mobile .audit-logs-cards-mobile,
+html.layout-fold .audit-logs-cards-mobile {
+  grid-template-columns: 1fr !important;
+  display: grid;
+  flex-direction: unset;
+  gap: 0.625rem;
+  padding: 0.75rem;
+}
+
+html.layout-mobile .audit-logs-table-desktop,
+html.layout-fold .audit-logs-table-desktop {
+  display: none !important;
+}
+
+/* RZD Analytics — mobile layout */
+html.layout-mobile .rzd-analytics-header,
+html.layout-fold .rzd-analytics-header {
+  padding: 0.75rem 0.75rem 0 !important;
+}
+
+html.layout-mobile .rzd-analytics-content,
+html.layout-fold .rzd-analytics-content {
+  padding: 0.5rem 0.75rem 0.75rem !important;
+}
+
+html.layout-mobile .rzd-analytics-toolbar,
+html.layout-fold .rzd-analytics-toolbar {
+  padding: 0.875rem !important;
+  border-radius: 1rem !important;
+}
+
+html.layout-mobile .rzd-analytics-toolbar h2,
+html.layout-fold .rzd-analytics-toolbar h2 {
+  font-size: 1rem;
+}
+
+html.layout-mobile .rzd-analytics-toolbar-actions,
+html.layout-fold .rzd-analytics-toolbar-actions {
+  width: 100%;
+}
+
+html.layout-mobile .rzd-analytics-toolbar-actions .rzd-analytics-toolbar-btn,
+html.layout-fold .rzd-analytics-toolbar-actions .rzd-analytics-toolbar-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+}
+
+html.layout-mobile .rzd-analytics-filters-title,
+html.layout-fold .rzd-analytics-filters-title {
+  display: none;
+}
+
+html.layout-mobile .rzd-analytics-tools-body,
+html.layout-fold .rzd-analytics-tools-body {
+  max-height: min(46vh, calc(var(--bars-viewport-height, 100dvh) - 14rem));
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-right: -0.125rem;
+  padding-right: 0.125rem;
+}
+
+html.layout-mobile .rzd-analytics-filters,
+html.layout-fold .rzd-analytics-filters {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+html.layout-mobile .rzd-analytics-filters-grid,
+html.layout-fold .rzd-analytics-filters-grid {
+  grid-template-columns: 1fr;
+}
+
+html.layout-mobile .rzd-analytics-kpi-grid,
+html.layout-fold .rzd-analytics-kpi-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+html.layout-mobile .rzd-analytics-kpi-grid .rzd-analytics-kpi-card:last-child,
+html.layout-fold .rzd-analytics-kpi-grid .rzd-analytics-kpi-card:last-child {
+  grid-column: 1 / -1;
+}
+
+html.layout-mobile .rzd-analytics-tabs,
+html.layout-fold .rzd-analytics-tabs {
+  width: 100%;
+}
+
+html.layout-mobile .rzd-analytics-tab,
+html.layout-fold .rzd-analytics-tab {
+  flex: 1 1 0;
+}
+
+html.layout-mobile .rzd-analytics-map-layout,
+html.layout-fold .rzd-analytics-map-layout {
+  gap: 0 !important;
+}
+
+html.layout-mobile .rzd-analytics-routes--desktop,
+html.layout-fold .rzd-analytics-routes--desktop {
+  display: none !important;
+}
+
+html.layout-mobile .rzd-analytics-map-wrap,
+html.layout-fold .rzd-analytics-map-wrap {
+  flex: 1 1 auto;
+  min-height: 0 !important;
+}
+
+html.layout-mobile .rzd-analytics-map-fab-bar,
+html.layout-fold .rzd-analytics-map-fab-bar {
+  display: flex;
+}
+
+html.layout-mobile .rzd-analytics-table-desktop,
+html.layout-fold .rzd-analytics-table-desktop,
+html.layout-mobile .rzd-analytics-imports-table-desktop,
+html.layout-fold .rzd-analytics-imports-table-desktop {
+  display: none !important;
+}
+
+html.layout-mobile .rzd-analytics-records-cards-mobile,
+html.layout-fold .rzd-analytics-records-cards-mobile,
+html.layout-mobile .rzd-analytics-imports-cards-mobile,
+html.layout-fold .rzd-analytics-imports-cards-mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+html.layout-mobile .rzd-analytics-pagination,
+html.layout-fold .rzd-analytics-pagination {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+html.layout-mobile .rzd-analytics-pagination-actions,
+html.layout-fold .rzd-analytics-pagination-actions {
+  width: 100%;
+  justify-content: stretch;
+}
+
+html.layout-mobile .rzd-analytics-pagination-btn,
+html.layout-fold .rzd-analytics-pagination-btn {
+  flex: 1 1 0;
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .rzd-analytics-filters .modal-dropdown .modal-dropdown-trigger,
+html.layout-fold .rzd-analytics-filters .modal-dropdown .modal-dropdown-trigger,
+html.layout-mobile .rzd-analytics-filters .rzd-analytics-field,
+html.layout-fold .rzd-analytics-filters .rzd-analytics-field {
+  min-height: 2.75rem;
+}
+
+html.layout-mobile .rzd-analytics-dropdown-panel,
+html.layout-fold .rzd-analytics-dropdown-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+html.layout-mobile .rzd-analytics-dropdown-panel .rzd-analytics-dropdown-list,
+html.layout-fold .rzd-analytics-dropdown-panel .rzd-analytics-dropdown-list {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+html.layout-mobile .responsive-table-wrap,
+html.layout-fold .responsive-table-wrap {
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.layout-mobile .map-filter-panel button,
+html.layout-fold .map-filter-panel button {
+  min-height: 2rem;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+@keyframes map-sheet-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes map-sheet-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Disable compact-laptop modal centering fight on phones */
+html.layout-mobile.compact-laptop .modal-backdrop:not(.modal-backdrop--sheet),
+html.layout-fold.compact-laptop .modal-backdrop:not(.modal-backdrop--sheet) {
+  align-items: flex-end;
+  padding: max(0.5rem, env(safe-area-inset-top)) 0 0 0 !important;
+}
+
+html.layout-mobile.compact-laptop .modal-backdrop:not(.modal-backdrop--sheet) > *,
+html.layout-fold.compact-laptop .modal-backdrop:not(.modal-backdrop--sheet) > * {
+  width: 100%;
+  max-height: min(92dvh, calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px)), 100%);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}

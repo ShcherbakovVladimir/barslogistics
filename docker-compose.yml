@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bars
+      POSTGRES_PASSWORD: bars
+      POSTGRES_DB: barslogistics
+    ports:
+      - "5432:5432"
+    volumes:
+      - bars_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bars -d barslogistics"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://bars:bars@db:5432/barslogistics
+      PORT: "3000"
+      NODE_ENV: production
+      JWT_SECRET: dev-local-jwt-secret-change-me
+      BACKUP_DIR: /app/data/backups
+    volumes:
+      - bars_backups:/app/data/backups
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  bars_pg_data:
+  bars_backups:

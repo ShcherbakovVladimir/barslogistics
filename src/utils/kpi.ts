@@ -1,0 +1,1 @@
+export { computeAvgDeliveryHours } from './deliveryHours';

@@ -1,0 +1,22 @@
+[Unit]
+Description=BarsLogistics web application
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=__APP_USER__
+Group=__APP_USER__
+WorkingDirectory=__APP_DIR__
+EnvironmentFile=__APP_DIR__/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node __APP_DIR__/dist/server.cjs
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGINT
+
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
