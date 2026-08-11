@@ -3488,7 +3488,7 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 }
 
 [data-theme="light"] .app-header-btn,
-[data-theme="light"] .app-header-menu-btn:not(.bg-indigo-600),
+[data-theme="light"] .app-header-menu-btn:not(.is-open):not(.bg-indigo-600),
 [data-theme="light"] .app-header-theme-toggle {
   background-color: transparent !important;
   border-color: #cbd5e1 !important;
@@ -3497,9 +3497,37 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 }
 
 [data-theme="light"] .app-header-btn:hover,
-[data-theme="light"] .app-header-menu-btn:not(.bg-indigo-600):hover {
+[data-theme="light"] .app-header-menu-btn:not(.is-open):not(.bg-indigo-600):hover {
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] .app-header-menu-btn.is-open {
+  background-color: #4f46e5 !important;
+  border-color: #6366f1 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px -4px rgb(79 70 229 / 0.45) !important;
+}
+
+[data-theme="light"] .app-header-brand-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .app-header-brand-subtitle {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .app-header-sync-badge.is-live {
+  background: rgb(16 185 129 / 0.1) !important;
+  color: #059669 !important;
+  border-color: rgb(16 185 129 / 0.28) !important;
+}
+
+[data-theme="light"] .app-header-sync-badge.is-polling {
+  background: rgb(245 158 11 / 0.12) !important;
+  color: #d97706 !important;
+  border-color: rgb(245 158 11 / 0.3) !important;
 }
 
 [data-theme="light"] .app-header .app-header-notify-ring {

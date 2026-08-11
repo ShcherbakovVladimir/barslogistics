@@ -166,7 +166,9 @@ html.layout-mobile .app-header-active-tab,
 html.layout-fold .app-header-active-tab {
   display: inline-flex;
   align-items: center;
-  max-width: 42vw;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: min(42vw, 9rem);
   padding: 0.2rem 0.5rem;
   border-radius: 9999px;
   font-size: 0.625rem;
@@ -177,6 +179,22 @@ html.layout-fold .app-header-active-tab {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+html.layout-mobile .app-header-brand-title,
+html.layout-fold .app-header-brand-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+html.layout-mobile .app-header-brand-subtitle,
+html.layout-fold .app-header-brand-subtitle {
+  display: none !important;
+}
+
+html.layout-mobile .app-header-sync-label,
+html.layout-fold .app-header-sync-label {
+  display: none !important;
 }
 
 /* Hide cramped header toolbar on mobile — tools live in menu grid */

@@ -327,17 +327,17 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header className="app-header w-full bg-slate-900/96 backdrop-blur-md shrink-0 z-50">
-        <div className="app-header-inner w-full max-w-none px-3 sm:px-4 lg:px-6">
+        <div className="app-header-inner w-full max-w-none px-3 sm:px-4 lg:px-5 xl:px-6">
           <div className="app-header-row flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-14 sm:h-16">
 
-            <div className="app-header-brand flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+            <div className="app-header-brand flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 overflow-hidden">
               <button
                 type="button"
                 onClick={() => (navOpen ? closeNav() : openNav())}
-                className={`app-header-menu-btn inline-flex items-center justify-center shrink-0 rounded-xl border transition-colors ${
+                className={`app-header-menu-btn inline-flex items-center justify-center shrink-0 rounded-xl border transition-all duration-200 ${
                   navOpen
-                    ? 'bg-indigo-600 border-indigo-500 text-white'
-                    : 'bg-transparent border-slate-700/80 text-slate-300 hover:text-white hover:bg-slate-800/80'
+                    ? 'is-open bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-900/40'
+                    : 'bg-slate-800/50 border-slate-700/70 text-slate-300 hover:text-white hover:bg-slate-800 hover:border-slate-600'
                 }`}
                 aria-label={t('common.menu')}
                 aria-expanded={navOpen}
@@ -345,26 +345,41 @@ export const Header: React.FC<HeaderProps> = ({
                 {navOpen ? <X className="w-5 h-5 shrink-0 block" /> : <Menu className="w-5 h-5 shrink-0 block" />}
               </button>
 
-              <BrandLogo size="md" className="shrink-0" />
+              <div className="app-header-brand-lockup flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 overflow-hidden">
+                <BrandLogo size="md" className="app-header-brand-logo shrink-0" />
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-wrap">
-                  <h1 className="font-bold text-slate-100 text-sm sm:text-base tracking-tight truncate">{t('header.brandTitle')}</h1>
-                  {activeNavItem && (
-                    <span className="app-header-active-tab" title={activeNavItem.label}>
-                      {activeNavItem.label}
+                <div className="app-header-brand-text min-w-0 flex-1 overflow-hidden">
+                  <div className="app-header-brand-title-row flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <h1 className="app-header-brand-title font-bold text-slate-100 text-sm sm:text-base tracking-tight truncate min-w-0">
+                      {t('header.brandTitle')}
+                    </h1>
+                    {activeNavItem && (
+                      <span className="app-header-active-tab" title={activeNavItem.label}>
+                        {activeNavItem.label}
+                      </span>
+                    )}
+                    <span
+                      className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold border shrink-0 ${
+                        wsConnected
+                          ? 'is-live bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                          : 'is-polling bg-amber-500/10 text-amber-400 border-amber-500/30'
+                      }`}
+                      title={wsConnected ? t('header.wsLive') : t('header.pollingSync')}
+                    >
+                      <span
+                        className={`app-header-sync-dot w-1.5 h-1.5 rounded-full shrink-0 ${
+                          wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
+                        }`}
+                      />
+                      <span className="app-header-sync-label">
+                        {wsConnected ? t('header.wsLive') : t('header.pollingSync')}
+                      </span>
                     </span>
-                  )}
-                  <span className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-semibold border shrink-0 whitespace-nowrap ${
-                    wsConnected
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                  }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-                    <span className="hidden sm:inline">{wsConnected ? t('header.wsLive') : t('header.pollingSync')}</span>
-                  </span>
+                  </div>
+                  <p className="app-header-brand-subtitle text-[11px] text-slate-400 truncate leading-snug">
+                    {t('header.brandSubtitle')}
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-400 hidden md:block truncate">{t('header.brandSubtitle')}</p>
               </div>
             </div>
 
