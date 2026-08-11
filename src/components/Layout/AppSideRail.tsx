@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Bell, ChevronLeft, ChevronRight, ListTodo, MessageCircle, Trash2, CheckCheck, X, Truck,
 } from 'lucide-react';
@@ -107,6 +108,14 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
 
   useEffect(() => {
     if (!showNotifications) return;
+    /* Mobile sheet closes via backdrop / Escape — outside-click would fight the dock bell toggle. */
+    if (isMobileDock) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setShowNotifications(false);
+      };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }
     const onPointerDown = (e: MouseEvent | TouchEvent) => {
       const target = e.target as Node;
       if (notificationsRef.current && !notificationsRef.current.contains(target)) {
@@ -124,7 +133,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
       document.removeEventListener('touchstart', onPointerDown);
       window.removeEventListener('keydown', onKey);
     };
-  }, [showNotifications]);
+  }, [showNotifications, isMobileDock]);
 
   useEffect(() => {
     document.documentElement.classList.toggle(
@@ -255,7 +264,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
     </>
   );
 
-  return (
+  const rail = (
     <aside
       className={`app-side-rail${collapsed && !isMobileDock ? ' is-collapsed' : ''}${isMobileDock ? ' is-mobile-dock' : ''}`}
       aria-label={t('sideRail.label')}
@@ -363,8 +372,23 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
         </>
       ) : null}
 
-      {showNotifications && isMobileDock ? (
-        <div className="tasks-drawer-root app-notifications-drawer-root" ref={notificationsRef} role="presentation">
+    </aside>
+  );
+
+  /* Portal out of the bottom dock so fixed sheet reaches viewport bottom (same as TasksDrawer). */
+  const notificationsPortalTarget =
+    typeof document !== 'undefined'
+      ? (document.querySelector('.app-shell') as HTMLElement | null) ?? document.body
+      : null;
+
+  const mobileNotificationsDrawer =
+    showNotifications && isMobileDock && notificationsPortalTarget
+      ? createPortal(
+        <div
+          className="tasks-drawer-root app-notifications-drawer-root"
+          ref={notificationsRef}
+          role="presentation"
+        >
           <button
             type="button"
             className="tasks-drawer-backdrop"
@@ -372,7 +396,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
             onClick={() => setShowNotifications(false)}
           />
           <aside
-            className="tasks-drawer-panel app-notifications-drawer-panel bg-slate-900/96 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl text-slate-200"
+            className="tasks-drawer-panel app-notifications-drawer-panel bg-slate-900/96 backdrop-blur-md border border-slate-800 shadow-xl text-slate-200"
             role="dialog"
             aria-modal="true"
             aria-label={t('header.notificationsPanel')}
@@ -383,6 +407,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
                   <Bell className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" aria-hidden />
                   <div className="min-w-0">
                     <h2 className="tasks-drawer-title truncate">{t('header.notificationsPanel')}</h2>
+                    <p className="tasks-drawer-subtitle">{t('header.notificationsTitle')}</p>
                   </div>
                 </div>
               </div>
@@ -419,8 +444,15 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
               {renderNotificationsList()}
             </div>
           </aside>
-        </div>
-      ) : null}
-    </aside>
+        </div>,
+        notificationsPortalTarget,
+      )
+      : null;
+
+  return (
+    <>
+      {rail}
+      {mobileNotificationsDrawer}
+    </>
   );
 };

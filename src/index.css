@@ -7328,15 +7328,15 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
     height: min(
       88dvh,
       calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px) - 0.5rem)
-    );
+    ) !important;
     max-height: min(
       92dvh,
       calc(var(--bars-viewport-height, 100dvh) - env(safe-area-inset-top, 0px))
-    );
-    border-radius: 1rem 1rem 0 0;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
+    ) !important;
+    border-radius: 1rem 1rem 0 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     animation: tasks-drawer-sheet-up 0.28s cubic-bezier(0.32, 0.72, 0, 1);
     box-sizing: border-box;
