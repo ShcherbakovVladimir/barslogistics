@@ -5618,6 +5618,8 @@ html.map-facility-modal-open .modal-dropdown-panel {
 :root {
   --app-side-rail-width: 3.5rem;
   --app-side-rail-collapsed-width: 1.15rem;
+  /* Vertical space for chat panel above the rail chat button (FAB size + gap) */
+  --app-side-rail-chat-stack: calc(var(--map-fab-size, 2.75rem) + var(--map-fab-gap, 0.4rem));
   /* Matches header row: h-14 / sm:h-16 */
   --app-header-height: 3.5rem;
 }
@@ -5931,6 +5933,28 @@ html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
 
 html.app-side-rail-collapsed .chat-widget-root--rail {
   right: calc(var(--app-side-rail-collapsed-width) + 0.5rem + env(safe-area-inset-right, 0px));
+}
+
+/* Desktop side rail: open chat panel sits above the rail chat button (not under it) */
+html.app-side-rail-active:not(.layout-mobile):not(.layout-fold):not(.app-side-rail-mobile-dock)
+  .chat-widget-root.chat-widget-root--rail.chat-widget-root--open,
+html.compact-laptop.app-side-rail-active:not(.app-side-rail-mobile-dock)
+  .chat-widget-root.chat-widget-root--rail.chat-widget-root--open {
+  bottom: calc(0.75rem + var(--app-side-rail-chat-stack) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+}
+
+html.app-side-rail-active:not(.layout-mobile):not(.layout-fold):not(.app-side-rail-mobile-dock)
+  .chat-widget-root.chat-widget-root--rail.chat-widget-root--open .chat-widget-panel,
+html.compact-laptop.app-side-rail-active:not(.app-side-rail-mobile-dock)
+  .chat-widget-root.chat-widget-root--rail.chat-widget-root--open .chat-widget-panel {
+  max-height: min(
+    32rem,
+    calc(
+      100vh - var(--app-header-height, 3.5rem) - 0.75rem - var(--app-side-rail-chat-stack) - 1rem
+      - env(safe-area-inset-bottom, 0px)
+    )
+  );
 }
 
 .chat-widget-root {
