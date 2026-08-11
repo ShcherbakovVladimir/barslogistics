@@ -175,16 +175,20 @@ html.app-side-rail-mobile-dock.app-side-rail-active .tasks-drawer-panel {
   box-sizing: border-box;
 }
 
-/* Chat — full width when open on mobile dock */
+/* Chat — full width when open (side-rail launcher pages) */
 html.layout-mobile.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open,
 html.layout-fold.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open,
-html.app-side-rail-mobile-dock .chat-widget-root--rail.chat-widget-root--open {
-  right: 0 !important;
+html.app-side-rail-mobile-dock .chat-widget-root--rail.chat-widget-root--open,
+html.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open {
+  inset: 0 !important;
   left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
 }
 
 html.layout-mobile.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel,
-html.layout-fold.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel {
+html.layout-fold.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel,
+html.app-side-rail-active .chat-widget-root--rail.chat-widget-root--open .chat-widget-panel {
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;

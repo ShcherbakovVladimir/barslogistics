@@ -1335,7 +1335,7 @@ export function LogisticsMap({
     <div
       ref={mapShellRef}
       className={`logistics-map relative w-full h-full min-h-0 overflow-hidden bg-slate-950${
-        isPositionEditing && mobileLayout ? ' is-position-editing' : ''
+        isPositionEditing ? ' is-position-editing' : ''
       }`}
     >
       <div className={`absolute inset-0 z-0${tileFilterClass}`}>
