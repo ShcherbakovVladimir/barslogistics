@@ -1,10 +1,8 @@
 import { getPortalShellElement, measurePortalAppHeight } from './portalShell.js';
 
 /**
- * Reliable layout viewport in CSS px.
- * Always take the smallest positive candidate — Safari’s innerHeight / 100lvh
- * is often taller than the visible area (URL bar), which pushes the map edge
- * through the middle of the address bar on cold load.
+ * Reliable *visible* layout viewport in CSS px (above browser chrome).
+ * Uses the smallest candidate so sheets/modals fit the visible area.
  */
 export function getLayoutViewportSize(): { width: number; height: number } {
   if (typeof window === 'undefined') return { width: 0, height: 0 };
@@ -22,7 +20,6 @@ export function getLayoutViewportSize(): { width: number; height: number } {
     document.documentElement.classList.contains('portal-embed')
       ? measurePortalAppHeight() || undefined
       : undefined,
-    /* Prefer visualViewport when present — matches the area above Safari chrome */
     vv?.height,
     docEl.clientHeight,
     window.innerHeight,
@@ -32,6 +29,27 @@ export function getLayoutViewportSize(): { width: number; height: number } {
   const height = heightCandidates.length > 0 ? Math.min(...heightCandidates) : 0;
 
   return { width, height };
+}
+
+/**
+ * How much of the large layout viewport is covered by browser chrome
+ * (Safari URL bar / toolbar). Map paints under this; interactive UI sits above.
+ */
+export function applyBrowserChromeInsets(root: HTMLElement = document.documentElement): void {
+  if (typeof window === 'undefined') return;
+
+  const vv = window.visualViewport;
+  if (!vv) {
+    root.style.setProperty('--browser-chrome-top', '0px');
+    root.style.setProperty('--browser-chrome-bottom', '0px');
+    return;
+  }
+
+  const layoutH = Math.max(window.innerHeight || 0, root.clientHeight || 0);
+  const top = Math.max(0, vv.offsetTop);
+  const bottom = Math.max(0, layoutH - top - vv.height);
+  root.style.setProperty('--browser-chrome-top', `${Math.round(top)}px`);
+  root.style.setProperty('--browser-chrome-bottom', `${Math.round(bottom)}px`);
 }
 
 function layoutViewportWidth(): number {
@@ -69,14 +87,18 @@ export function applyLayoutViewportVars(): void {
       root.style.setProperty('--layout-vw', `${width}px`);
       root.dataset.layoutVw = String(Math.round(width));
     }
+    root.style.setProperty('--browser-chrome-top', '0px');
+    root.style.setProperty('--browser-chrome-bottom', '0px');
     return;
   }
 
   const { width, height } = getLayoutViewportSize();
   if (width > 0) root.style.setProperty('--layout-vw', `${width}px`);
+  /* Visible height for sheets/modals — map shell uses 100lvh in CSS instead */
   if (height > 0) root.style.setProperty('--layout-vh', `${height}px`);
   root.dataset.layoutVw = width > 0 ? String(Math.round(width)) : '';
   root.dataset.layoutVh = height > 0 ? String(Math.round(height)) : '';
+  applyBrowserChromeInsets(root);
 }
 
 export type DeviceLayoutClass =
@@ -326,6 +348,7 @@ export function subscribeDeviceLayout(onChange: () => void): () => void {
   window.addEventListener('resize', run);
   window.addEventListener('orientationchange', onOrient);
   window.visualViewport?.addEventListener('resize', run);
+  window.visualViewport?.addEventListener('scroll', run);
   window.matchMedia('(pointer: coarse)').addEventListener('change', run);
 
   const landscapeMq = window.matchMedia('(orientation: landscape)');
@@ -342,6 +365,7 @@ export function subscribeDeviceLayout(onChange: () => void): () => void {
     window.removeEventListener('resize', run);
     window.removeEventListener('orientationchange', onOrient);
     window.visualViewport?.removeEventListener('resize', run);
+    window.visualViewport?.removeEventListener('scroll', run);
     window.matchMedia('(pointer: coarse)').removeEventListener('change', run);
     landscapeMq.removeEventListener('change', onMqChange);
     try {

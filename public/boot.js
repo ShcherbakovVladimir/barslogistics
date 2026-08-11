@@ -37,6 +37,13 @@
       html.dataset.mapChrome = 'comfortable';
       if (ios) html.classList.add('layout-ios');
       if (/Android/i.test(navigator.userAgent)) html.classList.add('layout-android');
+
+      /* Match Redux default / persisted tab so map uses 100lvh on first paint */
+      var tab = null;
+      try {
+        tab = localStorage.getItem('barslogistics_active_tab');
+      } catch (e) {}
+      if (!tab || tab === 'map') html.classList.add('app-tab-map');
     }
 
     var angle = (screen.orientation && screen.orientation.angle) || window.orientation || 0;

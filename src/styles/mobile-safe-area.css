@@ -106,19 +106,79 @@ html.layout-fold:not(.portal-embed) .app-shell {
 }
 
 /*
- * Map tab — fill the *visible* viewport (same --layout-vh as other tabs).
- * Do not use 100lvh / max(innerHeight): on Safari cold load that sits the map
- * edge through the middle of the URL bar. Bottom paint strip off so tiles reach
- * the home-indicator zone inside the visible shell; FABs stay safe-area inset.
+ * Map tab — paint under Safari URL bar / browser chrome to the physical
+ * screen edge (100lvh). Stable across refresh vs tab switches (no JS max/min).
+ * Interactive controls use --map-ui-bottom-inset (browser chrome + safe-area).
  */
+html.layout-mobile.app-tab-map:not(.portal-embed),
+html.layout-fold.app-tab-map:not(.portal-embed) {
+  --map-ui-bottom-inset: max(
+    var(--browser-chrome-bottom, 0px),
+    var(--safe-bottom, 0px)
+  );
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed),
+html.layout-mobile.app-tab-map:not(.portal-embed) body,
+html.layout-mobile.app-tab-map:not(.portal-embed) #root,
+html.layout-fold.app-tab-map:not(.portal-embed),
+html.layout-fold.app-tab-map:not(.portal-embed) body,
+html.layout-fold.app-tab-map:not(.portal-embed) #root {
+  /* Fallbacks before 100lvh — large viewport under Safari chrome */
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100lvh !important;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100lvh !important;
+  max-height: none !important;
+  overflow: hidden;
+}
+
 html.layout-mobile.app-tab-map:not(.portal-embed) .app-shell,
 html.layout-fold.app-tab-map:not(.portal-embed) .app-shell {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: 100lvh !important;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100lvh !important;
+  max-height: none !important;
+  padding-bottom: 0;
   background-color: var(--safe-fill-map);
 }
 
 html.layout-mobile.app-tab-map:not(.portal-embed)::after,
 html.layout-fold.app-tab-map:not(.portal-embed)::after {
   display: none;
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .map-mobile-fab-bar,
+html.layout-fold.app-tab-map:not(.portal-embed) .map-mobile-fab-bar {
+  bottom: calc(0.5rem + var(--map-ui-bottom-inset, 0px));
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .map-bottom-stack,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .map-bottom-stack {
+  bottom: calc(4.25rem + var(--map-ui-bottom-inset, 0px));
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .chat-widget-root,
+html.layout-fold.app-tab-map:not(.portal-embed) .chat-widget-root {
+  bottom: calc(var(--map-fab-inset, 0.75rem) + var(--map-ui-bottom-inset, 0px));
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .chat-widget-root--above-zoom,
+html.layout-fold.app-tab-map:not(.portal-embed) .chat-widget-root--above-zoom {
+  bottom: calc(var(--map-chat-bottom, 4.5rem) + var(--map-ui-bottom-inset, 0px));
+}
+
+html.layout-mobile.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom,
+html.layout-fold.app-tab-map:not(.portal-embed) .logistics-map .leaflet-control-zoom {
+  margin-bottom: calc(var(--map-fab-inset, 0.75rem) + var(--map-ui-bottom-inset, 0px)) !important;
 }
 
 html.layout-mobile:not(.portal-embed) .app-side-rail.is-mobile-dock,
