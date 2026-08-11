@@ -636,6 +636,24 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   color: #64748b !important;
 }
 
+[data-theme="light"] .shipment-event-section {
+  border-top-color: #e2e8f0;
+}
+
+[data-theme="light"] .shipment-event-section-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-event-section-hint {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-event-success {
+  color: #047857 !important;
+  background: rgb(209 250 229) !important;
+  border-color: rgb(110 231 183) !important;
+}
+
 [data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger {
   background-color: #ffffff;
   border-color: #cbd5e1;

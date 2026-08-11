@@ -331,6 +331,15 @@ export interface ShipmentEvent {
   origin_id?: string;
   destination_id?: string;
   product_id?: string;
+  actual_departure_at?: string;
+  actual_arrival_at?: string;
+  progress_pct?: number;
+  vehicle_number?: string;
+  trailer_number?: string;
+  container_number?: string;
+  waybill_number?: string;
+  driver_info?: string;
+  apply_transport_to_shipment?: boolean;
   user_id: string;
   username: string;
   source: ShipmentEventSource;
@@ -349,6 +358,16 @@ export interface ShipmentEventInput {
   origin_id?: string;
   destination_id?: string;
   product_id?: string;
+  actual_departure_at?: string;
+  actual_arrival_at?: string;
+  progress_pct?: number;
+  vehicle_number?: string;
+  trailer_number?: string;
+  container_number?: string;
+  waybill_number?: string;
+  driver_info?: string;
+  /** When true, transport snapshot fields are copied onto the shipment row. */
+  apply_transport_to_shipment?: boolean;
 }
 
 export const CARGO_STATUSES: CargoStatus[] = ['en_route', 'delayed', 'arrived', 'loading', 'alert'];

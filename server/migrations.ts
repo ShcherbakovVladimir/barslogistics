@@ -17,6 +17,7 @@ export const POSTGRES_MIGRATIONS: PostgresMigration[] = [
   { file: "site_canonical.sql", scope: "schema", label: "Applying site canonical key + aliases migration" },
   { file: "factory_edit_count.sql", scope: "schema", label: "Applying factory edit_count migration" },
   { file: "shipment_events.sql", scope: "schema", label: "Applying shipment events migration" },
+  { file: "shipment_events_ops.sql", scope: "schema", label: "Applying shipment events operational fields migration" },
   { file: "products.sql", scope: "schema", label: "Applying products catalog migration" },
   { file: "carriers_registry.sql", scope: "schema", label: "Applying carriers registry migration" },
   { file: "sales_managers.sql", scope: "schema", label: "Applying sales managers directory migration" },

@@ -1488,6 +1488,21 @@ app.post("/api/shipments/:id/events", requireAuth, requireMinRole("site_manager"
   } catch (error) {
     const message = error instanceof Error ? error.message : "Database error";
     console.error("POST /api/shipments/:id/events:", error);
+    if (message === "ETA is required for ETA update events") {
+      return res.status(400).json({ error: st("shipmentEvents.etaRequired") });
+    }
+    if (
+      message === "Reason is required for delayed or alert status"
+      || message === "Comment or delay reason is required"
+    ) {
+      return res.status(400).json({ error: st("shipmentEvents.reasonRequired") });
+    }
+    if (message === "Comment is required" || message === "Status is required for status change events") {
+      return res.status(400).json({ error: st("auth.validationRequired") });
+    }
+    if (message === "Invalid timestamp" || message === "Invalid event type") {
+      return res.status(400).json({ error: message });
+    }
     res.status(error instanceof Error && message.includes("required") ? 400 : 500).json({ error: message });
   }
 });

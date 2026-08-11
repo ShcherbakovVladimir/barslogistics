@@ -285,6 +285,10 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
               factories={factories}
               products={products}
               onSubmit={handleCreateEvent}
+              onOpenShipment={(id) => {
+                const link = supplyLinks.find(s => s.id === id);
+                if (link) onSelectShipment(link);
+              }}
             />
             <div className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
               <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.recent')}</h3>

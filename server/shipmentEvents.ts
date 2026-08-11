@@ -71,8 +71,31 @@ export async function recordShipmentEvent(
     throw new Error("Comment or delay reason is required");
   }
 
+  if (input.event_type === "eta_update" && !input.eta_after?.trim()) {
+    throw new Error("ETA is required for ETA update events");
+  }
+
   const newStatus = resolveStatus(input, existing);
   const timingKind = resolveTimingKind(input);
+
+  if ((newStatus === "alert" || newStatus === "delayed") && !input.delay_reason?.trim() && !input.comment?.trim()) {
+    throw new Error("Reason is required for delayed or alert status");
+  }
+
+  let progressPct: number | undefined;
+  if (input.progress_pct != null && Number.isFinite(Number(input.progress_pct))) {
+    progressPct = Math.max(0, Math.min(100, Math.round(Number(input.progress_pct))));
+  } else if (newStatus === "arrived") {
+    progressPct = 100;
+  }
+
+  const parseOptionalTs = (raw?: string): string | undefined => {
+    const v = raw?.trim();
+    if (!v) return undefined;
+    const d = new Date(v);
+    if (Number.isNaN(d.getTime())) throw new Error("Invalid timestamp");
+    return d.toISOString();
+  };
 
   const event: ShipmentEvent = {
     id: `evt_${Date.now()}_${crypto.randomBytes(4).toString("hex")}`,
@@ -90,6 +113,15 @@ export async function recordShipmentEvent(
     origin_id: input.origin_id || existing.origin_id,
     destination_id: input.destination_id || existing.destination_id,
     product_id: input.product_id || existing.product_id,
+    actual_departure_at: parseOptionalTs(input.actual_departure_at),
+    actual_arrival_at: parseOptionalTs(input.actual_arrival_at),
+    progress_pct: progressPct,
+    vehicle_number: input.vehicle_number?.trim() || undefined,
+    trailer_number: input.trailer_number?.trim() || undefined,
+    container_number: input.container_number?.trim() || undefined,
+    waybill_number: input.waybill_number?.trim() || undefined,
+    driver_info: input.driver_info?.trim() || undefined,
+    apply_transport_to_shipment: Boolean(input.apply_transport_to_shipment),
     user_id: user.id,
     username: user.username,
     source,

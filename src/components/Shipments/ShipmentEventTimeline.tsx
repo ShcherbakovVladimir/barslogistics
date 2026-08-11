@@ -99,6 +99,32 @@ export const ShipmentEventTimeline: React.FC<ShipmentEventTimelineProps> = ({
               </div>
             )}
 
+            {!compact && (event.actual_departure_at || event.actual_arrival_at || event.progress_pct != null) && (
+              <div className="mt-1 text-[10px] text-slate-400 space-x-2">
+                {event.progress_pct != null && (
+                  <span>{t('shipmentEvents.progressPct')}: {Math.round(event.progress_pct)}%</span>
+                )}
+                {event.actual_departure_at && (
+                  <span>
+                    {t('shipmentEvents.actualDeparture')}: {new Date(event.actual_departure_at).toLocaleString(localeTag)}
+                  </span>
+                )}
+                {event.actual_arrival_at && (
+                  <span>
+                    {t('shipmentEvents.actualArrival')}: {new Date(event.actual_arrival_at).toLocaleString(localeTag)}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {!compact && (event.vehicle_number || event.waybill_number || event.driver_info) && (
+              <div className="mt-1 text-[10px] text-slate-500">
+                {[event.vehicle_number, event.trailer_number || event.container_number, event.waybill_number, event.driver_info]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </div>
+            )}
+
             {event.comment && (
               <div className="mt-1.5 text-[11px] text-slate-300 whitespace-pre-wrap">{event.comment}</div>
             )}

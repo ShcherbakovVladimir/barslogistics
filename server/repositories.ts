@@ -657,6 +657,15 @@ type ShipmentEventRow = {
   origin_id: string | null;
   destination_id: string | null;
   product_id: string | null;
+  actual_departure_at?: Date | string | null;
+  actual_arrival_at?: Date | string | null;
+  progress_pct?: string | number | null;
+  vehicle_number?: string | null;
+  trailer_number?: string | null;
+  container_number?: string | null;
+  waybill_number?: string | null;
+  driver_info?: string | null;
+  apply_transport_to_shipment?: boolean | null;
   user_id: string;
   username: string;
   source: string;
@@ -680,6 +689,19 @@ function mapShipmentEvent(row: ShipmentEventRow): ShipmentEvent {
     origin_id: row.origin_id || undefined,
     destination_id: row.destination_id || undefined,
     product_id: row.product_id || undefined,
+    actual_departure_at: row.actual_departure_at
+      ? new Date(row.actual_departure_at).toISOString()
+      : undefined,
+    actual_arrival_at: row.actual_arrival_at
+      ? new Date(row.actual_arrival_at).toISOString()
+      : undefined,
+    progress_pct: row.progress_pct != null ? Number(row.progress_pct) : undefined,
+    vehicle_number: row.vehicle_number || undefined,
+    trailer_number: row.trailer_number || undefined,
+    container_number: row.container_number || undefined,
+    waybill_number: row.waybill_number || undefined,
+    driver_info: row.driver_info || undefined,
+    apply_transport_to_shipment: Boolean(row.apply_transport_to_shipment),
     user_id: row.user_id,
     username: row.username,
     source: (row.source as ShipmentEvent["source"]) || "manual",
@@ -729,8 +751,15 @@ export async function insertShipmentEventRecord(
     `INSERT INTO shipment_events (
       id, shipment_id, event_type, old_status, new_status, timing_kind,
       delay_reason, delay_hours, early_hours, comment, eta_before, eta_after,
-      origin_id, destination_id, product_id, user_id, username, source, created_at
-    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)`,
+      origin_id, destination_id, product_id,
+      actual_departure_at, actual_arrival_at, progress_pct,
+      vehicle_number, trailer_number, container_number, waybill_number, driver_info,
+      apply_transport_to_shipment,
+      user_id, username, source, created_at
+    ) VALUES (
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,
+      $16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28
+    )`,
     [
       event.id,
       event.shipment_id,
@@ -747,6 +776,15 @@ export async function insertShipmentEventRecord(
       event.origin_id ?? null,
       event.destination_id ?? null,
       event.product_id ?? null,
+      event.actual_departure_at ?? null,
+      event.actual_arrival_at ?? null,
+      event.progress_pct ?? null,
+      event.vehicle_number ?? null,
+      event.trailer_number ?? null,
+      event.container_number ?? null,
+      event.waybill_number ?? null,
+      event.driver_info ?? null,
+      Boolean(event.apply_transport_to_shipment),
       event.user_id,
       event.username,
       event.source,
@@ -760,8 +798,14 @@ export async function applyShipmentEventUpdates(
   shipmentId: string,
   event: ShipmentEvent,
 ): Promise<SupplyLink | null> {
-  const progressPct = event.new_status === "arrived" ? 100 : null;
+  const progressPct =
+    event.new_status === "arrived"
+      ? 100
+      : event.progress_pct != null && Number.isFinite(event.progress_pct)
+        ? Math.max(0, Math.min(100, Math.round(Number(event.progress_pct))))
+        : null;
   const etaResolved = event.eta_after?.trim() ? resolveEtaFields(event.eta_after) : null;
+  const applyTransport = Boolean(event.apply_transport_to_shipment);
 
   const { rows } = await client.query<SupplyLinkRow>(
     `UPDATE supply_links SET
@@ -770,6 +814,13 @@ export async function applyShipmentEventUpdates(
       eta = COALESCE($4, eta),
       eta_at = COALESCE($5, eta_at),
       progress_pct = COALESCE($6, progress_pct),
+      actual_departure_at = COALESCE($7::timestamptz, actual_departure_at),
+      actual_arrival_at = COALESCE($8::timestamptz, actual_arrival_at),
+      vehicle_number = CASE WHEN $9::boolean AND $10::text IS NOT NULL THEN $10 ELSE vehicle_number END,
+      trailer_number = CASE WHEN $9::boolean AND $11::text IS NOT NULL THEN $11 ELSE trailer_number END,
+      container_number = CASE WHEN $9::boolean AND $12::text IS NOT NULL THEN $12 ELSE container_number END,
+      waybill_number = CASE WHEN $9::boolean AND $13::text IS NOT NULL THEN $13 ELSE waybill_number END,
+      driver_info = CASE WHEN $9::boolean AND $14::text IS NOT NULL THEN $14 ELSE driver_info END,
       last_updated = NOW()
      WHERE id = $1
      RETURNING *`,
@@ -780,6 +831,14 @@ export async function applyShipmentEventUpdates(
       etaResolved?.eta ?? null,
       etaResolved?.eta_at ?? null,
       progressPct,
+      event.actual_departure_at ?? null,
+      event.actual_arrival_at ?? null,
+      applyTransport,
+      event.vehicle_number?.trim() || null,
+      event.trailer_number?.trim() || null,
+      event.container_number?.trim() || null,
+      event.waybill_number?.trim() || null,
+      event.driver_info?.trim() || null,
     ],
   );
   return rows[0] ? mapSupplyLink(rows[0]) : null;
