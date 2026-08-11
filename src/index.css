@@ -1069,8 +1069,8 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-panel {
   position: fixed;
   z-index: 2300;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
   border: 1px solid rgb(51 65 85 / 0.95);
   background: rgb(15 23 42 / 0.98);
   backdrop-filter: blur(12px);
@@ -1093,8 +1093,8 @@ html.portal-embed .header-nav-scroll {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.35rem;
-  margin-bottom: 0.55rem;
+  gap: 0.15rem;
+  margin-bottom: 0.3rem;
 }
 
 .shipment-datetime-picker-title {
@@ -1110,16 +1110,16 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-title-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.15rem;
+  gap: 0.1rem;
   max-width: 100%;
-  padding: 0.2rem 0.4rem;
+  padding: 0.1rem 0.25rem;
   border: none;
-  border-radius: 0.4rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #f1f5f9;
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
   cursor: pointer;
 }
 
@@ -1129,7 +1129,7 @@ html.portal-embed .header-nav-scroll {
 }
 
 .shipment-datetime-picker-month {
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: capitalize;
   color: #f1f5f9;
@@ -1139,14 +1139,19 @@ html.portal-embed .header-nav-scroll {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.35rem;
+  height: 1.35rem;
   border: none;
-  border-radius: 0.45rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #94a3b8;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+.shipment-datetime-picker-nav-btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 .shipment-datetime-picker-nav-btn:hover {
@@ -1157,12 +1162,12 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.2rem;
-  margin-bottom: 0.35rem;
-  font-size: 0.6875rem;
+  gap: 0.1rem;
+  margin-bottom: 0.15rem;
+  font-size: 0.5625rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   color: #64748b;
   text-align: center;
 }
@@ -1170,20 +1175,20 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.25rem;
+  gap: 0.1rem;
 }
 
 .shipment-datetime-picker-day {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.25rem;
+  min-height: 1.15rem;
   aspect-ratio: 1;
   border: none;
-  border-radius: 0.45rem;
+  border-radius: 0.25rem;
   background: transparent;
   color: #e2e8f0;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -1191,21 +1196,21 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-period-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.35rem;
-  min-height: 12rem;
+  gap: 0.2rem;
+  min-height: 6rem;
 }
 
 .shipment-datetime-picker-period {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
-  padding: 0.45rem 0.35rem;
+  min-height: 1.4rem;
+  padding: 0.2rem 0.15rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #e2e8f0;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: capitalize;
   cursor: pointer;
@@ -1248,46 +1253,51 @@ html.portal-embed .header-nav-scroll {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.65rem;
-  padding-top: 0.65rem;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
   border-top: 1px solid rgb(51 65 85 / 0.85);
 }
 
 .shipment-datetime-picker-time-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.6875rem;
+  gap: 0.2rem;
+  font-size: 0.5625rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: #94a3b8;
+}
+
+.shipment-datetime-picker-time-label svg {
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .shipment-datetime-picker-time-fields {
   display: inline-flex;
   align-items: flex-end;
-  gap: 0.35rem;
+  gap: 0.2rem;
 }
 
 .shipment-datetime-picker-time-field {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  font-size: 0.625rem;
+  gap: 0.1rem;
+  font-size: 0.5rem;
   color: #64748b;
 }
 
 .shipment-datetime-picker-time-field input {
-  width: 3.25rem;
-  min-height: 2rem;
-  padding: 0.3rem 0.4rem;
-  border-radius: 0.45rem;
+  width: 2rem;
+  min-height: 1.35rem;
+  padding: 0.15rem 0.2rem;
+  border-radius: 0.3rem;
   border: 1px solid rgb(51 65 85);
   background: rgb(2 6 23);
   color: #f8fafc;
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-align: center;
   appearance: textfield;
@@ -1306,8 +1316,8 @@ html.portal-embed .header-nav-scroll {
 }
 
 .shipment-datetime-picker-time-sep {
-  padding-bottom: 0.35rem;
-  font-size: 0.9375rem;
+  padding-bottom: 0.15rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: #64748b;
 }
@@ -1315,21 +1325,21 @@ html.portal-embed .header-nav-scroll {
 .shipment-datetime-picker-footer {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.65rem;
-  padding-top: 0.55rem;
+  gap: 0.2rem;
+  margin-top: 0.35rem;
+  padding-top: 0.3rem;
   border-top: 1px solid rgb(51 65 85 / 0.85);
 }
 
 .shipment-datetime-picker-footer-btn {
   flex: 1 1 auto;
-  min-height: 1.85rem;
-  padding: 0.3rem 0.55rem;
-  border-radius: 0.45rem;
+  min-height: 1.25rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.3rem;
   border: 1px solid rgb(51 65 85);
   background: rgb(30 41 59 / 0.65);
   color: #cbd5e1;
-  font-size: 0.6875rem;
+  font-size: 0.5625rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -1358,7 +1368,7 @@ html.portal-embed .header-nav-scroll {
 }
 
 .shipment-datetime-picker-panel {
-  min-width: min(20rem, calc(100vw - 1rem));
+  min-width: min(11rem, calc(100vw - 1rem));
 }
 
 .shipment-datetime-picker-panel::-webkit-scrollbar {
@@ -8113,8 +8123,8 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-panel {
   position: fixed;
   z-index: 1400;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
   border: 1px solid rgb(51 65 85 / 0.95);
   background: rgb(15 23 42 / 0.98);
   backdrop-filter: blur(12px);
@@ -8146,16 +8156,16 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-title-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.15rem;
+  gap: 0.1rem;
   max-width: 100%;
-  padding: 0.2rem 0.4rem;
+  padding: 0.1rem 0.25rem;
   border: none;
-  border-radius: 0.4rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #f1f5f9;
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
   cursor: pointer;
 }
 
@@ -8174,22 +8184,22 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-period-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.35rem;
-  min-height: 11rem;
-  margin-bottom: 0.35rem;
+  gap: 0.2rem;
+  min-height: 5.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .tasks-date-picker-period {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.5rem;
-  padding: 0.4rem 0.3rem;
+  min-height: 1.35rem;
+  padding: 0.2rem 0.15rem;
   border: none;
-  border-radius: 0.45rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #e2e8f0;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: capitalize;
   cursor: pointer;
@@ -8212,14 +8222,19 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.35rem;
+  height: 1.35rem;
   border: none;
-  border-radius: 0.45rem;
+  border-radius: 0.3rem;
   background: transparent;
   color: #94a3b8;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+.tasks-date-picker-nav-btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 .tasks-date-picker-nav-btn:hover {
@@ -8230,9 +8245,9 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.15rem;
-  margin-bottom: 0.25rem;
-  font-size: 0.625rem;
+  gap: 0.1rem;
+  margin-bottom: 0.15rem;
+  font-size: 0.5625rem;
   font-weight: 600;
   color: #64748b;
   text-align: center;
@@ -8241,20 +8256,20 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
 .tasks-date-picker-day {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.15rem;
+  min-height: 1.15rem;
   aspect-ratio: 1;
   border: none;
-  border-radius: 0.4rem;
+  border-radius: 0.25rem;
   background: transparent;
   color: #e2e8f0;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   cursor: pointer;
 }
 
@@ -8279,9 +8294,9 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 .tasks-date-picker-footer {
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.55rem;
-  padding-top: 0.5rem;
+  gap: 0.25rem;
+  margin-top: 0.3rem;
+  padding-top: 0.3rem;
   border-top: 1px solid rgb(51 65 85 / 0.7);
 }
 
@@ -8289,7 +8304,7 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   border: none;
   background: transparent;
   color: #a5b4fc;
-  font-size: 0.6875rem;
+  font-size: 0.5625rem;
   font-weight: 600;
   cursor: pointer;
   padding: 0.2rem 0.35rem;

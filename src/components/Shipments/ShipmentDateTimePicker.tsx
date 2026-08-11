@@ -6,8 +6,8 @@ import { getAppViewportRect } from '../../utils/viewport';
 
 const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const WEEKDAYS_EN = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const PANEL_MIN_WIDTH = 320;
-const PANEL_PREFERRED_WIDTH = 340;
+const PANEL_MIN_WIDTH = 168;
+const PANEL_PREFERRED_WIDTH = 176;
 const YEARS_PER_PAGE = 12;
 
 type PanelView = 'days' | 'months' | 'years';
@@ -172,8 +172,8 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
 
     const PANEL_GAP = 6;
     const VIEWPORT_PAD = 8;
-    const PREFERRED_H = panelView === 'days' ? 460 : 360;
-    const MIN_H = 240;
+    const PREFERRED_H = panelView === 'days' ? 250 : 200;
+    const MIN_H = 160;
 
     const compute = () => {
       const trigger = triggerRef.current;
@@ -184,7 +184,7 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
       const vBottom = vTop + vHeight;
 
       const width = Math.min(
-        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH, rect.width),
+        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH),
         Math.max(PANEL_MIN_WIDTH, vWidth - VIEWPORT_PAD * 2),
       );
       let left = rect.left;

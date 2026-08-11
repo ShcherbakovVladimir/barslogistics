@@ -6,8 +6,8 @@ import { getAppViewportRect } from '../../utils/viewport';
 
 const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const WEEKDAYS_EN = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const PANEL_MIN_WIDTH = 300;
-const PANEL_PREFERRED_WIDTH = 320;
+const PANEL_MIN_WIDTH = 160;
+const PANEL_PREFERRED_WIDTH = 172;
 const YEARS_PER_PAGE = 12;
 
 type PanelView = 'days' | 'months' | 'years';
@@ -131,13 +131,13 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
       const rect = triggerRef.current!.getBoundingClientRect();
       const { top: vTop, left: vLeft, width: vWidth, height: vHeight } = getAppViewportRect();
       const width = Math.min(
-        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH, rect.width),
+        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH),
         Math.max(PANEL_MIN_WIDTH, vWidth - 16),
       );
       let left = rect.left;
       if (left + width > vLeft + vWidth - 8) left = vLeft + vWidth - 8 - width;
       left = Math.max(vLeft + 8, left);
-      const panelH = panelView === 'days' ? 340 : 300;
+      const panelH = panelView === 'days' ? 220 : 180;
       const below = rect.bottom + 6;
       const above = rect.top - 6 - panelH;
       const top = below + panelH <= vTop + vHeight - 8 ? below : Math.max(vTop + 8, above);
