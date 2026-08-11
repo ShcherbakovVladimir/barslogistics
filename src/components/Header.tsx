@@ -14,6 +14,12 @@ import { setTheme } from '../store/themeSlice';
 
 /** Open Tasks drawer from a notification link (task or board). */
 function dispatchTasksOpenFromNotification(linkType?: string, linkId?: string) {
+  if (linkType === 'support') {
+    window.dispatchEvent(
+      new CustomEvent('bars-tasks-open', { detail: { openSupport: true } }),
+    );
+    return;
+  }
   if (!linkId) return;
   // Board invites historically used link_type=task with a kboard_* id
   if (linkType === 'board' || linkId.startsWith('kboard_')) {
@@ -215,6 +221,9 @@ export const Header: React.FC<HeaderProps> = ({
                     );
                   }
                   if (n.link_type === 'task' || n.link_type === 'board') {
+                    dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+                  }
+                  if (n.link_type === 'support') {
                     dispatchTasksOpenFromNotification(n.link_type, n.link_id);
                   }
                   if (n.link_type === 'shipment' && n.link_id) {
@@ -476,6 +485,9 @@ export const Header: React.FC<HeaderProps> = ({
                                   );
                                 }
                                 if (n.link_type === 'task' || n.link_type === 'board') {
+                                  dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+                                }
+                                if (n.link_type === 'support') {
                                   dispatchTasksOpenFromNotification(n.link_type, n.link_id);
                                 }
                                 if (n.link_type === 'shipment' && n.link_id) {

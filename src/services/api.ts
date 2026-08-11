@@ -1,4 +1,4 @@
-import { Factory, SupplyLink, EventLog, User, BackupItem, ThirdPartyCarrier, IntegrationSettingsResponse, TelegramSettings, CloudSettings, TelemetrySettings, CarrierSettingsUpdate, MapDataSettings, MapDataImportResult, MapDataImportPayload, GeocodingSettings, GeocodingTestResult, KladrLocalImportStatus, KladrSuggestion, AddressGeocodeResult, UserCreateInput, UserUpdateInput, SiteCategoryInfo, SiteDuplicatesReport, SiteMergeDuplicatesResult, ShipmentEvent, ShipmentEventInput, Product, ProductInput, CarrierInput, CarrierIntegrationSpec, RzdAnalyticsSummary, RzdAggregatedRoute, RzdAnalyticsRecord, RzdAnalyticsFilters, RzdImportBatch, RzdImportResult, ShipmentImportBatch, ShipmentImportResult, ShipmentCsvPreviewResult, SalesManager, SalesManagerInput, MailSettings, DbMaintenanceInfo, MigrationDashboard, ChatUserDirectoryEntry, ChatConversationSummary, ChatMessage, NotificationItem, KanbanBoard, KanbanBoardDetail, KanbanBoardType, KanbanClassOfService, KanbanColumn, KanbanSwimlane, KanbanTask, KanbanTaskWorkspace, KanbanTaskMessage, KanbanTaskMilestone, KanbanTaskAttachment, KanbanMilestoneStatus, ShipmentDocument, ShipmentDocumentType } from '../types';
+import { Factory, SupplyLink, EventLog, User, BackupItem, ThirdPartyCarrier, IntegrationSettingsResponse, TelegramSettings, CloudSettings, TelemetrySettings, CarrierSettingsUpdate, MapDataSettings, MapDataImportResult, MapDataImportPayload, GeocodingSettings, GeocodingTestResult, KladrLocalImportStatus, KladrSuggestion, AddressGeocodeResult, UserCreateInput, UserUpdateInput, SiteCategoryInfo, SiteDuplicatesReport, SiteMergeDuplicatesResult, ShipmentEvent, ShipmentEventInput, Product, ProductInput, CarrierInput, CarrierIntegrationSpec, RzdAnalyticsSummary, RzdAggregatedRoute, RzdAnalyticsRecord, RzdAnalyticsFilters, RzdImportBatch, RzdImportResult, ShipmentImportBatch, ShipmentImportResult, ShipmentCsvPreviewResult, SalesManager, SalesManagerInput, MailSettings, DbMaintenanceInfo, MigrationDashboard, ChatUserDirectoryEntry, ChatConversationSummary, ChatMessage, NotificationItem, KanbanBoard, KanbanBoardDetail, KanbanBoardType, KanbanClassOfService, KanbanColumn, KanbanSwimlane, KanbanTask, KanbanTaskWorkspace, KanbanTaskMessage, KanbanTaskMilestone, KanbanTaskAttachment, KanbanMilestoneStatus, ShipmentDocument, ShipmentDocumentType, SupportTicket, SupportTicketCategory } from '../types';
 import { getApiBase, getAuthToken, isPortalEmbed } from '../auth/portalAuth';
 
 const TOKEN_KEY = 'barslogistics_token';
@@ -1371,5 +1371,29 @@ export class ApiService {
     await this.request(`${this.baseUrl}/tasks/attachments/${encodeURIComponent(attachmentId)}`, {
       method: 'DELETE',
     });
+  }
+
+  static async getSupportTickets(): Promise<SupportTicket[]> {
+    const json = await this.request<{ status: string; data: { tickets: SupportTicket[] } }>(
+      `${this.baseUrl}/support/tickets`,
+    );
+    return json.data.tickets;
+  }
+
+  static async createSupportTicket(input: {
+    subject: string;
+    message: string;
+    category: SupportTicketCategory;
+    page_context?: string | null;
+  }): Promise<SupportTicket> {
+    const json = await this.request<{ status: string; data: SupportTicket }>(
+      `${this.baseUrl}/support/tickets`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      },
+    );
+    return json.data;
   }
 }

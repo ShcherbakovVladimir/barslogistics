@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  X, Plus, LayoutGrid, Trash2, UserRound, Calendar, ChevronLeft, Loader2, ListTodo,
+  X, Plus, LayoutGrid, Trash2, UserRound, Calendar, ChevronLeft, Loader2, ListTodo, LifeBuoy,
 } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
@@ -21,6 +21,8 @@ import type {
   KanbanClassOfService,
   KanbanTask,
   User,
+  SupportTicket,
+  SupportTicketCategory,
 } from '../../types';
 
 export interface TasksDrawerProps {
@@ -35,6 +37,9 @@ export interface TasksDrawerProps {
   onFocusTaskConsumed?: () => void;
   focusBoardId?: string | null;
   onFocusBoardConsumed?: () => void;
+  openSupport?: boolean;
+  onOpenSupportConsumed?: () => void;
+  pageContext?: string;
   workspaceRefresh?: { taskId: string; key: number } | null;
 }
 
@@ -52,6 +57,8 @@ const COS_CLASS: Record<KanbanClassOfService, string> = {
   standard: 'tasks-cos--standard',
   intangible: 'tasks-cos--intangible',
 };
+
+const SUPPORT_CATEGORIES: SupportTicketCategory[] = ['bug', 'question', 'suggestion', 'other'];
 
 type TaskDraft = {
   title: string;
@@ -84,6 +91,9 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
   onFocusTaskConsumed,
   focusBoardId,
   onFocusBoardConsumed,
+  openSupport,
+  onOpenSupportConsumed,
+  pageContext,
   workspaceRefresh,
 }) => {
   const { t, locale } = useI18n();
@@ -92,7 +102,7 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
   const [users, setUsers] = useState<ChatUserDirectoryEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [view, setView] = useState<'list' | 'board' | 'create-board' | 'create-task' | 'edit-task'>('list');
+  const [view, setView] = useState<'list' | 'board' | 'create-board' | 'create-task' | 'edit-task' | 'support'>('list');
   const [editingTask, setEditingTask] = useState<KanbanTask | null>(null);
   const [taskDraft, setTaskDraft] = useState<TaskDraft>(emptyDraft());
   const [boardDraft, setBoardDraft] = useState({
@@ -102,6 +112,13 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
     member_ids: [] as string[],
   });
   const [saving, setSaving] = useState(false);
+  const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
+  const [supportDraft, setSupportDraft] = useState({
+    subject: '',
+    message: '',
+    category: 'other' as SupportTicketCategory,
+  });
+  const [supportSuccess, setSupportSuccess] = useState('');
   const [dragTaskId, setDragTaskId] = useState<string | null>(null);
   const [dropTargetKey, setDropTargetKey] = useState<string | null>(null);
   const dragTaskIdRef = useRef<string | null>(null);
@@ -120,6 +137,23 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
     setView('board');
     return detail;
   }, []);
+
+  const loadSupportTickets = useCallback(async () => {
+    const tickets = await ApiService.getSupportTickets();
+    setSupportTickets(tickets);
+    return tickets;
+  }, []);
+
+  const openSupportView = useCallback(async () => {
+    setView('support');
+    setSupportSuccess('');
+    setError('');
+    try {
+      await loadSupportTickets();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('tasks.loadFailed'));
+    }
+  }, [loadSupportTickets, t]);
 
   useEffect(() => {
     if (!open) return;
@@ -159,6 +193,11 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
         if (view === 'create-task' || view === 'edit-task' || view === 'create-board') {
           setView(activeBoard ? 'board' : 'list');
           setEditingTask(null);
+          return;
+        }
+        if (view === 'support') {
+          setView('list');
+          setSupportSuccess('');
           return;
         }
         if (view === 'board') {
@@ -226,6 +265,12 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
       cancelled = true;
     };
   }, [open, focusBoardId, onFocusBoardConsumed, t]);
+
+  useEffect(() => {
+    if (!open || !openSupport) return;
+    void openSupportView();
+    onOpenSupportConsumed?.();
+  }, [open, openSupport, onOpenSupportConsumed, openSupportView]);
 
   useEffect(() => {
     if (!open || !focusTaskId) return;
@@ -362,6 +407,37 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
       setActiveBoard(created);
       setView('board');
       setBoardDraft({ name: '', description: '', board_type: 'classic', member_ids: [] });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('tasks.saveFailed'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSubmitSupport = async () => {
+    const subject = supportDraft.subject.trim();
+    const message = supportDraft.message.trim();
+    if (subject.length < 3) {
+      setError(t('tasks.supportSubjectRequired'));
+      return;
+    }
+    if (message.length < 10) {
+      setError(t('tasks.supportMessageRequired'));
+      return;
+    }
+    setSaving(true);
+    setError('');
+    setSupportSuccess('');
+    try {
+      await ApiService.createSupportTicket({
+        subject,
+        message,
+        category: supportDraft.category,
+        page_context: pageContext || null,
+      });
+      setSupportDraft({ subject: '', message: '', category: 'other' });
+      setSupportSuccess(t('tasks.supportSent'));
+      await loadSupportTickets();
     } catch (err) {
       setError(err instanceof Error ? err.message : t('tasks.saveFailed'));
     } finally {
@@ -544,9 +620,11 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
 
   if (!open) return null;
 
-  const title = view === 'list' || view === 'create-board'
-    ? t('tasks.title')
-    : activeBoard?.name ?? t('tasks.title');
+  const title = view === 'support'
+    ? t('tasks.supportTitle')
+    : view === 'list' || view === 'create-board'
+      ? t('tasks.title')
+      : activeBoard?.name ?? t('tasks.title');
 
   const dueRequired = taskDraft.class_of_service === 'fixed_date';
 
@@ -561,7 +639,7 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
       >
         <header className="tasks-drawer-header border-b border-slate-700">
           <div className="tasks-drawer-header-main min-w-0">
-            {(view === 'board' || view === 'create-task' || view === 'edit-task') && (
+            {(view === 'board' || view === 'create-task' || view === 'edit-task' || view === 'support') && (
               <button
                 type="button"
                 className="tasks-drawer-icon-btn"
@@ -569,6 +647,9 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                   if (view === 'create-task' || view === 'edit-task') {
                     setView('board');
                     setEditingTask(null);
+                  } else if (view === 'support') {
+                    setView('list');
+                    setSupportSuccess('');
                   } else {
                     setActiveBoard(null);
                     setView('list');
@@ -587,6 +668,8 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                   <p className="tasks-drawer-subtitle truncate">
                     {t(`tasks.boardType.${activeBoard.board_type}`)}
                   </p>
+                ) : view === 'support' ? (
+                  <p className="tasks-drawer-subtitle">{t('tasks.supportSubtitle')}</p>
                 ) : (
                   <p className="tasks-drawer-subtitle">{t('tasks.subtitle')}</p>
                 )}
@@ -610,14 +693,24 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
 
           {!loading && view === 'list' ? (
             <div className="tasks-board-list space-y-2">
-              <button
-                type="button"
-                className="tasks-primary-btn w-full"
-                onClick={() => setView('create-board')}
-              >
-                <Plus className="w-4 h-4" />
-                {t('tasks.createBoard')}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="tasks-primary-btn flex-1"
+                  onClick={() => setView('create-board')}
+                >
+                  <Plus className="w-4 h-4" />
+                  {t('tasks.createBoard')}
+                </button>
+                <button
+                  type="button"
+                  className="tasks-secondary-btn flex-1"
+                  onClick={() => void openSupportView()}
+                >
+                  <LifeBuoy className="w-4 h-4" />
+                  {t('tasks.support')}
+                </button>
+              </div>
               {boards.length === 0 ? (
                 <p className="tasks-empty">{t('tasks.noBoards')}</p>
               ) : (
@@ -651,6 +744,86 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                   </div>
                 ))
               )}
+            </div>
+          ) : null}
+
+          {!loading && view === 'support' ? (
+            <div className="space-y-4">
+              {supportSuccess ? (
+                <div className="tasks-drawer-success">{supportSuccess}</div>
+              ) : null}
+              <div className="tasks-form space-y-3">
+                <label className="tasks-field">
+                  <span>{t('tasks.supportCategory')}</span>
+                  <SearchableSelect
+                    value={supportDraft.category}
+                    onChange={v => setSupportDraft(d => ({ ...d, category: v as SupportTicketCategory }))}
+                    options={SUPPORT_CATEGORIES.map(c => ({
+                      value: c,
+                      label: t(`tasks.supportCategoryOptions.${c}`),
+                    }))}
+                    searchable={false}
+                    className="tasks-select"
+                    panelClassName="tasks-dropdown-panel"
+                    triggerClassName="tasks-select-trigger"
+                  />
+                </label>
+                <label className="tasks-field">
+                  <span>{t('tasks.supportSubject')}</span>
+                  <input
+                    value={supportDraft.subject}
+                    onChange={e => setSupportDraft(d => ({ ...d, subject: e.target.value }))}
+                    className="tasks-input"
+                    maxLength={200}
+                  />
+                </label>
+                <label className="tasks-field">
+                  <span>{t('tasks.supportMessage')}</span>
+                  <textarea
+                    value={supportDraft.message}
+                    onChange={e => setSupportDraft(d => ({ ...d, message: e.target.value }))}
+                    className="tasks-input min-h-[6rem]"
+                    maxLength={4000}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="tasks-primary-btn w-full"
+                  disabled={saving || supportDraft.subject.trim().length < 3 || supportDraft.message.trim().length < 10}
+                  onClick={() => void handleSubmitSupport()}
+                >
+                  {saving ? t('common.saving') : t('tasks.supportSubmit')}
+                </button>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  {currentUser.role === 'admin' ? t('tasks.supportAllTickets') : t('tasks.supportMyTickets')}
+                </h3>
+                {supportTickets.length === 0 ? (
+                  <p className="tasks-empty">{t('tasks.supportNoTickets')}</p>
+                ) : (
+                  supportTickets.map(ticket => (
+                    <div key={ticket.id} className="tasks-board-card">
+                      <div className="tasks-board-card-main cursor-default">
+                        <LifeBuoy className="w-4 h-4 text-sky-400 shrink-0" />
+                        <div className="min-w-0 text-left">
+                          <div className="font-semibold truncate">{ticket.subject}</div>
+                          <div className="text-[10px] text-slate-400 truncate">
+                            {t(`tasks.supportCategoryOptions.${ticket.category}`)}
+                            {' · '}
+                            {t(`tasks.supportStatus.${ticket.status}`)}
+                            {currentUser.role === 'admin' && ticket.user_name ? ` · ${ticket.user_name}` : ''}
+                          </div>
+                          <div className="text-[11px] text-slate-300 mt-1 line-clamp-2">{ticket.message}</div>
+                          <div className="text-[10px] text-slate-500 mt-1">
+                            {new Date(ticket.created_at).toLocaleString(locale === 'en' ? 'en-GB' : 'ru-RU')}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           ) : null}
 

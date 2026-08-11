@@ -118,6 +118,7 @@ export default function App() {
   const [tasksBoardSync, setTasksBoardSync] = useState<KanbanBoardDetail | null>(null);
   const [tasksFocusTaskId, setTasksFocusTaskId] = useState<string | null>(null);
   const [tasksFocusBoardId, setTasksFocusBoardId] = useState<string | null>(null);
+  const [tasksOpenSupport, setTasksOpenSupport] = useState(false);
   const [tasksWorkspaceRefresh, setTasksWorkspaceRefresh] = useState<{ taskId: string; key: number } | null>(null);
   const [tasksDeletedBoardId, setTasksDeletedBoardId] = useState<string | null>(null);
 
@@ -611,9 +612,10 @@ export default function App() {
   useEffect(() => {
     const onOpenTasks = (e: Event) => {
       setTasksDrawerOpen(true);
-      const detail = (e as CustomEvent<{ taskId?: string; boardId?: string }>).detail;
+      const detail = (e as CustomEvent<{ taskId?: string; boardId?: string; openSupport?: boolean }>).detail;
       if (detail?.boardId) setTasksFocusBoardId(detail.boardId);
       if (detail?.taskId) setTasksFocusTaskId(detail.taskId);
+      if (detail?.openSupport) setTasksOpenSupport(true);
     };
     window.addEventListener('bars-tasks-open', onOpenTasks);
     return () => window.removeEventListener('bars-tasks-open', onOpenTasks);
@@ -1313,6 +1315,9 @@ export default function App() {
           focusBoardId={tasksFocusBoardId}
           onFocusTaskConsumed={() => setTasksFocusTaskId(null)}
           onFocusBoardConsumed={() => setTasksFocusBoardId(null)}
+          openSupport={tasksOpenSupport}
+          onOpenSupportConsumed={() => setTasksOpenSupport(false)}
+          pageContext={activeTab}
           workspaceRefresh={tasksWorkspaceRefresh}
         />
       ) : null}

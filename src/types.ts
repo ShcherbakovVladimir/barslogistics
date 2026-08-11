@@ -989,6 +989,23 @@ export type KanbanMilestoneStatus =
   | 'approved'
   | 'rejected';
 
+export type SupportTicketCategory = 'bug' | 'question' | 'suggestion' | 'other';
+
+export type SupportTicketStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
+
+export interface SupportTicket {
+  id: string;
+  user_id: string;
+  user_name?: string;
+  subject: string;
+  message: string;
+  category: SupportTicketCategory;
+  status: SupportTicketStatus;
+  page_context: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface KanbanTaskParticipant {
   user_id: string;
   name: string;

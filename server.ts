@@ -150,6 +150,7 @@ import { registerChatRoutes } from "./server/chat/routes.js";
 import { registerPushRoutes } from "./server/push/routes.js";
 import { registerNotificationRoutes } from "./server/notifications/routes.js";
 import { registerTaskRoutes } from "./server/tasks/routes.js";
+import { registerSupportRoutes } from "./server/support/routes.js";
 import { registerShipmentLogisticsRoutes } from "./server/shipments/routes.js";
 import { setTaskBroadcast } from "./server/tasks/broadcast.js";
 import { setChatBroadcast } from "./server/chat/broadcast.js";
@@ -1829,6 +1830,7 @@ registerChatRoutes(app);
 registerPushRoutes(app);
 registerNotificationRoutes(app);
 registerTaskRoutes(app);
+registerSupportRoutes(app);
 registerShipmentLogisticsRoutes(app);
 
 app.get("/api/carriers", requireAuth, async (req, res) => {

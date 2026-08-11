@@ -6542,6 +6542,15 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   font-size: 0.75rem;
 }
 
+.tasks-drawer-success {
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(52 211 153 / 0.35);
+  background: rgb(6 78 59 / 0.25);
+  color: #6ee7b7;
+  font-size: 0.75rem;
+}
+
 .tasks-drawer-body {
   flex: 1;
   min-height: 0;

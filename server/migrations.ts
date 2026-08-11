@@ -31,6 +31,7 @@ export const POSTGRES_MIGRATIONS: PostgresMigration[] = [
   { file: "user_notifications.sql", scope: "schema", label: "Applying in-app notifications migration" },
   { file: "tasks.sql", scope: "schema", label: "Applying Kanban tasks migration" },
   { file: "tasks_workspace.sql", scope: "schema", label: "Applying task workspace (messages, files, milestones)" },
+  { file: "support_tickets.sql", scope: "schema", label: "Applying support tickets migration" },
   { file: "shipment_logistics.sql", scope: "schema", label: "Applying shipment logistics (documents, transport fields)" },
   { file: "sync_users.sql", scope: "data", label: "Syncing demo user accounts" },
   { file: "seed_sites_catalog.sql", scope: "data", label: "Seeding site catalog into PostgreSQL (if not present)" },
