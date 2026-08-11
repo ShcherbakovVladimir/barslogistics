@@ -82,18 +82,89 @@ html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn {
   height: 2.65rem;
 }
 
-html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-popover,
-html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-popover {
+html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-popover-stack,
+html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-popover-stack {
   position: fixed;
+  inset: 0;
+  z-index: 1300;
+  pointer-events: none;
+}
+
+html.layout-mobile .app-side-rail-popover-backdrop,
+html.layout-fold .app-side-rail-popover-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgb(2 6 23 / 0.58);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: map-sheet-fade-in 0.18s ease-out;
+}
+
+html.layout-mobile .app-side-rail-popover--mobile-sheet,
+html.layout-fold .app-side-rail-popover--mobile-sheet {
+  position: absolute;
   top: auto;
+  left: 0;
+  right: 0;
   bottom: calc(
-    var(--app-side-rail-mobile-height) + env(safe-area-inset-bottom, 0px) + 0.35rem
+    var(--app-side-rail-mobile-height) + env(safe-area-inset-bottom, 0px)
   );
-  left: max(0.5rem, env(safe-area-inset-left, 0px));
-  right: max(0.5rem, env(safe-area-inset-right, 0px));
   width: auto;
-  max-height: min(50dvh, 22rem);
-  z-index: 1100;
+  max-width: none;
+  max-height: min(62dvh, 28rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2;
+  border-radius: 1rem 1rem 0 0;
+  border: 1px solid rgb(71 85 105 / 0.95);
+  border-bottom: none;
+  background: rgb(15 23 42 / 0.995);
+  box-shadow:
+    0 -16px 48px rgb(0 0 0 / 0.52),
+    0 0 0 1px rgb(99 102 241 / 0.14);
+  pointer-events: auto;
+  isolation: isolate;
+  animation: map-sheet-slide-up 0.24s ease-out;
+}
+
+html.layout-mobile .app-side-rail-popover-handle,
+html.layout-fold .app-side-rail-popover-handle {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0.5rem auto 0;
+  border-radius: 9999px;
+  background: rgb(100 116 139 / 0.8);
+}
+
+html.layout-mobile .app-side-rail-popover--mobile-sheet .app-side-rail-popover-head,
+html.layout-fold .app-side-rail-popover--mobile-sheet .app-side-rail-popover-head {
+  padding: 0.55rem 1rem 0.75rem;
+  border-bottom: 1px solid rgb(51 65 85 / 0.9);
+  background: rgb(15 23 42 / 0.98);
+}
+
+html.layout-mobile .app-side-rail-popover--mobile-sheet .app-side-rail-popover-body,
+html.layout-fold .app-side-rail-popover--mobile-sheet .app-side-rail-popover-body {
+  padding: 0.65rem 0.85rem 1rem;
+}
+
+html.layout-mobile .app-side-rail-popover--mobile-sheet .app-side-rail-notify,
+html.layout-fold .app-side-rail-popover--mobile-sheet .app-side-rail-notify {
+  border-color: rgb(71 85 105 / 0.85);
+  background: rgb(30 41 59 / 0.92);
+}
+
+html.portal-embed.layout-mobile .app-side-rail-popover-stack,
+html.portal-embed.layout-fold .app-side-rail-popover-stack {
+  position: absolute;
 }
 
 html.portal-embed.layout-mobile .app-side-rail.is-mobile-dock,

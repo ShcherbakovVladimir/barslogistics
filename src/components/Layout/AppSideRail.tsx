@@ -126,6 +126,134 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
     };
   }, [showNotifications]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      'app-notifications-sheet-open',
+      isMobileDock && showNotifications,
+    );
+    return () => {
+      document.documentElement.classList.remove('app-notifications-sheet-open');
+    };
+  }, [isMobileDock, showNotifications]);
+
+  const renderNotificationsPanel = (mobileSheet: boolean) => (
+    <>
+      {mobileSheet ? (
+        <div className="app-side-rail-popover-handle" aria-hidden="true" />
+      ) : null}
+      <div className="app-side-rail-popover-head">
+        <h3>{t('header.notificationsPanel')}</h3>
+        <div className="flex items-center gap-1">
+          {unreadCount > 0 ? (
+            <button
+              type="button"
+              className="app-side-rail-popover-action"
+              onClick={() => onMarkAllNotificationsRead()}
+            >
+              {t('header.notificationsMarkAll')}
+            </button>
+          ) : null}
+          {notifications.length > 0 ? (
+            <button
+              type="button"
+              className="app-side-rail-popover-action is-danger"
+              onClick={() => onClearAllNotifications()}
+            >
+              {t('header.notificationsClear')}
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className="app-side-rail-popover-close"
+            onClick={() => setShowNotifications(false)}
+            aria-label={t('common.close')}
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+      <div className="app-side-rail-popover-body theme-scrollbar">
+        {notifications.length === 0 ? (
+          <p className="app-side-rail-empty">{t('header.notificationsEmpty')}</p>
+        ) : (
+          notifications.map(n => (
+            <div
+              key={n.id}
+              className={`app-side-rail-notify${n.read ? ' is-read' : ''}`}
+            >
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  onMarkNotificationRead(n.id);
+                  if (n.link_type === 'chat' && n.link_id) {
+                    window.dispatchEvent(
+                      new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
+                    );
+                  }
+                  if (n.link_type === 'task' || n.link_type === 'board') {
+                    dispatchTasksOpenFromNotification(n.link_type, n.link_id);
+                  }
+                  if (n.link_type === 'shipment' && n.link_id) {
+                    window.dispatchEvent(
+                      new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
+                    );
+                  }
+                  setShowNotifications(false);
+                }}
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <span className={`font-semibold text-xs ${
+                    n.type === 'alert' ? 'text-red-400'
+                      : n.type === 'success' ? 'text-emerald-400'
+                        : 'text-indigo-300'
+                  }`}
+                  >
+                    {n.title}
+                  </span>
+                  <span className="text-[10px] text-slate-500 shrink-0">
+                    {new Date(n.timestamp).toLocaleString(localeTag, {
+                      day: '2-digit',
+                      month: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                </div>
+                <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
+              </div>
+              <div className="flex justify-end gap-1 mt-1.5">
+                {!n.read ? (
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onMarkNotificationRead(n.id);
+                    }}
+                  >
+                    <CheckCheck size={12} />
+                    {t('header.notificationsMarkRead')}
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteNotification(n.id);
+                  }}
+                >
+                  <Trash2 size={12} />
+                  {t('header.notificationsDelete')}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </>
+  );
+
   return (
     <aside
       className={`app-side-rail${collapsed && !isMobileDock ? ' is-collapsed' : ''}${isMobileDock ? ' is-mobile-dock' : ''}`}
@@ -150,7 +278,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
       {!collapsed || isMobileDock ? (
         <>
           <div className="app-side-rail-top">
-            <div className="relative" ref={notificationsRef}>
+            <div className="relative" ref={isMobileDock ? undefined : notificationsRef}>
               <button
                 type="button"
                 className="app-side-rail-btn"
@@ -167,118 +295,9 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
                 ) : null}
               </button>
 
-              {showNotifications ? (
+              {showNotifications && !isMobileDock ? (
                 <div className="app-side-rail-popover">
-                  <div className="app-side-rail-popover-head">
-                    <h3>{t('header.notificationsPanel')}</h3>
-                    <div className="flex items-center gap-1">
-                      {unreadCount > 0 ? (
-                        <button
-                          type="button"
-                          className="app-side-rail-popover-action"
-                          onClick={() => onMarkAllNotificationsRead()}
-                        >
-                          {t('header.notificationsMarkAll')}
-                        </button>
-                      ) : null}
-                      {notifications.length > 0 ? (
-                        <button
-                          type="button"
-                          className="app-side-rail-popover-action is-danger"
-                          onClick={() => onClearAllNotifications()}
-                        >
-                          {t('header.notificationsClear')}
-                        </button>
-                      ) : null}
-                      <button
-                        type="button"
-                        className="app-side-rail-popover-close"
-                        onClick={() => setShowNotifications(false)}
-                        aria-label={t('common.close')}
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="app-side-rail-popover-body theme-scrollbar">
-                    {notifications.length === 0 ? (
-                      <p className="app-side-rail-empty">{t('header.notificationsEmpty')}</p>
-                    ) : (
-                      notifications.map(n => (
-                        <div
-                          key={n.id}
-                          className={`app-side-rail-notify${n.read ? ' is-read' : ''}`}
-                        >
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => {
-                              onMarkNotificationRead(n.id);
-                              if (n.link_type === 'chat' && n.link_id) {
-                                window.dispatchEvent(
-                                  new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
-                                );
-                              }
-                              if (n.link_type === 'task' || n.link_type === 'board') {
-                                dispatchTasksOpenFromNotification(n.link_type, n.link_id);
-                              }
-                              if (n.link_type === 'shipment' && n.link_id) {
-                                window.dispatchEvent(
-                                  new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
-                                );
-                              }
-                              setShowNotifications(false);
-                            }}
-                          >
-                            <div className="flex justify-between items-start gap-2">
-                              <span className={`font-semibold text-xs ${
-                                n.type === 'alert' ? 'text-red-400'
-                                  : n.type === 'success' ? 'text-emerald-400'
-                                    : 'text-indigo-300'
-                              }`}
-                              >
-                                {n.title}
-                              </span>
-                              <span className="text-[10px] text-slate-500 shrink-0">
-                                {new Date(n.timestamp).toLocaleString(localeTag, {
-                                  day: '2-digit',
-                                  month: '2-digit',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                })}
-                              </span>
-                            </div>
-                            <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
-                          </div>
-                          <div className="flex justify-end gap-1 mt-1.5">
-                            {!n.read ? (
-                              <button
-                                type="button"
-                                className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onMarkNotificationRead(n.id);
-                                }}
-                              >
-                                <CheckCheck size={12} />
-                                {t('header.notificationsMarkRead')}
-                              </button>
-                            ) : null}
-                            <button
-                              type="button"
-                              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onDeleteNotification(n.id);
-                              }}
-                            >
-                              <Trash2 size={12} />
-                              {t('header.notificationsDelete')}
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
+                  {renderNotificationsPanel(false)}
                 </div>
               ) : null}
             </div>
@@ -341,6 +360,25 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
             </button>
           </div>
         </>
+      ) : null}
+
+      {showNotifications && isMobileDock ? (
+        <div className="app-side-rail-popover-stack" ref={notificationsRef} role="presentation">
+          <button
+            type="button"
+            className="app-side-rail-popover-backdrop"
+            aria-label={t('common.close')}
+            onClick={() => setShowNotifications(false)}
+          />
+          <div
+            className="app-side-rail-popover app-side-rail-popover--mobile-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('header.notificationsPanel')}
+          >
+            {renderNotificationsPanel(true)}
+          </div>
+        </div>
       ) : null}
     </aside>
   );

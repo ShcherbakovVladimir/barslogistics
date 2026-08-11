@@ -196,6 +196,16 @@ export function LogisticsMap({
   const skipReverseGeocodeRef = useRef(false);
 
   const isPositionEditing = positionEditFactoryId !== null;
+  const isFactorySheetOpen = mobileLayout && highlightedFactoryId !== null && !isPositionEditing;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('map-position-editing', isPositionEditing);
+    document.documentElement.classList.toggle('map-factory-sheet-open', isFactorySheetOpen);
+    return () => {
+      document.documentElement.classList.remove('map-position-editing');
+      document.documentElement.classList.remove('map-factory-sheet-open');
+    };
+  }, [isPositionEditing, isFactorySheetOpen]);
 
   const {
     panelRef: filterPanelRef,
@@ -1137,7 +1147,10 @@ export function LogisticsMap({
     </div>
   );
 
-  const renderFactoryTypeField = (selectClassName: string) => {
+  const renderFactoryTypeField = (
+    selectClassName: string,
+    options?: { inlinePanel?: boolean },
+  ) => {
     if (!highlightedFactory) return null;
 
     if (canEditType && onSaveFactoryType) {
@@ -1173,6 +1186,7 @@ export function LogisticsMap({
               className="w-full"
               panelClassName="map-filter-dropdown-panel"
               listClassName="map-filter-period-list"
+              inlinePanel={options?.inlinePanel}
             />
           </div>
           {typeSaveError && (
@@ -1222,7 +1236,7 @@ export function LogisticsMap({
     return (
       <div className="map-sheet-panel text-xs text-slate-200">
         <div className="text-[10px] font-mono map-factory-id break-all">{highlightedFactory.id}</div>
-        {renderFactoryTypeField('map-sheet-select mt-1.5')}
+        {renderFactoryTypeField('map-sheet-select mt-1.5', { inlinePanel: true })}
         {renderFactoryHighlightActions(false, true)}
       </div>
     );
@@ -1336,7 +1350,7 @@ export function LogisticsMap({
       ref={mapShellRef}
       className={`logistics-map relative w-full h-full min-h-0 overflow-hidden bg-slate-950${
         isPositionEditing ? ' is-position-editing' : ''
-      }`}
+      }${isFactorySheetOpen ? ' is-factory-sheet-open' : ''}`}
     >
       <div className={`absolute inset-0 z-0${tileFilterClass}`}>
         <div ref={mapContainerRef} className="w-full h-full bg-slate-950" />

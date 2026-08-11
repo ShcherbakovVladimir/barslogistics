@@ -6,6 +6,7 @@ import { SearchableSelect } from '../UI/SearchableSelect';
 import { SITE_CATEGORIES, getSiteCategoryLabel } from '../../constants/siteCategories';
 import { AppBottomSheetHandle } from '../UI/AppBottomSheetHandle';
 import { useAppBottomSheet } from '../../hooks/useAppBottomSheet';
+import { isMobileLayout } from '../../utils/deviceLayout';
 
 interface FacilityModalProps {
   factory: Factory | null;
@@ -34,6 +35,19 @@ export const FacilityModal: React.FC<FacilityModalProps> = ({
   const [draftType, setDraftType] = useState<FactoryType>('gok');
   const [typeSaving, setTypeSaving] = useState(false);
   const [typeError, setTypeError] = useState('');
+  const [mobileLayout, setMobileLayout] = useState(() => isMobileLayout());
+
+  useEffect(() => {
+    setMobileLayout(isMobileLayout());
+    const mq = window.matchMedia('(max-width: 640px)');
+    const sync = () => setMobileLayout(isMobileLayout());
+    mq.addEventListener('change', sync);
+    window.addEventListener('resize', sync);
+    return () => {
+      mq.removeEventListener('change', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, []);
 
   useEffect(() => {
     if (factory) {
@@ -143,6 +157,7 @@ export const FacilityModal: React.FC<FacilityModalProps> = ({
                       className="w-full"
                       panelClassName="map-filter-dropdown-panel"
                       listClassName="map-filter-period-list"
+                      inlinePanel={mobileLayout}
                     />
                   </div>
                   {typeSaving && (

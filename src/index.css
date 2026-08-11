@@ -3919,8 +3919,40 @@ html.compact-laptop .audit-logs-filters-grid {
   }
 
   .app-header-popover {
-    right: max(0px, env(safe-area-inset-right, 0px));
-    max-width: min(20rem, calc(100vw - 1rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
+    position: fixed;
+    top: auto;
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-width: none;
+    margin: 0;
+    border-radius: 1rem;
+    border: 1px solid rgb(71 85 105 / 0.95);
+    background: rgb(15 23 42 / 0.995);
+    box-shadow:
+      0 -16px 48px rgb(0 0 0 / 0.52),
+      0 0 0 1px rgb(99 102 241 / 0.12);
+    z-index: 1250;
+  }
+
+  html.layout-mobile .header-nav-inline-panel,
+  html.layout-fold .header-nav-inline-panel {
+    margin: 0.65rem 0.75rem 0.75rem;
+    padding: 0.85rem;
+    border-radius: 0.85rem;
+    background: rgb(15 23 42 / 0.98);
+    border: 1px solid rgb(71 85 105 / 0.9);
+    box-shadow:
+      inset 0 1px 0 rgb(148 163 184 / 0.06),
+      0 10px 28px rgb(0 0 0 / 0.28);
+  }
+
+  html.layout-mobile .header-nav-inline-panel-title,
+  html.layout-fold .header-nav-inline-panel-title {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px solid rgb(51 65 85 / 0.85);
   }
 }
 
@@ -5197,24 +5229,48 @@ html.compact-laptop .logistics-map .leaflet-control-zoom {
 }
 
 /*
- * Position edit (logistics map): dock / preview must sit above the chat launcher.
- * #chat-portal-root is a sibling after <main> — without this, FAB wins at z-index 1200.
+ * Logistics map overlays (position edit, factory sheet, facility modal) above chat launcher.
  */
-html:has(.logistics-map.is-position-editing) #main-content {
+html.map-position-editing #main-content,
+html.map-factory-sheet-open #main-content,
+html:has(.logistics-map.is-position-editing) #main-content,
+html:has(.logistics-map.is-factory-sheet-open) #main-content {
   z-index: 45;
 }
 
-html:has(.logistics-map.is-position-editing) #chat-portal-root {
+html.map-position-editing #chat-portal-root,
+html.map-factory-sheet-open #chat-portal-root,
+html.map-facility-modal-open #chat-portal-root,
+html:has(.logistics-map.is-position-editing) #chat-portal-root,
+html:has(.logistics-map.is-factory-sheet-open) #chat-portal-root {
   z-index: 30;
 }
 
-html:has(.logistics-map.is-position-editing) #chat-portal-root:has(.chat-widget-root--open) {
+html.map-position-editing #chat-portal-root:has(.chat-widget-root--open),
+html.map-factory-sheet-open #chat-portal-root:has(.chat-widget-root--open),
+html.map-facility-modal-open #chat-portal-root:has(.chat-widget-root--open),
+html:has(.logistics-map.is-position-editing) #chat-portal-root:has(.chat-widget-root--open),
+html:has(.logistics-map.is-factory-sheet-open) #chat-portal-root:has(.chat-widget-root--open) {
   z-index: 1300;
 }
 
+html.map-facility-modal-open .modal-backdrop:has(.facility-modal) {
+  z-index: 1250;
+}
+
+html.map-position-editing .map-mobile-dock-stack,
+html.map-position-editing .map-position-preview-wrap,
+html.map-factory-sheet-open .map-mobile-sheet-stack,
 html:has(.logistics-map.is-position-editing) .map-mobile-dock-stack,
-html:has(.logistics-map.is-position-editing) .map-position-preview-wrap {
+html:has(.logistics-map.is-position-editing) .map-position-preview-wrap,
+html:has(.logistics-map.is-factory-sheet-open) .map-mobile-sheet-stack {
   z-index: 50;
+}
+
+html.map-position-editing .modal-dropdown-panel,
+html.map-factory-sheet-open .modal-dropdown-panel,
+html.map-facility-modal-open .modal-dropdown-panel {
+  z-index: 10100 !important;
 }
 
 /* ── App side rail (all pages except map) ── */

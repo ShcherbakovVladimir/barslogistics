@@ -304,6 +304,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const facilityModalOnMap = activeTab === 'map' && detailFactory !== null;
+    document.documentElement.classList.toggle('map-facility-modal-open', facilityModalOnMap);
+    return () => {
+      document.documentElement.classList.remove('map-facility-modal-open');
+    };
+  }, [activeTab, detailFactory]);
+
+  useEffect(() => {
     ApiService.setLocale(locale);
     let cancelled = false;
     let pollTimer: number | undefined;

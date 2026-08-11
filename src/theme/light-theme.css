@@ -2964,6 +2964,32 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   box-shadow: 0 16px 40px rgb(15 23 42 / 0.12) !important;
 }
 
+[data-theme="light"] html.layout-mobile .app-side-rail-popover--mobile-sheet,
+[data-theme="light"] html.layout-fold .app-side-rail-popover--mobile-sheet {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow:
+    0 -16px 48px rgb(15 23 42 / 0.14),
+    0 0 0 1px rgb(99 102 241 / 0.1) !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail-popover-backdrop,
+[data-theme="light"] html.layout-fold .app-side-rail-popover-backdrop {
+  background: rgb(15 23 42 / 0.35) !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail-popover--mobile-sheet .app-side-rail-popover-head,
+[data-theme="light"] html.layout-fold .app-side-rail-popover--mobile-sheet .app-side-rail-popover-head {
+  background: #ffffff !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] html.layout-mobile .app-side-rail-popover--mobile-sheet .app-side-rail-notify,
+[data-theme="light"] html.layout-fold .app-side-rail-popover--mobile-sheet .app-side-rail-notify {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
 [data-theme="light"] .app-side-rail-popover-head {
   border-bottom-color: #e2e8f0 !important;
 }

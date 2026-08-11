@@ -962,6 +962,59 @@ html.layout-fold .map-factory-highlight-actions--touch button {
 html.layout-mobile .logistics-map.is-position-editing,
 html.layout-fold .logistics-map.is-position-editing {
   --map-position-dock-height: 0px;
+  z-index: 1;
+}
+
+/* Mobile: map overlays above chat FAB (chat portal is outside the map) */
+html.map-position-editing.layout-mobile #main-content,
+html.map-position-editing.layout-fold #main-content,
+html.map-factory-sheet-open.layout-mobile #main-content,
+html.map-factory-sheet-open.layout-fold #main-content {
+  z-index: 50;
+}
+
+html.map-position-editing.layout-mobile #chat-portal-root,
+html.map-position-editing.layout-fold #chat-portal-root,
+html.map-factory-sheet-open.layout-mobile #chat-portal-root,
+html.map-factory-sheet-open.layout-fold #chat-portal-root,
+html.map-facility-modal-open.layout-mobile #chat-portal-root,
+html.map-facility-modal-open.layout-fold #chat-portal-root {
+  z-index: 20;
+}
+
+html.map-position-editing.layout-mobile #chat-portal-root:has(.chat-widget-root--open),
+html.map-position-editing.layout-fold #chat-portal-root:has(.chat-widget-root--open),
+html.map-factory-sheet-open.layout-mobile #chat-portal-root:has(.chat-widget-root--open),
+html.map-factory-sheet-open.layout-fold #chat-portal-root:has(.chat-widget-root--open),
+html.map-facility-modal-open.layout-mobile #chat-portal-root:has(.chat-widget-root--open),
+html.map-facility-modal-open.layout-fold #chat-portal-root:has(.chat-widget-root--open) {
+  z-index: 1300;
+}
+
+html.map-position-editing.layout-mobile .map-mobile-dock-stack,
+html.map-position-editing.layout-fold .map-mobile-dock-stack,
+html.map-factory-sheet-open.layout-mobile .map-mobile-sheet-stack,
+html.map-factory-sheet-open.layout-fold .map-mobile-sheet-stack {
+  z-index: 60;
+}
+
+html.map-position-editing.layout-mobile #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher,
+html.map-position-editing.layout-fold #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher,
+html.map-factory-sheet-open.layout-mobile #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher,
+html.map-factory-sheet-open.layout-fold #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher,
+html.map-facility-modal-open.layout-mobile #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher,
+html.map-facility-modal-open.layout-fold #chat-portal-root:not(:has(.chat-widget-root--open)) .chat-widget-launcher {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+html.layout-mobile .map-mobile-sheet-body--factory .modal-dropdown-panel--inline,
+html.layout-fold .map-mobile-sheet-body--factory .modal-dropdown-panel--inline,
+html.layout-mobile .facility-modal .modal-dropdown-panel--inline,
+html.layout-fold .facility-modal .modal-dropdown-panel--inline {
+  z-index: 5;
+  max-height: min(14rem, 40dvh);
 }
 
 html.layout-mobile .logistics-map.is-position-editing .map-position-crosshair,
