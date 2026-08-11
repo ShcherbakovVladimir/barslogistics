@@ -1,11 +1,16 @@
 import React, { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Calendar, ChevronLeft, ChevronRight, Clock, X } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronLeft, ChevronRight, Clock, X } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getAppViewportRect } from '../../utils/viewport';
 
 const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const WEEKDAYS_EN = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const PANEL_MIN_WIDTH = 320;
+const PANEL_PREFERRED_WIDTH = 340;
+const YEARS_PER_PAGE = 12;
+
+type PanelView = 'days' | 'months' | 'years';
 
 /** Parse `YYYY-MM-DDTHH:mm` (datetime-local) into local Date parts. */
 function parseLocalDateTime(value: string): { date: Date; hours: number; minutes: number } | null {
@@ -64,6 +69,10 @@ function buildMonthGrid(month: Date): (Date | null)[] {
   return cells;
 }
 
+function yearPageStart(year: number): number {
+  return Math.floor(year / YEARS_PER_PAGE) * YEARS_PER_PAGE;
+}
+
 export interface ShipmentDateTimePickerProps {
   value: string;
   onChange: (value: string) => void;
@@ -86,6 +95,7 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const [panelView, setPanelView] = useState<PanelView>('days');
   const [panelPos, setPanelPos] = useState<{
     left: number;
     top: number;
@@ -103,6 +113,23 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
   const weekdays = locale === 'en' ? WEEKDAYS_EN : WEEKDAYS_RU;
   const cells = useMemo(() => buildMonthGrid(viewMonth), [viewMonth]);
   const todayYmd = toYmd(new Date());
+  const localeCode = locale === 'en' ? 'en-GB' : 'ru-RU';
+
+  const monthNames = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      try {
+        return new Date(2020, i, 1).toLocaleDateString(localeCode, { month: 'short' });
+      } catch {
+        return String(i + 1);
+      }
+    });
+  }, [localeCode]);
+
+  const yearStart = yearPageStart(viewMonth.getFullYear());
+  const years = useMemo(
+    () => Array.from({ length: YEARS_PER_PAGE }, (_, i) => yearStart + i),
+    [yearStart],
+  );
 
   const displayLabel = useMemo(() => {
     if (!parsed) return placeholder || t('shipmentLogistics.dateTimePlaceholder');
@@ -119,16 +146,16 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
     }
   }, [parsed, placeholder, t, localeTag, value]);
 
-  const monthLabel = useMemo(() => {
+  const monthTitle = useMemo(() => {
     try {
-      return viewMonth.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ru-RU', {
-        month: 'long',
-        year: 'numeric',
-      });
+      return viewMonth.toLocaleDateString(localeCode, { month: 'long' });
     } catch {
-      return `${viewMonth.getMonth() + 1}.${viewMonth.getFullYear()}`;
+      return monthNames[viewMonth.getMonth()];
     }
-  }, [viewMonth, locale]);
+  }, [viewMonth, localeCode, monthNames]);
+
+  const yearTitle = String(viewMonth.getFullYear());
+  const yearsRangeLabel = `${yearStart} – ${yearStart + YEARS_PER_PAGE - 1}`;
 
   useEffect(() => {
     if (!open) return;
@@ -137,6 +164,7 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
     setHours(next?.hours ?? 12);
     setMinutes(next?.minutes ?? 0);
     setViewMonth(startOfMonth(next?.date ?? new Date()));
+    setPanelView('days');
   }, [open, value]);
 
   useLayoutEffect(() => {
@@ -144,8 +172,8 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
 
     const PANEL_GAP = 6;
     const VIEWPORT_PAD = 8;
-    const PREFERRED_H = 400;
-    const MIN_H = 220;
+    const PREFERRED_H = panelView === 'days' ? 460 : 360;
+    const MIN_H = 240;
 
     const compute = () => {
       const trigger = triggerRef.current;
@@ -155,7 +183,10 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
       const { top: vTop, left: vLeft, width: vWidth, height: vHeight } = getAppViewportRect();
       const vBottom = vTop + vHeight;
 
-      const width = Math.min(Math.max(rect.width, 300), Math.max(200, vWidth - VIEWPORT_PAD * 2));
+      const width = Math.min(
+        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH, rect.width),
+        Math.max(PANEL_MIN_WIDTH, vWidth - VIEWPORT_PAD * 2),
+      );
       let left = rect.left;
       if (left + width > vLeft + vWidth - VIEWPORT_PAD) {
         left = vLeft + vWidth - VIEWPORT_PAD - width;
@@ -166,7 +197,6 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
       const spaceAbove = rect.top - PANEL_GAP - (vTop + VIEWPORT_PAD);
       const placement: 'below' | 'above' = spaceBelow >= spaceAbove ? 'below' : 'above';
       const available = Math.max(MIN_H, placement === 'below' ? spaceBelow : spaceAbove);
-
       const maxHeight = Math.min(PREFERRED_H, available, vHeight - VIEWPORT_PAD * 2);
 
       let top = placement === 'below'
@@ -190,7 +220,7 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
       vv?.removeEventListener('resize', compute);
       vv?.removeEventListener('scroll', compute);
     };
-  }, [open]);
+  }, [open, panelView]);
 
   useEffect(() => {
     if (!open) return;
@@ -202,7 +232,14 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
       setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        setPanelView((view) => {
+          if (view === 'years') return 'months';
+          if (view === 'months') return 'days';
+          setOpen(false);
+          return view;
+        });
+      }
     };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
@@ -221,6 +258,22 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
     applyValue(date, hours, minutes);
   };
 
+  const pickMonth = (monthIndex: number) => {
+    setViewMonth(new Date(viewMonth.getFullYear(), monthIndex, 1));
+    setPanelView('days');
+  };
+
+  const pickYear = (year: number) => {
+    setViewMonth(new Date(year, viewMonth.getMonth(), 1));
+    setPanelView('months');
+  };
+
+  const stepNav = (dir: -1 | 1) => {
+    if (panelView === 'days') setViewMonth((m) => addMonths(m, dir));
+    else if (panelView === 'months') setViewMonth((m) => new Date(m.getFullYear() + dir, m.getMonth(), 1));
+    else setViewMonth((m) => new Date(m.getFullYear() + dir * YEARS_PER_PAGE, m.getMonth(), 1));
+  };
+
   const commitTime = (h: number, min: number) => {
     const safeH = Math.min(23, Math.max(0, h));
     const safeM = Math.min(59, Math.max(0, min));
@@ -237,6 +290,7 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
     setHours(h);
     setMinutes(min);
     setViewMonth(startOfMonth(now));
+    setPanelView('days');
     applyValue(now, h, min);
     setOpen(false);
   };
@@ -248,6 +302,8 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
   };
 
   const selectedYmd = draftDate ? toYmd(draftDate) : (parsed ? toYmd(parsed.date) : '');
+  const selectedMonth = (draftDate ?? parsed?.date)?.getMonth();
+  const selectedYear = (draftDate ?? parsed?.date)?.getFullYear();
 
   const panel = open && panelPos ? createPortal(
     <div
@@ -266,75 +322,156 @@ export const ShipmentDateTimePicker: React.FC<ShipmentDateTimePickerProps> = ({
         <button
           type="button"
           className="shipment-datetime-picker-nav-btn"
-          onClick={() => setViewMonth((m) => addMonths(m, -1))}
+          onClick={() => stepNav(-1)}
           aria-label={t('common.back')}
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <div className="shipment-datetime-picker-month">{monthLabel}</div>
+
+        <div className="shipment-datetime-picker-title">
+          {panelView === 'days' && (
+            <>
+              <button
+                type="button"
+                className="shipment-datetime-picker-title-btn"
+                onClick={() => setPanelView('months')}
+                aria-label={t('shipmentLogistics.pickMonth')}
+              >
+                <span className="capitalize">{monthTitle}</span>
+                <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+              </button>
+              <button
+                type="button"
+                className="shipment-datetime-picker-title-btn"
+                onClick={() => setPanelView('years')}
+                aria-label={t('shipmentLogistics.pickYear')}
+              >
+                <span>{yearTitle}</span>
+                <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+              </button>
+            </>
+          )}
+          {panelView === 'months' && (
+            <button
+              type="button"
+              className="shipment-datetime-picker-title-btn"
+              onClick={() => setPanelView('years')}
+              aria-label={t('shipmentLogistics.pickYear')}
+            >
+              <span>{yearTitle}</span>
+              <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+            </button>
+          )}
+          {panelView === 'years' && (
+            <div className="shipment-datetime-picker-month">{yearsRangeLabel}</div>
+          )}
+        </div>
+
         <button
           type="button"
           className="shipment-datetime-picker-nav-btn"
-          onClick={() => setViewMonth((m) => addMonths(m, 1))}
+          onClick={() => stepNav(1)}
           aria-label={t('common.scrollNext')}
         >
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
-      <div className="shipment-datetime-picker-weekdays">
-        {weekdays.map((d) => <span key={d}>{d}</span>)}
-      </div>
+      {panelView === 'days' && (
+        <>
+          <div className="shipment-datetime-picker-weekdays">
+            {weekdays.map((d) => <span key={d}>{d}</span>)}
+          </div>
 
-      <div className="shipment-datetime-picker-grid">
-        {cells.map((day, idx) => {
-          if (!day) return <span key={`e-${idx}`} className="shipment-datetime-picker-day is-empty" />;
-          const ymd = toYmd(day);
-          const isSelected = selectedYmd === ymd;
-          const isToday = ymd === todayYmd;
-          return (
-            <button
-              key={ymd}
-              type="button"
-              className={`shipment-datetime-picker-day${isSelected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
-              onClick={() => pickDay(day)}
-            >
-              {day.getDate()}
-            </button>
-          );
-        })}
-      </div>
+          <div className="shipment-datetime-picker-grid">
+            {cells.map((day, idx) => {
+              if (!day) return <span key={`e-${idx}`} className="shipment-datetime-picker-day is-empty" />;
+              const ymd = toYmd(day);
+              const isSelected = selectedYmd === ymd;
+              const isToday = ymd === todayYmd;
+              return (
+                <button
+                  key={ymd}
+                  type="button"
+                  className={`shipment-datetime-picker-day${isSelected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
+                  onClick={() => pickDay(day)}
+                >
+                  {day.getDate()}
+                </button>
+              );
+            })}
+          </div>
 
-      <div className="shipment-datetime-picker-time">
-        <span className="shipment-datetime-picker-time-label">
-          <Clock className="w-3.5 h-3.5" aria-hidden />
-          {t('shipmentLogistics.time')}
-        </span>
-        <div className="shipment-datetime-picker-time-fields">
-          <label className="shipment-datetime-picker-time-field">
-            <span>{t('shipmentLogistics.hours')}</span>
-            <input
-              type="number"
-              min={0}
-              max={23}
-              value={hours}
-              onChange={(e) => commitTime(Number(e.target.value) || 0, minutes)}
-            />
-          </label>
-          <span className="shipment-datetime-picker-time-sep" aria-hidden>:</span>
-          <label className="shipment-datetime-picker-time-field">
-            <span>{t('shipmentLogistics.minutes')}</span>
-            <input
-              type="number"
-              min={0}
-              max={59}
-              step={5}
-              value={minutes}
-              onChange={(e) => commitTime(hours, Number(e.target.value) || 0)}
-            />
-          </label>
+          <div className="shipment-datetime-picker-time">
+            <span className="shipment-datetime-picker-time-label">
+              <Clock className="w-3.5 h-3.5" aria-hidden />
+              {t('shipmentLogistics.time')}
+            </span>
+            <div className="shipment-datetime-picker-time-fields">
+              <label className="shipment-datetime-picker-time-field">
+                <span>{t('shipmentLogistics.hours')}</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={23}
+                  value={hours}
+                  onChange={(e) => commitTime(Number(e.target.value) || 0, minutes)}
+                />
+              </label>
+              <span className="shipment-datetime-picker-time-sep" aria-hidden>:</span>
+              <label className="shipment-datetime-picker-time-field">
+                <span>{t('shipmentLogistics.minutes')}</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={59}
+                  step={5}
+                  value={minutes}
+                  onChange={(e) => commitTime(hours, Number(e.target.value) || 0)}
+                />
+              </label>
+            </div>
+          </div>
+        </>
+      )}
+
+      {panelView === 'months' && (
+        <div className="shipment-datetime-picker-period-grid">
+          {monthNames.map((name, idx) => {
+            const isSelected = selectedYear === viewMonth.getFullYear() && selectedMonth === idx;
+            const isCurrent = new Date().getFullYear() === viewMonth.getFullYear() && new Date().getMonth() === idx;
+            return (
+              <button
+                key={name}
+                type="button"
+                className={`shipment-datetime-picker-period${isSelected ? ' is-selected' : ''}${isCurrent ? ' is-today' : ''}`}
+                onClick={() => pickMonth(idx)}
+              >
+                {name}
+              </button>
+            );
+          })}
         </div>
-      </div>
+      )}
+
+      {panelView === 'years' && (
+        <div className="shipment-datetime-picker-period-grid">
+          {years.map((year) => {
+            const isSelected = selectedYear === year;
+            const isCurrent = new Date().getFullYear() === year;
+            return (
+              <button
+                key={year}
+                type="button"
+                className={`shipment-datetime-picker-period${isSelected ? ' is-selected' : ''}${isCurrent ? ' is-today' : ''}`}
+                onClick={() => pickYear(year)}
+              >
+                {year}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div className="shipment-datetime-picker-footer">
         <button type="button" className="shipment-datetime-picker-footer-btn" onClick={setNow}>

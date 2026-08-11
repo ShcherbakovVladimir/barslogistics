@@ -1440,14 +1440,26 @@ html.layout-mobile .shipment-datetime-picker-panel,
 html.layout-fold .shipment-datetime-picker-panel {
   padding: 0.875rem;
   border-radius: 1rem;
-  width: min(20.5rem, calc(100vw - 1rem)) !important;
+  width: min(22rem, calc(100vw - 0.75rem)) !important;
 }
 
 html.layout-mobile .shipment-datetime-picker-day,
 html.layout-fold .shipment-datetime-picker-day {
-  min-height: 2.5rem;
-  font-size: 0.8125rem;
+  min-height: 2.6rem;
+  font-size: 0.875rem;
   border-radius: 0.55rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-period,
+html.layout-fold .shipment-datetime-picker-period {
+  min-height: 3rem;
+  font-size: 0.875rem;
+}
+
+html.layout-mobile .shipment-datetime-picker-title-btn,
+html.layout-fold .shipment-datetime-picker-title-btn {
+  min-height: 2rem;
+  font-size: 0.875rem;
 }
 
 html.layout-mobile .shipment-datetime-picker-nav-btn,

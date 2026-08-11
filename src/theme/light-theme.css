@@ -382,7 +382,9 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 }
 
 [data-theme="light"] .shipment-datetime-picker-month,
-[data-theme="light"] .shipment-datetime-picker-day {
+[data-theme="light"] .shipment-datetime-picker-day,
+[data-theme="light"] .shipment-datetime-picker-period,
+[data-theme="light"] .shipment-datetime-picker-title-btn {
   color: #0f172a !important;
 }
 
@@ -391,12 +393,15 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 }
 
 [data-theme="light"] .shipment-datetime-picker-nav-btn:hover,
-[data-theme="light"] .shipment-datetime-picker-day:hover:not(.is-empty) {
+[data-theme="light"] .shipment-datetime-picker-day:hover:not(.is-empty),
+[data-theme="light"] .shipment-datetime-picker-period:hover,
+[data-theme="light"] .shipment-datetime-picker-title-btn:hover {
   background: #f1f5f9 !important;
   color: #047857 !important;
 }
 
-[data-theme="light"] .shipment-datetime-picker-day.is-selected {
+[data-theme="light"] .shipment-datetime-picker-day.is-selected,
+[data-theme="light"] .shipment-datetime-picker-period.is-selected {
   background: rgb(16 185 129 / 0.15) !important;
   color: #047857 !important;
 }

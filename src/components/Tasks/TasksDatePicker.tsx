@@ -1,11 +1,16 @@
 import React, { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Calendar, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useI18n } from '../../i18n';
 import { getAppViewportRect } from '../../utils/viewport';
 
 const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const WEEKDAYS_EN = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const PANEL_MIN_WIDTH = 300;
+const PANEL_PREFERRED_WIDTH = 320;
+const YEARS_PER_PAGE = 12;
+
+type PanelView = 'days' | 'months' | 'years';
 
 function parseYmd(value: string): Date | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
@@ -44,6 +49,10 @@ function buildMonthGrid(month: Date): (Date | null)[] {
   return cells;
 }
 
+function yearPageStart(year: number): number {
+  return Math.floor(year / YEARS_PER_PAGE) * YEARS_PER_PAGE;
+}
+
 export interface TasksDatePickerProps {
   value: string;
   onChange: (value: string) => void;
@@ -66,6 +75,7 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const [panelView, setPanelView] = useState<PanelView>('days');
   const [panelPos, setPanelPos] = useState<{ left: number; top: number; width: number } | null>(null);
   const selected = parseYmd(value);
   const [viewMonth, setViewMonth] = useState(() => startOfMonth(selected ?? new Date()));
@@ -73,11 +83,28 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
   const weekdays = locale === 'en' ? WEEKDAYS_EN : WEEKDAYS_RU;
   const cells = useMemo(() => buildMonthGrid(viewMonth), [viewMonth]);
   const todayYmd = toYmd(new Date());
+  const localeCode = locale === 'en' ? 'en-GB' : 'ru-RU';
+
+  const monthNames = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      try {
+        return new Date(2020, i, 1).toLocaleDateString(localeCode, { month: 'short' });
+      } catch {
+        return String(i + 1);
+      }
+    });
+  }, [localeCode]);
+
+  const yearStart = yearPageStart(viewMonth.getFullYear());
+  const years = useMemo(
+    () => Array.from({ length: YEARS_PER_PAGE }, (_, i) => yearStart + i),
+    [yearStart],
+  );
 
   const displayLabel = useMemo(() => {
     if (!selected) return placeholder || t('tasks.dueDatePlaceholder');
     try {
-      return selected.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ru-RU', {
+      return selected.toLocaleDateString(localeCode, {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
@@ -85,29 +112,32 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
     } catch {
       return value;
     }
-  }, [selected, placeholder, t, locale, value]);
+  }, [selected, placeholder, t, localeCode, value]);
 
-  const monthLabel = useMemo(() => {
+  const monthTitle = useMemo(() => {
     try {
-      return viewMonth.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ru-RU', {
-        month: 'long',
-        year: 'numeric',
-      });
+      return viewMonth.toLocaleDateString(localeCode, { month: 'long' });
     } catch {
-      return `${viewMonth.getMonth() + 1}.${viewMonth.getFullYear()}`;
+      return monthNames[viewMonth.getMonth()];
     }
-  }, [viewMonth, locale]);
+  }, [viewMonth, localeCode, monthNames]);
+
+  const yearTitle = String(viewMonth.getFullYear());
+  const yearsRangeLabel = `${yearStart} – ${yearStart + YEARS_PER_PAGE - 1}`;
 
   useLayoutEffect(() => {
     if (!open || !triggerRef.current) return;
     const update = () => {
       const rect = triggerRef.current!.getBoundingClientRect();
       const { top: vTop, left: vLeft, width: vWidth, height: vHeight } = getAppViewportRect();
-      const width = Math.min(Math.max(rect.width, 280), vWidth - 16);
+      const width = Math.min(
+        Math.max(PANEL_MIN_WIDTH, PANEL_PREFERRED_WIDTH, rect.width),
+        Math.max(PANEL_MIN_WIDTH, vWidth - 16),
+      );
       let left = rect.left;
       if (left + width > vLeft + vWidth - 8) left = vLeft + vWidth - 8 - width;
       left = Math.max(vLeft + 8, left);
-      const panelH = 320;
+      const panelH = panelView === 'days' ? 340 : 300;
       const below = rect.bottom + 6;
       const above = rect.top - 6 - panelH;
       const top = below + panelH <= vTop + vHeight - 8 ? below : Math.max(vTop + 8, above);
@@ -120,11 +150,16 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
       window.removeEventListener('resize', update);
       window.removeEventListener('scroll', update, true);
     };
-  }, [open]);
+  }, [open, panelView]);
 
   useEffect(() => {
     if (!open) return;
     if (selected) setViewMonth(startOfMonth(selected));
+    setPanelView('days');
+  }, [open, selected]);
+
+  useEffect(() => {
+    if (!open) return;
     const onDown = (e: MouseEvent) => {
       const target = e.target as Node;
       if (rootRef.current?.contains(target)) return;
@@ -133,7 +168,14 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
       setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        setPanelView((view) => {
+          if (view === 'years') return 'months';
+          if (view === 'months') return 'days';
+          setOpen(false);
+          return view;
+        });
+      }
     };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
@@ -141,12 +183,31 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
       document.removeEventListener('mousedown', onDown);
       document.removeEventListener('keydown', onKey);
     };
-  }, [open, panelId, selected]);
+  }, [open, panelId]);
 
   const pick = (date: Date) => {
     onChange(toYmd(date));
     setOpen(false);
   };
+
+  const pickMonth = (monthIndex: number) => {
+    setViewMonth(new Date(viewMonth.getFullYear(), monthIndex, 1));
+    setPanelView('days');
+  };
+
+  const pickYear = (year: number) => {
+    setViewMonth(new Date(year, viewMonth.getMonth(), 1));
+    setPanelView('months');
+  };
+
+  const stepNav = (dir: -1 | 1) => {
+    if (panelView === 'days') setViewMonth(m => addMonths(m, dir));
+    else if (panelView === 'months') setViewMonth(m => new Date(m.getFullYear() + dir, m.getMonth(), 1));
+    else setViewMonth(m => new Date(m.getFullYear() + dir * YEARS_PER_PAGE, m.getMonth(), 1));
+  };
+
+  const selectedMonth = selected?.getMonth();
+  const selectedYear = selected?.getFullYear();
 
   const panel = open && panelPos ? createPortal(
     <div
@@ -157,35 +218,116 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
       aria-label={t('tasks.dueDate')}
     >
       <div className="tasks-date-picker-nav">
-        <button type="button" className="tasks-date-picker-nav-btn" onClick={() => setViewMonth(m => addMonths(m, -1))} aria-label={t('common.back')}>
+        <button type="button" className="tasks-date-picker-nav-btn" onClick={() => stepNav(-1)} aria-label={t('common.back')}>
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <div className="tasks-date-picker-month">{monthLabel}</div>
-        <button type="button" className="tasks-date-picker-nav-btn" onClick={() => setViewMonth(m => addMonths(m, 1))} aria-label={t('common.scrollNext')}>
+        <div className="tasks-date-picker-title">
+          {panelView === 'days' && (
+            <>
+              <button
+                type="button"
+                className="tasks-date-picker-title-btn"
+                onClick={() => setPanelView('months')}
+                aria-label={t('tasks.pickMonth')}
+              >
+                <span className="capitalize">{monthTitle}</span>
+                <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+              </button>
+              <button
+                type="button"
+                className="tasks-date-picker-title-btn"
+                onClick={() => setPanelView('years')}
+                aria-label={t('tasks.pickYear')}
+              >
+                <span>{yearTitle}</span>
+                <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+              </button>
+            </>
+          )}
+          {panelView === 'months' && (
+            <button
+              type="button"
+              className="tasks-date-picker-title-btn"
+              onClick={() => setPanelView('years')}
+              aria-label={t('tasks.pickYear')}
+            >
+              <span>{yearTitle}</span>
+              <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+            </button>
+          )}
+          {panelView === 'years' && (
+            <div className="tasks-date-picker-month">{yearsRangeLabel}</div>
+          )}
+        </div>
+        <button type="button" className="tasks-date-picker-nav-btn" onClick={() => stepNav(1)} aria-label={t('common.scrollNext')}>
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
-      <div className="tasks-date-picker-weekdays">
-        {weekdays.map(d => <span key={d}>{d}</span>)}
-      </div>
-      <div className="tasks-date-picker-grid">
-        {cells.map((day, idx) => {
-          if (!day) return <span key={`e-${idx}`} className="tasks-date-picker-day is-empty" />;
-          const ymd = toYmd(day);
-          const isSelected = value === ymd;
-          const isToday = ymd === todayYmd;
-          return (
-            <button
-              key={ymd}
-              type="button"
-              className={`tasks-date-picker-day${isSelected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
-              onClick={() => pick(day)}
-            >
-              {day.getDate()}
-            </button>
-          );
-        })}
-      </div>
+
+      {panelView === 'days' && (
+        <>
+          <div className="tasks-date-picker-weekdays">
+            {weekdays.map(d => <span key={d}>{d}</span>)}
+          </div>
+          <div className="tasks-date-picker-grid">
+            {cells.map((day, idx) => {
+              if (!day) return <span key={`e-${idx}`} className="tasks-date-picker-day is-empty" />;
+              const ymd = toYmd(day);
+              const isSelected = value === ymd;
+              const isToday = ymd === todayYmd;
+              return (
+                <button
+                  key={ymd}
+                  type="button"
+                  className={`tasks-date-picker-day${isSelected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
+                  onClick={() => pick(day)}
+                >
+                  {day.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {panelView === 'months' && (
+        <div className="tasks-date-picker-period-grid">
+          {monthNames.map((name, idx) => {
+            const isSelected = selectedYear === viewMonth.getFullYear() && selectedMonth === idx;
+            const isCurrent = new Date().getFullYear() === viewMonth.getFullYear() && new Date().getMonth() === idx;
+            return (
+              <button
+                key={name}
+                type="button"
+                className={`tasks-date-picker-period${isSelected ? ' is-selected' : ''}${isCurrent ? ' is-today' : ''}`}
+                onClick={() => pickMonth(idx)}
+              >
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {panelView === 'years' && (
+        <div className="tasks-date-picker-period-grid">
+          {years.map((year) => {
+            const isSelected = selectedYear === year;
+            const isCurrent = new Date().getFullYear() === year;
+            return (
+              <button
+                key={year}
+                type="button"
+                className={`tasks-date-picker-period${isSelected ? ' is-selected' : ''}${isCurrent ? ' is-today' : ''}`}
+                onClick={() => pickYear(year)}
+              >
+                {year}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <div className="tasks-date-picker-footer">
         <button type="button" className="tasks-date-picker-footer-btn" onClick={() => pick(new Date())}>
           {t('tasks.dueToday')}
