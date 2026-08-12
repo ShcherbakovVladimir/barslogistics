@@ -421,6 +421,13 @@ html.portal-embed .header-nav-scroll {
   -ms-overflow-style: none;
 }
 
+.scroll-area:has(> .site-directory-page) {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .scroll-area::-webkit-scrollbar {
   display: none;
 }
@@ -2743,11 +2750,13 @@ html.portal-embed .header-nav-scroll {
 
 /* ── Site directory page: chrome shell + cards + table ── */
 .site-directory-page {
-  min-height: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
   padding: 1rem;
   color: #e2e8f0;
   background: #020617;
@@ -2764,6 +2773,7 @@ html.portal-embed .header-nav-scroll {
   flex-direction: column;
   align-items: stretch;
   gap: 0.85rem;
+  flex-shrink: 0;
 }
 
 .site-directory-filter-block {
@@ -2883,6 +2893,9 @@ html.portal-embed .header-nav-scroll {
 
 .site-directory-cards-mobile {
   display: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .site-directory-filters-grid {
@@ -2939,6 +2952,7 @@ html.portal-embed .header-nav-scroll {
 }
 
 .site-directory-results-bar {
+  flex-shrink: 0;
   font-size: 0.75rem;
   color: #94a3b8;
   padding: 0 0.15rem;
@@ -3183,6 +3197,7 @@ html.portal-embed .header-nav-scroll {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -3198,6 +3213,7 @@ html.portal-embed .header-nav-scroll {
 .site-directory-table-scroll {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
   overflow-x: auto;
@@ -3222,10 +3238,18 @@ html.portal-embed .header-nav-scroll {
 .site-directory-virtual-list-desktop.virtual-list-scroll {
   flex: 1 1 auto;
   min-width: 48rem;
-  max-height: min(70vh, 720px);
+  min-height: 0;
+  height: auto;
+  max-height: none;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
+}
+
+.site-directory-page .site-directory-virtual-list-mobile.virtual-list-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
 }
 
 .site-directory-table-virtual-row {

@@ -1296,6 +1296,20 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   color: #fef3c7;
 }
 
+[data-theme="light"] .site-directory-contour-badge--inner,
+[data-theme="light"] .site-directory-card-contour--inner {
+  background: rgb(16 185 129 / 0.08);
+  border-color: rgb(16 185 129 / 0.3);
+  color: #059669;
+}
+
+[data-theme="light"] .site-directory-contour-badge--outer,
+[data-theme="light"] .site-directory-card-contour--outer {
+  background: rgb(245 158 11 / 0.1);
+  border-color: rgb(245 158 11 / 0.28);
+  color: #b45309;
+}
+
 [data-theme="light"] .site-directory-chip--type.is-active {
   color: #4338ca !important;
   background: rgb(99 102 241 / 0.12) !important;

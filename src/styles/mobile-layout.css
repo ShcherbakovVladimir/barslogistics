@@ -1543,6 +1543,9 @@ html.layout-fold .site-directory-cards-mobile {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 html.layout-mobile .site-directory-chips-row,
