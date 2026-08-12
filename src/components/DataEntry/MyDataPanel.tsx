@@ -12,7 +12,7 @@ import type {
   ShipmentImportResult,
   SalesManager,
 } from '../../types';
-import { activeProducts } from '../../constants/products';
+import { activeProducts, getProductName } from '../../constants/products';
 import { activeCarriers } from '../../constants/carriers';
 import { activeSalesManagers, salesManagerLabel } from '../../constants/salesManagers';
 import { useI18n } from '../../i18n';
@@ -20,6 +20,8 @@ import { canSeeDealAmount, canUploadData } from '../../utils/permissions';
 import { ApiService } from '../../services/api';
 import { AppBottomSheetHandle } from '../UI/AppBottomSheetHandle';
 import { useAppBottomSheet } from '../../hooks/useAppBottomSheet';
+import { SearchableSelect } from '../UI/SearchableSelect';
+import { TasksDatePicker } from '../Tasks/TasksDatePicker';
 import {
   downloadInternalShipmentsCsvTemplate,
   validateInternalShipmentsCsvStructure,
@@ -295,94 +297,85 @@ export function MyDataPanel({
   const formFields = (
     <>
       <div className="my-data-form-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <label className="block space-y-1 text-xs">
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.site')}</span>
-          <select
+          <SearchableSelect
             value={form.site_id}
-            onChange={e => setForm({ ...form, site_id: e.target.value })}
-            className={fieldClass}
-            required
-          >
-            {ourSites.map(s => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block space-y-1 text-xs">
+            onChange={v => setForm({ ...form, site_id: v })}
+            options={ourSites.map(s => ({ value: s.id, label: s.name }))}
+            placeholder={t('myData.site')}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.counterparty')}</span>
-          <select
+          <SearchableSelect
             value={form.counterparty_id}
-            onChange={e => setForm({ ...form, counterparty_id: e.target.value })}
-            className={fieldClass}
-            required
-          >
-            {counterparties.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block space-y-1 text-xs">
+            onChange={v => setForm({ ...form, counterparty_id: v })}
+            options={counterparties.map(c => ({ value: c.id, label: c.name }))}
+            placeholder={t('myData.counterparty')}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.product')}</span>
-          <select
+          <SearchableSelect
             value={form.product_id}
-            onChange={e => setForm({ ...form, product_id: e.target.value })}
-            className={fieldClass}
-            required
-          >
-            {catalog.map(p => (
-              <option key={p.id} value={p.id}>
-                {locale === 'ru' ? p.name_ru : p.name_en}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block space-y-1 text-xs">
+            onChange={v => setForm({ ...form, product_id: v })}
+            options={catalog.map(p => ({
+              value: p.id,
+              label: getProductName(p.id, locale, catalog),
+            }))}
+            placeholder={t('myData.product')}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.carrier')}</span>
-          <select
+          <SearchableSelect
             value={form.carrier_id}
-            onChange={e => setForm({ ...form, carrier_id: e.target.value })}
-            className={fieldClass}
-          >
-            {carrierList.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block space-y-1 text-xs">
+            onChange={v => setForm({ ...form, carrier_id: v })}
+            options={carrierList.map(c => ({ value: c.id, label: c.name }))}
+            allowEmpty
+            emptyLabel={t('searchableSelect.select')}
+            placeholder={t('myData.carrier')}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.manager')}</span>
-          <select
+          <SearchableSelect
             value={form.sales_manager_id}
-            onChange={e => setForm({ ...form, sales_manager_id: e.target.value })}
-            className={fieldClass}
-          >
-            <option value="">{t('myData.managerNone')}</option>
-            {managerList.map(m => (
-              <option key={m.id} value={m.id}>
-                {salesManagerLabel(m)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block space-y-1 text-xs">
+            onChange={v => setForm({ ...form, sales_manager_id: v })}
+            options={managerList.map(m => ({ value: m.id, label: salesManagerLabel(m) }))}
+            allowEmpty
+            emptyLabel={t('myData.managerNone')}
+            placeholder={t('myData.manager')}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.flowType')}</span>
-          <select
+          <SearchableSelect
             value={form.flow_type}
-            onChange={e => setForm({ ...form, flow_type: e.target.value as FlowType })}
-            className={fieldClass}
-          >
-            {FLOWS.map(f => (
-              <option key={f} value={f}>
-                {t(`flowType.${f}`)}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={v => setForm({ ...form, flow_type: v as FlowType })}
+            options={FLOWS.map(f => ({ value: f, label: t(`flowType.${f}`) }))}
+            searchable={false}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
         <label className="block space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.volume')}</span>
           <input
@@ -395,30 +388,27 @@ export function MyDataPanel({
             required
           />
         </label>
-        <label className="block space-y-1 text-xs">
+        <div className="my-data-date space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.date')}</span>
-          <input
-            type="date"
+          <TasksDatePicker
             value={form.shipment_date}
-            onChange={e => setForm({ ...form, shipment_date: e.target.value })}
-            className={fieldClass}
+            onChange={v => setForm({ ...form, shipment_date: v })}
             required
+            placeholder={t('myData.date')}
           />
-        </label>
-        <label className="block space-y-1 text-xs">
+        </div>
+        <div className="my-data-select space-y-1 text-xs">
           <span className="text-slate-400">{t('myData.status')}</span>
-          <select
+          <SearchableSelect
             value={form.status}
-            onChange={e => setForm({ ...form, status: e.target.value as CargoStatus })}
-            className={fieldClass}
-          >
-            {STATUSES.map(s => (
-              <option key={s} value={s}>
-                {t(`status.${s}`)}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={v => setForm({ ...form, status: v as CargoStatus })}
+            options={STATUSES.map(s => ({ value: s, label: t(`status.${s}`) }))}
+            searchable={false}
+            className="my-data-dropdown"
+            triggerClassName="my-data-dropdown-trigger"
+            panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
+          />
+        </div>
         {showAmountField && (
           <label className="block space-y-1 text-xs">
             <span className="text-slate-400">{t('myData.amount')}</span>

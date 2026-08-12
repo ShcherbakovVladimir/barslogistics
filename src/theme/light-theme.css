@@ -1646,6 +1646,134 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   border-color: rgb(16 185 129 / 0.25) !important;
 }
 
+[data-theme="light"] .my-data-modal .my-data-dropdown-trigger,
+[data-theme="light"] .my-data-modal .modal-dropdown-trigger {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .my-data-modal .modal-dropdown-trigger:hover:not(:disabled),
+[data-theme="light"] .my-data-modal .modal-dropdown-trigger.is-open {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .my-data-modal .modal-dropdown-chevron {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .my-data-modal .my-data-date .tasks-date-picker-trigger {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .my-data-modal .my-data-date .tasks-date-picker-trigger.is-placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .my-data-modal .my-data-date .tasks-date-picker-trigger:hover,
+[data-theme="light"] .my-data-modal .my-data-date .tasks-date-picker-trigger.is-open {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.1), 0 4px 10px -4px rgb(15 23 42 / 0.08) !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-option {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-option:hover,
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-option:focus-visible {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-option.is-selected {
+  background: rgb(99 102 241 / 0.12) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-check {
+  color: #4f46e5 !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-search-wrap {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .my-data-dropdown-panel .modal-dropdown-search {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Tasks / My Data date picker panel (portaled) */
+[data-theme="light"] .tasks-date-picker-panel {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow:
+    0 14px 36px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(99 102 241 / 0.1) !important;
+}
+
+[data-theme="light"] .tasks-date-picker-month,
+[data-theme="light"] .tasks-date-picker-day,
+[data-theme="light"] .tasks-date-picker-period,
+[data-theme="light"] .tasks-date-picker-title-btn {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .tasks-date-picker-weekdays {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .tasks-date-picker-nav-btn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .tasks-date-picker-nav-btn:hover,
+[data-theme="light"] .tasks-date-picker-day:hover:not(.is-empty),
+[data-theme="light"] .tasks-date-picker-period:hover,
+[data-theme="light"] .tasks-date-picker-title-btn:hover {
+  background: #f1f5f9 !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .tasks-date-picker-day.is-selected,
+[data-theme="light"] .tasks-date-picker-period.is-selected {
+  background: rgb(99 102 241 / 0.15) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .tasks-date-picker-day.is-today {
+  box-shadow: inset 0 0 0 1px rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .tasks-date-picker-footer {
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .tasks-date-picker-footer-btn {
+  color: #4f46e5 !important;
+}
+
+[data-theme="light"] .tasks-date-picker-footer-btn:hover {
+  background: rgb(99 102 241 / 0.12) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .tasks-date-picker-clear:hover {
+  color: #0f172a !important;
+  background: #e2e8f0 !important;
+}
+
 /* ── Admin panel (mobile + light) ── */
 [data-theme="light"] .admin-panel {
   color: #334155;

@@ -2903,6 +2903,74 @@ html.portal-embed .header-nav-scroll {
   margin: 0.75rem;
 }
 
+/* My Data — custom selects & date picker in add-record modal */
+.my-data-select,
+.my-data-date {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.my-data-select .modal-dropdown,
+.my-data-dropdown {
+  width: 100%;
+}
+
+.my-data-modal .my-data-dropdown-trigger,
+.my-data-modal .modal-dropdown-trigger {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  background-color: rgb(2 6 23);
+  border: 1px solid rgb(51 65 85);
+  color: #f8fafc;
+}
+
+.my-data-modal .modal-dropdown-trigger:hover:not(:disabled),
+.my-data-modal .modal-dropdown-trigger.is-open {
+  border-color: rgb(99 102 241 / 0.55);
+  background-color: rgb(15 23 42);
+}
+
+.my-data-modal .modal-dropdown-trigger:focus-visible {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.25);
+}
+
+.my-data-modal .modal-dropdown-chevron {
+  color: #818cf8;
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.my-data-modal .my-data-date .tasks-date-picker-trigger {
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  background: rgb(2 6 23);
+  border-color: rgb(51 65 85);
+}
+
+.my-data-dropdown-panel {
+  z-index: 1500;
+}
+
+.my-data-dropdown-panel .modal-dropdown-option {
+  font-size: 0.8125rem;
+}
+
+.my-data-dropdown-panel .modal-dropdown-option.is-selected {
+  background: rgb(79 70 229 / 0.2);
+  color: #c7d2fe;
+}
+
+.my-data-dropdown-panel .modal-dropdown-check {
+  color: #818cf8;
+}
+
 /* ── Admin panel: mobile cards (hidden on desktop) ── */
 .admin-users-cards-mobile,
 .admin-sites-cards-mobile {
