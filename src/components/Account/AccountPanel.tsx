@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ImagePlus, KeyRound, Mail, Save, UserRound } from 'lucide-react';
+import { ImagePlus, KeyRound, Mail, Save, Trash2, UserRound } from 'lucide-react';
 import type { User } from '../../types';
 import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
@@ -13,9 +13,6 @@ export interface AccountPanelProps {
 
 const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const AVATAR_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif';
-
-const fieldClass =
-  'account-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
 
 function isAvatarFileValid(file: File): boolean {
   if (!AVATAR_ACCEPT.split(',').includes(file.type)) return false;
@@ -131,25 +128,19 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
   };
 
   return (
-    <div className="account-page h-full min-h-0 overflow-y-auto theme-scrollbar">
-      <div className="account-page-inner mx-auto w-full max-w-3xl px-4 py-5 sm:px-6 sm:py-7 space-y-5">
+    <div className="account-page theme-scrollbar">
+      <div className="account-page-inner">
         <header className="account-hero">
-          <div className="flex items-start gap-3 min-w-0">
-            <span className="account-hero-icon shrink-0" aria-hidden>
-              <UserRound className="w-5 h-5" />
-            </span>
-            <div className="min-w-0">
-              <h1 className="account-title text-lg sm:text-xl font-bold text-slate-100 tracking-tight">
-                {t('account.title')}
-              </h1>
-              <p className="account-subtitle text-xs sm:text-sm text-slate-400 mt-1">
-                {t('account.subtitle')}
-              </p>
-            </div>
+          <span className="account-hero-icon" aria-hidden>
+            <UserRound />
+          </span>
+          <div className="account-hero-text">
+            <h1 className="account-title">{t('account.title')}</h1>
+            <p className="account-subtitle">{t('account.subtitle')}</p>
           </div>
         </header>
 
-        <form onSubmit={(e) => void handleSave(e)} className="account-card space-y-4">
+        <form onSubmit={(e) => void handleSave(e)} className="account-card">
           <div className="account-card-head">
             <h2 className="account-section-title">{t('account.profileSection')}</h2>
             <p className="account-section-hint">{t('account.profileHint')}</p>
@@ -162,9 +153,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             <p className="account-alert account-alert--ok">{success}</p>
           ) : null}
 
-          <div className="admin-users-avatar-field">
+          <div className="account-avatar-field">
             {avatarPreview ? (
-              <img src={avatarPreview} alt="" className="user-avatar user-avatar--lg user-avatar--image" />
+              <img src={avatarPreview} alt="" className="user-avatar user-avatar--lg user-avatar--image account-avatar" />
             ) : showExistingAvatar ? (
               <UserAvatar
                 userId={user.id}
@@ -172,14 +163,21 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
                 hasAvatar
                 avatarVersion={user.avatar_version}
                 size="lg"
+                className="account-avatar"
               />
             ) : (
-              <UserAvatar userId={user.id} name={name || user.name} hasAvatar={false} size="lg" />
+              <UserAvatar
+                userId={user.id}
+                name={name || user.name}
+                hasAvatar={false}
+                size="lg"
+                className="account-avatar"
+              />
             )}
-            <div className="min-w-0 space-y-1.5">
-              <div className="text-xs text-slate-300 font-medium">{t('admin.users.avatar')}</div>
-              <p className="admin-users-avatar-hint">{t('admin.users.avatarHint')}</p>
-              <div className="admin-users-avatar-actions">
+            <div className="account-avatar-meta">
+              <div className="account-label">{t('admin.users.avatar')}</div>
+              <p className="account-avatar-hint">{t('admin.users.avatarHint')}</p>
+              <div className="account-avatar-actions">
                 <input
                   ref={avatarInputRef}
                   type="file"
@@ -190,9 +188,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
                 <button
                   type="button"
                   onClick={() => avatarInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-semibold hover:border-slate-600"
+                  className="account-btn account-btn--ghost"
                 >
-                  <ImagePlus className="w-3.5 h-3.5 shrink-0" />
+                  <ImagePlus aria-hidden />
                   {avatarPreview || showExistingAvatar ? t('admin.users.avatarChange') : t('admin.users.avatarUpload')}
                 </button>
                 {(avatarPreview || showExistingAvatar) && (
@@ -205,8 +203,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
                       }
                       setRemoveAvatar(true);
                     }}
-                    className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-red-300 hover:bg-red-500/10"
+                    className="account-btn account-btn--danger"
                   >
+                    <Trash2 aria-hidden />
                     {t('admin.users.avatarRemove')}
                   </button>
                 )}
@@ -214,78 +213,78 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <label className="block space-y-1 text-xs sm:col-span-2">
-              <span className="text-slate-400">{t('auth.fullName')}</span>
+          <div className="account-grid">
+            <label className="account-field-wrap account-field-wrap--full">
+              <span className="account-label">{t('auth.fullName')}</span>
               <input
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={fieldClass}
+                className="account-field"
                 autoComplete="name"
               />
             </label>
 
-            <label className="block space-y-1 text-xs">
-              <span className="text-slate-400">{t('auth.username')}</span>
-              <input value={user.username} disabled className={`${fieldClass} opacity-70 cursor-not-allowed`} />
+            <label className="account-field-wrap">
+              <span className="account-label">{t('auth.username')}</span>
+              <input value={user.username} disabled className="account-field" />
             </label>
 
-            <label className="block space-y-1 text-xs">
-              <span className="text-slate-400">{t('account.role')}</span>
+            <label className="account-field-wrap">
+              <span className="account-label">{t('account.role')}</span>
               <input
                 value={t(`roles.${user.role}.title`)}
                 disabled
-                className={`${fieldClass} opacity-70 cursor-not-allowed`}
+                className="account-field"
               />
             </label>
 
-            <label className="block space-y-1 text-xs sm:col-span-2">
-              <span className="text-slate-400">{t('auth.email')}</span>
+            <label className="account-field-wrap account-field-wrap--full">
+              <span className="account-label">{t('auth.email')}</span>
               <input
                 value={user.email || '—'}
                 disabled
-                className={`${fieldClass} opacity-70 cursor-not-allowed`}
+                className="account-field"
               />
-              <span className="text-[10px] text-slate-500">{t('account.emailReadonlyHint')}</span>
+              <span className="account-field-hint">{t('account.emailReadonlyHint')}</span>
             </label>
 
-            <label className="block space-y-1 text-xs sm:col-span-2">
-              <span className="text-slate-400">{t('admin.users.colTelegram')}</span>
+            <label className="account-field-wrap account-field-wrap--full">
+              <span className="account-label">{t('admin.users.colTelegram')}</span>
               <input
                 value={telegram}
                 onChange={(e) => setTelegram(e.target.value)}
-                className={`${fieldClass} font-mono`}
+                className="account-field account-field--mono"
                 placeholder="123456789"
               />
             </label>
 
-            <label className="flex items-center gap-2 sm:col-span-2 text-slate-300 min-h-[2.75rem] text-sm">
+            <label className="account-check">
               <input
                 type="checkbox"
                 checked={notificationsEnabled}
                 onChange={(e) => setNotificationsEnabled(e.target.checked)}
               />
-              {t('admin.users.notifications')}
+              <span>{t('admin.users.notifications')}</span>
             </label>
           </div>
 
-          <div className="flex justify-end pt-1">
+          <div className="account-card-actions">
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+              className="account-btn account-btn--primary"
             >
-              <Save className="w-3.5 h-3.5 shrink-0" />
+              <Save aria-hidden />
               {saving ? t('account.saving') : t('account.save')}
             </button>
           </div>
         </form>
 
-        <section className="account-card space-y-3">
+        <section className="account-card">
           <div className="account-card-head">
-            <h2 className="account-section-title flex items-center gap-2">
-              <KeyRound className="w-4 h-4 text-indigo-300 shrink-0" />
+            <h2 className="account-section-title">
+              <KeyRound className="account-section-icon" aria-hidden />
               {t('account.passwordSection')}
             </h2>
             <p className="account-section-hint">{t('account.passwordHint')}</p>
@@ -298,9 +297,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             <p className="account-alert account-alert--ok">{passwordMessage}</p>
           ) : null}
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex items-start gap-2 text-xs text-slate-400 min-w-0 flex-1">
-              <Mail className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
+          <div className="account-password-row">
+            <div className="account-password-note">
+              <Mail aria-hidden />
               <span>
                 {user.email
                   ? t('account.passwordResetTo', { email: user.email })
@@ -311,9 +310,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
               type="button"
               disabled={sendingReset || !user.email}
               onClick={() => void handlePasswordReset()}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0 shrink-0"
+              className="account-btn account-btn--accent"
             >
-              <KeyRound className="w-3.5 h-3.5 shrink-0" />
+              <KeyRound aria-hidden />
               {sendingReset ? t('auth.sending') : t('account.sendPasswordLink')}
             </button>
           </div>

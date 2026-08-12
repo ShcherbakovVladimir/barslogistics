@@ -4713,56 +4713,134 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
 }
 
 [data-theme="light"] .account-page {
-  background:
-    radial-gradient(ellipse 80% 50% at 10% -10%, rgb(99 102 241 / 0.08), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(14 165 233 / 0.06), transparent 50%),
-    #f8fafc !important;
+  background: #f1f5f9 !important;
 }
 
-[data-theme="light"] .account-title {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .account-subtitle,
-[data-theme="light"] .account-section-hint {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .account-hero-icon {
-  color: #4338ca !important;
-  background: rgb(99 102 241 / 0.1) !important;
-  border-color: rgb(99 102 241 / 0.25) !important;
-}
-
+[data-theme="light"] .account-hero,
 [data-theme="light"] .account-card {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 0 8px 24px -16px rgb(15 23 42 / 0.18) !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
 }
 
+[data-theme="light"] .account-hero-icon {
+  color: #475569 !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .account-title,
 [data-theme="light"] .account-section-title {
   color: #0f172a !important;
 }
 
+[data-theme="light"] .account-subtitle,
+[data-theme="light"] .account-section-hint,
+[data-theme="light"] .account-label,
+[data-theme="light"] .account-avatar-hint,
+[data-theme="light"] .account-password-note,
+[data-theme="light"] .account-field-hint {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .account-card-head {
+  border-bottom-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .account-section-icon {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .account-avatar {
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 0 0 2px #ffffff !important;
+}
+
 [data-theme="light"] .account-field {
   background: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  border-color: #e2e8f0 !important;
   color: #0f172a !important;
 }
 
+[data-theme="light"] .account-field:hover:not(:disabled) {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .account-field:focus {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.65) !important;
+}
+
 [data-theme="light"] .account-field:disabled {
-  background: #f1f5f9 !important;
+  background: #f8fafc !important;
   color: #64748b !important;
+}
+
+[data-theme="light"] .account-check {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .account-btn {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .account-btn:hover:not(:disabled) {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .account-btn--danger {
+  color: #b91c1c !important;
+  border-color: rgb(252 165 165) !important;
+  background: #fef2f2 !important;
+}
+
+[data-theme="light"] .account-btn--danger:hover:not(:disabled) {
+  color: #991b1b !important;
+  border-color: rgb(248 113 113) !important;
+  background: #fee2e2 !important;
+}
+
+[data-theme="light"] .account-btn--primary {
+  color: #ffffff !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
+  background: #059669 !important;
+}
+
+[data-theme="light"] .account-btn--primary:hover:not(:disabled) {
+  color: #ffffff !important;
+  border-color: rgb(5 150 105 / 0.65) !important;
+  background: #047857 !important;
+}
+
+[data-theme="light"] .account-btn--accent {
+  color: #ffffff !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  background: #4f46e5 !important;
+}
+
+[data-theme="light"] .account-btn--accent:hover:not(:disabled) {
+  color: #ffffff !important;
+  border-color: rgb(99 102 241 / 0.65) !important;
+  background: #4338ca !important;
 }
 
 [data-theme="light"] .account-alert--error {
   color: #b91c1c !important;
-  background: rgb(254 226 226) !important;
+  background: #fef2f2 !important;
   border-color: rgb(252 165 165) !important;
 }
 
 [data-theme="light"] .account-alert--ok {
   color: #047857 !important;
-  background: rgb(209 250 229) !important;
+  background: #ecfdf5 !important;
   border-color: rgb(110 231 183) !important;
+}
+
+[data-theme="light"] .account-password-note svg {
+  color: #94a3b8 !important;
 }
