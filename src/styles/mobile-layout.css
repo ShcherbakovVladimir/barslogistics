@@ -1397,19 +1397,22 @@ html.layout-fold .shipment-page-modes {
   position: sticky;
   top: 0;
   z-index: 3;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  border-radius: 0.875rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 0.2rem;
+  padding: 0.15rem;
+  border-radius: 0.55rem;
   border-color: var(--shipment-events-toggle-border);
   background: var(--shipment-events-toggle-bg);
 }
 
 html.layout-mobile .shipment-page-mode-tab,
 html.layout-fold .shipment-page-mode-tab {
-  min-height: 2.75rem;
-  padding: 0.5rem;
-  font-size: 0.8125rem;
-  border-radius: 0.625rem;
+  min-height: 2.15rem;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.75rem;
+  border-radius: 0.4rem;
 }
 
 html.layout-mobile .shipment-page-mode-label-full,
@@ -1420,6 +1423,16 @@ html.layout-fold .shipment-page-mode-label-full {
 html.layout-mobile .shipment-page-mode-label-short,
 html.layout-fold .shipment-page-mode-label-short {
   display: inline;
+}
+
+html.layout-mobile .shipment-page-panel-manage .shipments-virtual-list-desktop.virtual-list-scroll,
+html.layout-fold .shipment-page-panel-manage .shipments-virtual-list-desktop.virtual-list-scroll {
+  max-height: none;
+}
+
+html.layout-mobile .shipment-page-panel-manage .shipments-virtual-list-mobile.virtual-list-scroll,
+html.layout-fold .shipment-page-panel-manage .shipments-virtual-list-mobile.virtual-list-scroll {
+  max-height: min(calc(100dvh - 14rem), 640px);
 }
 
 html.layout-mobile .shipment-page-panel-add-layout,
@@ -1442,8 +1455,8 @@ html.layout-fold .shipment-page-panel-add .shipment-events-history-panel.is-heig
 
 html.layout-mobile .shipment-events-history-list,
 html.layout-fold .shipment-events-history-list {
-  max-height: 22rem;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
 }
 
 html.layout-mobile .shipment-page-panel-add .shipment-events-panel,

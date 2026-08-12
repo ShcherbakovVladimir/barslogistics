@@ -317,7 +317,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
             className={`shipment-page-mode-tab${activeMode === 'manage' ? ' is-active' : ''}`}
             onClick={() => setPageMode('manage')}
           >
-            <Truck className="w-3.5 h-3.5 shrink-0" aria-hidden />
+            <Truck className="w-3 h-3 shrink-0" aria-hidden />
             <span className="shipment-page-mode-label-short">{t('shipmentEvents.tabManage')}</span>
             <span className="shipment-page-mode-label-full">{t('shipmentEvents.tabManageFull')}</span>
           </button>
@@ -330,7 +330,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
             className={`shipment-page-mode-tab${activeMode === 'add' ? ' is-active' : ''}`}
             onClick={() => setPageMode('add')}
           >
-            <PlusCircle className="w-3.5 h-3.5 shrink-0" aria-hidden />
+            <PlusCircle className="w-3 h-3 shrink-0" aria-hidden />
             <span className="shipment-page-mode-label-short">{t('shipmentEvents.tabAdd')}</span>
             <span className="shipment-page-mode-label-full">{t('shipmentEvents.tabAddFull')}</span>
           </button>
@@ -383,15 +383,15 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
           id="shipment-page-panel-manage"
           role="tabpanel"
           aria-labelledby={showEventsMode ? 'shipment-page-tab-manage' : undefined}
-          className="shipment-page-panel-manage space-y-4 sm:space-y-6"
+          className="shipment-page-panel-manage"
         >
-      <div className="shipments-list-toolbar flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl">
+      <div className="shipments-list-toolbar flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-900 border border-slate-800 p-3 sm:p-4 rounded-2xl shadow-xl">
         <div className="min-w-0">
-          <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
             <Truck className="w-5 h-5 text-emerald-400 shrink-0" />
             <span className="truncate">{t('shipments.title', { count: sortedLinks.length })}</span>
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">
             {t('shipments.subtitle')}
           </p>
         </div>
