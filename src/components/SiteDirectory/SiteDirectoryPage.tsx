@@ -417,10 +417,14 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
         <div className="site-directory-table-head-bar">
           {t('siteDirectory.results', { count: filtered.length })}
         </div>
-        <div className="site-directory-table-scroll responsive-table-wrap">
+        <div className="site-directory-table-scroll">
           <div className="site-directory-table-header site-directory-table-virtual-row" role="row">
-            <div className="site-directory-cell" role="columnheader">{t('siteDirectory.colId')}</div>
-            <div className="site-directory-cell" role="columnheader">{t('siteDirectory.colName')}</div>
+            <div className="site-directory-cell site-directory-cell-id" role="columnheader">
+              {t('siteDirectory.colId')}
+            </div>
+            <div className="site-directory-cell site-directory-cell-name" role="columnheader">
+              {t('siteDirectory.colName')}
+            </div>
             <div className="site-directory-cell site-directory-cell-category" role="columnheader">
               {t('siteDirectory.colCategory')}
             </div>
