@@ -1494,10 +1494,6 @@ html.portal-embed .header-nav-scroll {
   min-width: 0;
 }
 
-.shipment-page-panel-add-form .shipment-events-panel {
-  height: 100%;
-}
-
 .shipment-events-history-panel {
   display: flex;
   flex-direction: column;
@@ -1507,6 +1503,13 @@ html.portal-embed .header-nav-scroll {
   min-height: 22rem;
   padding: 1rem;
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+.shipment-events-history-panel.is-height-matched {
+  min-height: 0;
+  max-height: none;
+  flex-shrink: 0;
 }
 
 .shipment-events-history-head {
@@ -1708,11 +1711,11 @@ html.portal-embed .header-nav-scroll {
   color: #e0e7ff;
 }
 
-/* Wide: form ≤1400px, history takes remaining width and matches form height */
+/* Wide: form ≤1400px, history fills remaining width; height synced to form via JS */
 @media (min-width: 1500px) {
   .shipment-page-panel-add-layout {
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 1.25rem;
   }
 
@@ -1727,7 +1730,17 @@ html.portal-embed .header-nav-scroll {
     width: auto;
     min-width: 18rem;
     max-width: none;
-    align-self: stretch;
+  }
+
+  .shipment-page-panel-add .shipment-events-history-panel.is-height-matched {
+    /* height set inline to match form; list scrolls inside */
+    overflow: hidden;
+  }
+
+  .shipment-page-panel-add .shipment-events-history-panel.is-height-matched .shipment-events-history-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
   }
 }
 

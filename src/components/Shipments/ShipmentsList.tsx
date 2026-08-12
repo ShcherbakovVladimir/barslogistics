@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect, useRef } from 'react';
 import { SupplyLink, Factory, User, ShipmentEvent, ShipmentEventInput, Product } from '../../types';
 import { CARGO_STATUSES } from '../../types';
 import { useI18n } from '../../i18n';
@@ -166,6 +166,8 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   const [recentEvents, setRecentEvents] = useState<ShipmentEvent[]>([]);
   const [recentEventsLoading, setRecentEventsLoading] = useState(false);
   const [pageMode, setPageMode] = useState<'manage' | 'add'>('manage');
+  const [historyMatchHeight, setHistoryMatchHeight] = useState<number | null>(null);
+  const eventFormColumnRef = useRef<HTMLDivElement>(null);
 
   const canEdit = canEditShipmentStatus(currentUser.role);
   const canManageEvents = canCreateAnyShipmentEvent(currentUser);
@@ -191,6 +193,37 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   useEffect(() => {
     void loadRecentEvents();
   }, [loadRecentEvents, supplyLinks.length]);
+
+  useLayoutEffect(() => {
+    if (pageMode !== 'add') {
+      setHistoryMatchHeight(null);
+      return;
+    }
+
+    const formCol = eventFormColumnRef.current;
+    if (!formCol || typeof ResizeObserver === 'undefined') return;
+
+    const mq = window.matchMedia('(min-width: 1500px)');
+    const sync = () => {
+      if (!mq.matches) {
+        setHistoryMatchHeight(null);
+        return;
+      }
+      const h = Math.round(formCol.getBoundingClientRect().height);
+      setHistoryMatchHeight(h > 0 ? h : null);
+    };
+
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(formCol);
+    mq.addEventListener('change', sync);
+    window.addEventListener('resize', sync);
+    return () => {
+      ro.disconnect();
+      mq.removeEventListener('change', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, [pageMode, recentEvents.length, eventFormShipments.length]);
 
   const statusLabels = useMemo(() => ({
     en_route: { text: t('status.en_route'), bg: 'bg-emerald-500/10', textCol: 'text-emerald-400', border: 'border-emerald-500/30' },
@@ -316,7 +349,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
             <p className="text-xs text-slate-400 mt-0.5">{t('shipmentEvents.addSubtitle')}</p>
           </div>
           <div className="shipment-page-panel-add-layout">
-            <div className="shipment-page-panel-add-form">
+            <div className="shipment-page-panel-add-form" ref={eventFormColumnRef}>
               <ShipmentEventForm
                 shipments={eventFormShipments}
                 factories={factories}
@@ -334,6 +367,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
               factories={factories}
               shipments={supplyLinks}
               loading={recentEventsLoading}
+              matchHeight={historyMatchHeight}
               onRefresh={() => { void loadRecentEvents(); }}
               onOpenShipment={(id) => {
                 const link = supplyLinks.find(s => s.id === id);

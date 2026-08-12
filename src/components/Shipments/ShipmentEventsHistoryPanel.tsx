@@ -18,6 +18,8 @@ interface ShipmentEventsHistoryPanelProps {
   factories: Factory[];
   shipments: SupplyLink[];
   loading?: boolean;
+  /** When set (wide layout), panel height matches the event form; list scrolls inside. */
+  matchHeight?: number | null;
   onRefresh: () => void;
   onOpenShipment: (shipmentId: string) => void;
 }
@@ -35,6 +37,7 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
   factories,
   shipments,
   loading = false,
+  matchHeight = null,
   onRefresh,
   onOpenShipment,
 }) => {
@@ -83,7 +86,12 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
   }, [events]);
 
   return (
-    <aside className="shipment-events-recent shipment-events-history-panel bg-slate-900 border border-slate-800 rounded-2xl">
+    <aside
+      className={`shipment-events-recent shipment-events-history-panel bg-slate-900 border border-slate-800 rounded-2xl${
+        matchHeight != null ? ' is-height-matched' : ''
+      }`}
+      style={matchHeight != null ? { height: matchHeight } : undefined}
+    >
       <div className="shipment-events-history-head">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
