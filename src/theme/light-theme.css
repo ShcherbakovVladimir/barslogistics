@@ -3556,6 +3556,202 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   background-color: #e2e8f0 !important;
 }
 
+[data-theme="light"] .map-filter-panel-shell,
+[data-theme="light"] .map-chrome-panel,
+[data-theme="light"] .map-search-input-wrap,
+[data-theme="light"] .map-search-dropdown {
+  background: rgb(255 255 255 / 0.95) !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+  box-shadow: 0 12px 32px rgb(15 23 42 / 0.1) !important;
+}
+
+[data-theme="light"] .map-filter-panel-shell.is-floating {
+  border-color: rgb(99 102 241 / 0.35) !important;
+  box-shadow:
+    0 12px 32px rgb(15 23 42 / 0.1),
+    0 0 0 1px rgb(99 102 241 / 0.12) !important;
+}
+
+[data-theme="light"] .map-filter-panel-header,
+[data-theme="light"] .map-filter-panel-header-title,
+[data-theme="light"] .map-legend-toggle,
+[data-theme="light"] .map-factory-highlight-name,
+[data-theme="light"] .map-search-option-label {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .map-filter-section-label,
+[data-theme="light"] .map-filter-checkbox,
+[data-theme="light"] .map-legend-chevron,
+[data-theme="light"] .map-search-icon,
+[data-theme="light"] .map-search-option-sublabel,
+[data-theme="light"] .map-csv-files-label,
+[data-theme="light"] .map-csv-file-count,
+[data-theme="light"] .facility-modal-meta,
+[data-theme="light"] .facility-modal-card-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .map-filter-chip,
+[data-theme="light"] .map-filter-view-modes,
+[data-theme="light"] .map-csv-file-btn,
+[data-theme="light"] .map-map-action-btn--ghost,
+[data-theme="light"] .map-position-action-btn--cancel,
+[data-theme="light"] .map-csv-btn--ghost,
+[data-theme="light"] .facility-modal-action-btn--close {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .map-filter-chip:hover,
+[data-theme="light"] .map-csv-file-btn:hover,
+[data-theme="light"] .map-map-action-btn--ghost:hover,
+[data-theme="light"] .map-position-action-btn--cancel:hover,
+[data-theme="light"] .map-csv-btn--ghost:hover:not(:disabled),
+[data-theme="light"] .facility-modal-action-btn--close:hover {
+  background: #f1f5f9 !important;
+  border-color: rgb(99 102 241 / 0.4) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .map-filter-chip.is-active,
+[data-theme="light"] .map-filter-view-tab--shipments.is-active,
+[data-theme="light"] .map-csv-file-btn.is-active,
+[data-theme="light"] .map-csv-btn--primary,
+[data-theme="light"] .map-map-action-btn--primary {
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .map-filter-view-tab--sites.is-active {
+  background: rgb(16 185 129 / 0.12) !important;
+  border-color: rgb(16 185 129 / 0.4) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .map-filter-collapsible,
+[data-theme="light"] .map-filter-collapsible-toggle {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .map-filter-collapsible-toggle:hover {
+  background: #f1f5f9 !important;
+}
+
+[data-theme="light"] .map-filter-collapsible-count {
+  background: rgb(99 102 241 / 0.12) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .map-filter-reset-btn,
+[data-theme="light"] .map-desktop-reset-btn,
+[data-theme="light"] .map-csv-btn--secondary {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .map-filter-reset-btn:hover,
+[data-theme="light"] .map-desktop-reset-btn:hover,
+[data-theme="light"] .map-csv-btn--secondary:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.4) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .map-search-input {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .map-search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .map-search-option:hover,
+[data-theme="light"] .map-search-option.is-active {
+  background: rgb(99 102 241 / 0.1) !important;
+}
+
+[data-theme="light"] .map-chrome-panel--highlight,
+[data-theme="light"] .map-chrome-panel--position {
+  border-color: rgb(217 119 6 / 0.35) !important;
+}
+
+[data-theme="light"] .map-chrome-panel--csv {
+  border-left-color: #d97706 !important;
+}
+
+[data-theme="light"] .map-csv-preview-title,
+[data-theme="light"] .map-csv-preview-hint {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .map-map-action-btn--position,
+[data-theme="light"] .facility-modal-action-btn--position {
+  background: rgb(255 251 235 / 0.9) !important;
+  border-color: rgb(217 119 6 / 0.45) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .map-position-preview-title {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .facility-modal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow:
+    0 24px 48px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(99 102 241 / 0.08) !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .facility-modal-title,
+[data-theme="light"] .facility-modal-card-value,
+[data-theme="light"] .facility-modal-shipment-cargo {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .facility-modal-card--quote {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .facility-modal-ours-badge {
+  background: rgb(16 185 129 / 0.1) !important;
+  border-color: rgb(16 185 129 / 0.3) !important;
+  color: #059669 !important;
+}
+
+[data-theme="light"] .facility-modal-shipment-btn {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .facility-modal-shipment-btn:hover {
+  background: #f1f5f9 !important;
+}
+
+[data-theme="light"] .facility-modal-shipment-volume {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .facility-modal-section-title--outgoing {
+  color: #4f46e5 !important;
+}
+
+[data-theme="light"] .facility-modal-section-title--incoming {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .map-filter-panel--mobile-sheet .map-filter-collapsible {
+  background: rgb(248 250 252) !important;
+  border-color: #e2e8f0 !important;
+}
+
 [data-theme="light"] .rzd-analytics-filters {
   --rzd-filter-panel-bg: #f8fafc;
   --rzd-field-bg: #ffffff;
@@ -4827,7 +5023,7 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
   color: #64748b !important;
 }
 
-[data-theme="light"] .map-mobile-search-panel .map-search-box > div {
+[data-theme="light"] .map-mobile-search-panel .map-search-box .map-search-input-wrap {
   background-color: rgb(255 255 255 / 0.98) !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;

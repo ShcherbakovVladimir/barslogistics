@@ -1113,7 +1113,7 @@ export function LogisticsMap({
             <button
               type="button"
               onClick={handleClearSelection}
-              className="px-2.5 py-1.5 rounded-lg border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white text-[11px] font-medium"
+              className="map-map-action-btn map-map-action-btn--ghost"
             >
               {t('map.clearSelection')}
             </button>
@@ -1122,7 +1122,7 @@ export function LogisticsMap({
             <button
               type="button"
               onClick={() => startPositionEdit(highlightedFactory!)}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-amber-500/50 hover:border-amber-400 text-amber-200 hover:text-amber-100 text-[11px] font-semibold${
+              className={`map-map-action-btn map-map-action-btn--position${
                 touchFriendly ? ' map-factory-sheet-action map-factory-sheet-action--position' : ''
               }`}
             >
@@ -1134,7 +1134,7 @@ export function LogisticsMap({
             <button
               type="button"
               onClick={() => onOpenFactoryDetails(highlightedFactory!)}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold${
+              className={`map-map-action-btn map-map-action-btn--primary${
                 touchFriendly ? ' map-factory-sheet-action map-factory-sheet-action--details' : ''
               }`}
             >
@@ -1208,17 +1208,17 @@ export function LogisticsMap({
     if (!highlightedFactory) return null;
 
     return (
-      <div className="map-factory-highlight mb-2 bg-slate-900/95 backdrop-blur-md border border-amber-500/40 rounded-xl p-3 shadow-xl text-xs text-slate-200 max-w-sm">
-        <div className="flex items-start justify-between gap-2">
+      <div className="map-factory-highlight map-chrome-panel map-chrome-panel--highlight mb-2 max-w-sm">
+        <div className="map-chrome-panel-head">
           <div className="min-w-0 flex-1">
-            <div className="font-semibold text-white break-words">{highlightedFactory.name}</div>
+            <div className="map-factory-highlight-name break-words">{highlightedFactory.name}</div>
             <div className="text-[10px] font-mono map-factory-id mt-0.5 break-all">{highlightedFactory.id}</div>
             <div className="mt-1.5">{renderFactoryTypeField('map-factory-type-select map-filter-panel mt-0.5')}</div>
           </div>
           <button
             type="button"
             onClick={handleClearSelection}
-            className="shrink-0 p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="map-panel-close-btn"
             title={t('map.clearSelectionTitle')}
             aria-label={t('map.clearSelectionTitle')}
           >
@@ -1293,7 +1293,7 @@ export function LogisticsMap({
             <button
               type="button"
               onClick={cancelPositionEdit}
-              className="map-position-action-btn map-position-action-btn--cancel px-2.5 py-1.5 rounded-lg border border-slate-600 text-slate-300 hover:text-white text-[11px]"
+              className="map-position-action-btn map-position-action-btn--cancel"
             >
               {t('common.cancel')}
             </button>
@@ -1301,7 +1301,7 @@ export function LogisticsMap({
               type="button"
               disabled={positionSaving}
               onClick={() => void confirmPositionEdit()}
-              className="map-position-action-btn map-position-action-btn--confirm flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-[11px] font-semibold"
+              className="map-position-action-btn map-position-action-btn--confirm"
               title={t('map.positionConfirm')}
             >
               {positionSaving ? (
@@ -1320,21 +1320,21 @@ export function LogisticsMap({
   );
 
   const renderPositionEditCard = () => (
-    <div className="map-position-preview bg-slate-900/95 backdrop-blur-md border border-amber-500/50 rounded-xl p-3 shadow-2xl text-xs text-slate-200">
-      <div className="flex items-start justify-between gap-2 mb-2">
+    <div className="map-position-preview map-chrome-panel map-chrome-panel--position">
+      <div className="map-chrome-panel-head">
         <div className="min-w-0">
-          <div className="font-semibold text-amber-300 flex items-center gap-1.5">
+          <div className="map-position-preview-title">
             <Move className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{t('map.positionEditTitle')}</span>
           </div>
           {editingFactory && (
-            <div className="text-[10px] text-slate-400 mt-0.5 break-words">{editingFactory.name}</div>
+            <div className="map-position-preview-subtitle mt-0.5 break-words">{editingFactory.name}</div>
           )}
         </div>
         <button
           type="button"
           onClick={cancelPositionEdit}
-          className="shrink-0 p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800"
+          className="map-panel-close-btn"
           title={t('map.positionEditCancel')}
           aria-label={t('map.positionEditCancel')}
         >
@@ -1423,10 +1423,10 @@ export function LogisticsMap({
           onSelectShipment={handleSearchSelectShipment}
         />
         {canUseCsvPreview ? (
-          <div className="map-imported-hint map-csv-preview-panel pointer-events-auto rounded-xl border border-slate-700 border-l-amber-500/50 bg-slate-900/95 backdrop-blur-md p-2.5 text-[11px] text-slate-200 shadow-lg space-y-2">
+          <div className="map-imported-hint map-csv-preview-panel map-chrome-panel map-chrome-panel--csv pointer-events-auto">
             {csvPreviewActive && activeCsvFile ? (
               <>
-                <p className="text-amber-300 font-semibold flex items-center gap-1.5">
+                <p className="map-csv-preview-title">
                   <FileSpreadsheet className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">
                     {t('map.csvPreviewActive', {
@@ -1438,14 +1438,14 @@ export function LogisticsMap({
                 <button
                   type="button"
                   onClick={() => onCsvPreviewRestore?.()}
-                  className="w-full rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-[11px] font-semibold py-1.5 px-2"
+                  className="map-csv-btn map-csv-btn--secondary w-full"
                 >
                   {t('map.csvRestoreView')}
                 </button>
               </>
             ) : (
               <>
-                <p className="text-amber-300">{t('map.showImportedHint')}</p>
+                <p className="map-csv-preview-hint">{t('map.showImportedHint')}</p>
                 <input
                   ref={csvFileInputRef}
                   type="file"
@@ -1461,7 +1461,7 @@ export function LogisticsMap({
                   <button
                     type="button"
                     onClick={() => downloadInternalShipmentsCsvTemplate()}
-                    className="flex-1 min-w-[6.5rem] inline-flex items-center justify-center gap-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-[10px] font-semibold py-1.5 px-2"
+                    className="map-csv-btn map-csv-btn--ghost flex-1 min-w-[6.5rem]"
                   >
                     <Download className="w-3 h-3 shrink-0" />
                     {t('map.csvDownloadTemplate')}
@@ -1470,7 +1470,7 @@ export function LogisticsMap({
                     type="button"
                     onClick={() => csvFileInputRef.current?.click()}
                     disabled={csvUploading}
-                    className="flex-1 min-w-[6.5rem] inline-flex items-center justify-center gap-1 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 border border-slate-600 text-slate-200 text-[10px] font-semibold py-1.5 px-2"
+                    className="map-csv-btn map-csv-btn--ghost flex-1 min-w-[6.5rem]"
                   >
                     <Upload className="w-3 h-3 shrink-0" />
                     {csvUploading ? t('map.csvUploading') : t('map.csvUpload')}
@@ -1481,31 +1481,25 @@ export function LogisticsMap({
                   <p className="text-slate-500 text-[10px]">{t('map.csvNoFiles')}</p>
                 ) : (
                   <div className="space-y-1">
-                    <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide">
-                      {t('map.csvSelectFile')}
-                    </p>
-                    <ul className="space-y-1 max-h-28 overflow-auto">
+                  <p className="map-csv-files-label">{t('map.csvSelectFile')}</p>
+                    <ul className="map-csv-file-list">
                       {csvPreviewFiles.map(file => {
                         const selected = file.id === csvPreviewActiveFileId;
                         return (
-                          <li key={file.id} className="flex items-center gap-1">
+                          <li key={file.id} className="map-csv-file-item">
                             <button
                               type="button"
                               onClick={() => onCsvPreviewSelectFile?.(file.id)}
-                              className={`flex-1 min-w-0 text-left truncate rounded-md px-2 py-1 border text-[10px] ${
-                                selected
-                                  ? 'bg-indigo-600/30 border-indigo-500 text-white'
-                                  : 'bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500'
-                              }`}
+                              className={`map-csv-file-btn${selected ? ' is-active' : ''}`}
                               title={file.filename}
                             >
                               <span className="block truncate font-medium">{file.filename}</span>
-                              <span className="text-slate-400">{file.links.length}</span>
+                              <span className="map-csv-file-count">{file.links.length}</span>
                             </button>
                             <button
                               type="button"
                               onClick={() => onCsvPreviewRemoveFile?.(file.id)}
-                              className="shrink-0 p-1 rounded-md text-slate-400 hover:text-red-300 hover:bg-slate-800"
+                              className="map-csv-file-remove"
                               aria-label={t('map.csvRemoveFile')}
                               title={t('map.csvRemoveFile')}
                             >
@@ -1519,7 +1513,7 @@ export function LogisticsMap({
                 )}
 
                 {csvPanelMsg ? (
-                  <p className={csvPanelMsg.tone === 'err' ? 'text-red-300' : 'text-emerald-300'}>
+                  <p className={csvPanelMsg.tone === 'err' ? 'map-csv-msg map-csv-msg--err' : 'map-csv-msg map-csv-msg--ok'}>
                     {csvPanelMsg.text}
                   </p>
                 ) : null}
@@ -1528,7 +1522,7 @@ export function LogisticsMap({
                   type="button"
                   onClick={() => onCsvPreviewShow?.()}
                   disabled={!activeCsvFile || activeCsvFile.links.length === 0}
-                  className="w-full rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white text-[11px] font-semibold py-1.5 px-2"
+                  className="map-csv-btn map-csv-btn--primary w-full"
                 >
                   {t('map.showImportedBtn')}
                 </button>
@@ -1552,7 +1546,7 @@ export function LogisticsMap({
 
           <button
             onClick={handleResetView}
-            className="map-desktop-reset-btn flex items-center gap-1.5 px-3 py-1.5 bg-slate-900/90 backdrop-blur-md hover:bg-slate-800 text-slate-200 text-xs rounded-lg border border-slate-700/80 shadow-lg transition-all"
+            className="map-desktop-reset-btn"
             title={t('map.resetTitle')}
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -1566,18 +1560,18 @@ export function LogisticsMap({
         className="map-ui-layer absolute bottom-2 sm:bottom-4 left-2 sm:left-3 pointer-events-auto map-side-panel-width map-bottom-stack"
       >
         {!mobileLayout && renderFactoryHighlightCard()}
-        <div className="map-legend bg-slate-900/95 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl text-slate-200">
+        <div className="map-legend map-chrome-panel">
         <button
           type="button"
           onClick={() => setLegendOpen(v => !v)}
-          className="map-legend-toggle w-full font-semibold text-slate-100 flex items-center justify-between gap-1.5"
+          className="map-legend-toggle"
           aria-expanded={legendOpen}
         >
-          <span className="flex items-center gap-1.5 min-w-0">
-            <Layers className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <span className="map-legend-toggle-label">
+            <Layers className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{t('map.legendTitle', { count: filteredData.filteredFactories.length })}</span>
           </span>
-          <span className="map-legend-chevron shrink-0 text-slate-400">
+          <span className="map-legend-chevron shrink-0">
             {legendOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
           </span>
         </button>

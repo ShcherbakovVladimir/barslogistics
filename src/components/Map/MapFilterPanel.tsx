@@ -45,19 +45,15 @@ function MultiCheck<T extends string>({
   label: string;
 }) {
   return (
-    <div className="space-y-1">
-      <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{label}</div>
-      <div className="flex flex-wrap gap-1">
+    <div className="map-filter-field">
+      <div className="map-filter-section-label">{label}</div>
+      <div className="map-filter-chip-row">
         {options.map(opt => (
           <button
             key={opt.value}
             type="button"
             onClick={() => onChange(toggle(selected, opt.value))}
-            className={`px-2 py-0.5 rounded text-[10px] border transition-colors ${
-              selected.includes(opt.value)
-                ? 'bg-indigo-600 border-indigo-500 text-white'
-                : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500'
-            }`}
+            className={`map-filter-chip${selected.includes(opt.value) ? ' is-active' : ''}`}
           >
             {opt.label}
           </button>
@@ -83,36 +79,30 @@ function CollapsibleMultiCheck<T extends string>({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="rounded-lg border border-slate-800 overflow-hidden">
+    <div className="map-filter-collapsible">
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
-        className="map-filter-collapsible-toggle w-full flex items-center justify-between gap-2 px-2 py-1.5 bg-slate-950/60 hover:bg-slate-800/80 transition-colors"
+        className="map-filter-collapsible-toggle"
         aria-expanded={open}
       >
-        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{label}</span>
-        <span className="flex items-center gap-1.5 shrink-0">
+        <span className="map-filter-section-label">{label}</span>
+        <span className="map-filter-collapsible-meta">
           {selected.length > 0 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-600/20 text-indigo-300 font-medium">
-              {selected.length}
-            </span>
+            <span className="map-filter-collapsible-count">{selected.length}</span>
           )}
-          {open ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
+          {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         </span>
       </button>
       {open && (
-        <div className="p-2 pt-1 border-t border-slate-800">
-          <div className="flex flex-wrap gap-1">
+        <div className="map-filter-collapsible-body">
+          <div className="map-filter-chip-row">
             {options.map(opt => (
               <button
                 key={opt.value}
                 type="button"
                 onClick={() => onChange(toggle(selected, opt.value))}
-                className={`px-2 py-0.5 rounded text-[10px] border transition-colors ${
-                  selected.includes(opt.value)
-                    ? 'bg-indigo-600 border-indigo-500 text-white'
-                    : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500'
-                }`}
+                className={`map-filter-chip${selected.includes(opt.value) ? ' is-active' : ''}`}
               >
                 {opt.label}
               </button>
@@ -225,41 +215,26 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
     return [];
   }, [filters.period.granularity, t]);
 
-  const mapFilterHeaderBtn =
-    'map-filter-header-btn flex items-center justify-center shrink-0 h-8 w-8 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors touch-none select-none';
-
-  const dragHandleClass = `map-filter-drag-handle ${mapFilterHeaderBtn} ${
-    isDragging ? 'is-dragging cursor-grabbing text-indigo-300 bg-indigo-600/20' : 'cursor-grab'
-  }`;
+  const dragHandleClass = `map-filter-drag-handle${isDragging ? ' is-dragging' : ''}`;
 
   const isMobileSheet = variant === 'mobileSheet';
 
   const filterFields = (
     <>
-      <div className="space-y-1.5">
-        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">
-          {t('mapFilter.viewMode')}
-        </div>
-        <div className="grid grid-cols-2 gap-1 p-0.5 bg-slate-950 rounded-lg border border-slate-700">
+      <div className="map-filter-field">
+        <div className="map-filter-section-label">{t('mapFilter.viewMode')}</div>
+        <div className="map-filter-view-modes">
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, viewMode: 'sites' }))}
-            className={`px-2 py-1.5 rounded-md text-[10px] font-semibold transition-colors ${
-              isSitesMode
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
+            className={`map-filter-view-tab map-filter-view-tab--sites${isSitesMode ? ' is-active' : ''}`}
           >
             {t('mapFilter.viewSites')}
           </button>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, viewMode: 'shipments' }))}
-            className={`px-2 py-1.5 rounded-md text-[10px] font-semibold transition-colors ${
-              !isSitesMode
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
+            className={`map-filter-view-tab map-filter-view-tab--shipments${!isSitesMode ? ' is-active' : ''}`}
           >
             {t('mapFilter.viewShipments')}
           </button>
@@ -299,8 +274,8 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
         onChange={contours => setFilters(prev => ({ ...prev, contours }))}
       />
 
-      <div className="map-filter-contour-block map-filter-contour-block--outer pl-2 border-l-2 border-slate-700 space-y-2">
-        <div className="text-[10px] font-bold text-amber-400/90">{t('mapFilter.contourOuter')}</div>
+      <div className="map-filter-contour-block map-filter-contour-block--outer">
+        <div className="map-filter-contour-title map-filter-contour-title--outer">{t('mapFilter.contourOuter')}</div>
         <MultiCheck
           label={t('mapFilter.factoryTypes')}
           options={typeOptions}
@@ -309,8 +284,8 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
         />
       </div>
 
-      <div className="map-filter-contour-block map-filter-contour-block--inner pl-2 border-l-2 border-emerald-600/50 space-y-2">
-        <div className="text-[10px] font-bold text-emerald-400/90">{t('mapFilter.contourInner')}</div>
+      <div className="map-filter-contour-block map-filter-contour-block--inner">
+        <div className="map-filter-contour-title map-filter-contour-title--inner">{t('mapFilter.contourInner')}</div>
         <MultiCheck
           label={t('mapFilter.ourSites')}
           options={siteOptions}
@@ -328,9 +303,9 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
       </div>
 
       {!isSitesMode && (
-      <div className="space-y-2 pt-2 border-t border-slate-800">
-        <div className="text-[10px] font-semibold text-slate-400 uppercase">{t('mapFilter.period')}</div>
-        <div className="flex gap-1 flex-wrap">
+      <div className="map-filter-period-block">
+        <div className="map-filter-section-label">{t('mapFilter.period')}</div>
+        <div className="map-filter-chip-row">
           {(['year', 'quarter', 'month', 'week'] as const).map(g => (
             <button
               key={g}
@@ -339,10 +314,8 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
                 ...prev,
                 period: { ...prev.period, mode: 'preset', granularity: g },
               }))}
-              className={`px-2 py-0.5 rounded text-[10px] border ${
-                filters.period.granularity === g && filters.period.mode === 'preset'
-                  ? 'bg-indigo-600 border-indigo-500 text-white'
-                  : 'bg-slate-800 border-slate-700 text-slate-300'
+              className={`map-filter-chip${
+                filters.period.granularity === g && filters.period.mode === 'preset' ? ' is-active' : ''
               }`}
             >
               {t(`mapFilter.granularity.${g}`)}
@@ -354,11 +327,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
               ...prev,
               period: { ...prev.period, mode: 'range' },
             }))}
-            className={`px-2 py-0.5 rounded text-[10px] border ${
-              filters.period.mode === 'range'
-                ? 'bg-indigo-600 border-indigo-500 text-white'
-                : 'bg-slate-800 border-slate-700 text-slate-300'
-            }`}
+            className={`map-filter-chip${filters.period.mode === 'range' ? ' is-active' : ''}`}
           >
             {t('mapFilter.range')}
           </button>
@@ -414,7 +383,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
           </div>
         )}
 
-        <label className="flex items-center gap-2 text-[10px] text-slate-400 map-filter-checkbox">
+        <label className="map-filter-checkbox">
           <input
             type="checkbox"
             checked={filters.compareEnabled}
@@ -447,7 +416,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
       <button
         type="button"
         onClick={() => setFilters(prev => createDefaultFilterState({ viewMode: prev.viewMode }))}
-        className="w-full py-1.5 text-[10px] text-slate-400 hover:text-white border border-slate-700 rounded-lg hover:bg-slate-800"
+        className="map-filter-reset-btn"
       >
         {t('mapFilter.reset')}
       </button>
@@ -456,7 +425,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
 
   if (isMobileSheet) {
     return (
-      <div className="map-filter-panel map-filter-panel--mobile-sheet pointer-events-auto text-xs text-slate-200">
+      <div className="map-filter-panel map-filter-panel--mobile-sheet pointer-events-auto">
         {filterFields}
       </div>
     );
@@ -464,23 +433,23 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
 
   if (collapsed) {
     return (
-      <div className="map-filter-collapsed-bar pointer-events-auto flex items-stretch overflow-hidden rounded-xl border border-slate-700 bg-slate-900/95 backdrop-blur-md shadow-lg text-xs text-slate-200">
+      <div className="map-filter-collapsed-bar pointer-events-auto">
         <button
           type="button"
           title={t('mapFilter.dragHandle')}
           aria-label={t('mapFilter.dragHandle')}
           onPointerDown={onDragHandlePointerDown}
-          className={`${dragHandleClass} map-filter-collapsed-drag h-auto rounded-none`}
+          className={`${dragHandleClass} map-filter-collapsed-drag`}
         >
           <GripVertical className="w-3.5 h-3.5" />
         </button>
-        <div className="w-px shrink-0 self-stretch bg-slate-700/80" aria-hidden />
+        <div className="map-filter-collapsed-divider" aria-hidden />
         <button
           type="button"
           onClick={onToggleCollapse}
-          className="map-filter-collapsed-toggle flex flex-1 items-center justify-center gap-1.5 px-3 hover:bg-slate-800/80 transition-colors min-w-0"
+          className="map-filter-collapsed-toggle"
         >
-          <Filter className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <Filter className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">{t('mapFilter.title')}</span>
           <ChevronDown className="w-3.5 h-3.5 shrink-0" />
         </button>
@@ -489,10 +458,8 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
   }
 
   return (
-    <div className={`pointer-events-auto w-full map-filter-panel-scroll overflow-y-auto bg-slate-900/95 backdrop-blur-md border rounded-xl shadow-xl text-xs text-slate-200 scrollbar-thin ${
-      isFloating ? 'border-indigo-500/40 ring-1 ring-indigo-500/20' : 'border-slate-700'
-    }`}>
-      <div className="map-filter-panel-header sticky top-0 z-10 flex items-center gap-1 px-2 py-2 border-b border-slate-700 bg-slate-900/95">
+    <div className={`pointer-events-auto w-full map-filter-panel-scroll map-filter-panel-shell${isFloating ? ' is-floating' : ''}`}>
+      <div className="map-filter-panel-header">
         <button
           type="button"
           title={t('mapFilter.dragHandle')}
@@ -502,8 +469,8 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
         >
           <GripVertical className="w-4 h-4" />
         </button>
-        <div className="flex items-center gap-1.5 font-semibold text-slate-100 min-w-0 flex-1">
-          <Filter className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+        <div className="map-filter-panel-header-title">
+          <Filter className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">{t('mapFilter.title')}</span>
         </div>
         {isFloating && onDock && (
@@ -512,7 +479,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
             title={t('mapFilter.dock')}
             aria-label={t('mapFilter.dock')}
             onClick={onDock}
-            className={mapFilterHeaderBtn}
+            className="map-filter-header-btn"
           >
             <Pin className="w-3.5 h-3.5" />
           </button>
@@ -521,7 +488,7 @@ export const MapFilterPanel: React.FC<MapFilterPanelProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className={mapFilterHeaderBtn}
+            className="map-filter-header-btn"
           >
             <ChevronUp className="w-4 h-4" />
           </button>

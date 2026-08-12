@@ -719,7 +719,7 @@ html.layout-fold .logistics-map .map-top-controls {
   color: var(--mobile-muted);
 }
 
-.map-mobile-search-panel .map-search-box > div {
+.map-mobile-search-panel .map-search-box .map-search-input-wrap {
   box-shadow: none;
 }
 
@@ -1222,7 +1222,7 @@ html.layout-fold .map-mobile-dock-body .map-position-action-btn {
   border-color: rgb(16 185 129 / 0.35);
 }
 
-.map-filter-panel--mobile-sheet .rounded-lg.border.border-slate-800 {
+.map-filter-panel--mobile-sheet .map-filter-collapsible {
   border-color: rgb(51 65 85 / 0.65);
   background: rgb(15 23 42 / 0.35);
 }

@@ -92,8 +92,8 @@ export function MapSearchBox({
 
   return (
     <div ref={rootRef} className={`map-search-box pointer-events-auto relative w-full ${className}`.trim()}>
-      <div className="flex items-center gap-2 bg-slate-900/95 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-700 shadow-xl text-white w-full">
-        <Search className="w-4 h-4 text-slate-400 shrink-0" />
+      <div className="map-search-input-wrap">
+        <Search className="map-search-icon w-4 h-4 shrink-0" />
         <input
           ref={inputRef}
           type="text"
@@ -108,7 +108,7 @@ export function MapSearchBox({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
-          className="bg-transparent text-xs text-white placeholder-slate-400 focus:outline-none w-full min-w-0"
+          className="map-search-input"
         />
         {query && (
           <button
@@ -117,7 +117,7 @@ export function MapSearchBox({
               onQueryChange('');
               setOpen(false);
             }}
-            className="text-slate-400 hover:text-white shrink-0"
+            className="map-search-clear-btn"
             aria-label={t('mapFilter.reset')}
           >
             <X className="w-3.5 h-3.5" />
@@ -126,12 +126,9 @@ export function MapSearchBox({
       </div>
 
       {showDropdown && (
-        <ul
-          className="absolute left-0 right-0 top-full mt-1 z-50 max-h-56 overflow-y-auto rounded-xl border border-slate-700 bg-slate-900/98 backdrop-blur-md shadow-xl py-1 scrollbar-thin"
-          role="listbox"
-        >
+        <ul className="map-search-dropdown" role="listbox">
           {suggestions.length === 0 ? (
-            <li className="px-3 py-2 text-xs text-slate-500">{t('map.searchNoResults')}</li>
+            <li className="map-search-empty">{t('map.searchNoResults')}</li>
           ) : (
             suggestions.map((item, idx) => (
               <li key={`${item.type}-${item.id}`} role="option" aria-selected={idx === activeIndex}>
@@ -139,18 +136,16 @@ export function MapSearchBox({
                   type="button"
                   onMouseDown={e => e.preventDefault()}
                   onClick={() => pickSuggestion(item)}
-                  className={`w-full text-left px-3 py-2 flex items-start gap-2 transition-colors ${
-                    idx === activeIndex ? 'bg-indigo-600/20' : 'hover:bg-slate-800'
-                  }`}
+                  className={`map-search-option${idx === activeIndex ? ' is-active' : ''}`}
                 >
                   {item.type === 'factory' ? (
-                    <Building2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <Building2 className="map-search-option-icon map-search-option-icon--factory w-3.5 h-3.5 shrink-0 mt-0.5" />
                   ) : (
-                    <Truck className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
+                    <Truck className="map-search-option-icon map-search-option-icon--shipment w-3.5 h-3.5 shrink-0 mt-0.5" />
                   )}
-                  <span className="min-w-0">
-                    <span className="block text-xs text-white truncate">{item.label}</span>
-                    <span className="block text-[10px] text-slate-400 truncate">{item.sublabel}</span>
+                  <span className="map-search-option-text min-w-0">
+                    <span className="map-search-option-label truncate">{item.label}</span>
+                    <span className="map-search-option-sublabel truncate">{item.sublabel}</span>
                   </span>
                 </button>
               </li>
