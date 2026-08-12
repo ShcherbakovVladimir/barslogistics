@@ -682,18 +682,18 @@ export const Header: React.FC<HeaderProps> = ({
             className="app-header-nav"
             aria-label={t('header.navMenuTitle')}
           >
-            <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-700 bg-slate-900/95">
-              <div className="flex items-center gap-2 text-slate-100">
-                <LayoutGrid className="w-4 h-4 text-indigo-400 shrink-0" />
-                <span className="text-xs font-bold uppercase tracking-wide">{t('header.navMenuTitle')}</span>
+            <div className="app-header-nav-head">
+              <div className="app-header-nav-head-title">
+                <LayoutGrid aria-hidden />
+                <span>{t('header.navMenuTitle')}</span>
               </div>
               <button
                 type="button"
                 onClick={closeNav}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="app-header-nav-close"
                 aria-label={t('common.close')}
               >
-                <X className="w-4 h-4" />
+                <X aria-hidden />
               </button>
             </div>
 

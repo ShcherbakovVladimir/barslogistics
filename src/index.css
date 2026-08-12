@@ -371,34 +371,36 @@ html.portal-embed .map-filter-panel-scroll {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem 0.75rem;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 0.875rem;
+  gap: 0.65rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.25;
   text-align: left;
   white-space: nowrap;
   background: transparent;
-  color: rgb(203 213 225);
+  color: #cbd5e1;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .header-nav-item:hover {
-  background: rgb(30 41 59);
-  color: rgb(248 250 252);
+  background: rgb(51 65 85);
+  border-color: rgb(129 140 248 / 0.45);
+  color: #fff;
 }
 
 .header-nav-item.is-active {
-  background: rgb(79 70 229);
-  color: rgb(255 255 255);
+  background: rgb(79 70 229 / 0.35);
+  border-color: rgb(129 140 248 / 0.65);
+  color: #fff;
 }
 
 .header-nav-item-icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.05rem;
+  height: 1.05rem;
   flex-shrink: 0;
 }
 
@@ -5289,9 +5291,23 @@ html.compact-laptop .app-header-brand-title {
   transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 
-.app-header-menu-btn:hover,
 .app-header-btn:hover {
   transform: translateY(-1px);
+  color: #fff;
+  border-color: rgb(129 140 248 / 0.65);
+  background: rgb(51 65 85);
+}
+
+/* Menu toggle: slightly smaller, no lift (avoids clipping the header top edge) */
+.app-header-menu-btn {
+  width: calc(var(--app-chrome-fab-size, 2.35rem) - 0.25rem);
+  height: calc(var(--app-chrome-fab-size, 2.35rem) - 0.25rem);
+  min-width: calc(var(--app-chrome-fab-size, 2.35rem) - 0.25rem);
+  min-height: calc(var(--app-chrome-fab-size, 2.35rem) - 0.25rem);
+}
+
+.app-header-menu-btn:hover {
+  transform: none;
   color: #fff;
   border-color: rgb(129 140 248 / 0.65);
   background: rgb(51 65 85);
@@ -5305,6 +5321,11 @@ html.compact-laptop .app-header-brand-title {
   color: #fff;
   background: rgb(79 70 229 / 0.35);
   transform: none;
+}
+
+.app-header-menu-btn svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .app-header-role-chip {
@@ -5352,8 +5373,7 @@ html.compact-laptop .app-header-brand-title {
   color: inherit;
 }
 
-.app-header-btn .app-header-btn-icon,
-.app-header-menu-btn svg {
+.app-header-btn .app-header-btn-icon {
   width: 1.125rem;
   height: 1.125rem;
   flex-shrink: 0;
@@ -5388,12 +5408,18 @@ html.compact-laptop .app-header-brand-title {
   background: #10b981;
 }
 
-html.compact-laptop .app-header-menu-btn,
 html.compact-laptop .app-header-btn:not(.app-header-btn--pill) {
   width: 2.15rem;
   height: 2.15rem;
   min-width: 2.15rem;
   min-height: 2.15rem;
+}
+
+html.compact-laptop .app-header-menu-btn {
+  width: 1.95rem;
+  height: 1.95rem;
+  min-width: 1.95rem;
+  min-height: 1.95rem;
 }
 
 html.compact-laptop .app-header-btn--pill {
@@ -5464,7 +5490,7 @@ html.app-tab-map:not(.layout-mobile):not(.layout-fold) .app-header-actions .app-
   padding-top: env(safe-area-inset-top);
 }
 
-/* Mobile: left drawer */
+/* Mobile: left drawer — same chrome surface as header / side rail */
 .app-header-nav {
   position: fixed;
   z-index: 70;
@@ -5475,14 +5501,69 @@ html.app-tab-map:not(.layout-mobile):not(.layout-fold) .app-header-actions .app-
   max-width: calc(100vw - env(safe-area-inset-left, 0px));
   display: flex;
   flex-direction: column;
-  background-color: var(--mobile-chrome-bg, rgb(15 23 42 / 0.98));
+  background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-right: 1px solid var(--mobile-chrome-border, rgb(51 65 85));
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.45);
+  border-right: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
   overflow: hidden;
   animation: nav-drawer-slide-in 0.24s ease-out forwards;
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+.app-header-nav-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: transparent;
+}
+
+.app-header-nav-head-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  color: #f1f5f9;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.app-header-nav-head-title svg {
+  width: 1rem;
+  height: 1rem;
+  color: #a5b4fc;
+  flex-shrink: 0;
+}
+
+.app-header-nav-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid rgb(71 85 105 / 0.95);
+  background: rgb(30 41 59 / 0.95);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.app-header-nav-close:hover {
+  color: #fff;
+  border-color: rgb(129 140 248 / 0.65);
+  background: rgb(51 65 85);
+}
+
+.app-header-nav-close svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
 /* Above chat portal (1200) + bottom dock so page menu is not covered by chat FAB */
@@ -5578,19 +5659,27 @@ html.layout-fold.app-tab-map .app-header-nav {
 @media (min-width: 640px) {
   .app-header-nav {
     position: absolute;
-    top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
-    left: max(1rem, env(safe-area-inset-left, 0px));
+    top: calc(var(--app-header-height) + 0.35rem + env(safe-area-inset-top, 0px));
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
     bottom: auto;
     width: max-content;
+    min-width: 15.5rem;
     max-width: min(calc(100vw - 2rem), 20rem);
-    border: 1px solid var(--mobile-chrome-border, rgb(51 65 85));
-    border-radius: 0.75rem;
+    border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+    border-radius: 0.85rem;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
     animation: nav-slide-in 0.22s ease-out forwards;
-    padding-bottom: 0;
+    padding-bottom: 0.35rem;
   }
 
   .app-header-nav .header-nav-scroll {
     max-height: calc(var(--bars-viewport-height, 100dvh) - 6rem);
+    padding: 0.4rem 0 0.25rem;
+  }
+
+  .app-header-nav .header-nav-grid {
+    gap: 0.2rem;
+    padding: 0 0.45rem;
   }
 }
 

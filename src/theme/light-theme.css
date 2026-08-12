@@ -3870,8 +3870,8 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 /* ── App header — match Kanban / tasks drawer surface ── */
 [data-theme="light"] .app-header-popover,
 [data-theme="light"] .app-header-nav {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
 }
 
 [data-theme="light"] .map-legend {
@@ -3907,7 +3907,31 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 }
 
 [data-theme="light"] .app-header-nav {
-  box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.08), 0 4px 10px -4px rgb(15 23 42 / 0.06);
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.12) !important;
+}
+
+[data-theme="light"] .app-header-nav-head {
+  border-bottom-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .app-header-nav-head-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .app-header-nav-head-title svg {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .app-header-nav-close {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .app-header-nav-close:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .app-header-btn,
@@ -4098,16 +4122,19 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 
 /* App nav menu — light theme (desktop dropdown + mobile drawer) */
 [data-theme="light"] .app-header-nav .header-nav-item {
-  color: #334155;
+  color: #475569;
+  border-color: transparent;
 }
 
 [data-theme="light"] .app-header-nav .header-nav-item:hover {
-  background: rgb(241 245 249);
+  background: #f8fafc;
+  border-color: rgb(99 102 241 / 0.45);
   color: #0f172a;
 }
 
 [data-theme="light"] .app-header-nav .header-nav-item.is-active {
   background: rgb(99 102 241 / 0.12);
+  border-color: rgb(99 102 241 / 0.5);
   color: #4338ca;
 }
 

@@ -250,9 +250,9 @@ html.layout-fold .app-header-nav .header-nav-item {
   width: 100%;
   min-height: 4.5rem;
   padding: 0.5rem 0.25rem;
-  border: none;
+  border: 1px solid transparent;
   box-shadow: none;
-  border-radius: 0.625rem;
+  border-radius: 0.85rem;
   font-size: 0.625rem;
   font-weight: 600;
   line-height: 1.25;
@@ -265,12 +265,14 @@ html.layout-fold .app-header-nav .header-nav-item {
 html.layout-mobile .app-header-nav .header-nav-item:hover,
 html.layout-fold .app-header-nav .header-nav-item:hover {
   background: var(--mobile-nav-item-hover-bg);
+  border-color: rgb(129 140 248 / 0.4);
   color: var(--mobile-nav-item-hover-text);
 }
 
 html.layout-mobile .app-header-nav .header-nav-item.is-active,
 html.layout-fold .app-header-nav .header-nav-item.is-active {
   background: var(--mobile-nav-item-active-bg);
+  border-color: rgb(129 140 248 / 0.55);
   color: var(--mobile-nav-item-active-text);
   box-shadow: none;
 }
