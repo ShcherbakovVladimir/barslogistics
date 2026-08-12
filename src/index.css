@@ -1485,6 +1485,7 @@ html.portal-embed .header-nav-scroll {
   gap: 1rem;
   width: 100%;
   min-width: 0;
+  align-items: stretch;
 }
 
 .shipment-page-panel-add-form {
@@ -1493,35 +1494,282 @@ html.portal-embed .header-nav-scroll {
   min-width: 0;
 }
 
-.shipment-page-panel-add .shipment-events-recent {
-  width: 100%;
-  min-width: 0;
+.shipment-page-panel-add-form .shipment-events-panel {
+  height: 100%;
 }
 
-/* Wide screens: form capped at 1400px, history moves to the right */
+.shipment-events-history-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 22rem;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.shipment-events-history-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.shipment-events-history-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgb(51 65 85 / 0.65);
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.shipment-events-history-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(15 23 42 / 0.65);
+  color: #94a3b8;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.shipment-events-history-refresh:hover:not(:disabled) {
+  color: #6ee7b7;
+  border-color: rgb(16 185 129 / 0.45);
+}
+
+.shipment-events-history-refresh:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.shipment-events-history-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.shipment-events-history-search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(2 6 23);
+}
+
+.shipment-events-history-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #f8fafc;
+  font-size: 0.75rem;
+}
+
+.shipment-events-history-search input::placeholder {
+  color: #64748b;
+}
+
+.shipment-events-history-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.shipment-events-history-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(15 23 42 / 0.55);
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.shipment-events-history-chip span {
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+
+.shipment-events-history-chip:hover {
+  color: #e2e8f0;
+  border-color: rgb(100 116 139 / 0.7);
+}
+
+.shipment-events-history-chip.is-active {
+  color: #ecfdf5;
+  background: rgb(16 185 129 / 0.18);
+  border-color: rgb(52 211 153 / 0.4);
+}
+
+.shipment-events-history-chip.is-active span {
+  color: #a7f3d0;
+}
+
+.shipment-events-history-chip.is-timing.is-active {
+  color: #e0e7ff;
+  background: rgb(99 102 241 / 0.2);
+  border-color: rgb(129 140 248 / 0.45);
+}
+
+.shipment-events-history-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-right: 0.2rem;
+}
+
+.shipment-events-history-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(2 6 23 / 0.55);
+  padding: 0.75rem;
+  flex-shrink: 0;
+}
+
+.shipment-events-history-card.is-delay {
+  border-color: rgb(245 158 11 / 0.3);
+  background: rgb(245 158 11 / 0.05);
+}
+
+.shipment-events-history-card.is-early {
+  border-color: rgb(16 185 129 / 0.3);
+  background: rgb(16 185 129 / 0.05);
+}
+
+.shipment-events-history-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.shipment-events-history-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+  background: rgb(30 41 59);
+  color: #cbd5e1;
+  font-size: 0.5625rem;
+  font-weight: 600;
+}
+
+.shipment-events-history-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgb(51 65 85 / 0.7);
+}
+
+.shipment-events-history-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgb(99 102 241 / 0.35);
+  background: rgb(99 102 241 / 0.12);
+  color: #c7d2fe;
+  font-size: 0.625rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.shipment-events-history-open:hover {
+  background: rgb(99 102 241 / 0.22);
+  color: #e0e7ff;
+}
+
+/* Wide: form ≤1400px, history takes remaining width and matches form height */
 @media (min-width: 1500px) {
   .shipment-page-panel-add-layout {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1.25rem;
   }
 
   .shipment-page-panel-add-form {
-    flex: 1 1 auto;
+    flex: 0 1 1400px;
     max-width: 1400px;
+    width: min(100%, 1400px);
   }
 
-  .shipment-page-panel-add .shipment-events-recent {
-    flex: 1 1 18rem;
+  .shipment-page-panel-add .shipment-events-history-panel {
+    flex: 1 1 0;
     width: auto;
-    min-width: 16rem;
-    max-width: 28rem;
-    position: sticky;
-    top: 0.75rem;
-    max-height: calc(100vh - 6rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    min-width: 18rem;
+    max-width: none;
+    align-self: stretch;
+  }
+}
+
+/* 24"+ / QHD–4K: give history more room beside the form */
+@media (min-width: 1920px) {
+  .shipment-page-panel-add-layout {
+    gap: 1.5rem;
+  }
+
+  .shipment-page-panel-add .shipment-events-history-panel {
+    min-width: 22rem;
+    padding: 1.15rem;
+  }
+
+  .shipment-events-history-card {
+    padding: 0.85rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .shipment-page-panel-add-layout {
+    gap: 1.75rem;
+  }
+
+  .shipment-page-panel-add .shipment-events-history-panel {
+    min-width: 26rem;
+    padding: 1.25rem;
+  }
+
+  .shipment-events-history-chip {
+    min-height: 1.85rem;
+    font-size: 0.6875rem;
+  }
+
+  .shipment-events-history-list {
+    gap: 0.65rem;
+  }
+}
+
+@media (min-width: 3200px) {
+  .shipment-page-panel-add .shipment-events-history-panel {
+    min-width: 30rem;
   }
 }
 

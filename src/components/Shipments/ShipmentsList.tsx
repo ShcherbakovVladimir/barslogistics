@@ -6,7 +6,7 @@ import { Truck, Search, AlertTriangle, Clock, Edit3, ArrowRight, MapPin, PlusCir
 import { canCreateAnyShipmentEvent, canCreateShipmentEvent, canEditShipmentStatus, isShipmentInUserScope } from '../../utils/permissions';
 import { ApiService } from '../../services/api';
 import { ShipmentEventForm } from './ShipmentEventForm';
-import { ShipmentEventTimeline } from './ShipmentEventTimeline';
+import { ShipmentEventsHistoryPanel } from './ShipmentEventsHistoryPanel';
 import { SearchableSelect } from '../UI/SearchableSelect';
 import { VirtualList } from '../UI/VirtualList';
 import { sortShipments, type ShipmentSortKey } from '../../utils/shipmentSort';
@@ -164,6 +164,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   const [selectedSourceFilter, setSelectedSourceFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<ShipmentSortKey>('date_desc');
   const [recentEvents, setRecentEvents] = useState<ShipmentEvent[]>([]);
+  const [recentEventsLoading, setRecentEventsLoading] = useState(false);
   const [pageMode, setPageMode] = useState<'manage' | 'add'>('manage');
 
   const canEdit = canEditShipmentStatus(currentUser.role);
@@ -176,11 +177,14 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
 
   const loadRecentEvents = useCallback(async () => {
     if (!canManageEvents) return;
+    setRecentEventsLoading(true);
     try {
-      const data = await ApiService.getRecentShipmentEvents(20);
+      const data = await ApiService.getRecentShipmentEvents(50);
       setRecentEvents(data);
     } catch {
       setRecentEvents([]);
+    } finally {
+      setRecentEventsLoading(false);
     }
   }, [canManageEvents]);
 
@@ -247,7 +251,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   const handleCreateEvent = async (shipmentId: string, input: ShipmentEventInput) => {
     const { shipment, event } = await ApiService.createShipmentEvent(shipmentId, input);
     onShipmentUpdated(shipment);
-    setRecentEvents(prev => [event, ...prev].slice(0, 20));
+    setRecentEvents(prev => [event, ...prev.filter(e => e.id !== event.id)].slice(0, 50));
   };
 
   const formatShipmentDate = (link: SupplyLink) => {
@@ -325,13 +329,17 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
                 }}
               />
             </div>
-            <aside className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-              <div className="min-w-0">
-                <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.tabHistoryFull')}</h3>
-                <p className="text-[11px] text-slate-400 mt-0.5">{t('shipmentEvents.historySubtitle')}</p>
-              </div>
-              <ShipmentEventTimeline events={recentEvents} factories={factories} compact />
-            </aside>
+            <ShipmentEventsHistoryPanel
+              events={recentEvents}
+              factories={factories}
+              shipments={supplyLinks}
+              loading={recentEventsLoading}
+              onRefresh={() => { void loadRecentEvents(); }}
+              onOpenShipment={(id) => {
+                const link = supplyLinks.find(s => s.id === id);
+                if (link) onSelectShipment(link);
+              }}
+            />
           </div>
         </section>
       )}

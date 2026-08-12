@@ -1427,11 +1427,18 @@ html.layout-fold .shipment-page-panel-add-layout {
   flex-direction: column;
 }
 
-html.layout-mobile .shipment-page-panel-add .shipment-events-recent,
-html.layout-fold .shipment-page-panel-add .shipment-events-recent {
+html.layout-mobile .shipment-page-panel-add .shipment-events-history-panel,
+html.layout-fold .shipment-page-panel-add .shipment-events-history-panel {
   position: static;
   max-height: none;
   max-width: none;
+  min-height: 18rem;
+  height: auto;
+}
+
+html.layout-mobile .shipment-events-history-list,
+html.layout-fold .shipment-events-history-list {
+  max-height: 22rem;
 }
 
 html.layout-mobile .shipment-page-panel-add .shipment-events-panel,

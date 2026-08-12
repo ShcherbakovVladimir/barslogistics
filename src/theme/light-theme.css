@@ -589,10 +589,84 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 [data-theme="light"] .shipments-page .shipment-events-panel.bg-slate-900,
-[data-theme="light"] .shipments-page .shipment-events-recent.bg-slate-900 {
+[data-theme="light"] .shipments-page .shipment-events-recent.bg-slate-900,
+[data-theme="light"] .shipments-page .shipment-events-history-panel.bg-slate-900 {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   color: #334155;
+}
+
+[data-theme="light"] .shipment-events-history-count {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+[data-theme="light"] .shipment-events-history-refresh {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+[data-theme="light"] .shipment-events-history-refresh:hover:not(:disabled) {
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+[data-theme="light"] .shipment-events-history-search {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .shipment-events-history-search input {
+  color: #0f172a;
+}
+
+[data-theme="light"] .shipment-events-history-chip {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+[data-theme="light"] .shipment-events-history-chip.is-active {
+  color: #065f46;
+  background: #d1fae5;
+  border-color: #a7f3d0;
+}
+
+[data-theme="light"] .shipment-events-history-chip.is-timing.is-active {
+  color: #3730a3;
+  background: #e0e7ff;
+  border-color: #c7d2fe;
+}
+
+[data-theme="light"] .shipment-events-history-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .shipment-events-history-card.is-delay {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+[data-theme="light"] .shipment-events-history-card.is-early {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+[data-theme="light"] .shipment-events-history-badge {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+[data-theme="light"] .shipment-events-history-card-foot {
+  border-top-color: #e2e8f0;
+}
+
+[data-theme="light"] .shipment-events-history-open {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
 }
 
 [data-theme="light"] .shipments-page .shipment-events-panel :is(h2, h3, div, label, span).text-white,
