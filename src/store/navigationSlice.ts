@@ -8,6 +8,7 @@ export const APP_TABS = [
   'sites',
   'carriers',
   'products',
+  'transport',
   'managers',
   'rzd-analytics',
   'mydata',

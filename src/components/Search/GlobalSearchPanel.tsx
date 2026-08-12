@@ -17,6 +17,7 @@ import type {
   SalesManager,
   SupplyLink,
   ThirdPartyCarrier,
+  TransportAsset,
   User,
 } from '../../types';
 
@@ -28,6 +29,7 @@ export interface GlobalSearchPanelProps {
   factories: Factory[];
   supplyLinks: SupplyLink[];
   products: Product[];
+  transportAssets?: TransportAsset[];
   carriers: ThirdPartyCarrier[];
   salesManagers: SalesManager[];
   onSelectTab: (tab: string) => void;
@@ -41,6 +43,7 @@ const GROUP_LABEL_KEYS: Record<GlobalSearchResult['type'], string> = {
   factory: 'globalSearch.groupFactories',
   shipment: 'globalSearch.groupShipments',
   product: 'globalSearch.groupProducts',
+  transport: 'globalSearch.groupTransport',
   carrier: 'globalSearch.groupCarriers',
   manager: 'globalSearch.groupManagers',
   board: 'globalSearch.groupBoards',
@@ -57,6 +60,8 @@ function ResultIcon({ type }: { type: GlobalSearchResult['type'] }) {
       return <Truck className={`${cls} text-indigo-400`} aria-hidden />;
     case 'product':
       return <Package className={`${cls} text-amber-400`} aria-hidden />;
+    case 'transport':
+      return <Truck className={`${cls} text-emerald-400`} aria-hidden />;
     case 'carrier':
       return <Container className={`${cls} text-cyan-400`} aria-hidden />;
     case 'manager':
@@ -76,6 +81,7 @@ export const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
   factories,
   supplyLinks,
   products,
+  transportAssets = [],
   carriers,
   salesManagers,
   onSelectTab,
@@ -115,13 +121,14 @@ export const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
       factories,
       supplyLinks,
       products,
+      transportAssets,
       carriers,
       salesManagers,
       boards,
       navItems,
       locale,
     }),
-    [query, user, factories, supplyLinks, products, carriers, salesManagers, boards, navItems, locale],
+    [query, user, factories, supplyLinks, products, transportAssets, carriers, salesManagers, boards, navItems, locale],
   );
 
   const grouped = useMemo(() => groupGlobalSearchResults(flatResults), [flatResults]);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Save, X } from 'lucide-react';
-import type { Factory, FactoryType } from '../../types';
+import type { Factory, FactoryType, TransportAsset } from '../../types';
 import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
 import { SITE_CATEGORIES, getSiteCategoryLabel } from '../../constants/siteCategories';
@@ -20,6 +20,7 @@ interface SiteDirectoryFormModalProps {
   mode: 'create' | 'edit';
   site: Factory | null;
   defaultType?: FactoryType;
+  transportAssets?: TransportAsset[];
   onClose: () => void;
   onSaved: () => Promise<void>;
 }
@@ -31,6 +32,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
   mode,
   site,
   defaultType = 'gok',
+  transportAssets = [],
   onClose,
   onSaved,
 }) => {
@@ -236,6 +238,30 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               {t('siteDirectory.admin.active')}
             </label>
           </div>
+
+          {mode === 'edit' && (
+            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-3 space-y-2">
+              <div className="text-xs font-semibold text-white">{t('transport.siteEquipment')}</div>
+              <p className="text-[11px] text-slate-500">{t('transport.siteEquipmentHint')}</p>
+              {transportAssets.length === 0 ? (
+                <p className="text-xs text-slate-500">{t('transport.siteEquipmentEmpty')}</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {transportAssets.map(a => (
+                    <li key={a.id} className="text-xs text-slate-300 flex flex-wrap gap-x-2">
+                      <span className="font-medium text-white">{a.name}</span>
+                      <span className="text-slate-500">{t(`transport.types.${a.type_key}`)}</span>
+                      {a.vehicle_number || a.inventory_number ? (
+                        <span className="font-mono text-[10px] text-slate-400">
+                          {a.vehicle_number || a.inventory_number}
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
 
         <footer className="modal-panel-footer site-directory-form-modal-footer">

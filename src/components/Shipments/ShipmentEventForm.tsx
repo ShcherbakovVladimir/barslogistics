@@ -8,6 +8,7 @@ import type {
   ShipmentEventType,
   ShipmentTimingKind,
   SupplyLink,
+  TransportAsset,
   TransportMode,
 } from '../../types';
 import { CARGO_STATUSES } from '../../types';
@@ -30,6 +31,7 @@ interface ShipmentEventFormProps {
   shipments: SupplyLink[];
   factories: Factory[];
   products: Product[];
+  transportAssets?: TransportAsset[];
   selectedShipmentId?: string;
   lockShipment?: boolean;
   /** Hide the form heading when the parent already shows the section title. */
@@ -61,6 +63,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   shipments,
   factories,
   products,
+  transportAssets = [],
   selectedShipmentId,
   lockShipment = false,
   hideTitle = false,
@@ -86,6 +89,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   const [actualDepartureAt, setActualDepartureAt] = useState('');
   const [actualArrivalAt, setActualArrivalAt] = useState('');
   const [progressPct, setProgressPct] = useState('');
+  const [transportAssetId, setTransportAssetId] = useState('');
   const [transportMode, setTransportMode] = useState<TransportMode>('road');
   const [vehicleNumber, setVehicleNumber] = useState('');
   const [trailerNumber, setTrailerNumber] = useState('');
@@ -123,12 +127,44 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
     setTransportMode(
       selectedShipment.transport_mode === 'rail' ? 'rail' : 'road',
     );
+    setTransportAssetId(selectedShipment.transport_asset_id || '');
     setVehicleNumber(selectedShipment.vehicle_number || '');
     setTrailerNumber(selectedShipment.trailer_number || '');
     setContainerNumber(selectedShipment.container_number || '');
     setWaybillNumber(selectedShipment.waybill_number || '');
     setDriverInfo(selectedShipment.driver_info || '');
   }, [selectedShipment]);
+
+  const transportAssetOptions = useMemo(
+    () =>
+      transportAssets
+        .filter(a => a.is_active !== false && (a.purpose === 'shipment' || a.purpose === 'both'))
+        .map(a => ({
+          value: a.id,
+          label: [
+            a.name,
+            a.vehicle_number,
+            a.brand && a.model ? `${a.brand} ${a.model}` : a.brand || a.model,
+          ]
+            .filter(Boolean)
+            .join(' · '),
+        })),
+    [transportAssets],
+  );
+
+  const applyTransportAsset = (id: string) => {
+    setTransportAssetId(id);
+    if (!id) return;
+    const asset = transportAssets.find(a => a.id === id);
+    if (!asset) return;
+    if (asset.vehicle_number) setVehicleNumber(asset.vehicle_number);
+    if (asset.trailer_number) setTrailerNumber(asset.trailer_number);
+    if (asset.container_number) setContainerNumber(asset.container_number);
+    if (asset.waybill_number) setWaybillNumber(asset.waybill_number);
+    if (asset.driver_info) setDriverInfo(asset.driver_info);
+    setTransportMode(asset.category === 'rail' ? 'rail' : 'road');
+    setApplyTransport(true);
+  };
 
   useEffect(() => {
     if (eventType === 'delay') {
@@ -543,6 +579,19 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             </button>
           ))}
         </div>
+        {transportAssetOptions.length > 0 && (
+          <label className="space-y-1 block">
+            <span className="text-slate-400">{t('transport.selectFromDirectory')}</span>
+            <SearchableSelect
+              value={transportAssetId}
+              onChange={applyTransportAsset}
+              options={transportAssetOptions}
+              allowEmpty
+              emptyLabel={t('transport.selectUnset')}
+              placeholder={t('transport.selectPlaceholder')}
+            />
+          </label>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="space-y-1">
             <span className="text-slate-400">

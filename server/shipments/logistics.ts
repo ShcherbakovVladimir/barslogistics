@@ -208,6 +208,7 @@ function optionalTimestamp(value: unknown): string | null | undefined {
 
 export type LogisticsPatch = {
   transport_mode?: TransportMode | null;
+  transport_asset_id?: string | null;
   vehicle_number?: string;
   trailer_number?: string;
   container_number?: string;
@@ -233,6 +234,14 @@ export function parseLogisticsBody(body: Record<string, unknown>): LogisticsPatc
         throw new Error("Invalid transport_mode");
       }
       patch.transport_mode = mode as TransportMode;
+    }
+  }
+
+  if (body.transport_asset_id !== undefined) {
+    if (body.transport_asset_id === null || body.transport_asset_id === "") {
+      patch.transport_asset_id = null;
+    } else {
+      patch.transport_asset_id = String(body.transport_asset_id).trim();
     }
   }
 

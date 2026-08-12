@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { SupplyLink, Factory, User, Product } from '../../types';
+import { SupplyLink, Factory, User, Product, TransportAsset } from '../../types';
 import { useI18n } from '../../i18n';
 import { getProductName } from '../../constants/products';
 import { canSeeDealAmount, canCreateShipmentEvent } from '../../utils/permissions';
@@ -18,6 +18,7 @@ interface ShipmentModalProps {
   factories: Factory[];
   supplyLinks: SupplyLink[];
   products: Product[];
+  transportAssets?: TransportAsset[];
   onShipmentUpdated: (shipment: SupplyLink) => void;
   currentUser: User;
   canEdit?: boolean;
@@ -31,6 +32,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
   factories,
   supplyLinks,
   products,
+  transportAssets = [],
   onShipmentUpdated,
   currentUser,
   canEdit = false,
@@ -262,6 +264,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                   shipments={supplyLinks}
                   factories={factories}
                   products={products}
+                  transportAssets={transportAssets}
                   selectedShipmentId={shipment.id}
                   lockShipment
                   onSubmit={handleCreateEvent}
@@ -283,6 +286,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
               shipment={shipment}
               canManage={canManage}
               onShipmentUpdated={onShipmentUpdated}
+              transportAssets={transportAssets}
             />
           )}
         </div>

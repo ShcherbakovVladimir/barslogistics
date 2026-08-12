@@ -72,6 +72,10 @@ export function canManageProducts(role: UserRole): boolean {
   return role === 'admin' || role === 'manager';
 }
 
+export function canManageTransport(role: UserRole): boolean {
+  return role === 'admin' || role === 'manager';
+}
+
 export function canManageCarriers(role: UserRole): boolean {
   return role === 'admin';
 }

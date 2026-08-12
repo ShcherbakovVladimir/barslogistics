@@ -1,4 +1,4 @@
-import { Factory, SupplyLink, EventLog, User, BackupItem, ThirdPartyCarrier, IntegrationSettingsResponse, TelegramSettings, CloudSettings, TelemetrySettings, CarrierSettingsUpdate, MapDataSettings, MapDataImportResult, MapDataImportPayload, GeocodingSettings, GeocodingTestResult, KladrLocalImportStatus, KladrSuggestion, AddressGeocodeResult, UserCreateInput, UserUpdateInput, SiteCategoryInfo, SiteDuplicatesReport, SiteMergeDuplicatesResult, ShipmentEvent, ShipmentEventInput, Product, ProductInput, CarrierInput, CarrierIntegrationSpec, RzdAnalyticsSummary, RzdAggregatedRoute, RzdAnalyticsRecord, RzdAnalyticsFilters, RzdImportBatch, RzdImportResult, ShipmentImportBatch, ShipmentImportResult, ShipmentCsvPreviewResult, SalesManager, SalesManagerInput, MailSettings, DbMaintenanceInfo, MigrationDashboard, ChatUserDirectoryEntry, ChatConversationSummary, ChatMessage, NotificationItem, KanbanBoard, KanbanBoardDetail, KanbanBoardType, KanbanClassOfService, KanbanColumn, KanbanSwimlane, KanbanTask, KanbanTaskWorkspace, KanbanTaskMessage, KanbanTaskMilestone, KanbanTaskAttachment, KanbanMilestoneStatus, ShipmentDocument, ShipmentDocumentType, SupportTicket, SupportTicketCategory, SupportTicketStatus } from '../types';
+import { Factory, SupplyLink, EventLog, User, BackupItem, ThirdPartyCarrier, IntegrationSettingsResponse, TelegramSettings, CloudSettings, TelemetrySettings, CarrierSettingsUpdate, MapDataSettings, MapDataImportResult, MapDataImportPayload, GeocodingSettings, GeocodingTestResult, KladrLocalImportStatus, KladrSuggestion, AddressGeocodeResult, UserCreateInput, UserUpdateInput, SiteCategoryInfo, SiteDuplicatesReport, SiteMergeDuplicatesResult, ShipmentEvent, ShipmentEventInput, Product, ProductInput, CarrierInput, CarrierIntegrationSpec, RzdAnalyticsSummary, RzdAggregatedRoute, RzdAnalyticsRecord, RzdAnalyticsFilters, RzdImportBatch, RzdImportResult, ShipmentImportBatch, ShipmentImportResult, ShipmentCsvPreviewResult, SalesManager, SalesManagerInput, MailSettings, DbMaintenanceInfo, MigrationDashboard, ChatUserDirectoryEntry, ChatConversationSummary, ChatMessage, NotificationItem, KanbanBoard, KanbanBoardDetail, KanbanBoardType, KanbanClassOfService, KanbanColumn, KanbanSwimlane, KanbanTask, KanbanTaskWorkspace, KanbanTaskMessage, KanbanTaskMilestone, KanbanTaskAttachment, KanbanMilestoneStatus, ShipmentDocument, ShipmentDocumentType, SupportTicket, SupportTicketCategory, SupportTicketStatus, TransportAsset, TransportAssetInput } from '../types';
 import { getApiBase, getAuthToken, isPortalEmbed } from '../auth/portalAuth';
 
 const TOKEN_KEY = 'barslogistics_token';
@@ -1034,6 +1034,92 @@ export class ApiService {
       method: 'DELETE',
     });
     return { soft: json.soft ?? false };
+  }
+
+  static async getTransportAssets(opts?: {
+    includeInactive?: boolean;
+    purpose?: 'shipment' | 'site' | 'both' | 'all';
+    siteId?: string;
+  }): Promise<TransportAsset[]> {
+    const params = new URLSearchParams();
+    if (opts?.includeInactive) params.set('all', '1');
+    if (opts?.purpose && opts.purpose !== 'all') params.set('purpose', opts.purpose);
+    if (opts?.siteId) params.set('site_id', opts.siteId);
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    const json = await this.request<{ status: string; data: TransportAsset[] }>(
+      `${this.baseUrl}/transport-assets${qs}`,
+    );
+    return json.data;
+  }
+
+  static async createTransportAsset(input: TransportAssetInput): Promise<TransportAsset> {
+    const json = await this.request<{ status: string; data: TransportAsset }>(
+      `${this.baseUrl}/transport-assets`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      },
+    );
+    return json.data;
+  }
+
+  static async updateTransportAsset(
+    id: string,
+    input: Partial<TransportAssetInput>,
+  ): Promise<TransportAsset> {
+    const json = await this.request<{ status: string; data: TransportAsset }>(
+      `${this.baseUrl}/transport-assets/${encodeURIComponent(id)}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      },
+    );
+    return json.data;
+  }
+
+  static async deleteTransportAsset(id: string): Promise<{ soft: boolean }> {
+    const json = await this.request<{ status: string; soft?: boolean }>(
+      `${this.baseUrl}/transport-assets/${encodeURIComponent(id)}`,
+      { method: 'DELETE' },
+    );
+    return { soft: json.soft ?? false };
+  }
+
+  static async uploadTransportPhoto(id: string, file: File): Promise<TransportAsset> {
+    const form = new FormData();
+    form.append('file', file);
+    const headers = await this.headers();
+    delete headers['Content-Type'];
+    const res = await fetch(this.apiUrl(`${this.baseUrl}/transport-assets/${encodeURIComponent(id)}/photo`), {
+      method: 'POST',
+      headers,
+      body: form,
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || 'Photo upload failed');
+    return json.data as TransportAsset;
+  }
+
+  static async deleteTransportPhoto(id: string): Promise<TransportAsset> {
+    const json = await this.request<{ status: string; data: TransportAsset }>(
+      `${this.baseUrl}/transport-assets/${encodeURIComponent(id)}/photo`,
+      { method: 'DELETE' },
+    );
+    return json.data;
+  }
+
+  static async fetchTransportPhotoObjectUrl(id: string, version?: string): Promise<string> {
+    const headers = await this.headers();
+    const qs = version ? `?v=${encodeURIComponent(version)}` : '';
+    const res = await fetch(
+      this.apiUrl(`${this.baseUrl}/transport-assets/${encodeURIComponent(id)}/photo${qs}`),
+      { headers },
+    );
+    if (!res.ok) throw new Error('Photo not found');
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
   }
 
   static async getSalesManagers(includeInactive = false): Promise<SalesManager[]> {

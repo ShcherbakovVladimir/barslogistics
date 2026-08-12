@@ -3,13 +3,13 @@ import {
   Factory, FactoryType, SupplyLink, User, EventLog,
   BackupItem, ThirdPartyCarrier, FilterState, NotificationItem,
   IntegrationSettingsResponse, CarrierSettingsUpdate, parseWebSocketMessage,
-  AggregatedRoute, Product, ShipmentImportResult, SalesManager, CsvPreviewFileEntry, KanbanBoardDetail,
+  AggregatedRoute, Product, ShipmentImportResult, SalesManager, CsvPreviewFileEntry, KanbanBoardDetail, TransportAsset,
 } from './types';
 import { ApiService } from './services/api';
 import { useI18n } from './i18n';
 import { GlobalSearchPanel } from './components/Search/GlobalSearchPanel';
 import { canAccessTab } from './utils/rbac';
-import { canAccessLogs, canEditSiteDirectory, canEditShipmentStatus, canManageProducts, canManageCarriers, canManageSalesManagers, canUploadData, isShipmentInUserScope } from './utils/permissions';
+import { canAccessLogs, canEditSiteDirectory, canEditShipmentStatus, canManageProducts, canManageTransport, canManageCarriers, canManageSalesManagers, canUploadData, isShipmentInUserScope } from './utils/permissions';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setActiveTab, type AppTab } from './store/navigationSlice';
 import { setAdminSection } from './store/adminSlice';
@@ -44,6 +44,9 @@ const SiteDirectoryPage = lazy(() =>
 );
 const ProductCatalogPage = lazy(() =>
   import('./components/Products/ProductCatalogPage').then(m => ({ default: m.ProductCatalogPage })),
+);
+const TransportDirectoryPage = lazy(() =>
+  import('./components/Transport/TransportDirectoryPage').then(m => ({ default: m.TransportDirectoryPage })),
 );
 const CarrierDirectoryPage = lazy(() =>
   import('./components/Carriers/CarrierDirectoryPage').then(m => ({ default: m.CarrierDirectoryPage })),
@@ -109,6 +112,7 @@ export default function App() {
   const [integrationSettings, setIntegrationSettings] = useState<IntegrationSettingsResponse | null>(null);
   const [adminUsers, setAdminUsers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCT_CATALOG);
+  const [transportAssets, setTransportAssets] = useState<TransportAsset[]>([]);
   const [salesManagers, setSalesManagers] = useState<SalesManager[]>([]);
 
   const [wsConnected, setWsConnected] = useState<boolean>(false);
@@ -157,6 +161,7 @@ export default function App() {
       { id: 'sites', label: t('nav.sites') },
       { id: 'carriers', label: t('nav.carriers') },
       { id: 'products', label: t('nav.products') },
+      { id: 'transport', label: t('nav.transport') },
       { id: 'managers', label: t('nav.managers') },
       { id: 'rzd-analytics', label: t('nav.rzdAnalytics') },
       { id: 'mydata', label: t('nav.mydata') },
@@ -194,6 +199,7 @@ export default function App() {
     setCarriers([]);
     setAdminUsers([]);
     setProducts(DEFAULT_PRODUCT_CATALOG);
+    setTransportAssets([]);
     setSalesManagers([]);
     dispatch(setActiveTab('map'));
   }, [dispatch]);
@@ -220,6 +226,13 @@ export default function App() {
     if (list.length > 0) setProducts(list);
   }, [currentUser?.role]);
 
+  const refreshTransportAssets = useCallback(async () => {
+    const list = await ApiService.getTransportAssets({
+      includeInactive: canManageTransport(currentUser?.role ?? 'local_employee'),
+    });
+    setTransportAssets(list);
+  }, [currentUser?.role]);
+
   const refreshCarriers = useCallback(async () => {
     const role = currentUser?.role ?? 'local_employee';
     const list = await ApiService.getCarriers(canManageCarriers(role));
@@ -240,6 +253,15 @@ export default function App() {
 
       const productList = await ApiService.getProducts(canManageProducts(user.role));
       setProducts(productList);
+
+      try {
+        const transportList = await ApiService.getTransportAssets({
+          includeInactive: canManageTransport(user.role),
+        });
+        setTransportAssets(transportList);
+      } catch {
+        /* transport schema may not be applied yet */
+      }
 
       const carrierData = await ApiService.getCarriers(canManageCarriers(user.role));
       setCarriers(carrierData);
@@ -506,6 +528,9 @@ export default function App() {
           case 'PRODUCTS_UPDATED':
             void refreshProducts();
             break;
+          case 'TRANSPORT_ASSETS_UPDATED':
+            void refreshTransportAssets();
+            break;
           case 'SALES_MANAGERS_UPDATED':
             void refreshSalesManagers();
             break;
@@ -672,7 +697,7 @@ export default function App() {
       }
       setWsConnected(false);
     };
-  }, [currentUser, loadServerData, refreshProducts, refreshCarriers, refreshSalesManagers]);
+  }, [currentUser, loadServerData, refreshProducts, refreshTransportAssets, refreshCarriers, refreshSalesManagers]);
 
   useEffect(() => {
     const onOpenTasks = (e: Event) => {
@@ -1178,6 +1203,7 @@ export default function App() {
             supplyLinks={supplyLinks}
             factories={factories}
             products={activeProducts(products)}
+            transportAssets={transportAssets}
             onSelectShipment={setSelectedShipment}
             onEditShipment={setEditingShipment}
             onShowOnMap={handleShowShipmentOnMap}
@@ -1205,6 +1231,7 @@ export default function App() {
           <div className="h-full scroll-area">
             <SiteDirectoryPage
               factories={factories}
+              transportAssets={transportAssets}
               onViewDetails={handleViewFactoryDetails}
               onShowOnMap={handleShowSiteOnMap}
               canEdit={canEditSiteDirectory(currentUser.role)}
@@ -1230,6 +1257,16 @@ export default function App() {
             <ProductCatalogPage
               products={products}
               onProductsChanged={refreshProducts}
+            />
+          </div>
+        )}
+
+        {activeTab === 'transport' && canManageTransport(currentUser.role) && (
+          <div className="h-full scroll-area">
+            <TransportDirectoryPage
+              assets={transportAssets}
+              factories={factories}
+              onAssetsChanged={refreshTransportAssets}
             />
           </div>
         )}
@@ -1334,6 +1371,7 @@ export default function App() {
         factories={factories}
         supplyLinks={supplyLinks}
         products={products}
+        transportAssets={transportAssets}
         onShipmentUpdated={handleShipmentUpdated}
         currentUser={currentUser}
         canEdit={currentUser ? canEditShipmentStatus(currentUser.role) : false}
@@ -1435,6 +1473,7 @@ export default function App() {
           factories={factories}
           supplyLinks={supplyLinks}
           products={activeProducts(products)}
+          transportAssets={transportAssets}
           carriers={activeCarriers(carriers)}
           salesManagers={activeSalesManagers(salesManagers)}
           onSelectTab={handleGlobalSearchTab}

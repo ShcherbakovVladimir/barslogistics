@@ -5,6 +5,7 @@ import type {
   SalesManager,
   SupplyLink,
   ThirdPartyCarrier,
+  TransportAsset,
   User,
 } from '../types';
 import { canAccessTab } from './rbac';
@@ -18,6 +19,7 @@ export type GlobalSearchResultType =
   | 'factory'
   | 'shipment'
   | 'product'
+  | 'transport'
   | 'carrier'
   | 'manager'
   | 'board';
@@ -43,6 +45,7 @@ export interface GlobalSearchContext {
   factories: Factory[];
   supplyLinks: SupplyLink[];
   products: Product[];
+  transportAssets?: TransportAsset[];
   carriers: ThirdPartyCarrier[];
   salesManagers: SalesManager[];
   boards: KanbanBoard[];
@@ -152,6 +155,34 @@ export function buildGlobalSearchResults(
       });
       productCount += 1;
       if (productCount >= MAX_PER_GROUP) break;
+    }
+  }
+
+  if (canAccessTab('transport', user.role) && ctx.transportAssets) {
+    let transportCount = 0;
+    for (const a of ctx.transportAssets) {
+      if (a.is_active === false) continue;
+      const hay = [
+        a.name,
+        a.brand,
+        a.model,
+        a.vehicle_number,
+        a.inventory_number,
+        a.vin,
+        a.type_key,
+      ]
+        .filter(Boolean)
+        .join(' ');
+      if (!matchesQuery(hay, q)) continue;
+      results.push({
+        type: 'transport',
+        id: a.id,
+        label: a.name,
+        sublabel: [a.vehicle_number, a.brand, a.model].filter(Boolean).join(' · ') || a.type_key,
+        tab: 'transport',
+      });
+      transportCount += 1;
+      if (transportCount >= MAX_PER_GROUP) break;
     }
   }
 

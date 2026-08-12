@@ -5,6 +5,7 @@ import {
   canEditSiteDirectory,
   canExport,
   canManageProducts,
+  canManageTransport,
   canManageCarriers,
   canManageSalesManagers,
   canUploadData,
@@ -14,6 +15,7 @@ import {
 export function canAccessTab(tab: string, role: UserRole): boolean {
   if (['map', 'dashboard', 'shipments', 'factories', 'sites', 'carriers', 'managers', 'account'].includes(tab)) return true;
   if (tab === 'products') return canManageProducts(role);
+  if (tab === 'transport') return canManageTransport(role);
   if (tab === 'mydata') return canUploadData(role);
   if (tab === 'logs') return canAccessLogs(role);
   if (tab === 'rzd-analytics') return canAccessRzdAnalytics(role);
@@ -21,4 +23,4 @@ export function canAccessTab(tab: string, role: UserRole): boolean {
   return false;
 }
 
-export { canExport, canEditSiteDirectory, canManageProducts, canManageCarriers, canManageSalesManagers };
+export { canExport, canEditSiteDirectory, canManageProducts, canManageTransport, canManageCarriers, canManageSalesManagers };

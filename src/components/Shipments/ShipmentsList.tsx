@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback, useLayoutEffect, useRef } from 'react';
-import { SupplyLink, Factory, User, ShipmentEvent, ShipmentEventInput, Product } from '../../types';
+import { SupplyLink, Factory, User, ShipmentEvent, ShipmentEventInput, Product, TransportAsset } from '../../types';
 import { CARGO_STATUSES } from '../../types';
 import { useI18n } from '../../i18n';
 import { Truck, Search, AlertTriangle, Clock, Edit3, ArrowRight, MapPin, PlusCircle } from 'lucide-react';
@@ -15,6 +15,7 @@ interface ShipmentsListProps {
   supplyLinks: SupplyLink[];
   factories: Factory[];
   products: Product[];
+  transportAssets?: TransportAsset[];
   onSelectShipment: (shipment: SupplyLink) => void;
   onEditShipment: (shipment: SupplyLink) => void;
   onShowOnMap: (shipment: SupplyLink) => void;
@@ -152,6 +153,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   supplyLinks,
   factories,
   products,
+  transportAssets = [],
   onSelectShipment,
   onEditShipment,
   onShowOnMap,
@@ -354,6 +356,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
                 shipments={eventFormShipments}
                 factories={factories}
                 products={products}
+                transportAssets={transportAssets}
                 hideTitle
                 onSubmit={handleCreateEvent}
                 onOpenShipment={(id) => {

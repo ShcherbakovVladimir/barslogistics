@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { BookOpen, Search, MapPin, Eye, Building2, Pencil } from 'lucide-react';
-import type { Factory, FactoryType } from '../../types';
+import type { Factory, FactoryType, TransportAsset } from '../../types';
 import { useI18n } from '../../i18n';
 import type { Locale } from '../../i18n/types';
 import { SITE_CATEGORIES, getSiteCategoryLabel } from '../../constants/siteCategories';
@@ -11,6 +11,7 @@ import { HorizontalScrollChips } from '../UI/HorizontalScrollChips';
 
 interface SiteDirectoryPageProps {
   factories: Factory[];
+  transportAssets?: TransportAsset[];
   onViewDetails: (factory: Factory) => void;
   onShowOnMap: (factory: Factory) => void;
   canEdit?: boolean;
@@ -195,6 +196,7 @@ const SiteCard: React.FC<SiteCardProps> = ({
 
 export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
   factories,
+  transportAssets = [],
   onViewDetails,
   onShowOnMap,
   canEdit = false,
@@ -469,6 +471,9 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
           mode="edit"
           site={editingSite}
           defaultType={editingSite.type}
+          transportAssets={transportAssets.filter(
+            a => a.site_id === editingSite.id && a.is_active !== false,
+          )}
           onClose={() => setEditingSite(null)}
           onSaved={onSitesChanged}
         />

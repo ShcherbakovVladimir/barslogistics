@@ -83,6 +83,7 @@ type SupplyLinkRow = {
   source: string | null;
   last_updated: Date | string | null;
   transport_mode?: string | null;
+  transport_asset_id?: string | null;
   vehicle_number?: string | null;
   trailer_number?: string | null;
   container_number?: string | null;
@@ -152,6 +153,7 @@ function mapSupplyLink(row: SupplyLinkRow): SupplyLink {
     delay_reason: row.delay_reason || undefined,
     last_updated: row.last_updated ? new Date(row.last_updated).toISOString() : undefined,
     transport_mode: (row.transport_mode as SupplyLink["transport_mode"]) || undefined,
+    transport_asset_id: row.transport_asset_id || undefined,
     vehicle_number: row.vehicle_number || undefined,
     trailer_number: row.trailer_number || undefined,
     container_number: row.container_number || undefined,
@@ -913,16 +915,17 @@ export async function updateSupplyLink(
       delay_reason = $21,
       eta = $22,
       transport_mode = $23,
-      vehicle_number = $24,
-      trailer_number = $25,
-      container_number = $26,
-      seal_number = $27,
-      waybill_number = $28,
-      planned_departure_at = $29,
-      planned_arrival_at = $30,
-      actual_departure_at = $31,
-      actual_arrival_at = $32,
-      logistics_notes = $33,
+      transport_asset_id = $24,
+      vehicle_number = $25,
+      trailer_number = $26,
+      container_number = $27,
+      seal_number = $28,
+      waybill_number = $29,
+      planned_departure_at = $30,
+      planned_arrival_at = $31,
+      actual_departure_at = $32,
+      actual_arrival_at = $33,
+      logistics_notes = $34,
       last_updated = NOW()
      WHERE id = $1`,
     [
@@ -949,6 +952,7 @@ export async function updateSupplyLink(
       updated.delay_reason ?? null,
       updated.eta ?? null,
       updated.transport_mode ?? null,
+      updated.transport_asset_id ?? null,
       updated.vehicle_number || null,
       updated.trailer_number || null,
       updated.container_number || null,

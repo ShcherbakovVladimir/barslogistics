@@ -3,7 +3,7 @@ import { NotificationItem, User } from '../types';
 import {
   MapPin, BarChart3, Truck, Building2, FileText, Download,
   Bell, Shield, Menu, X, Languages, LogOut, LayoutGrid, BookOpen, Package, Container, Train, UserCircle, UserCog, Search,
-  Moon, Sun, Trash2, CheckCheck, ListTodo,
+  Moon, Sun, Trash2, CheckCheck, ListTodo, Wrench,
 } from 'lucide-react';
 import { useI18n } from '../i18n';
 import { canAccessTab, canExport } from '../utils/rbac';
@@ -100,6 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'sites', label: t('nav.sites'), icon: BookOpen },
     { id: 'carriers', label: t('nav.carriers'), icon: Container },
     { id: 'products', label: t('nav.products'), icon: Package },
+    { id: 'transport', label: t('nav.transport'), icon: Wrench },
     { id: 'managers', label: t('nav.managers'), icon: UserCircle },
     { id: 'rzd-analytics', label: t('nav.rzdAnalytics'), icon: Train },
     { id: 'mydata', label: t('nav.mydata'), icon: FileText },

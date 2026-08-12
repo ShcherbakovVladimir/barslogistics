@@ -155,6 +155,7 @@ import { registerTaskRoutes } from "./server/tasks/routes.js";
 import { registerSupportRoutes } from "./server/support/routes.js";
 import { registerShipmentLogisticsRoutes } from "./server/shipments/routes.js";
 import { registerUserAvatarRoutes } from "./server/users/routes.js";
+import { registerTransportAssetRoutes } from "./server/transport/routes.js";
 import { getUserAvatarFile } from "./server/users/avatars.js";
 import fs from "fs";
 import { setTaskBroadcast } from "./server/tasks/broadcast.js";
@@ -1931,6 +1932,7 @@ registerTaskRoutes(app);
 registerSupportRoutes(app);
 registerShipmentLogisticsRoutes(app);
 registerUserAvatarRoutes(app);
+registerTransportAssetRoutes(app, (data) => broadcastWebSocket(data));
 
 app.get("/api/carriers", requireAuth, async (req, res) => {
   try {

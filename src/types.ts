@@ -177,6 +177,7 @@ export interface SupplyLink {
   tracker_id?: string;
   // Logistics / transport details
   transport_mode?: TransportMode;
+  transport_asset_id?: string;
   vehicle_number?: string;
   trailer_number?: string;
   container_number?: string;
@@ -188,6 +189,63 @@ export interface SupplyLink {
   actual_arrival_at?: string;
   logistics_notes?: string;
 }
+
+export type TransportPurpose = 'shipment' | 'site' | 'both';
+
+/** Own fleet / construction equipment directory entry */
+export interface TransportAsset {
+  id: string;
+  name: string;
+  purpose: TransportPurpose;
+  category: string;
+  type_key: string;
+  brand?: string;
+  model?: string;
+  year?: number;
+  vehicle_number?: string;
+  trailer_number?: string;
+  container_number?: string;
+  vin?: string;
+  chassis_number?: string;
+  engine_number?: string;
+  inventory_number?: string;
+  waybill_number?: string;
+  driver_info?: string;
+  description?: string;
+  specs_note?: string;
+  site_id?: string;
+  has_photo?: boolean;
+  photo_version?: string;
+  is_active?: boolean;
+  sort_order?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export type TransportAssetInput = {
+  id?: string;
+  name: string;
+  purpose: TransportPurpose;
+  category?: string;
+  type_key: string;
+  brand?: string;
+  model?: string;
+  year?: number | null;
+  vehicle_number?: string;
+  trailer_number?: string;
+  container_number?: string;
+  vin?: string;
+  chassis_number?: string;
+  engine_number?: string;
+  inventory_number?: string;
+  waybill_number?: string;
+  driver_info?: string;
+  description?: string;
+  specs_note?: string;
+  site_id?: string | null;
+  is_active?: boolean;
+  sort_order?: number;
+};
 
 export type UserRole = 'admin' | 'key_person' | 'manager' | 'site_manager' | 'local_employee';
 
@@ -1125,6 +1183,7 @@ export type WebSocketInboundMessage =
   | { type: 'CARRIER_SYNC'; name: string; message?: string }
   | { type: 'MAP_DATA_IMPORTED'; factories_count: number; supply_links_count: number }
   | { type: 'PRODUCTS_UPDATED' }
+  | { type: 'TRANSPORT_ASSETS_UPDATED' }
   | { type: 'SALES_MANAGERS_UPDATED' }
   | { type: 'CARRIERS_UPDATED' }
   | { type: 'FACTORY_ADDED'; factory: Factory }

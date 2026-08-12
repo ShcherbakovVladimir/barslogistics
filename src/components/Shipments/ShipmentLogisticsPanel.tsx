@@ -17,6 +17,7 @@ import {
   type ShipmentDocument,
   type ShipmentDocumentType,
   type SupplyLink,
+  type TransportAsset,
   type TransportMode,
 } from '../../types';
 
@@ -45,12 +46,14 @@ interface ShipmentLogisticsPanelProps {
   shipment: SupplyLink;
   canManage: boolean;
   onShipmentUpdated: (shipment: SupplyLink) => void;
+  transportAssets?: TransportAsset[];
 }
 
 export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
   shipment,
   canManage,
   onShipmentUpdated,
+  transportAssets = [],
 }) => {
   const { t, localeTag } = useI18n();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -62,6 +65,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
   const [docNote, setDocNote] = useState('');
   const [docError, setDocError] = useState<string | null>(null);
 
+  const [transportAssetId, setTransportAssetId] = useState(shipment.transport_asset_id || '');
   const [transportMode, setTransportMode] = useState<TransportMode | ''>(
     shipment.transport_mode || '',
   );
@@ -81,6 +85,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
+    setTransportAssetId(shipment.transport_asset_id || '');
     setTransportMode(shipment.transport_mode || '');
     setVehicleNumber(shipment.vehicle_number || '');
     setTrailerNumber(shipment.trailer_number || '');
@@ -94,6 +99,35 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
     setActualArrival(toLocalInput(shipment.actual_arrival_at));
     setNotes(shipment.logistics_notes || '');
   }, [shipment]);
+
+  const shipmentTransportOptions = useMemo(() => {
+    return transportAssets
+      .filter(a => a.is_active !== false && (a.purpose === 'shipment' || a.purpose === 'both'))
+      .map(a => ({
+        value: a.id,
+        label: [
+          a.name,
+          a.vehicle_number,
+          a.brand && a.model ? `${a.brand} ${a.model}` : a.brand || a.model,
+        ]
+          .filter(Boolean)
+          .join(' · '),
+      }));
+  }, [transportAssets]);
+
+  const applyTransportAsset = (id: string) => {
+    setTransportAssetId(id);
+    if (!id) return;
+    const asset = transportAssets.find(a => a.id === id);
+    if (!asset) return;
+    if (asset.vehicle_number) setVehicleNumber(asset.vehicle_number);
+    if (asset.trailer_number) setTrailerNumber(asset.trailer_number);
+    if (asset.container_number) setContainerNumber(asset.container_number);
+    if (asset.waybill_number) setWaybillNumber(asset.waybill_number);
+    if (asset.driver_info) setDriverInfo(asset.driver_info);
+    if (asset.category === 'rail') setTransportMode('rail');
+    else if (!transportMode) setTransportMode('road');
+  };
 
   const loadDocs = useCallback(async (id: string) => {
     setLoadingDocs(true);
@@ -148,6 +182,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
     try {
       const updated = await ApiService.updateShipmentLogistics(shipment.id, {
         transport_mode: transportMode || null,
+        transport_asset_id: transportAssetId || null,
         vehicle_number: vehicleNumber,
         trailer_number: trailerNumber,
         container_number: containerNumber,
@@ -306,6 +341,21 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
       <section className="space-y-3">
         <h4 className="text-sm font-semibold text-white">{t('shipmentLogistics.transportDetails')}</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="shipment-logistics-select sm:col-span-2">
+            <label className={labelClass}>{t('transport.selectFromDirectory')}</label>
+            <SearchableSelect
+              value={transportAssetId}
+              onChange={applyTransportAsset}
+              options={shipmentTransportOptions}
+              allowEmpty
+              emptyLabel={t('transport.selectUnset')}
+              placeholder={t('transport.selectPlaceholder')}
+              disabled={!canManage}
+              className="shipment-logistics-dropdown"
+              triggerClassName="shipment-logistics-dropdown-trigger"
+              panelClassName="shipment-logistics-dropdown-panel"
+            />
+          </div>
           <div className="shipment-logistics-select">
             <label className={labelClass}>{t('shipmentLogistics.transportMode')}</label>
             <SearchableSelect
