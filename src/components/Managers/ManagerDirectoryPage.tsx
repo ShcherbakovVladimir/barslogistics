@@ -27,9 +27,6 @@ const emptyForm = (): ManagerFormState => ({
   is_active: true,
 });
 
-const fieldClass =
-  'manager-directory-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem] placeholder:text-slate-500';
-
 interface ManagerDirectoryPageProps {
   managers: SalesManager[];
   canManage: boolean;
@@ -60,7 +57,7 @@ const ManagerModalShell: React.FC<ManagerModalShellProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`manager-directory-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`manager-directory-modal app-modal-sheet modal-panel ${maxWidthClass} ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -68,6 +65,68 @@ const ManagerModalShell: React.FC<ManagerModalShellProps> = ({
         />
         {children}
       </div>
+    </div>
+  );
+};
+
+interface ManagerActionsProps {
+  manager: SalesManager;
+  t: (key: string, params?: Record<string, string | number>) => string;
+  onEdit: (m: SalesManager) => void;
+  onDelete: (m: SalesManager) => void;
+  variant: 'table' | 'card';
+}
+
+const ManagerActions: React.FC<ManagerActionsProps> = ({
+  manager,
+  t,
+  onEdit,
+  onDelete,
+  variant,
+}) => {
+  if (variant === 'card') {
+    return (
+      <div className="manager-directory-card-actions">
+        <button
+          type="button"
+          onClick={() => onEdit(manager)}
+          className="manager-directory-card-action manager-directory-card-action--edit"
+        >
+          <Pencil className="w-4 h-4 shrink-0" />
+          {t('managers.edit')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(manager)}
+          className="manager-directory-card-action manager-directory-card-action--delete"
+        >
+          <Trash2 className="w-4 h-4 shrink-0" />
+          {t('managers.delete')}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="manager-directory-row-actions">
+      <button
+        type="button"
+        onClick={() => onEdit(manager)}
+        className="manager-directory-row-icon-btn manager-directory-row-icon-btn--edit"
+        title={t('managers.edit')}
+        aria-label={t('managers.edit')}
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        onClick={() => onDelete(manager)}
+        className="manager-directory-row-icon-btn manager-directory-row-icon-btn--delete"
+        title={t('managers.delete')}
+        aria-label={t('managers.delete')}
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
     </div>
   );
 };
@@ -104,24 +163,13 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
       </span>
     </div>
     {canManage && (
-      <div className="manager-directory-card-actions">
-        <button
-          type="button"
-          onClick={() => onEdit(manager)}
-          className="manager-directory-card-action manager-directory-card-action--edit"
-        >
-          <Pencil className="w-4 h-4 shrink-0" />
-          {t('managers.edit')}
-        </button>
-        <button
-          type="button"
-          onClick={() => onDelete(manager)}
-          className="manager-directory-card-action manager-directory-card-action--delete"
-        >
-          <Trash2 className="w-4 h-4 shrink-0" />
-          {t('managers.delete')}
-        </button>
-      </div>
+      <ManagerActions
+        manager={manager}
+        t={t}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        variant="card"
+      />
     )}
   </article>
 );
@@ -252,10 +300,10 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
   };
 
   const statusBadge = (manager: SalesManager) => (
-    <span className={`manager-status-badge text-xs px-2 py-0.5 rounded border ${
+    <span className={`manager-directory-status-badge ${
       manager.is_active !== false
-        ? 'manager-status-active bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-        : 'manager-status-inactive bg-slate-500/10 text-slate-400 border-slate-500/30'
+        ? 'manager-directory-status-badge--active'
+        : 'manager-directory-status-badge--inactive'
     }`}>
       {manager.is_active !== false ? t('managers.active') : t('managers.inactive')}
     </span>
@@ -270,22 +318,26 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
   };
 
   return (
-    <div className="manager-directory-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="manager-directory-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div className="manager-directory-toolbar-head flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              <UserCircle className="w-5 h-5 text-indigo-400 shrink-0" />
-              <span className="truncate">{t('managers.title')}</span>
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">{t('managers.subtitle')}</p>
+    <div className="manager-directory-page">
+      <div className="manager-directory-toolbar shipments-list-toolbar">
+        <div className="manager-directory-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <UserCircle />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{t('managers.title')}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('managers.subtitle')}</p>
+            </div>
           </div>
-          <div className="manager-directory-toolbar-actions flex flex-wrap gap-2">
+          <div className="manager-directory-toolbar-actions">
             <button
               type="button"
               onClick={() => void handleRefresh()}
               disabled={loading}
-              className="manager-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="manager-directory-toolbar-btn manager-directory-toolbar-btn--refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               {t('managers.refresh')}
@@ -294,7 +346,7 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
               <button
                 type="button"
                 onClick={openCreate}
-                className="manager-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+                className="manager-directory-toolbar-btn manager-directory-toolbar-btn--add"
               >
                 <Plus className="w-3.5 h-3.5" />
                 {t('managers.add')}
@@ -303,92 +355,92 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
           </div>
         </div>
 
-        <div className="manager-directory-filters-grid">
-          <div className="manager-directory-search flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[2.75rem] sm:min-h-0">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="manager-directory-filters-grid shipments-list-filters-grid">
+          <div className="manager-directory-search shipments-list-search">
+            <Search aria-hidden />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('managers.searchPlaceholder')}
-              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder:text-slate-500"
             />
           </div>
           {canManage && (
-            <label className="manager-directory-inactive-toggle flex items-center gap-2 text-xs text-slate-400 px-1 min-h-[2.75rem] sm:min-h-0">
+            <label className="manager-directory-inactive-toggle">
               <input
                 type="checkbox"
                 checked={showInactive}
                 onChange={e => setShowInactive(e.target.checked)}
-                className="rounded border-slate-600"
               />
               {t('managers.showInactive')}
             </label>
           )}
         </div>
-
-        <p className="manager-directory-results text-xs text-slate-500">
-          {t('managers.results', { count: displayList.length })}
-        </p>
       </div>
 
       {error && !modalOpen && !deleteTarget && (
-        <div className="manager-directory-alert text-sm text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
-          {error}
-        </div>
+        <div className="manager-directory-alert">{error}</div>
       )}
 
-      <div className="manager-directory-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-        <div className="manager-directory-table-desktop overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-sm min-w-[40rem]">
-            <thead className="bg-slate-950/80 text-slate-400 text-xs uppercase">
+      <div className="manager-directory-results-bar">
+        {t('managers.results', { count: displayList.length })}
+      </div>
+
+      <div className="manager-directory-table-panel">
+        <div className="manager-directory-table-head-bar">
+          {t('managers.results', { count: displayList.length })}
+        </div>
+        <div className="manager-directory-table-desktop responsive-table-wrap">
+          <table className="manager-directory-table">
+            <thead>
               <tr>
-                <th className="text-left p-3">{t('managers.colLastName')}</th>
-                <th className="text-left p-3">{t('managers.colFirstName')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('managers.colMiddleName')}</th>
-                <th className="text-left p-3">{t('managers.colPosition')}</th>
-                <th className="text-left p-3 hidden md:table-cell">{t('managers.colStatus')}</th>
-                {canManage && <th className="text-right p-3">{t('managers.colActions')}</th>}
+                <th>{t('managers.colLastName')}</th>
+                <th>{t('managers.colFirstName')}</th>
+                <th className="manager-directory-col-middle">{t('managers.colMiddleName')}</th>
+                <th>{t('managers.colPosition')}</th>
+                <th className="manager-directory-col-status">{t('managers.colStatus')}</th>
+                {canManage && (
+                  <th className="manager-directory-col-actions">{t('managers.colActions')}</th>
+                )}
               </tr>
             </thead>
             <tbody>
               {displayList.length === 0 ? (
                 <tr>
-                  <td colSpan={canManage ? 6 : 5} className="p-6 text-center text-slate-500">
+                  <td colSpan={canManage ? 6 : 5} className="manager-directory-table-empty">
                     {t('managers.empty')}
                   </td>
                 </tr>
-              ) : displayList.map(manager => (
-                <tr key={manager.id} className="border-t border-slate-800 hover:bg-slate-800/50">
-                  <td className="p-3 font-medium text-white">{manager.last_name}</td>
-                  <td className="p-3 text-slate-300">{manager.first_name}</td>
-                  <td className="p-3 text-slate-400 hidden sm:table-cell">{manager.middle_name || '—'}</td>
-                  <td className="p-3 text-slate-300 max-w-xs">{manager.position || '—'}</td>
-                  <td className="p-3 hidden md:table-cell">{statusBadge(manager)}</td>
-                  {canManage && (
-                    <td className="p-3 text-right">
-                      <div className="flex justify-end gap-1">
-                        <button
-                          type="button"
-                          onClick={() => openEdit(manager)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-                          title={t('managers.edit')}
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteTarget(manager)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800"
-                          title={t('managers.delete')}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+              ) : (
+                displayList.map(manager => (
+                  <tr key={manager.id}>
+                    <td>
+                      <div className="manager-directory-cell-last">{manager.last_name}</div>
                     </td>
-                  )}
-                </tr>
-              ))}
+                    <td>
+                      <div className="manager-directory-cell-first">{manager.first_name}</div>
+                    </td>
+                    <td className="manager-directory-col-middle">
+                      <div className="manager-directory-cell-middle">{manager.middle_name || '—'}</div>
+                    </td>
+                    <td>
+                      <div className="manager-directory-cell-position">{manager.position || '—'}</div>
+                    </td>
+                    <td className="manager-directory-col-status">{statusBadge(manager)}</td>
+                    {canManage && (
+                      <td className="manager-directory-col-actions">
+                        <ManagerActions
+                          manager={manager}
+                          t={t}
+                          onEdit={openEdit}
+                          onDelete={setDeleteTarget}
+                          variant="table"
+                        />
+                      </td>
+                    )}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -407,106 +459,103 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
       {modalOpen && canManage && (
         <ManagerModalShell onClose={() => setModalOpen(false)}>
           <form onSubmit={e => void handleSave(e)} className="manager-directory-form-modal flex flex-col flex-1 min-h-0">
-            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">
+            <header className="modal-panel-header app-modal-sheet-header">
+              <div className="manager-directory-modal-head">
+                <h3 className="manager-directory-modal-title">
                   {editing ? t('managers.editTitle') : t('managers.addTitle')}
                 </h3>
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="manager-directory-modal-close-btn"
                   aria-label={t('common.close')}
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </header>
-            <div className="modal-panel-body modal-scrollbar px-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
-              {error && (
-                <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">{error}</p>
-              )}
+            <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
+              {error && <p className="manager-directory-form-error">{error}</p>}
               {!editing && (
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('managers.colId')}</span>
+                <label className="manager-directory-form-field">
+                  <span className="manager-directory-form-label">{t('managers.colId')}</span>
                   <input
                     value={form.id}
                     onChange={e => setForm(prev => ({ ...prev, id: e.target.value }))}
-                    className={`${fieldClass} font-mono`}
+                    className="manager-directory-field manager-directory-field--mono"
                     placeholder="mgr_ivanov_ai"
                   />
-                  <span className="text-[10px] text-slate-500">{t('managers.idHint')}</span>
+                  <span className="manager-directory-form-hint">{t('managers.idHint')}</span>
                 </label>
               )}
-              <div className="manager-directory-form-grid grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('managers.colLastName')}</span>
+              <div className="manager-directory-form-grid">
+                <label className="manager-directory-form-field">
+                  <span className="manager-directory-form-label">{t('managers.colLastName')}</span>
                   <input
                     required
                     value={form.last_name}
                     onChange={e => setForm(prev => ({ ...prev, last_name: e.target.value }))}
-                    className={fieldClass}
+                    className="manager-directory-field"
                   />
                 </label>
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('managers.colFirstName')}</span>
+                <label className="manager-directory-form-field">
+                  <span className="manager-directory-form-label">{t('managers.colFirstName')}</span>
                   <input
                     required
                     value={form.first_name}
                     onChange={e => setForm(prev => ({ ...prev, first_name: e.target.value }))}
-                    className={fieldClass}
+                    className="manager-directory-field"
                   />
                 </label>
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('managers.colMiddleName')}</span>
+                <label className="manager-directory-form-field">
+                  <span className="manager-directory-form-label">{t('managers.colMiddleName')}</span>
                   <input
                     value={form.middle_name}
                     onChange={e => setForm(prev => ({ ...prev, middle_name: e.target.value }))}
-                    className={fieldClass}
+                    className="manager-directory-field"
                   />
                 </label>
               </div>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('managers.colPosition')}</span>
+              <label className="manager-directory-form-field">
+                <span className="manager-directory-form-label">{t('managers.colPosition')}</span>
                 <input
                   value={form.position}
                   onChange={e => setForm(prev => ({ ...prev, position: e.target.value }))}
-                  className={fieldClass}
+                  className="manager-directory-field"
                 />
               </label>
-              <div className="manager-directory-form-meta grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('managers.colOrder')}</span>
+              <div className="manager-directory-form-meta">
+                <label className="manager-directory-form-field">
+                  <span className="manager-directory-form-label">{t('managers.colOrder')}</span>
                   <input
                     type="number"
                     value={form.sort_order}
                     onChange={e => setForm(prev => ({ ...prev, sort_order: e.target.value }))}
-                    className={fieldClass}
+                    className="manager-directory-field"
                   />
                 </label>
-                <label className="flex items-center gap-2 text-sm text-slate-300 min-h-[2.75rem] sm:min-h-0 sm:pb-2">
+                <label className="manager-directory-form-checkbox">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))}
-                    className="rounded border-slate-600"
                   />
                   {t('managers.active')}
                 </label>
               </div>
             </div>
-            <footer className="manager-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+            <footer className="manager-directory-form-modal-footer modal-panel-footer">
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
-                className="px-3 py-2 rounded-lg border border-slate-600 text-slate-300 text-sm hover:bg-slate-800 min-h-[2.75rem] sm:min-h-0"
+                className="manager-directory-form-cancel"
               >
                 {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={saving}
-                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+                className="manager-directory-form-submit"
               >
                 {saving ? t('myData.saving') : t('myData.save')}
               </button>
@@ -517,18 +566,20 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
 
       {deleteTarget && canManage && (
         <ManagerModalShell onClose={() => setDeleteTarget(null)} maxWidthClass="max-w-md">
-          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-            <h3 className="font-bold text-white">{t('managers.deleteTitle')}</h3>
+          <header className="modal-panel-header app-modal-sheet-header">
+            <h3 className="manager-directory-modal-title">{t('managers.deleteTitle')}</h3>
           </header>
-          <div className="modal-panel-body px-4 pb-2 space-y-2">
-            <p className="text-sm text-slate-300">{t('managers.deleteConfirm', { name: deleteTarget.full_name })}</p>
-            <p className="text-xs text-slate-500">{t('managers.deleteHint')}</p>
+          <div className="modal-panel-body">
+            <p className="manager-directory-modal-text">
+              {t('managers.deleteConfirm', { name: deleteTarget.full_name })}
+            </p>
+            <p className="manager-directory-modal-hint">{t('managers.deleteHint')}</p>
           </div>
-          <footer className="manager-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+          <footer className="manager-directory-form-modal-footer modal-panel-footer">
             <button
               type="button"
               onClick={() => setDeleteTarget(null)}
-              className="px-3 py-2 rounded-lg border border-slate-600 text-slate-300 text-sm hover:bg-slate-800 min-h-[2.75rem] sm:min-h-0"
+              className="manager-directory-form-cancel"
             >
               {t('common.cancel')}
             </button>
@@ -536,7 +587,7 @@ export const ManagerDirectoryPage: React.FC<ManagerDirectoryPageProps> = ({
               type="button"
               disabled={saving}
               onClick={() => void handleDelete()}
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-sm font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+              className="manager-directory-form-delete"
             >
               {t('managers.delete')}
             </button>

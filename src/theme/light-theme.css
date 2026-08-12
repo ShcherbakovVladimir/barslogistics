@@ -2609,56 +2609,197 @@ html.layout-fold[data-theme="light"] .modal-backdrop .transport-directory-modal.
   box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
 }
 
-/* ── Manager directory (mobile + light) ── */
+/* ── Manager directory (chrome + light) ── */
 [data-theme="light"] .manager-directory-page {
-  color: #334155;
+  background: #f1f5f9 !important;
+  color: #0f172a;
 }
 
 [data-theme="light"] .manager-directory-toolbar,
-[data-theme="light"] .manager-directory-table-panel {
+[data-theme="light"] .manager-directory-table-panel,
+[data-theme="light"] .manager-directory-card {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
 }
 
-[data-theme="light"] .manager-directory-toolbar h2 {
-  color: #0f172a !important;
+[data-theme="light"] .manager-directory-toolbar {
+  --se-field-bg: #ffffff;
+  --se-field-border: #cbd5e1;
+  --se-field-border-hover: rgb(99 102 241 / 0.45);
+  --se-field-focus: #4f46e5;
+  --se-field-focus-ring: rgb(99 102 241 / 0.18);
 }
 
-[data-theme="light"] .manager-directory-search {
-  background: #f8fafc !important;
+[data-theme="light"] .manager-directory-toolbar .shipments-list-toolbar-icon {
+  background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  color: #475569 !important;
 }
 
-[data-theme="light"] .manager-directory-search input {
+[data-theme="light"] .manager-directory-toolbar .shipments-list-title,
+[data-theme="light"] .manager-directory-cell-last,
+[data-theme="light"] .manager-directory-card-name,
+[data-theme="light"] .manager-directory-modal-title {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .manager-directory-search input::placeholder {
-  color: #94a3b8 !important;
+[data-theme="light"] .manager-directory-toolbar .shipments-list-subtitle,
+[data-theme="light"] .manager-directory-results-bar,
+[data-theme="light"] .manager-directory-table-head-bar,
+[data-theme="light"] .manager-directory-cell-first,
+[data-theme="light"] .manager-directory-cell-middle,
+[data-theme="light"] .manager-directory-cell-position,
+[data-theme="light"] .manager-directory-card-position,
+[data-theme="light"] .manager-directory-modal-text,
+[data-theme="light"] .manager-directory-form-label,
+[data-theme="light"] .manager-directory-form-hint,
+[data-theme="light"] .manager-directory-modal-hint {
+  color: #64748b !important;
 }
 
-[data-theme="light"] .manager-directory-page button.bg-indigo-600,
-[data-theme="light"] .manager-directory-page button.bg-indigo-500,
-[data-theme="light"] .manager-directory-page button.bg-red-600 {
+[data-theme="light"] .manager-directory-page .shipments-list-search {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .manager-directory-page .shipments-list-search:focus-within {
+  background: #f8fafc;
+  border-color: rgb(99 102 241 / 0.55);
+}
+
+[data-theme="light"] .manager-directory-page .shipments-list-search input::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .manager-directory-page .shipments-list-search svg {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .manager-directory-inactive-toggle,
+[data-theme="light"] .manager-directory-form-checkbox {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .manager-directory-toolbar-btn--refresh,
+[data-theme="light"] .manager-directory-form-cancel {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .manager-directory-toolbar-btn--refresh:hover:not(:disabled),
+[data-theme="light"] .manager-directory-form-cancel:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .manager-directory-toolbar-btn--add,
+[data-theme="light"] .manager-directory-form-submit {
+  background: #4f46e5 !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
   color: #ffffff !important;
 }
 
-[data-theme="light"] .manager-directory-card {
-  background: #ffffff;
-  border-color: #e2e8f0;
+[data-theme="light"] .manager-directory-toolbar-btn--add:hover,
+[data-theme="light"] .manager-directory-form-submit:hover:not(:disabled) {
+  background: #4338ca !important;
+  border-color: #3730a3 !important;
+}
+
+[data-theme="light"] .manager-directory-form-delete {
+  background: #dc2626 !important;
+  border-color: rgb(239 68 68 / 0.45) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .manager-directory-form-delete:hover:not(:disabled) {
+  background: #b91c1c !important;
+  border-color: #991b1b !important;
+}
+
+[data-theme="light"] .manager-directory-form-submit:disabled,
+[data-theme="light"] .manager-directory-form-delete:disabled {
+  opacity: 0.55;
+}
+
+[data-theme="light"] .manager-directory-table thead,
+[data-theme="light"] .manager-directory-table-head-bar {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .manager-directory-table th {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .manager-directory-table tbody tr {
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .manager-directory-table tbody tr:hover {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .manager-directory-table tbody {
+  color: #334155;
+}
+
+[data-theme="light"] .manager-directory-table-empty {
+  color: #64748b !important;
 }
 
 [data-theme="light"] .manager-directory-card-id,
 [data-theme="light"] .manager-directory-card-order {
-  color: #64748b;
+  color: #4f46e5 !important;
 }
 
-[data-theme="light"] .manager-directory-card-name {
-  color: #0f172a;
+[data-theme="light"] .manager-directory-status-badge--active {
+  background: rgb(16 185 129 / 0.1) !important;
+  border-color: rgb(16 185 129 / 0.3) !important;
+  color: #047857 !important;
 }
 
-[data-theme="light"] .manager-directory-card-position {
-  color: #475569;
+[data-theme="light"] .manager-directory-status-badge--inactive {
+  background: rgb(100 116 139 / 0.1) !important;
+  border-color: rgb(100 116 139 / 0.25) !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .manager-directory-row-icon-btn--edit {
+  background: rgb(245 158 11 / 0.1) !important;
+  border-color: rgb(245 158 11 / 0.25) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .manager-directory-row-icon-btn--edit:hover {
+  background: #d97706 !important;
+  border-color: #b45309 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .manager-directory-row-icon-btn--delete {
+  background: rgb(239 68 68 / 0.08) !important;
+  border-color: rgb(239 68 68 / 0.22) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .manager-directory-row-icon-btn--delete:hover {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .manager-directory-card:hover {
+  border-color: rgb(99 102 241 / 0.4) !important;
+}
+
+[data-theme="light"] .manager-directory-card:active {
+  border-color: rgb(99 102 241 / 0.55) !important;
+  background: #f8fafc !important;
 }
 
 [data-theme="light"] .manager-directory-card-action--edit {
@@ -2667,10 +2808,22 @@ html.layout-fold[data-theme="light"] .modal-backdrop .transport-directory-modal.
   color: #b45309;
 }
 
+[data-theme="light"] .manager-directory-card-action--edit:hover {
+  background: #d97706 !important;
+  border-color: #b45309 !important;
+  color: #ffffff !important;
+}
+
 [data-theme="light"] .manager-directory-card-action--delete {
   background: rgb(239 68 68 / 0.08);
   border-color: rgb(239 68 68 / 0.22);
   color: #dc2626;
+}
+
+[data-theme="light"] .manager-directory-card-action--delete:hover {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: #ffffff !important;
 }
 
 [data-theme="light"] .manager-directory-empty {
@@ -2685,19 +2838,42 @@ html.layout-fold[data-theme="light"] .modal-backdrop .transport-directory-modal.
   color: #0f172a !important;
 }
 
+[data-theme="light"] .manager-directory-field:hover {
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .manager-directory-field:focus {
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.18) !important;
+}
+
 [data-theme="light"] .manager-directory-modal {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
   color: #334155 !important;
+  box-shadow:
+    0 24px 48px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(99 102 241 / 0.08) !important;
 }
 
-[data-theme="light"] .manager-directory-modal .text-white {
+[data-theme="light"] .manager-directory-modal .modal-panel-header,
+[data-theme="light"] .manager-directory-modal .modal-panel-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .manager-directory-modal-close-btn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .manager-directory-modal-close-btn:hover {
+  background: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
-[data-theme="light"] .manager-directory-modal button.bg-indigo-600,
-[data-theme="light"] .manager-directory-modal button.bg-red-600 {
-  color: #ffffff !important;
+[data-theme="light"] .manager-directory-form-error {
+  color: #dc2626 !important;
+  background-color: rgb(239 68 68 / 0.08) !important;
+  border-color: rgb(239 68 68 / 0.25) !important;
 }
 
 [data-theme="light"] .manager-directory-alert {
@@ -2706,16 +2882,10 @@ html.layout-fold[data-theme="light"] .modal-backdrop .transport-directory-modal.
   border-color: rgb(245 158 11 / 0.28) !important;
 }
 
-[data-theme="light"] .manager-directory-page .manager-status-active {
-  background-color: rgb(16 185 129 / 0.12) !important;
-  color: #059669 !important;
-  border-color: rgb(16 185 129 / 0.28) !important;
-}
-
-[data-theme="light"] .manager-directory-page .manager-status-inactive {
-  background-color: rgb(100 116 139 / 0.12) !important;
-  color: #64748b !important;
-  border-color: rgb(100 116 139 / 0.25) !important;
+html.layout-mobile[data-theme="light"] .modal-backdrop .manager-directory-modal.app-modal-sheet,
+html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.app-modal-sheet {
+  border: none !important;
+  box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
 }
 
 /* ── My data (mobile + light) ── */
