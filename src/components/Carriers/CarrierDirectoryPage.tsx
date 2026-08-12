@@ -21,15 +21,6 @@ type CategoryFilter = 'all' | CarrierCategory;
 
 const CATEGORIES: CarrierCategory[] = ['own', 'rzd', 'other'];
 
-const categoryBadgeStyles: Record<CarrierCategory, string> = {
-  own: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-  rzd: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-  other: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-};
-
-const fieldClass =
-  'carrier-directory-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
-
 interface CarrierFormState {
   id: string;
   name: string;
@@ -82,7 +73,7 @@ const CarrierModalShell: React.FC<CarrierModalShellProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`carrier-directory-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`carrier-directory-modal app-modal-sheet modal-panel ${maxWidthClass} ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -161,22 +152,25 @@ const CarrierActions: React.FC<CarrierActionsProps> = ({
   }
 
   return (
-    <div className="flex justify-end gap-1 flex-wrap">
+    <div className="carrier-directory-row-actions">
       <button
         type="button"
         onClick={() => onIntegration(carrier)}
-        className="px-2 py-1 rounded-lg text-xs text-cyan-400 hover:bg-slate-800 flex items-center gap-1"
+        className="carrier-directory-row-icon-btn carrier-directory-row-icon-btn--integration"
+        title={t('carriers.integration')}
+        aria-label={t('carriers.integration')}
       >
         <Plug className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">{t('carriers.integration')}</span>
       </button>
       {canManage && onSync && carrier.api_endpoint && (
         <button
           type="button"
           onClick={() => void onSync(carrier.id)}
-          className="px-2 py-1 rounded-lg text-xs text-indigo-400 hover:bg-slate-800"
+          className="carrier-directory-row-icon-btn carrier-directory-row-icon-btn--sync"
+          title={t('integrations.syncNow')}
+          aria-label={t('integrations.syncNow')}
         >
-          {t('integrations.syncNow')}
+          <RefreshCw className="w-3.5 h-3.5" />
         </button>
       )}
       {canManage && (
@@ -184,16 +178,20 @@ const CarrierActions: React.FC<CarrierActionsProps> = ({
           <button
             type="button"
             onClick={() => onEdit(carrier)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            className="carrier-directory-row-icon-btn carrier-directory-row-icon-btn--edit"
+            title={t('siteDirectory.admin.edit')}
+            aria-label={t('siteDirectory.admin.edit')}
           >
-            <Pencil className="w-4 h-4" />
+            <Pencil className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
             onClick={() => onDelete(carrier)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800"
+            className="carrier-directory-row-icon-btn carrier-directory-row-icon-btn--delete"
+            title={t('carriers.delete')}
+            aria-label={t('carriers.delete')}
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
         </>
       )}
@@ -414,16 +412,16 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
   };
 
   const categoryBadge = (cat: CarrierCategory) => (
-    <span className={`carrier-directory-category-badge text-xs px-2 py-0.5 rounded border ${categoryBadgeStyles[cat]}`}>
+    <span className={`carrier-directory-category-badge carrier-directory-category-badge--${cat}`}>
       {t(`carriers.category.${cat}`)}
     </span>
   );
 
   const statusBadge = (c: ThirdPartyCarrier) => (
-    <span className={`carrier-directory-status-badge text-xs px-2 py-0.5 rounded border ${
-      c.status === 'error' ? 'carrier-directory-status-badge--error bg-red-500/10 text-red-400 border-red-500/30'
-        : c.enabled === false ? 'carrier-directory-status-badge--off bg-slate-500/10 text-slate-400 border-slate-500/30'
-          : 'carrier-directory-status-badge--ok bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+    <span className={`carrier-directory-status-badge ${
+      c.status === 'error' ? 'carrier-directory-status-badge--error'
+        : c.enabled === false ? 'carrier-directory-status-badge--off'
+          : 'carrier-directory-status-badge--ok'
     }`}>
       {c.status === 'error' ? 'ERROR' : c.enabled === false ? 'OFF' : c.status.toUpperCase()}
     </span>
@@ -439,15 +437,12 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
       key={id}
       type="button"
       onClick={() => setCategoryFilter(id as CategoryFilter)}
-      className={`carrier-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-        categoryFilter === id
-          ? 'bg-indigo-600 text-white border-indigo-500'
-          : id === 'all'
-            ? 'bg-slate-950 text-slate-300 border-slate-700 hover:text-white'
-            : `${categoryBadgeStyles[id as CarrierCategory]} hover:opacity-90`
+      className={`carrier-directory-chip${categoryFilter === id ? ' is-active' : ''}${
+        id !== 'all' ? ` carrier-directory-chip--${id}` : ''
       }`}
     >
-      {label} ({count})
+      {label}
+      <span>{count}</span>
     </button>
   ));
 
@@ -463,22 +458,26 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
   };
 
   return (
-    <div className="carrier-directory-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="carrier-directory-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div className="carrier-directory-toolbar-head flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              <Truck className="w-5 h-5 text-indigo-400 shrink-0" />
-              <span className="truncate">{t('carriers.title')}</span>
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">{t('carriers.subtitle')}</p>
+    <div className="carrier-directory-page">
+      <div className="carrier-directory-toolbar shipments-list-toolbar">
+        <div className="carrier-directory-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <Truck />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{t('carriers.title')}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('carriers.subtitle')}</p>
+            </div>
           </div>
-          <div className="carrier-directory-toolbar-actions flex flex-wrap gap-2">
+          <div className="carrier-directory-toolbar-actions">
             <button
               type="button"
               onClick={() => void handleRefresh()}
               disabled={loading}
-              className="carrier-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="carrier-directory-toolbar-btn carrier-directory-toolbar-btn--refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               {t('carriers.refresh')}
@@ -487,7 +486,7 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
               <button
                 type="button"
                 onClick={openCreate}
-                className="carrier-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+                className="carrier-directory-toolbar-btn carrier-directory-toolbar-btn--add"
               >
                 <Plus className="w-3.5 h-3.5" />
                 {t('carriers.add')}
@@ -496,31 +495,27 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
           </div>
         </div>
 
-        <div className="carrier-directory-filter-block space-y-2">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-            {t('carriers.colCategory')}
-          </div>
+        <div className="carrier-directory-filter-block">
+          <div className="carrier-directory-filter-label">{t('carriers.colCategory')}</div>
           <HorizontalScrollChips>{categoryChips}</HorizontalScrollChips>
         </div>
 
-        <div className="carrier-directory-filters-grid">
-          <div className="carrier-directory-search flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[2.75rem] sm:min-h-0">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="carrier-directory-filters-grid shipments-list-filters-grid">
+          <div className="carrier-directory-search shipments-list-search">
+            <Search aria-hidden />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('carriers.searchPlaceholder')}
-              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder:text-slate-500"
             />
           </div>
           {canManage && (
-            <label className="carrier-directory-inactive-toggle flex items-center gap-2 text-xs text-slate-400 px-1 min-h-[2.75rem] sm:min-h-0">
+            <label className="carrier-directory-inactive-toggle">
               <input
                 type="checkbox"
                 checked={showInactive}
                 onChange={e => setShowInactive(e.target.checked)}
-                className="rounded border-slate-600"
               />
               {t('carriers.showInactive')}
             </label>
@@ -529,39 +524,52 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
       </div>
 
       {error && !modalOpen && !deleteTarget && !integrationCarrier && (
-        <div className="carrier-directory-alert text-sm text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
-          {error}
-        </div>
+        <div className="carrier-directory-alert">{error}</div>
       )}
 
-      <div className="carrier-directory-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-        <div className="carrier-directory-table-desktop overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-sm min-w-[32rem] xl:min-w-[40rem]">
-            <thead className="bg-slate-950/80 text-slate-400 text-xs uppercase">
+      <div className="carrier-directory-results-bar">
+        {t('carriers.results', { count: filtered.length })}
+      </div>
+
+      <div className="carrier-directory-table-panel">
+        <div className="carrier-directory-table-head-bar">
+          {t('carriers.results', { count: filtered.length })}
+        </div>
+        <div className="carrier-directory-table-desktop responsive-table-wrap">
+          <table className="carrier-directory-table">
+            <thead>
               <tr>
-                <th className="text-left p-3">{t('carriers.colName')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('carriers.colCode')}</th>
-                <th className="text-left p-3">{t('carriers.colCategory')}</th>
-                <th className="text-left p-3 hidden md:table-cell">{t('carriers.colStatus')}</th>
-                <th className="text-left p-3 hidden lg:table-cell">{t('carriers.colShipments')}</th>
-                <th className="text-right p-3">{t('carriers.colActions')}</th>
+                <th>{t('carriers.colName')}</th>
+                <th className="carrier-directory-col-code">{t('carriers.colCode')}</th>
+                <th>{t('carriers.colCategory')}</th>
+                <th className="carrier-directory-col-status">{t('carriers.colStatus')}</th>
+                <th className="carrier-directory-col-shipments">{t('carriers.colShipments')}</th>
+                <th className="carrier-directory-col-actions">{t('carriers.colActions')}</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan={6} className="p-6 text-center text-slate-500">{t('carriers.empty')}</td></tr>
+                <tr>
+                  <td colSpan={6} className="carrier-directory-table-empty">{t('carriers.empty')}</td>
+                </tr>
               ) : (
                 filtered.map(c => (
-                  <tr key={c.id} className="border-t border-slate-800 hover:bg-slate-800/50">
-                    <td className="p-3">
-                      <div className="font-medium text-white">{c.name}</div>
-                      {c.description && <div className="text-xs text-slate-500 mt-0.5">{c.description}</div>}
+                  <tr key={c.id}>
+                    <td>
+                      <div className="carrier-directory-cell-name">{c.name}</div>
+                      {c.description && (
+                        <div className="carrier-directory-cell-description">{c.description}</div>
+                      )}
                     </td>
-                    <td className="p-3 font-mono text-xs text-slate-400 hidden sm:table-cell">{c.code}</td>
-                    <td className="p-3">{categoryBadge(c.category)}</td>
-                    <td className="p-3 hidden md:table-cell">{statusBadge(c)}</td>
-                    <td className="p-3 text-slate-400 hidden lg:table-cell">{c.active_shipments_count}</td>
-                    <td className="p-3">
+                    <td className="carrier-directory-col-code">
+                      <span className="carrier-directory-cell-code">{c.code}</span>
+                    </td>
+                    <td>{categoryBadge(c.category)}</td>
+                    <td className="carrier-directory-col-status">{statusBadge(c)}</td>
+                    <td className="carrier-directory-col-shipments carrier-directory-cell-shipments">
+                      {c.active_shipments_count}
+                    </td>
+                    <td className="carrier-directory-col-actions">
                       <CarrierActions
                         carrier={c}
                         canManage={canManage}
@@ -589,32 +597,34 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
         )}
       </div>
 
-      <div className="carrier-directory-external-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="carrier-directory-external-panel">
         <button
           type="button"
           onClick={() => setShowExternalDocs(v => !v)}
-          className="carrier-directory-external-toggle w-full flex items-center justify-between p-4 text-left hover:bg-slate-800/50 min-h-[3rem]"
+          className="carrier-directory-external-toggle"
         >
-          <div className="min-w-0 pr-3">
-            <h3 className="font-bold text-white text-sm">{t('carriers.externalIntegrationTitle')}</h3>
-            <p className="text-xs text-slate-400 mt-0.5">{t('carriers.externalIntegrationSubtitle')}</p>
+          <div className="carrier-directory-external-toggle-text">
+            <h3>{t('carriers.externalIntegrationTitle')}</h3>
+            <p>{t('carriers.externalIntegrationSubtitle')}</p>
           </div>
-          {showExternalDocs ? <ChevronUp className="w-4 h-4 text-slate-400 shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />}
+          <span className="carrier-directory-external-toggle-chevron">
+            {showExternalDocs ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </span>
         </button>
         {showExternalDocs && externalDocs && (
-          <div className="carrier-directory-external-body px-4 pb-4 space-y-3 border-t border-slate-800 pt-4 text-xs">
-            <p className="text-slate-400">{externalDocs.auth}</p>
-            <div className="font-mono text-cyan-400 break-all">{externalDocs.openapi_url}</div>
-            <div className="font-mono text-blue-400 break-all">{externalDocs.websocket}</div>
-            <div className="grid gap-2">
+          <div className="carrier-directory-external-body">
+            <p className="carrier-directory-external-auth">{externalDocs.auth}</p>
+            <div className="carrier-directory-external-url carrier-directory-external-url--openapi">{externalDocs.openapi_url}</div>
+            <div className="carrier-directory-external-url carrier-directory-external-url--ws">{externalDocs.websocket}</div>
+            <div className="carrier-directory-endpoint-list">
               {externalDocs.endpoints.map(ep => (
-                <div key={ep.path} className="carrier-directory-endpoint-row p-2 bg-slate-950 rounded-lg border border-slate-800 flex flex-col sm:flex-row sm:items-center gap-2">
-                  <span className="font-mono text-emerald-400 shrink-0 break-all">{ep.method} {ep.path}</span>
-                  <span className="text-slate-400">{ep.description}</span>
+                <div key={ep.path} className="carrier-directory-endpoint-row">
+                  <span className="carrier-directory-endpoint-method">{ep.method} {ep.path}</span>
+                  <span className="carrier-directory-endpoint-desc">{ep.description}</span>
                   <button
                     type="button"
                     onClick={() => copyText(`${ep.method} ${ep.path}`, ep.path)}
-                    className="sm:ml-auto text-slate-500 hover:text-white flex items-center gap-1 min-h-[2.5rem] sm:min-h-0"
+                    className="carrier-directory-endpoint-copy"
                   >
                     <Copy className="w-3 h-3" />
                     {copied === ep.path ? t('integrations.copied') : t('integrations.copyCurl')}
@@ -628,29 +638,29 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
 
       {integrationCarrier && (
         <CarrierModalShell onClose={() => { setIntegrationCarrier(null); setIntegrationSpec(null); }}>
-          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-            <div className="flex justify-between items-start gap-3">
+          <header className="modal-panel-header app-modal-sheet-header">
+            <div className="carrier-directory-modal-head">
               <div className="min-w-0">
-                <h3 className="font-bold text-white break-words">
+                <h3 className="carrier-directory-modal-title">
                   {t('carriers.integrationTitle', { name: integrationCarrier.name })}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">{t('carriers.integrationHint')}</p>
+                <p className="carrier-directory-modal-subtitle">{t('carriers.integrationHint')}</p>
               </div>
               <button
                 type="button"
                 onClick={() => { setIntegrationCarrier(null); setIntegrationSpec(null); }}
-                className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="carrier-directory-modal-close-btn"
                 aria-label={t('common.close')}
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           </header>
-          <div className="modal-panel-body modal-scrollbar px-4 pb-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
+          <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
             {!integrationSpec ? (
-              <div className="text-slate-500 text-sm">{t('siteDirectory.admin.loading')}</div>
+              <div className="carrier-directory-modal-loading">{t('siteDirectory.admin.loading')}</div>
             ) : (
-              <div className="space-y-2 text-xs font-mono">
+              <div className="carrier-directory-spec-list">
                 {([
                   ['API endpoint', integrationSpec.api_endpoint || '—'],
                   ['Auth', integrationSpec.auth_type],
@@ -660,13 +670,13 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
                   ['Webhook', integrationSpec.telemetry_webhook_url],
                   ['OpenAPI', integrationSpec.openapi_url],
                 ] as const).map(([label, value]) => (
-                  <div key={label} className="carrier-directory-spec-block p-2 bg-slate-950 rounded-lg border border-slate-800">
-                    <div className="text-slate-500 mb-1">{label}</div>
-                    <div className="text-slate-200 break-all">{value}</div>
+                  <div key={label} className="carrier-directory-spec-block">
+                    <div className="carrier-directory-spec-label">{label}</div>
+                    <div className="carrier-directory-spec-value">{value}</div>
                     <button
                       type="button"
                       onClick={() => copyText(String(value), label)}
-                      className="mt-1 text-indigo-400 hover:text-indigo-300 flex items-center gap-1 min-h-[2.5rem]"
+                      className="carrier-directory-spec-copy"
                     >
                       <Copy className="w-3 h-3" />
                       {copied === label ? t('integrations.copied') : t('integrations.copyCurl')}
@@ -676,7 +686,7 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
               </div>
             )}
             {canManage && onSaveCarrierSettings && integrationCarrier && integrationSpec && (
-              <div className="border-t border-slate-800 pt-3">
+              <div className="carrier-directory-modal-divider">
                 <CarrierConfigForm carrier={integrationCarrier} onSave={onSaveCarrierSettings} />
               </div>
             )}
@@ -687,69 +697,69 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
       {modalOpen && (
         <CarrierModalShell onClose={() => setModalOpen(false)} maxWidthClass="max-w-md">
           <form onSubmit={handleSave} className="carrier-directory-form-modal flex flex-col flex-1 min-h-0">
-            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">
+            <header className="modal-panel-header app-modal-sheet-header">
+              <div className="carrier-directory-modal-head">
+                <h3 className="carrier-directory-modal-title">
                   {editing ? t('carriers.editTitle') : t('carriers.addTitle')}
                 </h3>
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="carrier-directory-modal-close-btn"
                   aria-label={t('common.close')}
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </header>
-            <div className="modal-panel-body modal-scrollbar px-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
-              {error && <p className="text-sm text-red-400">{error}</p>}
+            <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
+              {error && <p className="carrier-directory-form-error">{error}</p>}
               {!editing && (
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">ID</span>
+                <label className="carrier-directory-form-field">
+                  <span className="carrier-directory-form-label">ID</span>
                   <input
                     required
                     value={form.id}
                     onChange={e => setForm(f => ({ ...f, id: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '') }))}
                     placeholder="c_example"
-                    className={`${fieldClass} font-mono`}
+                    className="carrier-directory-field carrier-directory-field--mono"
                   />
                 </label>
               )}
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('carriers.colName')}</span>
-                <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={fieldClass} />
+              <label className="carrier-directory-form-field">
+                <span className="carrier-directory-form-label">{t('carriers.colName')}</span>
+                <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="carrier-directory-field" />
               </label>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('carriers.colCode')}</span>
-                <input required value={form.code} onChange={e => setForm(f => ({ ...f, code: e.target.value.toUpperCase() }))} className={`${fieldClass} font-mono`} />
+              <label className="carrier-directory-form-field">
+                <span className="carrier-directory-form-label">{t('carriers.colCode')}</span>
+                <input required value={form.code} onChange={e => setForm(f => ({ ...f, code: e.target.value.toUpperCase() }))} className="carrier-directory-field carrier-directory-field--mono" />
               </label>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('carriers.colCategory')}</span>
+              <label className="carrier-directory-form-field">
+                <span className="carrier-directory-form-label">{t('carriers.colCategory')}</span>
                 <select
                   value={form.category}
                   onChange={e => setForm(f => ({ ...f, category: e.target.value as CarrierCategory }))}
-                  className={fieldClass}
+                  className="carrier-directory-field"
                 >
                   {CATEGORIES.map(cat => (
                     <option key={cat} value={cat}>{t(`carriers.category.${cat}`)}</option>
                   ))}
                 </select>
               </label>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('carriers.description')}</span>
-                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} className={fieldClass} />
+              <label className="carrier-directory-form-field">
+                <span className="carrier-directory-form-label">{t('carriers.description')}</span>
+                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} className="carrier-directory-field" />
               </label>
-              <label className="flex items-center gap-2 text-xs text-slate-300 min-h-[2.75rem] sm:min-h-0">
-                <input type="checkbox" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="rounded border-slate-600" />
+              <label className="carrier-directory-form-checkbox">
+                <input type="checkbox" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} />
                 {t('carriers.active')}
               </label>
             </div>
-            <footer className="carrier-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-              <button type="button" onClick={() => setModalOpen(false)} className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0">
+            <footer className="carrier-directory-form-modal-footer modal-panel-footer">
+              <button type="button" onClick={() => setModalOpen(false)} className="carrier-directory-form-cancel">
                 {t('common.cancel')}
               </button>
-              <button type="submit" disabled={saving} className="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0">
+              <button type="submit" disabled={saving} className="carrier-directory-form-submit">
                 {saving ? t('admin.users.saving') : t('admin.users.save')}
               </button>
             </footer>
@@ -759,21 +769,21 @@ export const CarrierDirectoryPage: React.FC<CarrierDirectoryPageProps> = ({
 
       {deleteTarget && (
         <CarrierModalShell onClose={() => setDeleteTarget(null)} maxWidthClass="max-w-sm">
-          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-            <h3 className="font-bold text-white">{t('carriers.deleteTitle')}</h3>
+          <header className="modal-panel-header app-modal-sheet-header">
+            <h3 className="carrier-directory-modal-title">{t('carriers.deleteTitle')}</h3>
           </header>
-          <div className="modal-panel-body px-4 pb-2">
-            <p className="text-sm text-slate-400">{t('carriers.deleteConfirm', { name: deleteTarget.name })}</p>
+          <div className="modal-panel-body">
+            <p className="carrier-directory-modal-text">{t('carriers.deleteConfirm', { name: deleteTarget.name })}</p>
           </div>
-          <footer className="carrier-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-            <button type="button" onClick={() => setDeleteTarget(null)} className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0">
+          <footer className="carrier-directory-form-modal-footer modal-panel-footer">
+            <button type="button" onClick={() => setDeleteTarget(null)} className="carrier-directory-form-cancel">
               {t('common.cancel')}
             </button>
             <button
               type="button"
               onClick={() => void handleDelete()}
               disabled={saving}
-              className="px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+              className="carrier-directory-form-delete"
             >
               {t('carriers.delete')}
             </button>
