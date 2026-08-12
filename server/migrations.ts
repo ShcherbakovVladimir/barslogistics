@@ -18,6 +18,7 @@ export const POSTGRES_MIGRATIONS: PostgresMigration[] = [
   { file: "factory_edit_count.sql", scope: "schema", label: "Applying factory edit_count migration" },
   { file: "shipment_events.sql", scope: "schema", label: "Applying shipment events migration" },
   { file: "shipment_events_ops.sql", scope: "schema", label: "Applying shipment events operational fields migration" },
+  { file: "shipment_events_transport_mode.sql", scope: "schema", label: "Applying shipment events transport_mode migration" },
   { file: "products.sql", scope: "schema", label: "Applying products catalog migration" },
   { file: "carriers_registry.sql", scope: "schema", label: "Applying carriers registry migration" },
   { file: "sales_managers.sql", scope: "schema", label: "Applying sales managers directory migration" },

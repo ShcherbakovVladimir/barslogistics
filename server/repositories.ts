@@ -660,6 +660,7 @@ type ShipmentEventRow = {
   actual_departure_at?: Date | string | null;
   actual_arrival_at?: Date | string | null;
   progress_pct?: string | number | null;
+  transport_mode?: string | null;
   vehicle_number?: string | null;
   trailer_number?: string | null;
   container_number?: string | null;
@@ -696,6 +697,7 @@ function mapShipmentEvent(row: ShipmentEventRow): ShipmentEvent {
       ? new Date(row.actual_arrival_at).toISOString()
       : undefined,
     progress_pct: row.progress_pct != null ? Number(row.progress_pct) : undefined,
+    transport_mode: (row.transport_mode as ShipmentEvent["transport_mode"]) || undefined,
     vehicle_number: row.vehicle_number || undefined,
     trailer_number: row.trailer_number || undefined,
     container_number: row.container_number || undefined,
@@ -752,13 +754,13 @@ export async function insertShipmentEventRecord(
       id, shipment_id, event_type, old_status, new_status, timing_kind,
       delay_reason, delay_hours, early_hours, comment, eta_before, eta_after,
       origin_id, destination_id, product_id,
-      actual_departure_at, actual_arrival_at, progress_pct,
+      actual_departure_at, actual_arrival_at, progress_pct, transport_mode,
       vehicle_number, trailer_number, container_number, waybill_number, driver_info,
       apply_transport_to_shipment,
       user_id, username, source, created_at
     ) VALUES (
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,
-      $16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28
+      $16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29
     )`,
     [
       event.id,
@@ -779,6 +781,7 @@ export async function insertShipmentEventRecord(
       event.actual_departure_at ?? null,
       event.actual_arrival_at ?? null,
       event.progress_pct ?? null,
+      event.transport_mode ?? null,
       event.vehicle_number ?? null,
       event.trailer_number ?? null,
       event.container_number ?? null,
@@ -821,6 +824,7 @@ export async function applyShipmentEventUpdates(
       container_number = CASE WHEN $9::boolean AND $12::text IS NOT NULL THEN $12 ELSE container_number END,
       waybill_number = CASE WHEN $9::boolean AND $13::text IS NOT NULL THEN $13 ELSE waybill_number END,
       driver_info = CASE WHEN $9::boolean AND $14::text IS NOT NULL THEN $14 ELSE driver_info END,
+      transport_mode = CASE WHEN $9::boolean AND $15::text IS NOT NULL THEN $15 ELSE transport_mode END,
       last_updated = NOW()
      WHERE id = $1
      RETURNING *`,
@@ -839,6 +843,7 @@ export async function applyShipmentEventUpdates(
       event.container_number?.trim() || null,
       event.waybill_number?.trim() || null,
       event.driver_info?.trim() || null,
+      event.transport_mode ?? null,
     ],
   );
   return rows[0] ? mapSupplyLink(rows[0]) : null;

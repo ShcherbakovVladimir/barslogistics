@@ -526,6 +526,43 @@ html.portal-embed .header-nav-scroll {
   color: #94a3b8;
 }
 
+.shipment-event-transport-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  padding: 0.2rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--se-field-border, rgb(51 65 85));
+  background: var(--se-field-bg, rgb(2 6 23));
+}
+
+.shipment-event-transport-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: 0.4rem 0.55rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.shipment-event-transport-tab:hover {
+  color: #e2e8f0;
+  background: rgb(30 41 59 / 0.65);
+}
+
+.shipment-event-transport-tab.is-active {
+  color: #ecfdf5;
+  background: rgb(16 185 129 / 0.22);
+  box-shadow: inset 0 0 0 1px rgb(52 211 153 / 0.4);
+}
+
 .shipment-event-success {
   font-size: 0.75rem;
 }

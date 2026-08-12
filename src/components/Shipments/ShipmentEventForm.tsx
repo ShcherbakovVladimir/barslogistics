@@ -8,6 +8,7 @@ import type {
   ShipmentEventType,
   ShipmentTimingKind,
   SupplyLink,
+  TransportMode,
 } from '../../types';
 import { CARGO_STATUSES } from '../../types';
 import { useI18n } from '../../i18n';
@@ -21,6 +22,9 @@ import {
 } from '../../constants/shipmentEvents';
 import { SearchableSelect } from '../UI/SearchableSelect';
 import { ShipmentDateTimePicker } from './ShipmentDateTimePicker';
+
+/** Primary modes shown as quick tabs in the event form. */
+const EVENT_TRANSPORT_TABS: TransportMode[] = ['road', 'rail'];
 
 interface ShipmentEventFormProps {
   shipments: SupplyLink[];
@@ -82,6 +86,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   const [actualDepartureAt, setActualDepartureAt] = useState('');
   const [actualArrivalAt, setActualArrivalAt] = useState('');
   const [progressPct, setProgressPct] = useState('');
+  const [transportMode, setTransportMode] = useState<TransportMode>('road');
   const [vehicleNumber, setVehicleNumber] = useState('');
   const [trailerNumber, setTrailerNumber] = useState('');
   const [containerNumber, setContainerNumber] = useState('');
@@ -114,6 +119,9 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
     setActualArrivalAt(toDatetimeLocalValue(selectedShipment.actual_arrival_at));
     setProgressPct(
       selectedShipment.progress_pct != null ? String(Math.round(selectedShipment.progress_pct)) : '',
+    );
+    setTransportMode(
+      selectedShipment.transport_mode === 'rail' ? 'rail' : 'road',
     );
     setVehicleNumber(selectedShipment.vehicle_number || '');
     setTrailerNumber(selectedShipment.trailer_number || '');
@@ -267,6 +275,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         actual_departure_at: actualDepartureAt.trim() || undefined,
         actual_arrival_at: actualArrivalAt.trim() || undefined,
         progress_pct: progressPct !== '' ? Number(progressPct) : undefined,
+        transport_mode: transportMode,
         vehicle_number: vehicleNumber.trim() || undefined,
         trailer_number: trailerNumber.trim() || undefined,
         container_number: containerNumber.trim() || undefined,
@@ -516,13 +525,39 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           <h3 className="shipment-event-section-title">{t('shipmentEvents.sectionTransport')}</h3>
           <p className="shipment-event-section-hint">{t('shipmentEvents.transportHint')}</p>
         </div>
+        <div
+          className="shipment-event-transport-tabs"
+          role="tablist"
+          aria-label={t('shipmentEvents.transportMode')}
+        >
+          {EVENT_TRANSPORT_TABS.map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              role="tab"
+              aria-selected={transportMode === mode}
+              className={`shipment-event-transport-tab${transportMode === mode ? ' is-active' : ''}`}
+              onClick={() => setTransportMode(mode)}
+            >
+              {t(`shipmentEvents.modes.${mode}`)}
+            </button>
+          ))}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.vehicleNumber')}</span>
+            <span className="text-slate-400">
+              {transportMode === 'rail'
+                ? t('shipmentEvents.vehicleNumberRail')
+                : t('shipmentEvents.vehicleNumber')}
+            </span>
             <input type="text" value={vehicleNumber} onChange={e => setVehicleNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.trailerNumber')}</span>
+            <span className="text-slate-400">
+              {transportMode === 'rail'
+                ? t('shipmentEvents.trailerNumberRail')
+                : t('shipmentEvents.trailerNumber')}
+            </span>
             <input type="text" value={trailerNumber} onChange={e => setTrailerNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
@@ -530,11 +565,19 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             <input type="text" value={containerNumber} onChange={e => setContainerNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.waybillNumber')}</span>
+            <span className="text-slate-400">
+              {transportMode === 'rail'
+                ? t('shipmentEvents.waybillNumberRail')
+                : t('shipmentEvents.waybillNumber')}
+            </span>
             <input type="text" value={waybillNumber} onChange={e => setWaybillNumber(e.target.value)} />
           </label>
           <label className="space-y-1 md:col-span-2">
-            <span className="text-slate-400">{t('shipmentEvents.driverInfo')}</span>
+            <span className="text-slate-400">
+              {transportMode === 'rail'
+                ? t('shipmentEvents.driverInfoRail')
+                : t('shipmentEvents.driverInfo')}
+            </span>
             <input type="text" value={driverInfo} onChange={e => setDriverInfo(e.target.value)} />
           </label>
           <label className="flex items-center gap-2 md:col-span-2 text-slate-300 min-h-[2.5rem]">

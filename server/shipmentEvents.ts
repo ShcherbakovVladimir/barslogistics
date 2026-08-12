@@ -1,6 +1,6 @@
 import crypto from "crypto";
-import type { CargoStatus, ShipmentEvent, ShipmentEventInput, ShipmentEventSource, SupplyLink, User } from "../src/types.js";
-import { CARGO_STATUSES } from "../src/types.js";
+import type { CargoStatus, ShipmentEvent, ShipmentEventInput, ShipmentEventSource, SupplyLink, TransportMode, User } from "../src/types.js";
+import { CARGO_STATUSES, TRANSPORT_MODES } from "../src/types.js";
 import { isShipmentInUserScope } from "../src/utils/permissions.js";
 import { pool } from "./db.js";
 import { SYSTEM_ACTOR } from "./systemActor.js";
@@ -116,6 +116,12 @@ export async function recordShipmentEvent(
     actual_departure_at: parseOptionalTs(input.actual_departure_at),
     actual_arrival_at: parseOptionalTs(input.actual_arrival_at),
     progress_pct: progressPct,
+    transport_mode: (() => {
+      const mode = input.transport_mode?.trim() as TransportMode | undefined;
+      if (!mode) return undefined;
+      if (!TRANSPORT_MODES.includes(mode)) throw new Error("Invalid transport_mode");
+      return mode;
+    })(),
     vehicle_number: input.vehicle_number?.trim() || undefined,
     trailer_number: input.trailer_number?.trim() || undefined,
     container_number: input.container_number?.trim() || undefined,

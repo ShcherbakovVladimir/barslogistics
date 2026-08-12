@@ -117,9 +117,15 @@ export const ShipmentEventTimeline: React.FC<ShipmentEventTimelineProps> = ({
               </div>
             )}
 
-            {!compact && (event.vehicle_number || event.waybill_number || event.driver_info) && (
+            {!compact && (event.transport_mode || event.vehicle_number || event.waybill_number || event.driver_info) && (
               <div className="mt-1 text-[10px] text-slate-500">
-                {[event.vehicle_number, event.trailer_number || event.container_number, event.waybill_number, event.driver_info]
+                {[
+                  event.transport_mode ? t(`shipmentEvents.modes.${event.transport_mode}`) : null,
+                  event.vehicle_number,
+                  event.trailer_number || event.container_number,
+                  event.waybill_number,
+                  event.driver_info,
+                ]
                   .filter(Boolean)
                   .join(' · ')}
               </div>

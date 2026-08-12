@@ -1500,7 +1500,11 @@ app.post("/api/shipments/:id/events", requireAuth, requireMinRole("site_manager"
     if (message === "Comment is required" || message === "Status is required for status change events") {
       return res.status(400).json({ error: st("auth.validationRequired") });
     }
-    if (message === "Invalid timestamp" || message === "Invalid event type") {
+    if (
+      message === "Invalid timestamp"
+      || message === "Invalid event type"
+      || message === "Invalid transport_mode"
+    ) {
       return res.status(400).json({ error: message });
     }
     res.status(error instanceof Error && message.includes("required") ? 400 : 500).json({ error: message });

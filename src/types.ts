@@ -334,6 +334,7 @@ export interface ShipmentEvent {
   actual_departure_at?: string;
   actual_arrival_at?: string;
   progress_pct?: number;
+  transport_mode?: TransportMode;
   vehicle_number?: string;
   trailer_number?: string;
   container_number?: string;
@@ -361,6 +362,7 @@ export interface ShipmentEventInput {
   actual_departure_at?: string;
   actual_arrival_at?: string;
   progress_pct?: number;
+  transport_mode?: TransportMode;
   vehicle_number?: string;
   trailer_number?: string;
   container_number?: string;
