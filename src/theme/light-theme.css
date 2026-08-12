@@ -747,13 +747,35 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   color: #334155 !important;
 }
 
+[data-theme="light"] .shipments-table-header {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .shipments-cell-date {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipments-cell-crew {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipments-cell-progress {
+  background: #e2e8f0 !important;
+}
+
+[data-theme="light"] .shipments-cell-progress-fill {
+  background: #818cf8 !important;
+}
+
 [data-theme="light"] .shipments-table thead {
   background: #f8fafc !important;
   color: #64748b !important;
   border-bottom-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .shipments-table-virtual-row:hover {
+[data-theme="light"] .shipments-table-virtual-row:not(.shipments-table-header):hover {
   background: #f8fafc !important;
 }
 
@@ -852,15 +874,20 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 [data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger {
-  background-color: #ffffff;
-  border-color: #cbd5e1;
-  color: #0f172a;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  border-radius: 9999px !important;
 }
 
 [data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger:hover:not(:disabled),
 [data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger.is-open {
-  background-color: #f8fafc;
-  border-color: rgb(16 185 129 / 0.45);
+  background-color: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-chevron {
+  color: #6366f1 !important;
 }
 
 [data-theme="light"] .shipments-page .shipment-events-recent .border-slate-700 {

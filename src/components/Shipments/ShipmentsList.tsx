@@ -482,25 +482,33 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
       </div>
 
       <div className="shipments-table-desktop">
-        <div className="overflow-x-auto responsive-table-wrap">
-          <table className="shipments-table">
-            <thead>
-              <tr>
-                <th>{t('shipments.colCargo')}</th>
-                <th className="hidden lg:table-cell">{t('myData.colDate')}</th>
-                <th className="hidden sm:table-cell">{t('shipments.colRoute')}</th>
-                <th>{t('shipments.colStatus')}</th>
-                <th className="hidden md:table-cell">{t('shipments.colCarrier')}</th>
-                <th className="shipments-table-col-action">{t('shipments.colAction')}</th>
-              </tr>
-            </thead>
-          </table>
+        <div className="shipments-table-scroll responsive-table-wrap">
+          <div className="shipments-table-header shipments-table-virtual-row" role="row">
+            <div className="shipments-table-virtual-cell shipments-col-cargo" role="columnheader">
+              {t('shipments.colCargo')}
+            </div>
+            <div className="shipments-table-virtual-cell shipments-col-date" role="columnheader">
+              {t('shipments.colDate')}
+            </div>
+            <div className="shipments-table-virtual-cell shipments-col-route" role="columnheader">
+              {t('shipments.colRoute')}
+            </div>
+            <div className="shipments-table-virtual-cell shipments-col-status" role="columnheader">
+              {t('shipments.colStatus')}
+            </div>
+            <div className="shipments-table-virtual-cell shipments-col-carrier" role="columnheader">
+              {t('shipments.colCarrier')}
+            </div>
+            <div className="shipments-table-virtual-cell shipments-col-action" role="columnheader">
+              {t('shipments.colAction')}
+            </div>
+          </div>
           {sortedLinks.length === 0 ? (
             <div className="shipments-empty">{t('searchableSelect.noResults')}</div>
           ) : (
             <VirtualList
               items={sortedLinks}
-              estimateSize={68}
+              estimateSize={72}
               className="shipments-virtual-list-desktop"
               aria-label={t('shipments.title', { count: sortedLinks.length })}
               getKey={(link) => link.id}
@@ -514,7 +522,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
                     onClick={() => onSelectShipment(link)}
                     role="row"
                   >
-                    <div className="shipments-table-virtual-cell" role="cell">
+                    <div className="shipments-table-virtual-cell shipments-col-cargo" role="cell">
                       <div className="shipments-cell-cargo">{link.cargo_type}</div>
                       <div className="shipments-cell-volume">
                         {link.volume.toLocaleString(localeTag)} {link.unit}
@@ -523,25 +531,36 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
                         </span>
                       </div>
                     </div>
-                    <div className="shipments-table-virtual-cell hidden lg:block shipments-cell-date" role="cell">
+                    <div className="shipments-table-virtual-cell shipments-col-date shipments-cell-date" role="cell">
                       {formatShipmentDate(link)}
                     </div>
-                    <div className="shipments-table-virtual-cell hidden sm:block" role="cell">
+                    <div className="shipments-table-virtual-cell shipments-col-route" role="cell">
                       <div className="shipments-cell-route">
                         <span className="truncate">{orig?.name || t('common.sender')}</span>
                         <ArrowRight className="shipments-cell-route-arrow" aria-hidden />
                         <span className="truncate">{dest?.name || t('common.receiver')}</span>
                       </div>
                     </div>
-                    <div className="shipments-table-virtual-cell" role="cell">
+                    <div className="shipments-table-virtual-cell shipments-col-status" role="cell">
                       <span className={`shipments-status-badge ${badge.bg} ${badge.textCol} ${badge.border}`}>
                         {badge.text}
                       </span>
+                      <div className="shipments-cell-progress" aria-hidden>
+                        <div
+                          className="shipments-cell-progress-fill"
+                          style={{ width: `${link.progress_pct || 0}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="shipments-table-virtual-cell hidden md:block" role="cell">
+                    <div className="shipments-table-virtual-cell shipments-col-carrier" role="cell">
                       <div className="shipments-cell-carrier">{link.carrier_name || t('shipments.carrierDefault')}</div>
+                      <div className="shipments-cell-crew">{link.driver_info || t('shipments.driverDefault')}</div>
                     </div>
-                    <div className="shipments-table-virtual-cell shipments-table-col-action" role="cell" onClick={e => e.stopPropagation()}>
+                    <div
+                      className="shipments-table-virtual-cell shipments-col-action"
+                      role="cell"
+                      onClick={e => e.stopPropagation()}
+                    >
                       <button
                         type="button"
                         onClick={() => onShowOnMap(link)}

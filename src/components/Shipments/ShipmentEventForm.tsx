@@ -384,6 +384,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               allowEmpty
               placeholder={t('shipmentEvents.selectShipment')}
               emptyLabel={t('shipmentEvents.selectShipment')}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
 
@@ -394,6 +396,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               onChange={v => setEventType(v as ShipmentEventType)}
               options={eventTypeOptions}
               searchable={false}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
 
@@ -404,6 +408,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               onChange={v => setTimingKind(v as ShipmentTimingKind)}
               options={timingOptions}
               searchable={false}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
 
@@ -415,7 +421,9 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
                 onChange={v => setNewStatus(v as CargoStatus)}
                 options={statusOptions}
                 searchable={false}
-              />
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
+            />
             </label>
           )}
 
@@ -458,7 +466,9 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
                   onChange={v => setDelayReasonKey(v as DelayReasonKey)}
                   options={delayReasonOptions}
                   searchable={false}
-                />
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
+            />
               </label>
               {delayReasonKey === 'other' && (
                 <label className="space-y-1 md:col-span-2">
@@ -531,6 +541,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               value={originId}
               onChange={setOriginId}
               options={siteOptions}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
 
@@ -540,6 +552,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               value={destinationId}
               onChange={setDestinationId}
               options={siteOptions}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
 
@@ -551,6 +565,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               options={productOptions}
               allowEmpty
               emptyLabel="—"
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
         </div>
@@ -589,6 +605,8 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               allowEmpty
               emptyLabel={t('transport.selectUnset')}
               placeholder={t('transport.selectPlaceholder')}
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </label>
         )}
