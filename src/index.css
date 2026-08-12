@@ -3766,8 +3766,8 @@ html.portal-embed .header-nav-scroll {
   vertical-align: top;
 }
 
-.carrier-directory-col-actions,
-.carrier-directory-table th:last-child {
+.carrier-directory-table th.carrier-directory-col-actions,
+.carrier-directory-table td.carrier-directory-col-actions {
   text-align: right;
 }
 
@@ -3874,10 +3874,11 @@ html.portal-embed .header-nav-scroll {
 }
 
 .carrier-directory-row-actions {
-  display: inline-flex;
+  display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .carrier-directory-row-icon-btn {
