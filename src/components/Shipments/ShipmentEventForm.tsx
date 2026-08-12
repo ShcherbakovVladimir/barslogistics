@@ -344,7 +344,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   };
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="shipment-events-panel bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4 text-xs">
+    <form onSubmit={(e) => void handleSubmit(e)} className="shipment-events-panel">
       {!hideTitle && (
         <div className="font-semibold text-white text-sm">{t('shipmentEvents.addEvent')}</div>
       )}
@@ -657,7 +657,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         <button
           type="submit"
           disabled={saving || !shipmentId}
-          className="shipment-event-save-btn flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold disabled:opacity-50"
+          className="shipment-event-save-btn"
         >
           <Save className="w-3.5 h-3.5" />
           {saving ? t('shipmentEvents.saving') : t('shipmentEvents.save')}

@@ -1410,10 +1410,8 @@ html.layout-fold .shipment-page-modes {
   grid-template-columns: 1fr 1fr;
   width: 100%;
   gap: 0.2rem;
-  padding: 0.15rem;
-  border-radius: 0.55rem;
-  border-color: var(--shipment-events-toggle-border);
-  background: var(--shipment-events-toggle-bg);
+  padding: 0.2rem;
+  border-radius: 9999px;
 }
 
 html.layout-mobile .shipment-page-mode-tab,
@@ -1421,7 +1419,7 @@ html.layout-fold .shipment-page-mode-tab {
   min-height: 2.15rem;
   padding: 0.3rem 0.45rem;
   font-size: 0.75rem;
-  border-radius: 0.4rem;
+  border-radius: 9999px;
 }
 
 html.layout-mobile .shipment-page-mode-label-full,

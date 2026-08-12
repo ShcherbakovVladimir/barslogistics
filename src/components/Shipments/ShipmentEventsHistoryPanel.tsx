@@ -87,7 +87,7 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
 
   return (
     <aside
-      className={`shipment-events-recent shipment-events-history-panel bg-slate-900 border border-slate-800 rounded-2xl${
+      className={`shipment-events-recent shipment-events-history-panel${
         matchHeight != null ? ' is-height-matched' : ''
       }`}
       style={matchHeight != null ? { height: matchHeight } : undefined}
