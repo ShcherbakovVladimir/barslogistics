@@ -81,16 +81,25 @@ ensure_internal_hosts() {
 sync_application() {
   log "Deploying application to $APP_DIR"
   install -d -m 0755 "$APP_DIR"
+  # Runtime uploads/backups live only under APP_DIR — never wipe them with --delete
   rsync -a --delete \
     --exclude node_modules \
     --exclude .git \
     --exclude .env \
+    --exclude data/avatars/ \
+    --exclude data/backups/ \
+    --exclude data/chat-files/ \
+    --exclude data/task-files/ \
+    --exclude data/shipment-files/ \
+    --exclude data/transport/ \
     "$SOURCE_DIR/" "$APP_DIR/"
   chown -R "$APP_USER:$APP_USER" "$APP_DIR"
   install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/backups"
   install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/chat-files"
   install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/task-files"
   install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/shipment-files"
+  install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/avatars"
+  install -d -m 0750 -o "$APP_USER" -g "$APP_USER" "$APP_DIR/data/transport"
 }
 
 build_application() {
@@ -135,6 +144,10 @@ write_env_file() {
       log "Adding AVATAR_FILES_DIR to $APP_DIR/.env"
       echo "AVATAR_FILES_DIR=${APP_DIR}/data/avatars" >> "$APP_DIR/.env"
     fi
+    if ! grep -q '^TRANSPORT_FILES_DIR=' "$APP_DIR/.env"; then
+      log "Adding TRANSPORT_FILES_DIR to $APP_DIR/.env"
+      echo "TRANSPORT_FILES_DIR=${APP_DIR}/data/transport" >> "$APP_DIR/.env"
+    fi
     if ! grep -q '^AUTH_VALIDATE_URL=' "$APP_DIR/.env"; then
       log "Adding AUTH_VALIDATE_URL for Bars portal JWT"
       echo "AUTH_VALIDATE_URL=https://requestchainrestproxy.almaz-t.ru/v1/auth/validate" >> "$APP_DIR/.env"
@@ -164,6 +177,7 @@ CHAT_FILES_DIR=${APP_DIR}/data/chat-files
 TASK_FILES_DIR=${APP_DIR}/data/task-files
 SHIPMENT_FILES_DIR=${APP_DIR}/data/shipment-files
 AVATAR_FILES_DIR=${APP_DIR}/data/avatars
+TRANSPORT_FILES_DIR=${APP_DIR}/data/transport
 AUTH_VALIDATE_URL=https://requestchainrestproxy.almaz-t.ru/v1/auth/validate
 CORS_ORIGINS=https://portal.almaz-t.ru,https://${DOMAIN}
 EOF

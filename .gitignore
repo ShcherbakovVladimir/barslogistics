@@ -10,3 +10,16 @@ coverage/
 data/kladr/base.arj
 data/kladr/extracted/DOMA.DBF
 data/kladr/extracted/STREET.DBF
+# Runtime uploads (kept on server under APP_DIR; never commit)
+data/avatars/**
+!data/avatars/.gitkeep
+data/backups/**
+!data/backups/.gitkeep
+data/chat-files/**
+!data/chat-files/.gitkeep
+data/task-files/**
+!data/task-files/.gitkeep
+data/shipment-files/**
+!data/shipment-files/.gitkeep
+data/transport/**
+!data/transport/.gitkeep

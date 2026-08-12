@@ -18,7 +18,7 @@ sudo bash deploy/deploy.sh
 |-----|----------|
 | 1 | Установка пакетов (Node.js 22, nginx, PostgreSQL, rsync, …) |
 | 2 | Запись `requestchainrestproxy.almaz-t.ru` в `/etc/hosts` (внутренний auth proxy) |
-| 3 | **rsync** исходников `SOURCE_DIR` → `APP_DIR` (без `.git`, `.env`, `node_modules`) |
+| 3 | **rsync** исходников `SOURCE_DIR` → `APP_DIR` (без `.git`, `.env`, `node_modules`, и без runtime `data/avatars|chat-files|task-files|shipment-files|transport|backups`) |
 | 4 | Создание/дополнение `.env` в `/opt/barslogistics` |
 | 5 | `npm ci` + `npm run build:all` (standalone + portal embed) |
 | 6 | Генерация VAPID-ключей для Web Push (если нет в `.env`) |
@@ -38,6 +38,8 @@ sudo bash deploy/deploy.sh
 | `APP_DIR` | `/opt/barslogistics` | Рабочая копия для nginx/systemd |
 
 `rsync` **не копирует** `.git` — репозиторий живёт только в `SOURCE_DIR`. Git push выполняется из исходников, не из `/opt`.
+
+**Важно:** каталоги загрузок (`data/avatars`, `data/chat-files`, `data/task-files`, `data/shipment-files`, `data/transport`, `data/backups`) **исключены** из `rsync --delete`, иначе каждый деплой стирает файлы на диске, пока в БД остаются ссылки.
 
 ## Git после деплоя
 
