@@ -5222,6 +5222,11 @@ html.compact-laptop .app-header-menu-btn {
   padding-bottom: 0.375rem;
 }
 
+/* Desktop Interactive Map: theme toggle stays on the map, not in the header */
+html.app-tab-map:not(.layout-mobile):not(.layout-fold) .app-header-actions .app-header-theme-toggle {
+  display: none !important;
+}
+
 .app-header-nav-overlay {
   padding-top: env(safe-area-inset-top);
 }
