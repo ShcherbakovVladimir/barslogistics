@@ -18,18 +18,24 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
     const inHeader = className.includes('app-header-theme-toggle');
     return (
       <div
-        className={`flex items-center p-1 rounded-lg border border-slate-700/80 ${
+        className={`flex items-center ${
           inHeader
-            ? 'bg-transparent'
-            : 'bg-slate-900/90 backdrop-blur-md shadow-lg'
-        } ${className}`}
+            ? className
+            : `p-1 rounded-lg border border-slate-700/80 bg-slate-900/90 backdrop-blur-md shadow-lg ${className}`
+        }`}
       >
         <button
           type="button"
           onClick={() => dispatch(setTheme('dark'))}
-          className={`px-2.5 py-1 text-xs rounded font-medium transition-colors ${
-            mode === 'dark' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-          }`}
+          className={
+            inHeader
+              ? mode === 'dark'
+                ? 'is-active'
+                : ''
+              : `px-2.5 py-1 text-xs rounded font-medium transition-colors ${
+                  mode === 'dark' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`
+          }
           title={t('theme.dark')}
         >
           {t('map.tileDark')}
@@ -37,9 +43,15 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
         <button
           type="button"
           onClick={() => dispatch(setTheme('light'))}
-          className={`px-2.5 py-1 text-xs rounded font-medium transition-colors ${
-            mode === 'light' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-          }`}
+          className={
+            inHeader
+              ? mode === 'light'
+                ? 'is-active'
+                : ''
+              : `px-2.5 py-1 text-xs rounded font-medium transition-colors ${
+                  mode === 'light' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`
+          }
           title={t('theme.light')}
         >
           {t('map.tileLight')}

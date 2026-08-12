@@ -364,15 +364,11 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => (navOpen ? closeNav() : openNav())}
-                className={`app-header-menu-btn inline-flex items-center justify-center shrink-0 rounded-xl border transition-all duration-200 ${
-                  navOpen
-                    ? 'is-open bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-900/40'
-                    : 'bg-slate-800/50 border-slate-700/70 text-slate-300 hover:text-white hover:bg-slate-800 hover:border-slate-600'
-                }`}
+                className={`app-header-menu-btn shrink-0${navOpen ? ' is-open' : ''}`}
                 aria-label={t('common.menu')}
                 aria-expanded={navOpen}
               >
-                {navOpen ? <X className="w-5 h-5 shrink-0 block" /> : <Menu className="w-5 h-5 shrink-0 block" />}
+                {navOpen ? <X className="shrink-0" aria-hidden /> : <Menu className="shrink-0" aria-hidden />}
               </button>
 
               <div className="app-header-brand-lockup flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 overflow-hidden">
@@ -414,17 +410,17 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </div>
 
-            <div className="app-header-actions app-header-actions--bar flex items-center gap-1 sm:gap-1.5 shrink-0">
+            <div className="app-header-actions app-header-actions--bar flex items-center shrink-0">
 
               <ThemeToggle compact className="app-header-theme-toggle" />
 
               <button
                 type="button"
                 onClick={toggleLocale}
-                className="app-header-btn flex items-center gap-1 px-2 py-1.5 bg-transparent hover:bg-slate-800/80 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700/80 transition-colors"
+                className="app-header-btn app-header-btn--pill app-header-btn--collapse-sm"
                 title={t('lang.switch')}
               >
-                <Languages className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <Languages className="app-header-btn-icon" aria-hidden />
                 <span className="hidden sm:inline">{locale === 'ru' ? t('lang.en') : t('lang.ru')}</span>
               </button>
 
@@ -432,10 +428,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={onOpenExportModal}
-                  className="app-header-btn flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 bg-transparent hover:bg-slate-800/80 text-slate-200 text-xs font-medium rounded-lg border border-slate-700/80 transition-colors whitespace-nowrap"
+                  className="app-header-btn app-header-btn--pill app-header-btn--collapse-md"
                   title={t('header.exportTitle')}
                 >
-                  <Download className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <Download className="app-header-btn-icon" aria-hidden />
                   <span className="hidden md:inline">{t('header.exportButton')}</span>
                 </button>
               )}
@@ -448,13 +444,13 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onOpenTasks();
                   }}
-                  className="app-header-btn relative p-2 text-slate-300 hover:text-white bg-transparent hover:bg-slate-800/80 rounded-lg border border-slate-700/80 transition-colors"
+                  className="app-header-btn"
                   title={t('header.tasksTitle')}
                   aria-label={t('header.tasksTitle')}
                 >
-                  <ListTodo className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <ListTodo className="app-header-btn-icon" aria-hidden />
                   {tasksOpenCount > 0 ? (
-                    <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-indigo-500 text-[0.625rem] font-bold text-white flex items-center justify-center leading-none">
+                    <span className="app-header-badge">
                       {tasksOpenCount > 99 ? '99+' : tasksOpenCount}
                     </span>
                   ) : null}
@@ -469,13 +465,13 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onOpenActiveShipments();
                   }}
-                  className="app-header-btn relative p-2 text-slate-300 hover:text-white bg-transparent hover:bg-slate-800/80 rounded-lg border border-slate-700/80 transition-colors"
+                  className="app-header-btn"
                   title={t('header.activeShipmentsTitle')}
                   aria-label={t('header.activeShipmentsTitle')}
                 >
-                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Truck className="app-header-btn-icon" aria-hidden />
                   {activeShipmentsCount > 0 ? (
-                    <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-emerald-500 text-[0.625rem] font-bold text-white flex items-center justify-center leading-none">
+                    <span className="app-header-badge app-header-badge--success">
                       {activeShipmentsCount > 99 ? '99+' : activeShipmentsCount}
                     </span>
                   ) : null}
@@ -490,20 +486,20 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowNotifications(!showNotifications);
                     setShowUserMenu(false);
                   }}
-                  className="app-header-btn relative p-2 text-slate-300 hover:text-white bg-transparent hover:bg-slate-800/80 rounded-lg border border-slate-700/80 transition-colors"
+                  className={`app-header-btn${showNotifications ? ' is-open' : ''}`}
                   title={t('header.notificationsTitle')}
                   aria-expanded={showNotifications}
                 >
-                  <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Bell className="app-header-btn-icon" aria-hidden />
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold leading-[1.1rem] text-center ring-2 ring-slate-900 app-header-notify-ring">
+                    <span className="app-header-badge app-header-badge--alert app-header-notify-ring">
                       {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
                 </button>
 
                 {showNotifications && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl overflow-hidden">
+                  <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] overflow-hidden">
                     <div className="px-4 py-3 border-b border-slate-700 bg-slate-900/95 flex items-center justify-between gap-2">
                       <h3 className="text-xs font-semibold text-slate-100">{t('header.notificationsPanel')}</h3>
                       {notifications.length > 0 ? (
@@ -611,7 +607,8 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(!showUserMenu);
                     setShowNotifications(false);
                   }}
-                  className="app-header-btn flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 bg-transparent hover:bg-slate-800/80 text-slate-100 rounded-lg border border-slate-700/80 text-xs transition-colors"
+                  className={`app-header-btn app-header-btn--pill${showUserMenu ? ' is-open' : ''}`}
+                  aria-expanded={showUserMenu}
                 >
                   <UserAvatar
                     userId={currentUser.id}
@@ -622,13 +619,13 @@ export const Header: React.FC<HeaderProps> = ({
                     className="app-header-user-avatar"
                   />
                   <span className="hidden sm:inline font-medium truncate max-w-[80px] md:max-w-[110px]">{currentUser.name}</span>
-                  <span className="hidden md:inline px-1.5 py-0.5 text-[10px] bg-indigo-500/20 text-indigo-300 rounded uppercase font-semibold shrink-0 whitespace-nowrap">
+                  <span className="app-header-role-chip hidden md:inline">
                     {t(`roles.${currentUser.role}.title`)}
                   </span>
                 </button>
 
                 {showUserMenu && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl shadow-xl p-2 text-xs">
+                  <div className="app-header-popover absolute right-0 mt-2 w-56 p-2 text-xs">
                     <div className="px-2 py-2 border-b border-slate-700 mb-1 flex items-center gap-2.5">
                       <UserAvatar
                         userId={currentUser.id}
