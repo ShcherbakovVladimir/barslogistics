@@ -13,6 +13,8 @@ import {
 import { ApiService } from '../../services/api';
 import { useI18n } from '../../i18n';
 import { SearchableSelect } from '../UI/SearchableSelect';
+import { AppBottomSheetHandle } from '../UI/AppBottomSheetHandle';
+import { useAppBottomSheet } from '../../hooks/useAppBottomSheet';
 import {
   TRANSPORT_CATEGORIES,
   TRANSPORT_PURPOSES,
@@ -29,6 +31,42 @@ interface TransportDirectoryPageProps {
   factories: Factory[];
   onAssetsChanged: () => Promise<void>;
 }
+
+interface TransportModalShellProps {
+  onClose: () => void;
+  maxWidthClass?: string;
+  children: React.ReactNode;
+}
+
+const TransportModalShell: React.FC<TransportModalShellProps> = ({
+  onClose,
+  maxWidthClass = 'max-w-3xl',
+  children,
+}) => {
+  const {
+    sheetRef,
+    sheetStyle,
+    isDragging,
+    dragEnabled,
+    onHandlePointerDown,
+  } = useAppBottomSheet(onClose);
+
+  return (
+    <div className="modal-backdrop modal-backdrop--sheet">
+      <div
+        ref={sheetRef}
+        style={sheetStyle}
+        className={`transport-directory-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+      >
+        <AppBottomSheetHandle
+          onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
+          isDragging={isDragging}
+        />
+        {children}
+      </div>
+    </div>
+  );
+};
 
 type FormState = {
   name: string;
@@ -188,10 +226,9 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
   }, [form.category, t]);
 
   const popularOptions = useMemo(() => {
-    return popularModelsForType(form.type_key).map((m, i) => ({
+    return popularModelsForType(form.type_key).map((m) => ({
       value: `${m.brand}|||${m.model}`,
       label: m.model ? `${m.brand} ${m.model}` : m.brand,
-      key: `${i}`,
     }));
   }, [form.type_key]);
 
@@ -324,165 +361,191 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
   };
 
   const fieldClass =
-    'w-full rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/60';
+    'transport-directory-field w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/60 min-h-[2.75rem]';
   const labelClass = 'block text-[10px] uppercase tracking-wide text-slate-400 mb-1';
 
   return (
-    <div className="product-catalog-page p-4 md:p-6 space-y-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Truck className="w-5 h-5 text-emerald-400" />
-            <span className="truncate">{t('transport.title')}</span>
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">{t('transport.subtitle')}</p>
+    <div className="transport-directory-page product-catalog-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
+      <div className="transport-directory-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+              <Truck className="w-5 h-5 text-emerald-400 shrink-0" />
+              <span className="truncate">{t('transport.title')}</span>
+            </h2>
+            <p className="text-xs text-slate-400 mt-1">{t('transport.subtitle')}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => void refresh()}
+              className="transport-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              {t('transport.refresh')}
+            </button>
+            <button
+              type="button"
+              onClick={openCreate}
+              className="transport-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              {t('transport.add')}
+            </button>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => void refresh()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 text-slate-200 hover:bg-slate-800"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            {t('transport.refresh')}
-          </button>
-          <button
-            type="button"
-            onClick={openCreate}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            {t('transport.add')}
-          </button>
+
+        <div className="transport-directory-filters-grid flex flex-wrap items-center gap-2">
+          <div className="transport-directory-search relative flex-1 min-w-[180px] max-w-md flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[2.75rem]">
+            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+            <input
+              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder:text-slate-500"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder={t('transport.searchPlaceholder')}
+            />
+          </div>
+          <SearchableSelect
+            value={purposeFilter}
+            onChange={v => setPurposeFilter(v as 'all' | TransportPurpose)}
+            options={[
+              { value: 'all', label: t('transport.filterAllPurposes') },
+              ...TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) })),
+            ]}
+            searchable={false}
+            className="transport-directory-filter-select w-44"
+            panelClassName="transport-directory-dropdown-panel shipments-list-dropdown-panel"
+          />
+          <SearchableSelect
+            value={categoryFilter}
+            onChange={v => setCategoryFilter(v as 'all' | TransportCategory)}
+            options={[
+              { value: 'all', label: t('transport.filterAllCategories') },
+              ...TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) })),
+            ]}
+            searchable={false}
+            className="transport-directory-filter-select w-48"
+            panelClassName="transport-directory-dropdown-panel shipments-list-dropdown-panel"
+          />
+          <label className="inline-flex items-center gap-2 text-xs text-slate-400 cursor-pointer min-h-[2.75rem] px-1">
+            <input
+              type="checkbox"
+              checked={showInactive}
+              onChange={e => setShowInactive(e.target.checked)}
+              className="rounded border-slate-600"
+            />
+            {t('transport.showInactive')}
+          </label>
         </div>
+
+        <p className="text-xs text-slate-500">{t('transport.results', { count: displayList.length })}</p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative flex-1 min-w-[180px] max-w-md">
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input
-            className={`${fieldClass} pl-8`}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder={t('transport.searchPlaceholder')}
-          />
+      {error && !modalOpen && !deleteTarget && (
+        <div className="transport-directory-alert text-sm text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
+          {error}
         </div>
-        <SearchableSelect
-          value={purposeFilter}
-          onChange={v => setPurposeFilter(v as 'all' | TransportPurpose)}
-          options={[
-            { value: 'all', label: t('transport.filterAllPurposes') },
-            ...TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) })),
-          ]}
-          searchable={false}
-          className="w-44"
-        />
-        <SearchableSelect
-          value={categoryFilter}
-          onChange={v => setCategoryFilter(v as 'all' | TransportCategory)}
-          options={[
-            { value: 'all', label: t('transport.filterAllCategories') },
-            ...TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) })),
-          ]}
-          searchable={false}
-          className="w-48"
-        />
-        <label className="inline-flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showInactive}
-            onChange={e => setShowInactive(e.target.checked)}
-            className="rounded border-slate-600"
-          />
-          {t('transport.showInactive')}
-        </label>
-      </div>
+      )}
 
-      <p className="text-[11px] text-slate-500">{t('transport.results', { count: displayList.length })}</p>
-      {error && !modalOpen && <p className="text-xs text-rose-400">{error}</p>}
-
-      <div className="overflow-x-auto rounded-xl border border-slate-800">
-        <table className="w-full text-xs">
-          <thead className="bg-slate-900/80 text-slate-400">
-            <tr>
-              <th className="text-left p-3">{t('transport.colName')}</th>
-              <th className="text-left p-3 hidden sm:table-cell">{t('transport.colType')}</th>
-              <th className="text-left p-3 hidden md:table-cell">{t('transport.colPurpose')}</th>
-              <th className="text-left p-3 hidden lg:table-cell">{t('transport.colNumbers')}</th>
-              <th className="text-left p-3 hidden xl:table-cell">{t('transport.colSite')}</th>
-              <th className="text-left p-3 hidden sm:table-cell">{t('transport.colStatus')}</th>
-              <th className="text-right p-3">{t('transport.colActions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayList.length === 0 ? (
+      <div className="transport-directory-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full text-sm min-w-[28rem]">
+            <thead className="transport-directory-thead bg-slate-950/80 text-slate-400 text-xs uppercase">
               <tr>
-                <td colSpan={7} className="p-6 text-center text-slate-500">{t('transport.empty')}</td>
+                <th className="text-left p-3">{t('transport.colName')}</th>
+                <th className="text-left p-3 hidden sm:table-cell">{t('transport.colType')}</th>
+                <th className="text-left p-3 hidden md:table-cell">{t('transport.colPurpose')}</th>
+                <th className="text-left p-3 hidden lg:table-cell">{t('transport.colNumbers')}</th>
+                <th className="text-left p-3 hidden xl:table-cell">{t('transport.colSite')}</th>
+                <th className="text-left p-3 hidden sm:table-cell">{t('transport.colStatus')}</th>
+                <th className="text-right p-3">{t('transport.colActions')}</th>
               </tr>
-            ) : (
-              displayList.map(a => (
-                <tr key={a.id} className="border-t border-slate-800 hover:bg-slate-800/40">
-                  <td className="p-3">
-                    <div className="font-semibold text-white">{a.name}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">
-                      {[a.brand, a.model].filter(Boolean).join(' ') || '—'}
-                      {a.has_photo ? ` · ${t('transport.hasPhoto')}` : ''}
-                    </div>
-                  </td>
-                  <td className="p-3 hidden sm:table-cell text-slate-300">
-                    {t(`transport.types.${a.type_key}`)}
-                  </td>
-                  <td className="p-3 hidden md:table-cell text-slate-400">
-                    {t(`transport.purposes.${a.purpose}`)}
-                  </td>
-                  <td className="p-3 hidden lg:table-cell font-mono text-[10px] text-slate-400">
-                    {[a.vehicle_number, a.inventory_number, a.vin].filter(Boolean).join(' · ') || '—'}
-                  </td>
-                  <td className="p-3 hidden xl:table-cell text-slate-400">
-                    {a.site_id ? factoryMap.get(a.site_id)?.name || a.site_id : '—'}
-                  </td>
-                  <td className="p-3 hidden sm:table-cell">
-                    {a.is_active !== false ? t('transport.active') : t('transport.inactive')}
-                  </td>
-                  <td className="p-3 text-right whitespace-nowrap">
-                    <button
-                      type="button"
-                      className="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 inline-flex"
-                      title={t('transport.edit')}
-                      onClick={() => openEdit(a)}
-                    >
-                      <Pencil className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-500/10 inline-flex"
-                      title={t('transport.delete')}
-                      onClick={() => setDeleteTarget(a)}
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </td>
+            </thead>
+            <tbody>
+              {displayList.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="p-6 text-center text-slate-500">{t('transport.empty')}</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                displayList.map(a => (
+                  <tr key={a.id} className="border-t border-slate-800 hover:bg-slate-800/50">
+                    <td className="p-3">
+                      <div className="font-semibold text-white">{a.name}</div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">
+                        {[a.brand, a.model].filter(Boolean).join(' ') || '—'}
+                        {a.has_photo ? ` · ${t('transport.hasPhoto')}` : ''}
+                      </div>
+                    </td>
+                    <td className="p-3 hidden sm:table-cell text-slate-300">
+                      {t(`transport.types.${a.type_key}`)}
+                    </td>
+                    <td className="p-3 hidden md:table-cell text-slate-400">
+                      {t(`transport.purposes.${a.purpose}`)}
+                    </td>
+                    <td className="p-3 hidden lg:table-cell font-mono text-[10px] text-slate-400">
+                      {[a.vehicle_number, a.inventory_number, a.vin].filter(Boolean).join(' · ') || '—'}
+                    </td>
+                    <td className="p-3 hidden xl:table-cell text-slate-400">
+                      {a.site_id ? factoryMap.get(a.site_id)?.name || a.site_id : '—'}
+                    </td>
+                    <td className="p-3 hidden sm:table-cell">
+                      <span
+                        className={`inline-flex text-[10px] px-2 py-0.5 rounded border ${
+                          a.is_active !== false
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                            : 'bg-slate-500/10 text-slate-400 border-slate-500/30'
+                        }`}
+                      >
+                        {a.is_active !== false ? t('transport.active') : t('transport.inactive')}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right whitespace-nowrap">
+                      <button
+                        type="button"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 inline-flex"
+                        title={t('transport.edit')}
+                        onClick={() => openEdit(a)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 inline-flex"
+                        title={t('transport.delete')}
+                        onClick={() => setDeleteTarget(a)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-0 sm:p-4">
-          <div className="w-full sm:max-w-3xl max-h-[92dvh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-slate-700 bg-slate-950 shadow-xl">
-            <div className="sticky top-0 z-10 flex items-center justify-between gap-2 px-4 py-3 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-              <h3 className="font-bold text-white">
-                {editing ? t('transport.editTitle') : t('transport.addTitle')}
-              </h3>
-              <button type="button" className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-800" onClick={() => setModalOpen(false)}>
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+        <TransportModalShell onClose={() => setModalOpen(false)}>
+          <div className="transport-directory-form-modal flex flex-col flex-1 min-h-0">
+            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="font-bold text-white break-words">
+                  {editing ? t('transport.editTitle') : t('transport.addTitle')}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  aria-label={t('common.close')}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </header>
 
-            <div className="p-4 space-y-4">
-              {error && <p className="text-xs text-rose-400">{error}</p>}
+            <div className="modal-panel-body modal-scrollbar px-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
+              {error && <p className="text-sm text-red-400">{error}</p>}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="sm:col-span-2">
@@ -490,16 +553,17 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                   <input className={fieldClass} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
                 </div>
 
-                <div>
+                <div className="transport-directory-select">
                   <label className={labelClass}>{t('transport.fieldPurpose')}</label>
                   <SearchableSelect
                     value={form.purpose}
                     onChange={v => setForm({ ...form, purpose: v as TransportPurpose })}
                     options={TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) }))}
                     searchable={false}
+                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                   />
                 </div>
-                <div>
+                <div className="transport-directory-select">
                   <label className={labelClass}>{t('transport.fieldCategory')}</label>
                   <SearchableSelect
                     value={form.category}
@@ -510,19 +574,21 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                     }}
                     options={TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) }))}
                     searchable={false}
+                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                   />
                 </div>
-                <div className="sm:col-span-2">
+                <div className="sm:col-span-2 transport-directory-select">
                   <label className={labelClass}>{t('transport.fieldType')}</label>
                   <SearchableSelect
                     value={form.type_key}
                     onChange={v => setForm({ ...form, type_key: v, brand: '', model: '' })}
                     options={typeOptions.length ? typeOptions : TRANSPORT_TYPES.map(tp => ({ value: tp.key, label: t(`transport.types.${tp.key}`) }))}
+                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                   />
                 </div>
 
                 {popularOptions.length > 0 && (
-                  <div className="sm:col-span-2">
+                  <div className="sm:col-span-2 transport-directory-select">
                     <label className={labelClass}>{t('transport.popularModel')}</label>
                     <SearchableSelect
                       value=""
@@ -540,6 +606,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                       allowEmpty
                       emptyLabel={t('transport.popularModelHint')}
                       placeholder={t('transport.popularModelHint')}
+                      panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                     />
                   </div>
                 )}
@@ -597,7 +664,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                   <label className={labelClass}>{t('transport.fieldDriver')}</label>
                   <input className={fieldClass} value={form.driver_info} onChange={e => setForm({ ...form, driver_info: e.target.value })} />
                 </div>
-                <div className="sm:col-span-2">
+                <div className="sm:col-span-2 transport-directory-select">
                   <label className={labelClass}>{t('transport.fieldSite')}</label>
                   <SearchableSelect
                     value={form.site_id}
@@ -606,6 +673,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                     allowEmpty
                     emptyLabel={t('transport.siteUnset')}
                     placeholder={t('transport.siteUnset')}
+                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -625,7 +693,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                     placeholder={t('transport.specsPlaceholder')}
                   />
                 </div>
-                <label className="inline-flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                <label className="inline-flex items-center gap-2 text-xs text-slate-300 cursor-pointer min-h-[2.75rem]">
                   <input
                     type="checkbox"
                     checked={form.is_active}
@@ -637,10 +705,10 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
               </div>
 
               {editing && (
-                <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 space-y-2">
+                <div className="transport-directory-photo rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-2">
                   <div className="text-[10px] uppercase tracking-wide text-slate-400">{t('transport.photo')}</div>
                   {photoUrl ? (
-                    <img src={photoUrl} alt="" className="max-h-40 rounded-lg border border-slate-700 object-contain bg-slate-950" />
+                    <img src={photoUrl} alt="" className="transport-directory-photo-img max-h-40 rounded-lg border border-slate-700 object-contain bg-slate-900" />
                   ) : (
                     <p className="text-xs text-slate-500">{t('transport.noPhoto')}</p>
                   )}
@@ -659,7 +727,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                       type="button"
                       disabled={photoBusy}
                       onClick={() => photoRef.current?.click()}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-100 disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
                     >
                       {photoBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
                       {t('transport.photoUpload')}
@@ -669,7 +737,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                         type="button"
                         disabled={photoBusy}
                         onClick={() => void handlePhotoRemove()}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-300 hover:bg-rose-500/10 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-400 hover:bg-red-500/10 disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
                       >
                         {t('transport.photoRemove')}
                       </button>
@@ -678,56 +746,58 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                   <p className="text-[10px] text-slate-500">{t('transport.photoHint')}</p>
                 </div>
               )}
-
-              <div className="flex justify-end gap-2 pt-1">
-                <button
-                  type="button"
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800"
-                  onClick={() => setModalOpen(false)}
-                >
-                  {t('common.cancel')}
-                </button>
-                <button
-                  type="button"
-                  disabled={saving}
-                  onClick={() => void handleSave()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50"
-                >
-                  {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
-                  {t('common.save')}
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
-      )}
 
-      {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-950 p-4 space-y-3">
-            <h3 className="font-bold text-white">{t('transport.deleteTitle')}</h3>
-            <p className="text-sm text-slate-300">
-              {t('transport.deleteConfirm', { name: deleteTarget.name })}
-            </p>
-            <p className="text-xs text-slate-500">{t('transport.deleteHint')}</p>
-            <div className="flex justify-end gap-2">
+            <footer className="transport-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
               <button
                 type="button"
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 text-slate-300"
-                onClick={() => setDeleteTarget(null)}
+                className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0"
+                onClick={() => setModalOpen(false)}
               >
                 {t('common.cancel')}
               </button>
               <button
                 type="button"
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white"
-                onClick={() => void handleDelete()}
+                disabled={saving}
+                onClick={() => void handleSave()}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
               >
-                {t('transport.delete')}
+                {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+                {t('common.save')}
               </button>
-            </div>
+            </footer>
           </div>
-        </div>
+        </TransportModalShell>
+      )}
+
+      {deleteTarget && (
+        <TransportModalShell onClose={() => setDeleteTarget(null)} maxWidthClass="max-w-sm">
+          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
+            <h3 className="font-bold text-white">{t('transport.deleteTitle')}</h3>
+          </header>
+          <div className="modal-panel-body px-4 pb-2 space-y-2">
+            <p className="text-sm text-slate-400">
+              {t('transport.deleteConfirm', { name: deleteTarget.name })}
+            </p>
+            <p className="text-xs text-slate-500">{t('transport.deleteHint')}</p>
+          </div>
+          <footer className="transport-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+            <button
+              type="button"
+              className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0"
+              onClick={() => setDeleteTarget(null)}
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              type="button"
+              className="px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-semibold min-h-[2.75rem] sm:min-h-0"
+              onClick={() => void handleDelete()}
+            >
+              {t('transport.delete')}
+            </button>
+          </footer>
+        </TransportModalShell>
       )}
     </div>
   );

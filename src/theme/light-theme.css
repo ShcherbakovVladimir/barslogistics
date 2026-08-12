@@ -1326,6 +1326,142 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   border-color: rgb(245 158 11 / 0.28) !important;
 }
 
+/* ── Transport directory (light) ── */
+[data-theme="light"] .transport-directory-page {
+  color: #334155;
+}
+
+[data-theme="light"] .transport-directory-toolbar,
+[data-theme="light"] .transport-directory-table-panel {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar h2 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-search {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-search input {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-search input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .transport-directory-page button.bg-emerald-600,
+[data-theme="light"] .transport-directory-page button.bg-emerald-500,
+[data-theme="light"] .transport-directory-page button.bg-red-600 {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-thead {
+  background: #f8fafc !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-field {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .transport-directory-modal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .transport-directory-modal .text-white {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-modal .modal-panel-header,
+[data-theme="light"] .transport-directory-modal .modal-panel-footer,
+[data-theme="light"] .transport-directory-form-modal-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-modal button.bg-emerald-600,
+[data-theme="light"] .transport-directory-modal button.bg-emerald-500,
+[data-theme="light"] .transport-directory-modal button.bg-red-600 {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-photo {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-photo-img {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-alert {
+  color: #b45309 !important;
+  background-color: rgb(245 158 11 / 0.12) !important;
+  border-color: rgb(245 158 11 / 0.28) !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar .modal-dropdown-trigger,
+[data-theme="light"] .transport-directory-modal .modal-dropdown-trigger {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar .modal-dropdown-trigger:hover:not(:disabled),
+[data-theme="light"] .transport-directory-toolbar .modal-dropdown-trigger.is-open,
+[data-theme="light"] .transport-directory-modal .modal-dropdown-trigger:hover:not(:disabled),
+[data-theme="light"] .transport-directory-modal .modal-dropdown-trigger.is-open {
+  background: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgb(15 23 42 / 0.1), 0 4px 10px -4px rgb(15 23 42 / 0.08) !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-option {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-option:hover,
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-option:focus-visible {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-option.is-selected {
+  background: rgb(16 185 129 / 0.12) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-check {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-search-wrap {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-search {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
 /* ── Manager directory (mobile + light) ── */
 [data-theme="light"] .manager-directory-page {
   color: #334155;
