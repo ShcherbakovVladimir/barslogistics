@@ -3201,18 +3201,14 @@ html.portal-embed .header-nav-scroll {
   min-width: 0;
   min-height: 0;
   overflow-x: auto;
-}
-
-.site-directory-table-header,
-.site-directory-virtual-list-desktop.virtual-list-scroll {
-  /* Keep header/body column widths aligned when the body scrollbar appears */
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  overflow-y: hidden;
 }
 
 .site-directory-table-header {
   flex-shrink: 0;
-  min-width: 52rem;
+  min-width: 48rem;
+  overflow: hidden;
+  scrollbar-gutter: stable;
   border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
   background: rgb(2 6 23 / 0.55);
   color: #94a3b8;
@@ -3225,19 +3221,22 @@ html.portal-embed .header-nav-scroll {
 
 .site-directory-virtual-list-desktop.virtual-list-scroll {
   flex: 1 1 auto;
-  min-width: 52rem;
+  min-width: 48rem;
   max-height: min(70vh, 720px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 
 .site-directory-table-virtual-row {
   display: grid;
   grid-template-columns:
-    minmax(7rem, 0.7fr)
-    minmax(11rem, 1.5fr)
-    minmax(7.5rem, 0.85fr)
-    minmax(6.5rem, 0.7fr)
-    minmax(8.5rem, 1fr)
-    minmax(10.5rem, 1fr);
+    minmax(6.5rem, 0.65fr)
+    minmax(10rem, 1.45fr)
+    minmax(6.5rem, 0.75fr)
+    minmax(6rem, 0.65fr)
+    minmax(7.5rem, 1fr)
+    7.25rem;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
@@ -3245,6 +3244,7 @@ html.portal-embed .header-nav-scroll {
 }
 
 .site-directory-table-virtual-row:not(.site-directory-table-header) {
+  min-height: 3rem;
   border-top: 1px solid rgb(51 65 85 / 0.45);
   cursor: default;
 }
@@ -3254,9 +3254,10 @@ html.portal-embed .header-nav-scroll {
 }
 
 .site-directory-cell {
-  padding: 0.75rem 0.85rem;
+  padding: 0.55rem 0.75rem;
   min-width: 0;
   font-size: 0.75rem;
+  line-height: 1.35;
   box-sizing: border-box;
 }
 
@@ -3329,6 +3330,17 @@ html.portal-embed .header-nav-scroll {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding-right: 0.55rem;
+}
+
+.site-directory-table-header .site-directory-cell-actions {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.site-directory-cell-category,
+.site-directory-cell-contour {
+  white-space: nowrap;
 }
 
 .site-directory-contour-badge {
@@ -3356,71 +3368,64 @@ html.portal-embed .header-nav-scroll {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.35rem;
-  flex-wrap: wrap;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
 }
 
-.site-directory-row-btn {
+.site-directory-row-icon-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  min-height: 1.85rem;
-  padding: 0.25rem 0.6rem;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
   border-radius: 9999px;
   border: 1px solid transparent;
-  font-size: 0.6875rem;
-  font-weight: 650;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.site-directory-row-btn svg {
-  width: 0.85rem;
-  height: 0.85rem;
   flex-shrink: 0;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.site-directory-row-btn-label {
-  display: none;
+.site-directory-row-icon-btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
-@media (min-width: 1100px) {
-  .site-directory-row-btn-label {
-    display: inline;
-  }
+.site-directory-row-icon-btn:hover {
+  transform: translateY(-1px);
 }
 
-.site-directory-row-btn--edit {
+.site-directory-row-icon-btn--edit {
   background: rgb(245 158 11 / 0.12);
   border-color: rgb(245 158 11 / 0.35);
   color: #fcd34d;
 }
 
-.site-directory-row-btn--edit:hover {
+.site-directory-row-icon-btn--edit:hover {
   background: rgb(217 119 6);
   border-color: rgb(251 191 36 / 0.7);
   color: #fff;
 }
 
-.site-directory-row-btn--map {
+.site-directory-row-icon-btn--map {
   background: rgb(79 70 229 / 0.18);
   border-color: rgb(99 102 241 / 0.35);
   color: #c7d2fe;
 }
 
-.site-directory-row-btn--map:hover {
+.site-directory-row-icon-btn--map:hover {
   background: rgb(79 70 229 / 0.85);
   border-color: rgb(129 140 248 / 0.65);
   color: #fff;
 }
 
-.site-directory-row-btn--details {
+.site-directory-row-icon-btn--details {
   background: rgb(30 41 59 / 0.95);
   border-color: rgb(71 85 105 / 0.95);
   color: #cbd5e1;
 }
 
-.site-directory-row-btn--details:hover {
+.site-directory-row-icon-btn--details:hover {
   color: #fff;
   background: rgb(51 65 85);
   border-color: rgb(129 140 248 / 0.45);
@@ -9319,7 +9324,8 @@ html.compact-laptop .logistics-map .leaflet-control-zoom {
 }
 
 .site-directory-virtual-list-desktop .virtual-list-item > .site-directory-table-virtual-row {
-  min-height: 3.5rem;
+  min-height: 3rem;
+  height: 100%;
 }
 
 /* Internal chat widget — bottom-right; elevated above map zoom only on map tab */

@@ -1303,42 +1303,42 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 [data-theme="light"] .site-directory-card-action--details,
-[data-theme="light"] .site-directory-row-btn--details {
+[data-theme="light"] .site-directory-row-icon-btn--details {
   background: #f8fafc;
   border-color: #cbd5e1;
   color: #334155;
 }
 
 [data-theme="light"] .site-directory-card-action--details:hover,
-[data-theme="light"] .site-directory-row-btn--details:hover {
+[data-theme="light"] .site-directory-row-icon-btn--details:hover {
   background: #f1f5f9;
   color: #0f172a;
   border-color: rgb(99 102 241 / 0.35);
 }
 
 [data-theme="light"] .site-directory-card-action--map,
-[data-theme="light"] .site-directory-row-btn--map {
+[data-theme="light"] .site-directory-row-icon-btn--map {
   background: rgb(99 102 241 / 0.1);
   border-color: rgb(99 102 241 / 0.25);
   color: #4338ca;
 }
 
 [data-theme="light"] .site-directory-card-action--map:hover,
-[data-theme="light"] .site-directory-row-btn--map:hover {
+[data-theme="light"] .site-directory-row-icon-btn--map:hover {
   background: #4f46e5;
   border-color: #4338ca;
   color: #ffffff;
 }
 
 [data-theme="light"] .site-directory-card-action--edit,
-[data-theme="light"] .site-directory-row-btn--edit {
+[data-theme="light"] .site-directory-row-icon-btn--edit {
   background: rgb(245 158 11 / 0.1);
   border-color: rgb(245 158 11 / 0.25);
   color: #b45309;
 }
 
 [data-theme="light"] .site-directory-card-action--edit:hover,
-[data-theme="light"] .site-directory-row-btn--edit:hover {
+[data-theme="light"] .site-directory-row-icon-btn--edit:hover {
   background: #d97706;
   border-color: #b45309;
   color: #ffffff;

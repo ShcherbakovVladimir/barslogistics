@@ -86,30 +86,30 @@ const SiteActions: React.FC<SiteActionsProps> = ({
         <button
           type="button"
           onClick={() => onEdit(site)}
-          className="site-directory-row-btn site-directory-row-btn--edit"
+          className="site-directory-row-icon-btn site-directory-row-icon-btn--edit"
           title={t('siteDirectory.admin.edit')}
+          aria-label={t('siteDirectory.admin.edit')}
         >
           <Pencil aria-hidden />
-          <span className="site-directory-row-btn-label">{t('siteDirectory.admin.edit')}</span>
         </button>
       )}
       <button
         type="button"
         onClick={() => onShowOnMap(site)}
-        className="site-directory-row-btn site-directory-row-btn--map"
+        className="site-directory-row-icon-btn site-directory-row-icon-btn--map"
         title={t('siteDirectory.showOnMap')}
+        aria-label={t('siteDirectory.showOnMap')}
       >
         <MapPin aria-hidden />
-        <span className="site-directory-row-btn-label">{t('siteDirectory.showOnMap')}</span>
       </button>
       <button
         type="button"
         onClick={() => onViewDetails(site)}
-        className="site-directory-row-btn site-directory-row-btn--details"
+        className="site-directory-row-icon-btn site-directory-row-icon-btn--details"
         title={t('siteDirectory.viewDetails')}
+        aria-label={t('siteDirectory.viewDetails')}
       >
         <Eye aria-hidden />
-        <span className="site-directory-row-btn-label">{t('siteDirectory.viewDetails')}</span>
       </button>
     </div>
   );
@@ -443,7 +443,7 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
           ) : (
             <VirtualList
               items={filtered}
-              estimateSize={56}
+              estimateSize={48}
               className="site-directory-virtual-list-desktop"
               aria-label={t('siteDirectory.title')}
               getKey={(site) => site.id}
