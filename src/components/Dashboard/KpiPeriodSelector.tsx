@@ -42,46 +42,51 @@ export const KpiPeriodSelector: React.FC<KpiPeriodSelectorProps> = ({ period, on
   }, [period.granularity, period.year, currentYear, t, localeTag]);
 
   return (
-    <div className="kpi-period-selector flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-      <div className="kpi-period-granularity flex gap-1 flex-wrap">
-        {(['year', 'quarter', 'month', 'week'] as const).map(g => (
-          <button
-            key={g}
-            type="button"
-            onClick={() => onChange({ ...period, mode: 'preset', granularity: g, year: period.year ?? currentYear, value: 1 })}
-            className={`kpi-period-granularity-btn px-2.5 py-1 rounded-lg text-xs border transition-colors ${
-              period.granularity === g && period.mode === 'preset'
-                ? 'is-active bg-indigo-600 border-indigo-500 text-white'
-                : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600'
-            }`}
-          >
-            {t(`mapFilter.granularity.${g}`)}
-          </button>
-        ))}
+    <div className="kpi-period-selector">
+      <div className="kpi-period-granularity" role="group">
+        {(['year', 'quarter', 'month', 'week'] as const).map(g => {
+          const active = period.granularity === g && period.mode === 'preset';
+          return (
+            <button
+              key={g}
+              type="button"
+              onClick={() => onChange({
+                ...period,
+                mode: 'preset',
+                granularity: g,
+                year: period.year ?? currentYear,
+                value: 1,
+              })}
+              className={`kpi-period-granularity-btn${active ? ' is-active' : ''}`}
+            >
+              {t(`mapFilter.granularity.${g}`)}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="kpi-period-selects flex gap-2 min-w-0">
-        <div className="kpi-period-select map-filter-panel w-24 min-w-0 shrink-0">
+      <div className="kpi-period-selects">
+        <div className="kpi-period-select kpi-period-select--year">
           <SearchableSelect
             value={String(period.year ?? currentYear)}
             onChange={v => onChange({ ...period, year: Number(v) })}
             options={yearOptions}
             searchable={false}
             className="w-full"
-            panelClassName="map-filter-dropdown-panel"
-            listClassName="map-filter-year-list"
+            panelClassName="shipments-list-dropdown-panel"
+            listClassName="shipment-events-scroll"
           />
         </div>
         {period.granularity !== 'year' && (
-          <div className="kpi-period-select map-filter-panel min-w-[8rem] flex-1">
+          <div className="kpi-period-select kpi-period-select--value">
             <SearchableSelect
               value={String(period.value ?? 1)}
               onChange={v => onChange({ ...period, value: Number(v) })}
               options={periodValueOptions}
               searchable={period.granularity === 'week'}
               className="w-full"
-              panelClassName="map-filter-dropdown-panel"
-              listClassName="map-filter-period-list"
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </div>
         )}

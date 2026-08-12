@@ -633,20 +633,50 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   color: #64748b;
 }
 
+[data-theme="light"] .shipment-events-history-chip span {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .shipment-events-history-chip:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .shipment-events-history-chip:hover span {
+  color: #64748b;
+}
+
 [data-theme="light"] .shipment-events-history-chip.is-active {
   color: #4338ca;
   background: rgb(99 102 241 / 0.12);
   border-color: rgb(99 102 241 / 0.5);
 }
 
+[data-theme="light"] .shipment-events-history-chip.is-active:hover {
+  color: #3730a3;
+  background: rgb(99 102 241 / 0.18);
+  border-color: rgb(99 102 241 / 0.6);
+}
+
 [data-theme="light"] .shipment-events-history-chip.is-active span {
   color: #6366f1;
+}
+
+[data-theme="light"] .shipment-events-history-chip.is-active:hover span {
+  color: #4f46e5;
 }
 
 [data-theme="light"] .shipment-events-history-chip.is-timing.is-active {
   color: #3730a3;
   background: #e0e7ff;
   border-color: #c7d2fe;
+}
+
+[data-theme="light"] .shipment-events-history-chip.is-timing.is-active:hover {
+  color: #312e81;
+  background: #c7d2fe;
+  border-color: #a5b4fc;
 }
 
 [data-theme="light"] .shipment-events-history-card {
@@ -2478,96 +2508,170 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 }
 
 /* ── KPI dashboard (analytics & efficiency) ── */
-[data-theme="light"] .kpi-dashboard-page.bg-slate-950,
-[data-theme="light"] .kpi-dashboard-page .bg-slate-950 {
-  background-color: #f8fafc !important;
+[data-theme="light"] .kpi-dashboard-page {
+  background: #f1f5f9 !important;
+  color: #0f172a;
 }
 
-[data-theme="light"] .kpi-dashboard-page .bg-slate-900 {
-  background-color: #ffffff !important;
-}
-
-[data-theme="light"] .kpi-dashboard-page .bg-slate-950\/80 {
-  background-color: #f8fafc !important;
-}
-
-[data-theme="light"] .kpi-dashboard-page .border-slate-800,
-[data-theme="light"] .kpi-dashboard-page .border-slate-700,
-[data-theme="light"] .kpi-dashboard-page .border-dashed.border-slate-700 {
+[data-theme="light"] .kpi-toolbar,
+[data-theme="light"] .kpi-card,
+[data-theme="light"] .kpi-stat-card,
+[data-theme="light"] .kpi-widget {
+  background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .text-white {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .kpi-dashboard-page .text-slate-300 {
+[data-theme="light"] .kpi-toolbar-icon,
+[data-theme="light"] .kpi-widget-icon {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
   color: #475569 !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .text-slate-400 {
+[data-theme="light"] .kpi-widget--violet .kpi-widget-icon {
+  color: #7c3aed !important;
+  border-color: rgb(167 139 250 / 0.45) !important;
+  background: rgb(139 92 246 / 0.1) !important;
+}
+
+[data-theme="light"] .kpi-widget--indigo .kpi-widget-icon {
+  color: #4f46e5 !important;
+  border-color: rgb(129 140 248 / 0.45) !important;
+  background: rgb(99 102 241 / 0.1) !important;
+}
+
+[data-theme="light"] .kpi-widget--emerald .kpi-widget-icon {
+  color: #059669 !important;
+  border-color: rgb(52 211 153 / 0.45) !important;
+  background: rgb(16 185 129 / 0.1) !important;
+}
+
+[data-theme="light"] .kpi-title,
+[data-theme="light"] .kpi-card-title,
+[data-theme="light"] .kpi-widget-title,
+[data-theme="light"] .kpi-stat-value,
+[data-theme="light"] .kpi-widget-row-value,
+[data-theme="light"] .kpi-delay-cargo,
+[data-theme="light"] .kpi-money-value {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .kpi-subtitle,
+[data-theme="light"] .kpi-card-hint,
+[data-theme="light"] .kpi-card-aside,
+[data-theme="light"] .kpi-stat-label,
+[data-theme="light"] .kpi-stat-hint,
+[data-theme="light"] .kpi-stat-value-sub,
+[data-theme="light"] .kpi-widget-row-label,
+[data-theme="light"] .kpi-widget-row-meta,
+[data-theme="light"] .kpi-widget-empty,
+[data-theme="light"] .kpi-delay-route,
+[data-theme="light"] .kpi-money-label,
+[data-theme="light"] .kpi-money-tile--muted p {
   color: #64748b !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .text-slate-500 {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .kpi-dashboard-page .text-indigo-300 {
+[data-theme="light"] .kpi-own-hint {
   color: #4338ca !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .bg-indigo-500\/10 {
-  background-color: rgb(99 102 241 / 0.08) !important;
-  border-color: rgb(99 102 241 / 0.2) !important;
+[data-theme="light"] .kpi-period-chip {
+  background: rgb(99 102 241 / 0.1) !important;
+  border-color: rgb(99 102 241 / 0.35) !important;
+  color: #4338ca !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .kpi-period-granularity-btn:not(.is-active) {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #475569 !important;
+[data-theme="light"] .kpi-period-granularity {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .kpi-period-granularity-btn:not(.is-active):hover {
-  border-color: #94a3b8 !important;
-  background-color: #f8fafc !important;
+[data-theme="light"] .kpi-period-granularity-btn {
+  color: #64748b !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .kpi-period-granularity-btn.is-active,
-[data-theme="light"] .kpi-dashboard-page .kpi-period-granularity-btn.bg-indigo-600 {
-  color: #ffffff !important;
-}
-
-[data-theme="light"] .kpi-dashboard-page .kpi-period-select.map-filter-panel {
-  --mf-field-bg: #ffffff;
-  --mf-field-border: #cbd5e1;
-  --mf-field-border-hover: rgb(99 102 241 / 0.45);
-  --mf-field-focus: #4f46e5;
-  --mf-field-focus-ring: rgb(99 102 241 / 0.18);
-  --mf-scroll-track: rgb(226 232 240 / 0.9);
-}
-
-[data-theme="light"] .kpi-dashboard-page .kpi-period-select .modal-dropdown-trigger {
+[data-theme="light"] .kpi-period-granularity-btn:hover {
   color: #0f172a !important;
-  background-color: #ffffff !important;
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.4) !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .kpi-period-select .modal-dropdown-trigger:hover:not(:disabled),
-[data-theme="light"] .kpi-dashboard-page .kpi-period-select .modal-dropdown-trigger.is-open {
-  background-color: #f8fafc !important;
+[data-theme="light"] .kpi-period-granularity-btn.is-active {
+  color: #4338ca !important;
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.5) !important;
+}
+
+[data-theme="light"] .kpi-period-select {
+  --se-field-bg: #ffffff;
+  --se-field-border: #e2e8f0;
+  --se-field-border-hover: rgb(99 102 241 / 0.45);
+  --se-field-focus: #6366f1;
+  --se-field-focus-ring: rgb(99 102 241 / 0.18);
+}
+
+[data-theme="light"] .kpi-period-select .modal-dropdown-trigger {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .kpi-period-select .modal-dropdown-trigger:hover:not(:disabled),
+[data-theme="light"] .kpi-period-select .modal-dropdown-trigger.is-open {
+  background: #f8fafc !important;
   border-color: rgb(99 102 241 / 0.45) !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .kpi-period-select .modal-dropdown-chevron {
+[data-theme="light"] .kpi-period-select .modal-dropdown-chevron {
   color: #6366f1 !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .bg-slate-800 {
-  background-color: #e2e8f0 !important;
+[data-theme="light"] .kpi-stat-label svg {
+  color: #6366f1 !important;
 }
 
-[data-theme="light"] .kpi-dashboard-page .hover\:border-amber-400:hover {
-  border-color: #f59e0b !important;
+[data-theme="light"] .kpi-stat-card--warn .kpi-stat-label svg,
+[data-theme="light"] .kpi-stat-value--warn,
+[data-theme="light"] .kpi-card-title-warn {
+  color: #d97706 !important;
+}
+
+[data-theme="light"] .kpi-stat-hint--warn,
+[data-theme="light"] .kpi-delay-reason {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .kpi-widget-count,
+[data-theme="light"] .kpi-coming-soon {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .kpi-widget-bar {
+  background: #e2e8f0 !important;
+}
+
+[data-theme="light"] .kpi-money-tile {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .kpi-delay-card {
+  background: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+[data-theme="light"] .kpi-delay-card:hover {
+  background: #fef3c7 !important;
+  border-color: #fbbf24 !important;
+}
+
+[data-theme="light"] .kpi-delay-action {
+  background: #fff7ed !important;
+  border-color: #fdba74 !important;
+  color: #c2410c !important;
 }
 
 /* ── Factories page (industrial facilities) ── */
