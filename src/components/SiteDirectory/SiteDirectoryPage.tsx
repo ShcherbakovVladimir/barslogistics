@@ -55,7 +55,7 @@ const SiteActions: React.FC<SiteActionsProps> = ({
           onClick={() => onViewDetails(site)}
           className="site-directory-card-action site-directory-card-action--details"
         >
-          <Eye className="w-4 h-4 shrink-0" />
+          <Eye aria-hidden />
           {t('siteDirectory.viewDetails')}
         </button>
         <button
@@ -63,7 +63,7 @@ const SiteActions: React.FC<SiteActionsProps> = ({
           onClick={() => onShowOnMap(site)}
           className="site-directory-card-action site-directory-card-action--map"
         >
-          <MapPin className="w-4 h-4 shrink-0 text-indigo-400" />
+          <MapPin aria-hidden />
           {t('siteDirectory.showOnMap')}
         </button>
         {canEdit && (
@@ -72,7 +72,7 @@ const SiteActions: React.FC<SiteActionsProps> = ({
             onClick={() => onEdit(site)}
             className="site-directory-card-action site-directory-card-action--edit"
           >
-            <Pencil className="w-4 h-4 shrink-0" />
+            <Pencil aria-hidden />
             {t('siteDirectory.admin.edit')}
           </button>
         )}
@@ -81,35 +81,35 @@ const SiteActions: React.FC<SiteActionsProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-end gap-1.5">
+    <div className="site-directory-row-actions">
       {canEdit && (
         <button
           type="button"
           onClick={() => onEdit(site)}
-          className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-600/20 text-amber-300 hover:bg-amber-600 hover:text-white text-[11px] font-semibold border border-amber-500/30"
+          className="site-directory-row-btn site-directory-row-btn--edit"
           title={t('siteDirectory.admin.edit')}
         >
-          <Pencil className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">{t('siteDirectory.admin.edit')}</span>
+          <Pencil aria-hidden />
+          <span className="site-directory-row-btn-label">{t('siteDirectory.admin.edit')}</span>
         </button>
       )}
       <button
         type="button"
         onClick={() => onShowOnMap(site)}
-        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600 hover:text-white text-[11px] font-semibold"
+        className="site-directory-row-btn site-directory-row-btn--map"
         title={t('siteDirectory.showOnMap')}
       >
-        <MapPin className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">{t('siteDirectory.showOnMap')}</span>
+        <MapPin aria-hidden />
+        <span className="site-directory-row-btn-label">{t('siteDirectory.showOnMap')}</span>
       </button>
       <button
         type="button"
         onClick={() => onViewDetails(site)}
-        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white text-[11px] font-semibold border border-slate-700"
+        className="site-directory-row-btn site-directory-row-btn--details"
         title={t('siteDirectory.viewDetails')}
       >
-        <Eye className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">{t('siteDirectory.viewDetails')}</span>
+        <Eye aria-hidden />
+        <span className="site-directory-row-btn-label">{t('siteDirectory.viewDetails')}</span>
       </button>
     </div>
   );
@@ -158,7 +158,7 @@ const SiteCard: React.FC<SiteCardProps> = ({
     </div>
 
     <div className="site-directory-card-name">
-      <Building2 className="w-4 h-4 text-slate-500 shrink-0" aria-hidden="true" />
+      <Building2 className="site-directory-card-name-icon" aria-hidden />
       <span className="truncate">{site.name}</span>
       {site.is_ours && (
         <span className="site-directory-card-ours">{t('common.ours')}</span>
@@ -253,9 +253,6 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
     });
   }, [contourScoped, activeCategory, country, search]);
 
-  const innerFiltered = useMemo(() => filtered.filter(f => f.is_ours), [filtered]);
-  const outerFiltered = useMemo(() => filtered.filter(f => !f.is_ours), [filtered]);
-
   const handleEdit = (site: Factory) => setEditingSite(site);
 
   const cardProps = {
@@ -268,32 +265,30 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
   };
 
   const renderSiteVirtualRow = (site: Factory) => (
-    <div className="site-directory-table-virtual-row border-t border-slate-800 hover:bg-slate-800/50 transition-colors grid text-sm" role="row">
-      <div className="p-3 font-mono text-[11px] text-indigo-300 whitespace-nowrap" role="cell">{site.id}</div>
-      <div className="p-3" role="cell">
-        <div className="font-medium text-white flex items-center gap-2 flex-wrap">
-          <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-          {site.name}
-        </div>
+    <div className="site-directory-table-virtual-row" role="row">
+      <div className="site-directory-cell site-directory-cell-id" role="cell">{site.id}</div>
+      <div className="site-directory-cell site-directory-cell-name" role="cell">
+        <Building2 aria-hidden />
+        <span>{site.name}</span>
       </div>
-      <div className="p-3 hidden md:block" role="cell">
-        <span className={`text-[10px] px-2 py-0.5 rounded border ${typeBadgeStyles[site.type]}`}>
+      <div className="site-directory-cell site-directory-cell-category" role="cell">
+        <span className={`site-directory-type-badge ${typeBadgeStyles[site.type]}`}>
           {getSiteCategoryLabel(site.type, locale)}
         </span>
       </div>
-      <div className="p-3 hidden lg:block" role="cell">
-        <span className={`text-[10px] px-2 py-0.5 rounded border ${
-          site.is_ours
-            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-            : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-        }`}>
+      <div className="site-directory-cell site-directory-cell-contour" role="cell">
+        <span
+          className={`site-directory-contour-badge ${
+            site.is_ours ? 'site-directory-contour-badge--inner' : 'site-directory-contour-badge--outer'
+          }`}
+        >
           {site.is_ours ? t('siteDirectory.contourInner') : t('siteDirectory.contourOuter')}
         </span>
       </div>
-      <div className="p-3 hidden xl:block text-slate-400 text-xs" role="cell">
+      <div className="site-directory-cell site-directory-cell-region" role="cell">
         {site.region}{site.country ? `, ${site.country}` : ''}
       </div>
-      <div className="p-3 text-right" role="cell">
+      <div className="site-directory-cell site-directory-cell-actions" role="cell">
         <SiteActions
           site={site}
           canEdit={canEdit}
@@ -308,98 +303,82 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
   );
 
   return (
-    <div className="site-directory-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="site-directory-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div className="min-w-0">
-          <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-indigo-400 shrink-0" />
-            <span className="truncate">{t('siteDirectory.title')}</span>
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">{t('siteDirectory.subtitle')}</p>
+    <div className="site-directory-page">
+      <div className="site-directory-toolbar shipments-list-toolbar">
+        <div className="shipments-list-toolbar-head">
+          <span className="shipments-list-toolbar-icon" aria-hidden>
+            <BookOpen />
+          </span>
+          <div className="shipments-list-toolbar-text">
+            <h2 className="shipments-list-title">
+              <span className="truncate">{t('siteDirectory.title')}</span>
+            </h2>
+            <p className="shipments-list-subtitle">{t('siteDirectory.subtitle')}</p>
+          </div>
         </div>
 
-        <div className="site-directory-filter-block space-y-2">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-            {t('mapFilter.contours')}
-          </div>
+        <div className="site-directory-filter-block">
+          <div className="site-directory-filter-label">{t('mapFilter.contours')}</div>
           <HorizontalScrollChips>
             <button
               type="button"
               onClick={() => setActiveContour('all')}
-              className={`site-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                activeContour === 'all'
-                  ? 'bg-indigo-600 text-white border-indigo-500'
-                  : 'bg-slate-950 text-slate-300 border-slate-700 hover:text-white'
-              }`}
+              className={`site-directory-chip${activeContour === 'all' ? ' is-active' : ''}`}
             >
-              {t('siteDirectory.allContours')} ({factories.length})
+              {t('siteDirectory.allContours')}
+              <span>{factories.length}</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveContour('inner')}
-              className={`site-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                activeContour === 'inner'
-                  ? 'bg-emerald-600 text-white border-emerald-500'
-                  : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:opacity-90'
-              }`}
+              className={`site-directory-chip site-directory-chip--inner${activeContour === 'inner' ? ' is-active' : ''}`}
             >
-              {t('siteDirectory.contourInner')} ({innerCount})
+              {t('siteDirectory.contourInner')}
+              <span>{innerCount}</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveContour('outer')}
-              className={`site-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                activeContour === 'outer'
-                  ? 'bg-amber-600 text-white border-amber-500'
-                  : 'bg-amber-500/10 text-amber-400 border-amber-500/30 hover:opacity-90'
-              }`}
+              className={`site-directory-chip site-directory-chip--outer${activeContour === 'outer' ? ' is-active' : ''}`}
             >
-              {t('siteDirectory.contourOuter')} ({outerCount})
+              {t('siteDirectory.contourOuter')}
+              <span>{outerCount}</span>
             </button>
           </HorizontalScrollChips>
         </div>
 
-        <div className="site-directory-filter-block space-y-2">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-            {t('siteDirectory.colCategory')}
-          </div>
+        <div className="site-directory-filter-block">
+          <div className="site-directory-filter-label">{t('siteDirectory.colCategory')}</div>
           <HorizontalScrollChips>
             <button
               type="button"
               onClick={() => setActiveCategory('all')}
-              className={`site-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                activeCategory === 'all'
-                  ? 'bg-indigo-600 text-white border-indigo-500'
-                  : 'bg-slate-950 text-slate-300 border-slate-700 hover:text-white'
-              }`}
+              className={`site-directory-chip${activeCategory === 'all' ? ' is-active' : ''}`}
             >
-              {t('siteDirectory.allCategories')} ({contourScoped.length})
+              {t('siteDirectory.allCategories')}
+              <span>{contourScoped.length}</span>
             </button>
             {SITE_CATEGORIES.map(cat => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveCategory(cat.id)}
-                className={`site-directory-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                  activeCategory === cat.id
-                    ? 'bg-indigo-600 text-white border-indigo-500'
-                    : `${typeBadgeStyles[cat.id]} hover:opacity-90`
-                }`}
+                className={`site-directory-chip site-directory-chip--type${activeCategory === cat.id ? ' is-active' : ''} ${typeBadgeStyles[cat.id]}`}
               >
-                {getSiteCategoryLabel(cat.id, locale)} ({countsByType[cat.id] || 0})
+                {getSiteCategoryLabel(cat.id, locale)}
+                <span>{countsByType[cat.id] || 0}</span>
               </button>
             ))}
           </HorizontalScrollChips>
         </div>
 
         <div className="site-directory-filters-grid shipments-list-filters-grid">
-          <div className="site-directory-search shipments-list-search flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+          <div className="site-directory-search shipments-list-search">
+            <Search aria-hidden />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('siteDirectory.searchPlaceholder')}
-              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder-slate-500"
             />
           </div>
           <div className="site-directory-country-filter shipments-list-filter">
@@ -415,7 +394,7 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
         </div>
       </div>
 
-      <div className="site-directory-results-bar text-xs text-slate-400 px-1">
+      <div className="site-directory-results-bar">
         {t('siteDirectory.results', { count: filtered.length })}
       </div>
 
@@ -434,25 +413,29 @@ export const SiteDirectoryPage: React.FC<SiteDirectoryPageProps> = ({
         )}
       </div>
 
-      <div className="site-directory-table-desktop bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-        <div className="px-4 py-3 border-b border-slate-800 text-xs text-slate-400">
+      <div className="site-directory-table-desktop">
+        <div className="site-directory-table-head-bar">
           {t('siteDirectory.results', { count: filtered.length })}
         </div>
-        <div className="overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-950 text-slate-400 text-[10px] uppercase tracking-wider">
-              <tr>
-                <th className="text-left p-3">{t('siteDirectory.colId')}</th>
-                <th className="text-left p-3">{t('siteDirectory.colName')}</th>
-                <th className="text-left p-3 hidden md:table-cell">{t('siteDirectory.colCategory')}</th>
-                <th className="text-left p-3 hidden lg:table-cell">{t('siteDirectory.colContour')}</th>
-                <th className="text-left p-3 hidden xl:table-cell">{t('siteDirectory.colRegion')}</th>
-                <th className="text-right p-3">{t('siteDirectory.colActions')}</th>
-              </tr>
-            </thead>
-          </table>
+        <div className="site-directory-table-scroll responsive-table-wrap">
+          <div className="site-directory-table-header site-directory-table-virtual-row" role="row">
+            <div className="site-directory-cell" role="columnheader">{t('siteDirectory.colId')}</div>
+            <div className="site-directory-cell" role="columnheader">{t('siteDirectory.colName')}</div>
+            <div className="site-directory-cell site-directory-cell-category" role="columnheader">
+              {t('siteDirectory.colCategory')}
+            </div>
+            <div className="site-directory-cell site-directory-cell-contour" role="columnheader">
+              {t('siteDirectory.colContour')}
+            </div>
+            <div className="site-directory-cell site-directory-cell-region" role="columnheader">
+              {t('siteDirectory.colRegion')}
+            </div>
+            <div className="site-directory-cell site-directory-cell-actions" role="columnheader">
+              {t('siteDirectory.colActions')}
+            </div>
+          </div>
           {filtered.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 text-sm">{t('siteDirectory.empty')}</div>
+            <div className="site-directory-empty site-directory-empty--table">{t('siteDirectory.empty')}</div>
           ) : (
             <VirtualList
               items={filtered}

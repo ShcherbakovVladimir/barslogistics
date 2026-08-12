@@ -2741,7 +2741,146 @@ html.portal-embed .header-nav-scroll {
   background: rgb(15 23 42 / 0.35);
 }
 
-/* ── Site directory page: mobile cards ── */
+/* ── Site directory page: chrome shell + cards + table ── */
+.site-directory-page {
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem;
+  color: #e2e8f0;
+  background: #020617;
+}
+
+@media (min-width: 640px) {
+  .site-directory-page {
+    padding: 1.25rem 1.35rem;
+    gap: 1rem;
+  }
+}
+
+.site-directory-toolbar.shipments-list-toolbar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+}
+
+.site-directory-filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.site-directory-filter-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.site-directory-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(71 85 105 / 0.95);
+  background: rgb(30 41 59 / 0.95);
+  color: #cbd5e1;
+  font-size: 0.7rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.site-directory-chip span {
+  font-variant-numeric: tabular-nums;
+  color: #94a3b8;
+}
+
+.site-directory-chip:hover {
+  color: #fff;
+  background: rgb(51 65 85);
+  border-color: rgb(129 140 248 / 0.45);
+}
+
+.site-directory-chip:hover span {
+  color: #c7d2fe;
+}
+
+.site-directory-chip.is-active {
+  color: #fff;
+  background: rgb(79 70 229 / 0.35);
+  border-color: rgb(129 140 248 / 0.65);
+}
+
+.site-directory-chip.is-active span {
+  color: #c7d2fe;
+}
+
+.site-directory-chip--inner {
+  background: rgb(16 185 129 / 0.1);
+  border-color: rgb(16 185 129 / 0.35);
+  color: #6ee7b7;
+}
+
+.site-directory-chip--inner span {
+  color: #34d399;
+}
+
+.site-directory-chip--inner:hover {
+  background: rgb(16 185 129 / 0.18);
+  border-color: rgb(52 211 153 / 0.5);
+  color: #a7f3d0;
+}
+
+.site-directory-chip--inner.is-active {
+  background: rgb(5 150 105 / 0.85);
+  border-color: rgb(52 211 153 / 0.7);
+  color: #fff;
+}
+
+.site-directory-chip--inner.is-active span {
+  color: #d1fae5;
+}
+
+.site-directory-chip--outer {
+  background: rgb(245 158 11 / 0.1);
+  border-color: rgb(245 158 11 / 0.35);
+  color: #fcd34d;
+}
+
+.site-directory-chip--outer span {
+  color: #fbbf24;
+}
+
+.site-directory-chip--outer:hover {
+  background: rgb(245 158 11 / 0.18);
+  border-color: rgb(251 191 36 / 0.5);
+  color: #fde68a;
+}
+
+.site-directory-chip--outer.is-active {
+  background: rgb(217 119 6 / 0.9);
+  border-color: rgb(251 191 36 / 0.7);
+  color: #fff;
+}
+
+.site-directory-chip--outer.is-active span {
+  color: #fef3c7;
+}
+
+.site-directory-chip--type.is-active {
+  color: #fff !important;
+  background: rgb(79 70 229 / 0.35) !important;
+  border-color: rgb(129 140 248 / 0.65) !important;
+}
+
 .site-directory-cards-mobile {
   display: none;
 }
@@ -2752,6 +2891,8 @@ html.portal-embed .header-nav-scroll {
   align-items: stretch;
   gap: 0.5rem;
   width: 100%;
+  max-width: none;
+  justify-content: flex-start;
 }
 
 .site-directory-search {
@@ -2797,17 +2938,45 @@ html.portal-embed .header-nav-scroll {
   }
 }
 
+.site-directory-results-bar {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  padding: 0 0.15rem;
+}
+
+@media (min-width: 640px) {
+  .site-directory-results-bar {
+    display: none;
+  }
+}
+
 .site-directory-card {
-  border: 1px solid rgb(51 65 85);
-  border-radius: 1rem;
-  background: rgb(15 23 42 / 0.65);
-  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.95rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.28);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.site-directory-card:hover {
+  border-color: rgb(129 140 248 / 0.45);
+  transform: translateY(-1px);
 }
 
 .site-directory-card:active {
-  background: rgb(30 41 59 / 0.8);
+  background: rgb(30 41 59 / 0.98);
+}
+
+.site-directory-card:focus-visible {
+  outline: 2px solid rgb(129 140 248 / 0.65);
+  outline-offset: 2px;
 }
 
 .site-directory-card-header {
@@ -2826,10 +2995,9 @@ html.portal-embed .header-nav-scroll {
 
 .site-directory-card-contour {
   flex-shrink: 0;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.375rem;
-  border-width: 1px;
-  border-style: solid;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -2852,17 +3020,24 @@ html.portal-embed .header-nav-scroll {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.625rem;
-  font-size: 0.9375rem;
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #f1f5f9;
   min-width: 0;
+}
+
+.site-directory-card-name-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #64748b;
+  flex-shrink: 0;
 }
 
 .site-directory-card-ours {
   flex-shrink: 0;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
   border: 1px solid rgb(16 185 129 / 0.3);
   background: rgb(16 185 129 / 0.1);
   font-size: 0.625rem;
@@ -2881,12 +3056,13 @@ html.portal-embed .header-nav-scroll {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.375rem 0.625rem;
-  margin-top: 0.625rem;
+  margin-top: 0.55rem;
 }
 
-.site-directory-card-category {
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.375rem;
+.site-directory-card-category,
+.site-directory-type-badge {
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
   border-width: 1px;
   border-style: solid;
   font-size: 0.625rem;
@@ -2910,19 +3086,32 @@ html.portal-embed .header-nav-scroll {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
-  min-height: 2.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.625rem;
+  gap: 0.35rem;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9999px;
   font-size: 0.75rem;
-  font-weight: 600;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-directory-card-action svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
 }
 
 .site-directory-card-action--details {
-  background: rgb(30 41 59 / 0.85);
-  border: 1px solid rgb(51 65 85);
+  background: rgb(30 41 59 / 0.95);
+  border: 1px solid rgb(71 85 105 / 0.95);
   color: #e2e8f0;
+}
+
+.site-directory-card-action--details:hover {
+  color: #fff;
+  background: rgb(51 65 85);
+  border-color: rgb(129 140 248 / 0.45);
 }
 
 .site-directory-card-action--map {
@@ -2931,11 +3120,23 @@ html.portal-embed .header-nav-scroll {
   color: #c7d2fe;
 }
 
+.site-directory-card-action--map:hover {
+  background: rgb(79 70 229 / 0.85);
+  border-color: rgb(129 140 248 / 0.65);
+  color: #fff;
+}
+
 .site-directory-card-action--edit {
   flex-basis: 100%;
   background: rgb(245 158 11 / 0.12);
   border: 1px solid rgb(245 158 11 / 0.3);
   color: #fcd34d;
+}
+
+.site-directory-card-action--edit:hover {
+  background: rgb(217 119 6);
+  border-color: rgb(251 191 36 / 0.7);
+  color: #fff;
 }
 
 .site-directory-section-header {
@@ -2962,9 +3163,251 @@ html.portal-embed .header-nav-scroll {
   text-align: center;
   font-size: 0.8125rem;
   color: #64748b;
-  border: 1px dashed rgb(51 65 85);
-  border-radius: 1rem;
+  border: 1px dashed rgb(71 85 105 / 0.65);
+  border-radius: 0.85rem;
   background: rgb(15 23 42 / 0.35);
+}
+
+.site-directory-empty--table {
+  margin: 0.75rem;
+  border-radius: 0.75rem;
+}
+
+.site-directory-table-desktop {
+  border-radius: 0.85rem;
+  border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.28);
+  overflow: hidden;
+}
+
+.site-directory-table-head-bar {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: rgb(2 6 23 / 0.45);
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.site-directory-table-scroll {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.site-directory-table-header {
+  border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: rgb(2 6 23 / 0.55);
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.site-directory-table-virtual-row {
+  display: grid;
+  grid-template-columns:
+    minmax(88px, 0.7fr)
+    minmax(140px, 1.5fr)
+    minmax(96px, 0.7fr);
+  align-items: center;
+  transition: background-color 0.15s ease;
+}
+
+.site-directory-table-virtual-row:not(.site-directory-table-header) {
+  border-top: 1px solid rgb(51 65 85 / 0.45);
+  cursor: default;
+}
+
+.site-directory-table-virtual-row:not(.site-directory-table-header):hover {
+  background: rgb(51 65 85 / 0.35);
+}
+
+.site-directory-cell {
+  padding: 0.8rem 0.9rem;
+  min-width: 0;
+  font-size: 0.75rem;
+}
+
+.site-directory-cell-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #a5b4fc;
+  white-space: nowrap;
+}
+
+.site-directory-cell-name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 650;
+  color: #f1f5f9;
+}
+
+.site-directory-cell-name svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.site-directory-cell-category,
+.site-directory-cell-contour,
+.site-directory-cell-region {
+  display: none;
+}
+
+.site-directory-cell-region {
+  color: #94a3b8;
+}
+
+.site-directory-cell-actions {
+  text-align: right;
+  justify-self: end;
+}
+
+@media (min-width: 768px) {
+  .site-directory-cell-category {
+    display: block;
+  }
+
+  .site-directory-table-virtual-row {
+    grid-template-columns:
+      minmax(96px, 0.75fr)
+      minmax(160px, 1.5fr)
+      minmax(110px, 0.85fr)
+      minmax(96px, 0.7fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-directory-cell-contour {
+    display: block;
+  }
+
+  .site-directory-table-virtual-row {
+    grid-template-columns:
+      minmax(96px, 0.7fr)
+      minmax(160px, 1.4fr)
+      minmax(110px, 0.8fr)
+      minmax(100px, 0.7fr)
+      minmax(96px, 0.65fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-directory-cell-region {
+    display: block;
+  }
+
+  .site-directory-table-virtual-row {
+    grid-template-columns:
+      minmax(100px, 0.7fr)
+      minmax(170px, 1.45fr)
+      minmax(110px, 0.8fr)
+      minmax(100px, 0.7fr)
+      minmax(130px, 1fr)
+      minmax(120px, 0.75fr);
+  }
+}
+
+.site-directory-contour-badge {
+  display: inline-flex;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.site-directory-contour-badge--inner {
+  background: rgb(16 185 129 / 0.1);
+  border-color: rgb(16 185 129 / 0.3);
+  color: #34d399;
+}
+
+.site-directory-contour-badge--outer {
+  background: rgb(245 158 11 / 0.1);
+  border-color: rgb(245 158 11 / 0.3);
+  color: #fbbf24;
+}
+
+.site-directory-row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.site-directory-row-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.85rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-directory-row-btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
+
+.site-directory-row-btn-label {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .site-directory-row-btn-label {
+    display: inline;
+  }
+}
+
+.site-directory-row-btn--edit {
+  background: rgb(245 158 11 / 0.12);
+  border-color: rgb(245 158 11 / 0.35);
+  color: #fcd34d;
+}
+
+.site-directory-row-btn--edit:hover {
+  background: rgb(217 119 6);
+  border-color: rgb(251 191 36 / 0.7);
+  color: #fff;
+}
+
+.site-directory-row-btn--map {
+  background: rgb(79 70 229 / 0.18);
+  border-color: rgb(99 102 241 / 0.35);
+  color: #c7d2fe;
+}
+
+.site-directory-row-btn--map:hover {
+  background: rgb(79 70 229 / 0.85);
+  border-color: rgb(129 140 248 / 0.65);
+  color: #fff;
+}
+
+.site-directory-row-btn--details {
+  background: rgb(30 41 59 / 0.95);
+  border-color: rgb(71 85 105 / 0.95);
+  color: #cbd5e1;
+}
+
+.site-directory-row-btn--details:hover {
+  color: #fff;
+  background: rgb(51 65 85);
+  border-color: rgb(129 140 248 / 0.45);
 }
 
 /* ── Carrier directory page: mobile cards ── */
@@ -8855,10 +9298,8 @@ html.compact-laptop .logistics-map .leaflet-control-zoom {
   min-height: 4.25rem;
 }
 
-.site-directory-table-virtual-row {
-  display: grid;
-  grid-template-columns: minmax(100px, 0.8fr) minmax(160px, 1.5fr) minmax(100px, 0.8fr) minmax(90px, 0.7fr) minmax(120px, 1fr) minmax(120px, 0.8fr);
-  align-items: center;
+.site-directory-virtual-list-desktop .virtual-list-item > .site-directory-table-virtual-row {
+  min-height: 3.5rem;
 }
 
 /* Internal chat widget — bottom-right; elevated above map zoom only on map tab */
