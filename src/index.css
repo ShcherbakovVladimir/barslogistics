@@ -1473,6 +1473,58 @@ html.portal-embed .header-nav-scroll {
   display: inline;
 }
 
+.shipment-page-panel-add {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shipment-page-panel-add-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.shipment-page-panel-add-form {
+  width: 100%;
+  max-width: 1400px;
+  min-width: 0;
+}
+
+.shipment-page-panel-add .shipment-events-recent {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Wide screens: form capped at 1400px, history moves to the right */
+@media (min-width: 1500px) {
+  .shipment-page-panel-add-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .shipment-page-panel-add-form {
+    flex: 1 1 auto;
+    max-width: 1400px;
+  }
+
+  .shipment-page-panel-add .shipment-events-recent {
+    flex: 1 1 18rem;
+    width: auto;
+    min-width: 16rem;
+    max-width: 28rem;
+    position: sticky;
+    top: 0.75rem;
+    max-height: calc(100vh - 6rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
 .shipments-list-filters-grid {
   display: flex;
   flex-wrap: wrap;

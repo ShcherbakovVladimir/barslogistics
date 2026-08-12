@@ -1422,6 +1422,18 @@ html.layout-fold .shipment-page-mode-label-short {
   display: inline;
 }
 
+html.layout-mobile .shipment-page-panel-add-layout,
+html.layout-fold .shipment-page-panel-add-layout {
+  flex-direction: column;
+}
+
+html.layout-mobile .shipment-page-panel-add .shipment-events-recent,
+html.layout-fold .shipment-page-panel-add .shipment-events-recent {
+  position: static;
+  max-height: none;
+  max-width: none;
+}
+
 html.layout-mobile .shipment-page-panel-add .shipment-events-panel,
 html.layout-fold .shipment-page-panel-add .shipment-events-panel {
   border-radius: 1rem;

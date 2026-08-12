@@ -305,29 +305,33 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
           id="shipment-page-panel-add"
           role="tabpanel"
           aria-labelledby="shipment-page-tab-add"
-          className="shipment-page-panel-add space-y-4"
+          className="shipment-page-panel-add"
         >
           <div className="shipment-page-panel-head min-w-0">
             <h2 className="text-base sm:text-lg font-bold text-white">{t('shipmentEvents.tabAddFull')}</h2>
             <p className="text-xs text-slate-400 mt-0.5">{t('shipmentEvents.addSubtitle')}</p>
           </div>
-          <ShipmentEventForm
-            shipments={eventFormShipments}
-            factories={factories}
-            products={products}
-            hideTitle
-            onSubmit={handleCreateEvent}
-            onOpenShipment={(id) => {
-              const link = supplyLinks.find(s => s.id === id);
-              if (link) onSelectShipment(link);
-            }}
-          />
-          <div className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-            <div className="min-w-0">
-              <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.tabHistoryFull')}</h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">{t('shipmentEvents.historySubtitle')}</p>
+          <div className="shipment-page-panel-add-layout">
+            <div className="shipment-page-panel-add-form">
+              <ShipmentEventForm
+                shipments={eventFormShipments}
+                factories={factories}
+                products={products}
+                hideTitle
+                onSubmit={handleCreateEvent}
+                onOpenShipment={(id) => {
+                  const link = supplyLinks.find(s => s.id === id);
+                  if (link) onSelectShipment(link);
+                }}
+              />
             </div>
-            <ShipmentEventTimeline events={recentEvents} factories={factories} compact />
+            <aside className="shipment-events-recent bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.tabHistoryFull')}</h3>
+                <p className="text-[11px] text-slate-400 mt-0.5">{t('shipmentEvents.historySubtitle')}</p>
+              </div>
+              <ShipmentEventTimeline events={recentEvents} factories={factories} compact />
+            </aside>
           </div>
         </section>
       )}
