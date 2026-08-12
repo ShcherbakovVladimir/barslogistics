@@ -2,7 +2,7 @@
 
 html.layout-mobile,
 html.layout-fold {
-  --app-side-rail-mobile-height: calc(2.65rem + 0.7rem);
+  --app-side-rail-mobile-height: calc(var(--app-chrome-fab-size, 2.35rem) + 0.6rem);
 }
 
 /* Bottom dock: overlay content — no horizontal squeeze from desktop vertical rail */
@@ -78,8 +78,8 @@ html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-bottom {
 
 html.layout-mobile .app-side-rail.is-mobile-dock .app-side-rail-btn,
 html.layout-fold .app-side-rail.is-mobile-dock .app-side-rail-btn {
-  width: 2.65rem;
-  height: 2.65rem;
+  width: var(--app-chrome-fab-size, 2.35rem);
+  height: var(--app-chrome-fab-size, 2.35rem);
 }
 
 /* Chat icon matches other dock icons (no FAB gradient / shadow) */

@@ -358,7 +358,7 @@ export const Header: React.FC<HeaderProps> = ({
         }`}
       >
         <div className="app-header-inner w-full max-w-none px-3 sm:px-4 lg:px-5 xl:px-6">
-          <div className="app-header-row flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-14 sm:h-16">
+          <div className="app-header-row flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-12 sm:h-14">
 
             <div className="app-header-brand flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 overflow-hidden">
               <button

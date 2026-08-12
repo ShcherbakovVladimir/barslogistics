@@ -68,7 +68,7 @@
 }
 
 :root {
-  --app-header-height: 3.5rem;
+  --app-header-height: 3rem;
   --map-mobile-fab-size: 2.75rem;
   --map-mobile-sheet-radius: 1rem;
   --orientation-safe-top: env(safe-area-inset-top, 0px);
@@ -96,7 +96,7 @@ html.layout-mobile.compact-laptop .map-side-panel-width {
 
 @media (min-width: 640px) {
   :root {
-    --app-header-height: 4rem;
+    --app-header-height: 3.5rem;
   }
 }
 

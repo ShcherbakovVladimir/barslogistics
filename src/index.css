@@ -5225,6 +5225,18 @@ html.compact-laptop .audit-logs-filters-grid {
   }
 }
 
+.app-header-brand-logo.brand-logo {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (min-width: 640px) {
+  .app-header-brand-logo.brand-logo {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
 /* Compact laptops / side-rail squeeze (~≤1143 content width) */
 html.compact-laptop .app-header-brand-subtitle,
 html.map-chrome-compact .app-header-brand-subtitle,
@@ -5263,10 +5275,10 @@ html.compact-laptop .app-header-brand-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--map-fab-size, 2.75rem);
-  height: var(--map-fab-size, 2.75rem);
-  min-width: var(--map-fab-size, 2.75rem);
-  min-height: var(--map-fab-size, 2.75rem);
+  width: var(--app-chrome-fab-size, 2.35rem);
+  height: var(--app-chrome-fab-size, 2.35rem);
+  min-width: var(--app-chrome-fab-size, 2.35rem);
+  min-height: var(--app-chrome-fab-size, 2.35rem);
   padding: 0;
   border-radius: 9999px;
   border: 1px solid rgb(71 85 105 / 0.95);
@@ -5310,10 +5322,10 @@ html.compact-laptop .app-header-brand-title {
 
 .app-header-btn--pill {
   width: auto;
-  min-width: var(--map-fab-size, 2.75rem);
-  padding: 0 0.85rem;
-  gap: 0.4rem;
-  font-size: 0.75rem;
+  min-width: var(--app-chrome-fab-size, 2.35rem);
+  padding: 0 0.7rem;
+  gap: 0.35rem;
+  font-size: 0.7rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -5321,34 +5333,34 @@ html.compact-laptop .app-header-brand-title {
 /* When labels are hidden, collapse pills to circular FABs */
 @media (max-width: 639px) {
   .app-header-btn--pill.app-header-btn--collapse-sm {
-    width: var(--map-fab-size, 2.75rem);
+    width: var(--app-chrome-fab-size, 2.35rem);
     padding: 0;
   }
 }
 
 @media (max-width: 767px) {
   .app-header-btn--pill.app-header-btn--collapse-md {
-    width: var(--map-fab-size, 2.75rem);
+    width: var(--app-chrome-fab-size, 2.35rem);
     padding: 0;
   }
 }
 
 .app-header-btn--pill .app-header-btn-icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1rem;
+  height: 1rem;
   flex-shrink: 0;
   color: inherit;
 }
 
 .app-header-btn .app-header-btn-icon,
 .app-header-menu-btn svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.125rem;
+  height: 1.125rem;
   flex-shrink: 0;
 }
 
 .app-header-actions {
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .app-header-badge {
@@ -5378,23 +5390,23 @@ html.compact-laptop .app-header-brand-title {
 
 html.compact-laptop .app-header-menu-btn,
 html.compact-laptop .app-header-btn:not(.app-header-btn--pill) {
-  width: 2.5rem;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  min-height: 2.5rem;
+  width: 2.15rem;
+  height: 2.15rem;
+  min-width: 2.15rem;
+  min-height: 2.15rem;
 }
 
 html.compact-laptop .app-header-btn--pill {
-  height: 2.5rem;
-  min-height: 2.5rem;
+  height: 2.15rem;
+  min-height: 2.15rem;
 }
 
 .app-header-actions .app-header-theme-toggle {
   display: inline-flex;
   align-items: center;
-  height: var(--map-fab-size, 2.75rem);
-  min-height: var(--map-fab-size, 2.75rem);
-  padding: 0.2rem;
+  height: var(--app-chrome-fab-size, 2.35rem);
+  min-height: var(--app-chrome-fab-size, 2.35rem);
+  padding: 0.15rem;
   border-radius: 9999px;
   border: 1px solid rgb(71 85 105 / 0.95);
   background: rgb(30 41 59 / 0.95);
@@ -5412,10 +5424,10 @@ html.compact-laptop .app-header-btn--pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(var(--map-fab-size, 2.75rem) - 0.4rem);
-  padding: 0.35rem 0.65rem;
+  min-height: calc(var(--app-chrome-fab-size, 2.35rem) - 0.3rem);
+  padding: 0.25rem 0.55rem;
   border-radius: 9999px;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: #cbd5e1;
   background: transparent;
@@ -5456,7 +5468,7 @@ html.app-tab-map:not(.layout-mobile):not(.layout-fold) .app-header-actions .app-
 .app-header-nav {
   position: fixed;
   z-index: 70;
-  top: calc(3.5rem + env(safe-area-inset-top, 0px));
+  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
   left: 0;
   bottom: 0;
   width: min(100%, 20rem);
@@ -5566,7 +5578,7 @@ html.layout-fold.app-tab-map .app-header-nav {
 @media (min-width: 640px) {
   .app-header-nav {
     position: absolute;
-    top: calc(4rem + env(safe-area-inset-top, 0px));
+    top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
     left: max(1rem, env(safe-area-inset-left, 0px));
     bottom: auto;
     width: max-content;
@@ -5583,30 +5595,26 @@ html.layout-fold.app-tab-map .app-header-nav {
 }
 
 html.portal-embed .app-header-nav {
-  top: calc(var(--bars-shell-top, 0px) + 3.5rem);
-}
-
-@media (min-width: 640px) {
-  html.portal-embed .app-header-nav {
-    top: calc(var(--bars-shell-top, 0px) + 4rem);
-  }
+  top: calc(var(--bars-shell-top, 0px) + var(--app-header-height));
 }
 
 html.compact-laptop .app-header-row {
-  height: 3.25rem;
+  height: 2.75rem;
 }
 
 html.compact-laptop {
-  --app-header-height: 3.25rem;
+  --app-header-height: 2.75rem;
+  --app-chrome-fab-size: 2.15rem;
+  --app-side-rail-width: 2.75rem;
 }
 
 html.compact-laptop .app-header-nav {
-  top: calc(3.25rem + env(safe-area-inset-top, 0px));
+  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
 }
 
 @media (min-width: 640px) {
   html.compact-laptop .app-header-nav {
-    top: calc(3.25rem + env(safe-area-inset-top, 0px));
+    top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
   }
 }
 
@@ -6882,12 +6890,14 @@ html.map-facility-modal-open .modal-dropdown-panel {
 
 /* ── App side rail (all pages except map) ── */
 :root {
-  --app-side-rail-width: 3.5rem;
-  --app-side-rail-collapsed-width: 1.15rem;
+  --app-side-rail-width: 3rem;
+  --app-side-rail-collapsed-width: 1rem;
+  /* Chrome FABs (header + side rail); map keeps --map-fab-size */
+  --app-chrome-fab-size: 2.35rem;
   /* Vertical space for chat panel above the rail chat button (FAB size + gap) */
-  --app-side-rail-chat-stack: calc(var(--map-fab-size, 2.75rem) + var(--map-fab-gap, 0.4rem));
-  /* Matches header row: h-14 / sm:h-16 */
-  --app-header-height: 3.5rem;
+  --app-side-rail-chat-stack: calc(var(--app-chrome-fab-size) + 0.35rem);
+  /* Matches header row: h-12 / sm:h-14 */
+  --app-header-height: 3rem;
 }
 
 /* Dark chrome defaults — must not clobber [data-theme="light"] vars on <html> */
@@ -6898,7 +6908,7 @@ html:not([data-theme="light"]) {
 
 @media (min-width: 640px) {
   :root {
-    --app-header-height: 4rem;
+    --app-header-height: 3.5rem;
   }
 }
 
@@ -6953,9 +6963,9 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
   flex-direction: column;
   align-items: center;
   padding:
-    calc(var(--app-header-height) + 0.65rem)
-    0.35rem
-    calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    calc(var(--app-header-height) + 0.5rem)
+    0.3rem
+    calc(0.6rem + env(safe-area-inset-bottom, 0px));
   border: none;
   background: var(--app-chrome-bg);
   backdrop-filter: blur(12px);
@@ -6979,7 +6989,7 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
 /* Header grows with safe-area on touch — vertical rail only (not bottom dock) */
 html.layout-mobile .app-side-rail:not(.is-mobile-dock),
 html.layout-fold .app-side-rail:not(.is-mobile-dock) {
-  padding-top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px) + 0.65rem);
+  padding-top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px) + 0.5rem);
 }
 
 html.layout-mobile .app-side-rail:not(.is-mobile-dock)::before,
@@ -7029,7 +7039,7 @@ html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   width: 100%;
 }
 
@@ -7046,14 +7056,19 @@ html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--map-fab-size, 2.75rem);
-  height: var(--map-fab-size, 2.75rem);
+  width: var(--app-chrome-fab-size, 2.35rem);
+  height: var(--app-chrome-fab-size, 2.35rem);
   border-radius: 9999px;
   border: 1px solid rgb(71 85 105 / 0.95);
   background: rgb(30 41 59 / 0.95);
   color: #cbd5e1;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.app-side-rail-btn svg {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .app-side-rail-btn:hover {
@@ -7399,9 +7414,9 @@ html.compact-laptop.app-side-rail-active:not(.app-side-rail-mobile-dock)
 }
 
 .app-header-user-avatar {
-  width: 1.75rem;
-  height: 1.75rem;
-  font-size: 0.625rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.5625rem;
 }
 
 .admin-users-avatar-field {
