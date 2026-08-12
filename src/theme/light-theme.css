@@ -2288,91 +2288,70 @@ html.layout-fold[data-theme="light"] .modal-backdrop .product-catalog-modal.app-
   box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
 }
 
-/* ── Transport directory (light) ── */
+/* ── Transport directory (chrome + light) ── */
 [data-theme="light"] .transport-directory-page {
-  color: #334155;
+  background: #f1f5f9 !important;
+  color: #0f172a;
 }
 
 [data-theme="light"] .transport-directory-toolbar,
 [data-theme="light"] .transport-directory-table-panel {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
 }
 
-[data-theme="light"] .transport-directory-toolbar h2 {
-  color: #0f172a !important;
+[data-theme="light"] .transport-directory-toolbar {
+  --se-field-bg: #ffffff;
+  --se-field-border: #cbd5e1;
+  --se-field-border-hover: rgb(16 185 129 / 0.45);
+  --se-field-focus: #059669;
+  --se-field-focus-ring: rgb(16 185 129 / 0.18);
 }
 
-[data-theme="light"] .transport-directory-search {
-  background: #f8fafc !important;
+[data-theme="light"] .transport-directory-toolbar .shipments-list-toolbar-icon {
+  background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  color: #059669 !important;
 }
 
-[data-theme="light"] .transport-directory-search input {
+[data-theme="light"] .transport-directory-toolbar .shipments-list-title,
+[data-theme="light"] .transport-directory-cell-name,
+[data-theme="light"] .transport-directory-modal-title {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .transport-directory-search input::placeholder {
-  color: #94a3b8 !important;
-}
-
-[data-theme="light"] .transport-directory-page button.bg-emerald-600,
-[data-theme="light"] .transport-directory-page button.bg-emerald-500,
-[data-theme="light"] .transport-directory-page button.bg-red-600 {
-  color: #ffffff !important;
-}
-
-[data-theme="light"] .transport-directory-thead {
-  background: #f8fafc !important;
+[data-theme="light"] .transport-directory-toolbar .shipments-list-subtitle,
+[data-theme="light"] .transport-directory-results-bar,
+[data-theme="light"] .transport-directory-table-head-bar,
+[data-theme="light"] .transport-directory-cell-meta,
+[data-theme="light"] .transport-directory-cell-purpose,
+[data-theme="light"] .transport-directory-cell-site,
+[data-theme="light"] .transport-directory-modal-text,
+[data-theme="light"] .transport-directory-form-label,
+[data-theme="light"] .transport-directory-photo-empty,
+[data-theme="light"] .transport-directory-photo-hint,
+[data-theme="light"] .transport-directory-modal-hint {
   color: #64748b !important;
 }
 
-[data-theme="light"] .transport-directory-field {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
+[data-theme="light"] .transport-directory-page .shipments-list-search {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
-[data-theme="light"] .transport-directory-field::placeholder {
-  color: #94a3b8 !important;
+[data-theme="light"] .transport-directory-page .shipments-list-search:focus-within {
+  background: #f8fafc;
+  border-color: rgb(16 185 129 / 0.55);
 }
 
-[data-theme="light"] .transport-directory-modal {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  color: #334155 !important;
+[data-theme="light"] .transport-directory-page .shipments-list-search input::placeholder {
+  color: #94a3b8;
 }
 
-[data-theme="light"] .transport-directory-modal .text-white {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .transport-directory-modal .modal-panel-header,
-[data-theme="light"] .transport-directory-modal .modal-panel-footer,
-[data-theme="light"] .transport-directory-form-modal-footer {
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .transport-directory-modal button.bg-emerald-600,
-[data-theme="light"] .transport-directory-modal button.bg-emerald-500,
-[data-theme="light"] .transport-directory-modal button.bg-red-600 {
-  color: #ffffff !important;
-}
-
-[data-theme="light"] .transport-directory-photo {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .transport-directory-photo-img {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .transport-directory-alert {
-  color: #b45309 !important;
-  background-color: rgb(245 158 11 / 0.12) !important;
-  border-color: rgb(245 158 11 / 0.28) !important;
+[data-theme="light"] .transport-directory-page .shipments-list-search svg {
+  color: #94a3b8;
 }
 
 [data-theme="light"] .transport-directory-toolbar .modal-dropdown-trigger,
@@ -2387,7 +2366,207 @@ html.layout-fold[data-theme="light"] .modal-backdrop .product-catalog-modal.app-
 [data-theme="light"] .transport-directory-modal .modal-dropdown-trigger:hover:not(:disabled),
 [data-theme="light"] .transport-directory-modal .modal-dropdown-trigger.is-open {
   background: #f8fafc !important;
-  border-color: #94a3b8 !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar .modal-dropdown-chevron,
+[data-theme="light"] .transport-directory-modal .modal-dropdown-chevron {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .transport-directory-inactive-toggle,
+[data-theme="light"] .transport-directory-form-checkbox {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar-btn--refresh,
+[data-theme="light"] .transport-directory-form-cancel,
+[data-theme="light"] .transport-directory-photo-btn--upload {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar-btn--refresh:hover,
+[data-theme="light"] .transport-directory-form-cancel:hover,
+[data-theme="light"] .transport-directory-photo-btn--upload:hover:not(:disabled) {
+  background: #f8fafc !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar-btn--add,
+[data-theme="light"] .transport-directory-form-submit {
+  background: #059669 !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-toolbar-btn--add:hover,
+[data-theme="light"] .transport-directory-form-submit:hover:not(:disabled) {
+  background: #047857 !important;
+  border-color: #065f46 !important;
+}
+
+[data-theme="light"] .transport-directory-form-delete {
+  background: #dc2626 !important;
+  border-color: rgb(239 68 68 / 0.45) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-form-delete:hover:not(:disabled) {
+  background: #b91c1c !important;
+  border-color: #991b1b !important;
+}
+
+[data-theme="light"] .transport-directory-photo-btn--remove {
+  background: rgb(239 68 68 / 0.08) !important;
+  border-color: rgb(239 68 68 / 0.22) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .transport-directory-photo-btn--remove:hover:not(:disabled) {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-form-submit:disabled,
+[data-theme="light"] .transport-directory-form-delete:disabled {
+  opacity: 0.55;
+}
+
+[data-theme="light"] .transport-directory-table thead,
+[data-theme="light"] .transport-directory-table-head-bar {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-table th {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-table tbody tr {
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-table tbody tr:hover {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .transport-directory-table tbody {
+  color: #334155;
+}
+
+[data-theme="light"] .transport-directory-table-empty {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-cell-type {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .transport-directory-cell-numbers {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-status-badge--active {
+  background: rgb(16 185 129 / 0.1) !important;
+  border-color: rgb(16 185 129 / 0.3) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .transport-directory-status-badge--inactive {
+  background: rgb(100 116 139 / 0.1) !important;
+  border-color: rgb(100 116 139 / 0.25) !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-row-icon-btn--edit {
+  background: rgb(245 158 11 / 0.1) !important;
+  border-color: rgb(245 158 11 / 0.25) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .transport-directory-row-icon-btn--edit:hover {
+  background: #d97706 !important;
+  border-color: #b45309 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-row-icon-btn--delete {
+  background: rgb(239 68 68 / 0.08) !important;
+  border-color: rgb(239 68 68 / 0.22) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .transport-directory-row-icon-btn--delete:hover {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .transport-directory-field {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .transport-directory-field:hover {
+  border-color: rgb(16 185 129 / 0.45) !important;
+}
+
+[data-theme="light"] .transport-directory-field:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 2px rgb(16 185 129 / 0.18) !important;
+}
+
+[data-theme="light"] .transport-directory-photo {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-photo-img {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-modal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow:
+    0 24px 48px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(16 185 129 / 0.08) !important;
+}
+
+[data-theme="light"] .transport-directory-modal .modal-panel-header,
+[data-theme="light"] .transport-directory-modal .modal-panel-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .transport-directory-modal-close-btn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .transport-directory-modal-close-btn:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .transport-directory-form-error {
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .transport-directory-alert {
+  color: #b45309 !important;
+  background-color: rgb(245 158 11 / 0.12) !important;
+  border-color: rgb(245 158 11 / 0.28) !important;
 }
 
 [data-theme="light"] .transport-directory-dropdown-panel {
@@ -2422,6 +2601,12 @@ html.layout-fold[data-theme="light"] .modal-backdrop .product-catalog-modal.app-
 [data-theme="light"] .transport-directory-dropdown-panel .modal-dropdown-search {
   background: #f8fafc !important;
   color: #0f172a !important;
+}
+
+html.layout-mobile[data-theme="light"] .modal-backdrop .transport-directory-modal.app-modal-sheet,
+html.layout-fold[data-theme="light"] .modal-backdrop .transport-directory-modal.app-modal-sheet {
+  border: none !important;
+  box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
 }
 
 /* ── Manager directory (mobile + light) ── */

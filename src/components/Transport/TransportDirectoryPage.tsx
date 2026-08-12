@@ -56,7 +56,7 @@ const TransportModalShell: React.FC<TransportModalShellProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`transport-directory-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`transport-directory-modal app-modal-sheet modal-panel ${maxWidthClass} ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -170,6 +170,41 @@ function formToInput(form: FormState): TransportAssetInput {
     is_active: form.is_active,
   };
 }
+
+interface TransportActionsProps {
+  asset: TransportAsset;
+  t: (key: string, params?: Record<string, string | number>) => string;
+  onEdit: (a: TransportAsset) => void;
+  onDelete: (a: TransportAsset) => void;
+}
+
+const TransportActions: React.FC<TransportActionsProps> = ({
+  asset,
+  t,
+  onEdit,
+  onDelete,
+}) => (
+  <div className="transport-directory-row-actions">
+    <button
+      type="button"
+      className="transport-directory-row-icon-btn transport-directory-row-icon-btn--edit"
+      title={t('transport.edit')}
+      aria-label={t('transport.edit')}
+      onClick={() => onEdit(asset)}
+    >
+      <Pencil className="w-4 h-4" />
+    </button>
+    <button
+      type="button"
+      className="transport-directory-row-icon-btn transport-directory-row-icon-btn--delete"
+      title={t('transport.delete')}
+      aria-label={t('transport.delete')}
+      onClick={() => onDelete(asset)}
+    >
+      <Trash2 className="w-4 h-4" />
+    </button>
+  </div>
+);
 
 export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
   assets,
@@ -360,26 +395,36 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
     }
   };
 
-  const fieldClass =
-    'transport-directory-field w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/60 min-h-[2.75rem]';
-  const labelClass = 'block text-[10px] uppercase tracking-wide text-slate-400 mb-1';
+  const statusBadge = (a: TransportAsset) => (
+    <span className={`transport-directory-status-badge ${
+      a.is_active !== false
+        ? 'transport-directory-status-badge--active'
+        : 'transport-directory-status-badge--inactive'
+    }`}>
+      {a.is_active !== false ? t('transport.active') : t('transport.inactive')}
+    </span>
+  );
 
   return (
-    <div className="transport-directory-page product-catalog-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="transport-directory-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              <Truck className="w-5 h-5 text-emerald-400 shrink-0" />
-              <span className="truncate">{t('transport.title')}</span>
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">{t('transport.subtitle')}</p>
+    <div className="transport-directory-page">
+      <div className="transport-directory-toolbar shipments-list-toolbar">
+        <div className="transport-directory-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <Truck />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{t('transport.title')}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('transport.subtitle')}</p>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="transport-directory-toolbar-actions">
             <button
               type="button"
               onClick={() => void refresh()}
-              className="transport-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="transport-directory-toolbar-btn transport-directory-toolbar-btn--refresh"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               {t('transport.refresh')}
@@ -387,7 +432,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
             <button
               type="button"
               onClick={openCreate}
-              className="transport-directory-toolbar-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="transport-directory-toolbar-btn transport-directory-toolbar-btn--add"
             >
               <Plus className="w-3.5 h-3.5" />
               {t('transport.add')}
@@ -395,11 +440,10 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
           </div>
         </div>
 
-        <div className="transport-directory-filters-grid flex flex-wrap items-center gap-2">
-          <div className="transport-directory-search relative flex-1 min-w-[180px] max-w-md flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[2.75rem]">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="transport-directory-filters-grid shipments-list-filters-grid">
+          <div className="transport-directory-search shipments-list-search">
+            <Search aria-hidden />
             <input
-              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder:text-slate-500"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('transport.searchPlaceholder')}
@@ -413,7 +457,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
               ...TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) })),
             ]}
             searchable={false}
-            className="transport-directory-filter-select w-44"
+            className="transport-directory-filter-select transport-directory-filter-select--purpose shipments-list-filter"
             panelClassName="transport-directory-dropdown-panel shipments-list-dropdown-panel"
           />
           <SearchableSelect
@@ -424,98 +468,75 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
               ...TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) })),
             ]}
             searchable={false}
-            className="transport-directory-filter-select w-48"
+            className="transport-directory-filter-select transport-directory-filter-select--category shipments-list-filter"
             panelClassName="transport-directory-dropdown-panel shipments-list-dropdown-panel"
           />
-          <label className="inline-flex items-center gap-2 text-xs text-slate-400 cursor-pointer min-h-[2.75rem] px-1">
+          <label className="transport-directory-inactive-toggle">
             <input
               type="checkbox"
               checked={showInactive}
               onChange={e => setShowInactive(e.target.checked)}
-              className="rounded border-slate-600"
             />
             {t('transport.showInactive')}
           </label>
         </div>
-
-        <p className="text-xs text-slate-500">{t('transport.results', { count: displayList.length })}</p>
       </div>
 
       {error && !modalOpen && !deleteTarget && (
-        <div className="transport-directory-alert text-sm text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
-          {error}
-        </div>
+        <div className="transport-directory-alert">{error}</div>
       )}
 
-      <div className="transport-directory-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-sm min-w-[28rem]">
-            <thead className="transport-directory-thead bg-slate-950/80 text-slate-400 text-xs uppercase">
+      <div className="transport-directory-results-bar">
+        {t('transport.results', { count: displayList.length })}
+      </div>
+
+      <div className="transport-directory-table-panel">
+        <div className="transport-directory-table-head-bar">
+          {t('transport.results', { count: displayList.length })}
+        </div>
+        <div className="transport-directory-table-desktop responsive-table-wrap">
+          <table className="transport-directory-table">
+            <thead>
               <tr>
-                <th className="text-left p-3">{t('transport.colName')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('transport.colType')}</th>
-                <th className="text-left p-3 hidden md:table-cell">{t('transport.colPurpose')}</th>
-                <th className="text-left p-3 hidden lg:table-cell">{t('transport.colNumbers')}</th>
-                <th className="text-left p-3 hidden xl:table-cell">{t('transport.colSite')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('transport.colStatus')}</th>
-                <th className="text-right p-3">{t('transport.colActions')}</th>
+                <th>{t('transport.colName')}</th>
+                <th className="transport-directory-col-type">{t('transport.colType')}</th>
+                <th className="transport-directory-col-purpose">{t('transport.colPurpose')}</th>
+                <th className="transport-directory-col-numbers">{t('transport.colNumbers')}</th>
+                <th className="transport-directory-col-site">{t('transport.colSite')}</th>
+                <th className="transport-directory-col-status">{t('transport.colStatus')}</th>
+                <th className="transport-directory-col-actions">{t('transport.colActions')}</th>
               </tr>
             </thead>
             <tbody>
               {displayList.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-6 text-center text-slate-500">{t('transport.empty')}</td>
+                  <td colSpan={7} className="transport-directory-table-empty">{t('transport.empty')}</td>
                 </tr>
               ) : (
                 displayList.map(a => (
-                  <tr key={a.id} className="border-t border-slate-800 hover:bg-slate-800/50">
-                    <td className="p-3">
-                      <div className="font-semibold text-white">{a.name}</div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">
+                  <tr key={a.id}>
+                    <td>
+                      <div className="transport-directory-cell-name">{a.name}</div>
+                      <div className="transport-directory-cell-meta">
                         {[a.brand, a.model].filter(Boolean).join(' ') || '—'}
                         {a.has_photo ? ` · ${t('transport.hasPhoto')}` : ''}
                       </div>
                     </td>
-                    <td className="p-3 hidden sm:table-cell text-slate-300">
+                    <td className="transport-directory-col-type transport-directory-cell-type">
                       {t(`transport.types.${a.type_key}`)}
                     </td>
-                    <td className="p-3 hidden md:table-cell text-slate-400">
+                    <td className="transport-directory-col-purpose transport-directory-cell-purpose">
                       {t(`transport.purposes.${a.purpose}`)}
                     </td>
-                    <td className="p-3 hidden lg:table-cell font-mono text-[10px] text-slate-400">
+                    <td className="transport-directory-col-numbers transport-directory-cell-numbers">
                       {[a.vehicle_number, a.inventory_number, a.vin].filter(Boolean).join(' · ') || '—'}
                     </td>
-                    <td className="p-3 hidden xl:table-cell text-slate-400">
+                    <td className="transport-directory-col-site transport-directory-cell-site">
                       {a.site_id ? factoryMap.get(a.site_id)?.name || a.site_id : '—'}
                     </td>
-                    <td className="p-3 hidden sm:table-cell">
-                      <span
-                        className={`inline-flex text-[10px] px-2 py-0.5 rounded border ${
-                          a.is_active !== false
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                            : 'bg-slate-500/10 text-slate-400 border-slate-500/30'
-                        }`}
-                      >
-                        {a.is_active !== false ? t('transport.active') : t('transport.inactive')}
-                      </span>
-                    </td>
-                    <td className="p-3 text-right whitespace-nowrap">
-                      <button
-                        type="button"
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 inline-flex"
-                        title={t('transport.edit')}
-                        onClick={() => openEdit(a)}
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </button>
-                      <button
-                        type="button"
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 inline-flex"
-                        title={t('transport.delete')}
-                        onClick={() => setDeleteTarget(a)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <td className="transport-directory-col-status">{statusBadge(a)}</td>
+                    <td className="transport-directory-col-actions">
+                      <TransportActions asset={a} t={t} onEdit={openEdit} onDelete={setDeleteTarget} />
                     </td>
                   </tr>
                 ))
@@ -528,15 +549,15 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
       {modalOpen && (
         <TransportModalShell onClose={() => setModalOpen(false)}>
           <div className="transport-directory-form-modal flex flex-col flex-1 min-h-0">
-            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">
+            <header className="modal-panel-header app-modal-sheet-header">
+              <div className="transport-directory-modal-head">
+                <h3 className="transport-directory-modal-title">
                   {editing ? t('transport.editTitle') : t('transport.addTitle')}
                 </h3>
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="transport-directory-modal-close-btn"
                   aria-label={t('common.close')}
                 >
                   <X className="w-4 h-4" />
@@ -544,180 +565,190 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
               </div>
             </header>
 
-            <div className="modal-panel-body modal-scrollbar px-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
-              {error && <p className="text-sm text-red-400">{error}</p>}
+            <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
+              {error && <p className="transport-directory-form-error">{error}</p>}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="sm:col-span-2">
-                  <label className={labelClass}>{t('transport.fieldName')}</label>
-                  <input className={fieldClass} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-                </div>
+              <div className="transport-directory-form-grid">
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldName')}</span>
+                  <input className="transport-directory-field" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                </label>
 
-                <div className="transport-directory-select">
-                  <label className={labelClass}>{t('transport.fieldPurpose')}</label>
-                  <SearchableSelect
-                    value={form.purpose}
-                    onChange={v => setForm({ ...form, purpose: v as TransportPurpose })}
-                    options={TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) }))}
-                    searchable={false}
-                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
-                  />
-                </div>
-                <div className="transport-directory-select">
-                  <label className={labelClass}>{t('transport.fieldCategory')}</label>
-                  <SearchableSelect
-                    value={form.category}
-                    onChange={v => {
-                      const category = v as TransportCategory;
-                      const first = transportTypesByCategory(category)[0]?.key || 'other';
-                      setForm({ ...form, category, type_key: first, brand: '', model: '' });
-                    }}
-                    options={TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) }))}
-                    searchable={false}
-                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
-                  />
-                </div>
-                <div className="sm:col-span-2 transport-directory-select">
-                  <label className={labelClass}>{t('transport.fieldType')}</label>
-                  <SearchableSelect
-                    value={form.type_key}
-                    onChange={v => setForm({ ...form, type_key: v, brand: '', model: '' })}
-                    options={typeOptions.length ? typeOptions : TRANSPORT_TYPES.map(tp => ({ value: tp.key, label: t(`transport.types.${tp.key}`) }))}
-                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
-                  />
-                </div>
-
-                {popularOptions.length > 0 && (
-                  <div className="sm:col-span-2 transport-directory-select">
-                    <label className={labelClass}>{t('transport.popularModel')}</label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldPurpose')}</span>
+                  <div className="transport-directory-form-select">
                     <SearchableSelect
-                      value=""
-                      onChange={v => {
-                        if (!v) return;
-                        const [brand, model] = v.split('|||');
-                        setForm(prev => ({
-                          ...prev,
-                          brand: brand || '',
-                          model: model || '',
-                          name: prev.name.trim() || [brand, model].filter(Boolean).join(' '),
-                        }));
-                      }}
-                      options={popularOptions}
-                      allowEmpty
-                      emptyLabel={t('transport.popularModelHint')}
-                      placeholder={t('transport.popularModelHint')}
+                      value={form.purpose}
+                      onChange={v => setForm({ ...form, purpose: v as TransportPurpose })}
+                      options={TRANSPORT_PURPOSES.map(p => ({ value: p, label: t(`transport.purposes.${p}`) }))}
+                      searchable={false}
                       panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
                     />
                   </div>
+                </label>
+
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldCategory')}</span>
+                  <div className="transport-directory-form-select">
+                    <SearchableSelect
+                      value={form.category}
+                      onChange={v => {
+                        const category = v as TransportCategory;
+                        const first = transportTypesByCategory(category)[0]?.key || 'other';
+                        setForm({ ...form, category, type_key: first, brand: '', model: '' });
+                      }}
+                      options={TRANSPORT_CATEGORIES.map(c => ({ value: c, label: t(`transport.categories.${c}`) }))}
+                      searchable={false}
+                      panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
+                    />
+                  </div>
+                </label>
+
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldType')}</span>
+                  <div className="transport-directory-form-select">
+                    <SearchableSelect
+                      value={form.type_key}
+                      onChange={v => setForm({ ...form, type_key: v, brand: '', model: '' })}
+                      options={typeOptions.length ? typeOptions : TRANSPORT_TYPES.map(tp => ({ value: tp.key, label: t(`transport.types.${tp.key}`) }))}
+                      panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
+                    />
+                  </div>
+                </label>
+
+                {popularOptions.length > 0 && (
+                  <label className="transport-directory-form-field transport-directory-form-field--wide">
+                    <span className="transport-directory-form-label">{t('transport.popularModel')}</span>
+                    <div className="transport-directory-form-select">
+                      <SearchableSelect
+                        value=""
+                        onChange={v => {
+                          if (!v) return;
+                          const [brand, model] = v.split('|||');
+                          setForm(prev => ({
+                            ...prev,
+                            brand: brand || '',
+                            model: model || '',
+                            name: prev.name.trim() || [brand, model].filter(Boolean).join(' '),
+                          }));
+                        }}
+                        options={popularOptions}
+                        allowEmpty
+                        emptyLabel={t('transport.popularModelHint')}
+                        placeholder={t('transport.popularModelHint')}
+                        panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
+                      />
+                    </div>
+                  </label>
                 )}
 
-                <div>
-                  <label className={labelClass}>{t('transport.fieldBrand')}</label>
-                  <input className={fieldClass} value={form.brand} onChange={e => setForm({ ...form, brand: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldModel')}</label>
-                  <input className={fieldClass} value={form.model} onChange={e => setForm({ ...form, model: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldYear')}</label>
-                  <input className={fieldClass} value={form.year} onChange={e => setForm({ ...form, year: e.target.value })} inputMode="numeric" />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldSort')}</label>
-                  <input className={fieldClass} value={form.sort_order} onChange={e => setForm({ ...form, sort_order: e.target.value })} inputMode="numeric" />
-                </div>
-
-                <div>
-                  <label className={labelClass}>{t('transport.fieldVehicleNumber')}</label>
-                  <input className={fieldClass} value={form.vehicle_number} onChange={e => setForm({ ...form, vehicle_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldTrailerNumber')}</label>
-                  <input className={fieldClass} value={form.trailer_number} onChange={e => setForm({ ...form, trailer_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldContainerNumber')}</label>
-                  <input className={fieldClass} value={form.container_number} onChange={e => setForm({ ...form, container_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldInventoryNumber')}</label>
-                  <input className={fieldClass} value={form.inventory_number} onChange={e => setForm({ ...form, inventory_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldVin')}</label>
-                  <input className={fieldClass} value={form.vin} onChange={e => setForm({ ...form, vin: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldChassis')}</label>
-                  <input className={fieldClass} value={form.chassis_number} onChange={e => setForm({ ...form, chassis_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldEngine')}</label>
-                  <input className={fieldClass} value={form.engine_number} onChange={e => setForm({ ...form, engine_number: e.target.value })} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t('transport.fieldWaybill')}</label>
-                  <input className={fieldClass} value={form.waybill_number} onChange={e => setForm({ ...form, waybill_number: e.target.value })} />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className={labelClass}>{t('transport.fieldDriver')}</label>
-                  <input className={fieldClass} value={form.driver_info} onChange={e => setForm({ ...form, driver_info: e.target.value })} />
-                </div>
-                <div className="sm:col-span-2 transport-directory-select">
-                  <label className={labelClass}>{t('transport.fieldSite')}</label>
-                  <SearchableSelect
-                    value={form.site_id}
-                    onChange={v => setForm({ ...form, site_id: v })}
-                    options={siteOptions}
-                    allowEmpty
-                    emptyLabel={t('transport.siteUnset')}
-                    placeholder={t('transport.siteUnset')}
-                    panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className={labelClass}>{t('transport.fieldDescription')}</label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldBrand')}</span>
+                  <input className="transport-directory-field" value={form.brand} onChange={e => setForm({ ...form, brand: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldModel')}</span>
+                  <input className="transport-directory-field" value={form.model} onChange={e => setForm({ ...form, model: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldYear')}</span>
+                  <input className="transport-directory-field" value={form.year} onChange={e => setForm({ ...form, year: e.target.value })} inputMode="numeric" />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldSort')}</span>
+                  <input className="transport-directory-field" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: e.target.value })} inputMode="numeric" />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldVehicleNumber')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.vehicle_number} onChange={e => setForm({ ...form, vehicle_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldTrailerNumber')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.trailer_number} onChange={e => setForm({ ...form, trailer_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldContainerNumber')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.container_number} onChange={e => setForm({ ...form, container_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldInventoryNumber')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.inventory_number} onChange={e => setForm({ ...form, inventory_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldVin')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.vin} onChange={e => setForm({ ...form, vin: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldChassis')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.chassis_number} onChange={e => setForm({ ...form, chassis_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldEngine')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.engine_number} onChange={e => setForm({ ...form, engine_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field">
+                  <span className="transport-directory-form-label">{t('transport.fieldWaybill')}</span>
+                  <input className="transport-directory-field transport-directory-field--mono" value={form.waybill_number} onChange={e => setForm({ ...form, waybill_number: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldDriver')}</span>
+                  <input className="transport-directory-field" value={form.driver_info} onChange={e => setForm({ ...form, driver_info: e.target.value })} />
+                </label>
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldSite')}</span>
+                  <div className="transport-directory-form-select">
+                    <SearchableSelect
+                      value={form.site_id}
+                      onChange={v => setForm({ ...form, site_id: v })}
+                      options={siteOptions}
+                      allowEmpty
+                      emptyLabel={t('transport.siteUnset')}
+                      placeholder={t('transport.siteUnset')}
+                      panelClassName="transport-directory-dropdown-panel map-filter-dropdown-panel"
+                    />
+                  </div>
+                </label>
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldDescription')}</span>
                   <textarea
-                    className={`${fieldClass} min-h-[72px]`}
+                    className="transport-directory-field transport-directory-field--textarea"
                     value={form.description}
                     onChange={e => setForm({ ...form, description: e.target.value })}
                   />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className={labelClass}>{t('transport.fieldSpecs')}</label>
+                </label>
+                <label className="transport-directory-form-field transport-directory-form-field--wide">
+                  <span className="transport-directory-form-label">{t('transport.fieldSpecs')}</span>
                   <textarea
-                    className={`${fieldClass} min-h-[72px]`}
+                    className="transport-directory-field transport-directory-field--textarea"
                     value={form.specs_note}
                     onChange={e => setForm({ ...form, specs_note: e.target.value })}
                     placeholder={t('transport.specsPlaceholder')}
                   />
-                </div>
-                <label className="inline-flex items-center gap-2 text-xs text-slate-300 cursor-pointer min-h-[2.75rem]">
+                </label>
+                <label className="transport-directory-form-checkbox">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={e => setForm({ ...form, is_active: e.target.checked })}
-                    className="rounded border-slate-600"
                   />
                   {t('transport.active')}
                 </label>
               </div>
 
               {editing && (
-                <div className="transport-directory-photo rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-2">
-                  <div className="text-[10px] uppercase tracking-wide text-slate-400">{t('transport.photo')}</div>
+                <div className="transport-directory-photo">
+                  <div className="transport-directory-photo-label">{t('transport.photo')}</div>
                   {photoUrl ? (
-                    <img src={photoUrl} alt="" className="transport-directory-photo-img max-h-40 rounded-lg border border-slate-700 object-contain bg-slate-900" />
+                    <img src={photoUrl} alt="" className="transport-directory-photo-img" />
                   ) : (
-                    <p className="text-xs text-slate-500">{t('transport.noPhoto')}</p>
+                    <p className="transport-directory-photo-empty">{t('transport.noPhoto')}</p>
                   )}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="transport-directory-photo-actions">
                     <input
                       ref={photoRef}
                       type="file"
                       accept="image/jpeg,image/png,image/webp,image/gif"
-                      className="hidden"
+                      className="transport-directory-photo-input"
                       onChange={e => {
                         const f = e.target.files?.[0];
                         if (f) void handlePhotoUpload(f);
@@ -727,7 +758,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                       type="button"
                       disabled={photoBusy}
                       onClick={() => photoRef.current?.click()}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-100 disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+                      className="transport-directory-photo-btn transport-directory-photo-btn--upload"
                     >
                       {photoBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
                       {t('transport.photoUpload')}
@@ -737,21 +768,21 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                         type="button"
                         disabled={photoBusy}
                         onClick={() => void handlePhotoRemove()}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-400 hover:bg-red-500/10 disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+                        className="transport-directory-photo-btn transport-directory-photo-btn--remove"
                       >
                         {t('transport.photoRemove')}
                       </button>
                     )}
                   </div>
-                  <p className="text-[10px] text-slate-500">{t('transport.photoHint')}</p>
+                  <p className="transport-directory-photo-hint">{t('transport.photoHint')}</p>
                 </div>
               )}
             </div>
 
-            <footer className="transport-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+            <footer className="transport-directory-form-modal-footer modal-panel-footer">
               <button
                 type="button"
-                className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0"
+                className="transport-directory-form-cancel"
                 onClick={() => setModalOpen(false)}
               >
                 {t('common.cancel')}
@@ -760,7 +791,7 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
                 type="button"
                 disabled={saving}
                 onClick={() => void handleSave()}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+                className="transport-directory-form-submit"
               >
                 {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
                 {t('common.save')}
@@ -772,26 +803,26 @@ export const TransportDirectoryPage: React.FC<TransportDirectoryPageProps> = ({
 
       {deleteTarget && (
         <TransportModalShell onClose={() => setDeleteTarget(null)} maxWidthClass="max-w-sm">
-          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-            <h3 className="font-bold text-white">{t('transport.deleteTitle')}</h3>
+          <header className="modal-panel-header app-modal-sheet-header">
+            <h3 className="transport-directory-modal-title">{t('transport.deleteTitle')}</h3>
           </header>
-          <div className="modal-panel-body px-4 pb-2 space-y-2">
-            <p className="text-sm text-slate-400">
+          <div className="modal-panel-body">
+            <p className="transport-directory-modal-text">
               {t('transport.deleteConfirm', { name: deleteTarget.name })}
             </p>
-            <p className="text-xs text-slate-500">{t('transport.deleteHint')}</p>
+            <p className="transport-directory-modal-hint">{t('transport.deleteHint')}</p>
           </div>
-          <footer className="transport-directory-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+          <footer className="transport-directory-form-modal-footer modal-panel-footer">
             <button
               type="button"
-              className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0"
+              className="transport-directory-form-cancel"
               onClick={() => setDeleteTarget(null)}
             >
               {t('common.cancel')}
             </button>
             <button
               type="button"
-              className="px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-semibold min-h-[2.75rem] sm:min-h-0"
+              className="transport-directory-form-delete"
               onClick={() => void handleDelete()}
             >
               {t('transport.delete')}
