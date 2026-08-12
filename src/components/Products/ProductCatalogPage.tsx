@@ -23,9 +23,6 @@ const emptyForm = (): ProductFormState => ({
   is_active: true,
 });
 
-const fieldClass =
-  'product-catalog-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
-
 interface ProductCatalogPageProps {
   products: Product[];
   onProductsChanged: () => Promise<void>;
@@ -55,7 +52,7 @@ const ProductModalShell: React.FC<ProductModalShellProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`product-catalog-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`product-catalog-modal app-modal-sheet modal-panel ${maxWidthClass} ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -63,6 +60,68 @@ const ProductModalShell: React.FC<ProductModalShellProps> = ({
         />
         {children}
       </div>
+    </div>
+  );
+};
+
+interface ProductActionsProps {
+  product: Product;
+  t: (key: string, params?: Record<string, string | number>) => string;
+  onEdit: (p: Product) => void;
+  onDelete: (p: Product) => void;
+  variant: 'table' | 'card';
+}
+
+const ProductActions: React.FC<ProductActionsProps> = ({
+  product,
+  t,
+  onEdit,
+  onDelete,
+  variant,
+}) => {
+  if (variant === 'card') {
+    return (
+      <div className="product-catalog-card-actions">
+        <button
+          type="button"
+          onClick={() => onEdit(product)}
+          className="product-catalog-card-action product-catalog-card-action--edit"
+        >
+          <Pencil className="w-4 h-4 shrink-0" />
+          {t('products.edit')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(product)}
+          className="product-catalog-card-action product-catalog-card-action--delete"
+        >
+          <Trash2 className="w-4 h-4 shrink-0" />
+          {t('products.delete')}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="product-catalog-row-actions">
+      <button
+        type="button"
+        onClick={() => onEdit(product)}
+        className="product-catalog-row-icon-btn product-catalog-row-icon-btn--edit"
+        title={t('products.edit')}
+        aria-label={t('products.edit')}
+      >
+        <Pencil className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        onClick={() => onDelete(product)}
+        className="product-catalog-row-icon-btn product-catalog-row-icon-btn--delete"
+        title={t('products.delete')}
+        aria-label={t('products.delete')}
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
     </div>
   );
 };
@@ -100,24 +159,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {t('products.colOrder')}: {product.sort_order ?? 0}
       </span>
     </div>
-    <div className="product-catalog-card-actions">
-      <button
-        type="button"
-        onClick={() => onEdit(product)}
-        className="product-catalog-card-action product-catalog-card-action--edit"
-      >
-        <Pencil className="w-4 h-4 shrink-0" />
-        {t('products.edit')}
-      </button>
-      <button
-        type="button"
-        onClick={() => onDelete(product)}
-        className="product-catalog-card-action product-catalog-card-action--delete"
-      >
-        <Trash2 className="w-4 h-4 shrink-0" />
-        {t('products.delete')}
-      </button>
-    </div>
+    <ProductActions
+      product={product}
+      t={t}
+      onEdit={onEdit}
+      onDelete={onDelete}
+      variant="card"
+    />
   </article>
 );
 
@@ -240,32 +288,44 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
   const productLabel = (p: Product) => (locale === 'ru' ? p.name_ru : p.name_en);
 
   const statusBadge = (p: Product) => (
-    <span className={`product-catalog-status-badge text-xs px-2 py-0.5 rounded border ${
+    <span className={`product-catalog-status-badge ${
       p.is_active !== false
-        ? 'product-catalog-status-badge--active bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-        : 'product-catalog-status-badge--inactive bg-slate-500/10 text-slate-400 border-slate-500/30'
+        ? 'product-catalog-status-badge--active'
+        : 'product-catalog-status-badge--inactive'
     }`}>
       {p.is_active !== false ? t('products.active') : t('products.inactive')}
     </span>
   );
 
+  const cardProps = {
+    locale,
+    t,
+    onEdit: openEdit,
+    onDelete: setDeleteTarget,
+    statusBadge,
+  };
+
   return (
-    <div className="product-catalog-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="product-catalog-toolbar shipments-list-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-        <div className="product-catalog-toolbar-head flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              <Package className="w-5 h-5 text-indigo-400 shrink-0" />
-              <span className="truncate">{t('products.title')}</span>
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">{t('products.subtitle')}</p>
+    <div className="product-catalog-page">
+      <div className="product-catalog-toolbar shipments-list-toolbar">
+        <div className="product-catalog-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <Package />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{t('products.title')}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('products.subtitle')}</p>
+            </div>
           </div>
-          <div className="product-catalog-toolbar-actions flex flex-wrap gap-2">
+          <div className="product-catalog-toolbar-actions">
             <button
               type="button"
               onClick={() => void handleRefresh()}
               disabled={loading}
-              className="product-catalog-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="product-catalog-toolbar-btn product-catalog-toolbar-btn--refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               {t('products.refresh')}
@@ -273,7 +333,7 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
             <button
               type="button"
               onClick={openCreate}
-              className="product-catalog-toolbar-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+              className="product-catalog-toolbar-btn product-catalog-toolbar-btn--add"
             >
               <Plus className="w-3.5 h-3.5" />
               {t('products.add')}
@@ -281,84 +341,80 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
           </div>
         </div>
 
-        <div className="product-catalog-filters-grid">
-          <div className="product-catalog-search flex items-center gap-2 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 min-h-[2.75rem] sm:min-h-0">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="product-catalog-filters-grid shipments-list-filters-grid">
+          <div className="product-catalog-search shipments-list-search">
+            <Search aria-hidden />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={t('products.searchPlaceholder')}
-              className="bg-transparent text-sm text-white w-full min-w-0 outline-none placeholder:text-slate-500"
             />
           </div>
-          <label className="product-catalog-inactive-toggle flex items-center gap-2 text-xs text-slate-400 px-1 min-h-[2.75rem] sm:min-h-0">
+          <label className="product-catalog-inactive-toggle">
             <input
               type="checkbox"
               checked={showInactive}
               onChange={e => setShowInactive(e.target.checked)}
-              className="rounded border-slate-600"
             />
             {t('products.showInactive')}
           </label>
         </div>
-
-        <p className="product-catalog-results text-xs text-slate-500">
-          {t('products.results', { count: displayList.length })}
-        </p>
       </div>
 
       {error && !modalOpen && !deleteTarget && (
-        <div className="product-catalog-alert text-sm text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
-          {error}
-        </div>
+        <div className="product-catalog-alert">{error}</div>
       )}
 
-      <div className="product-catalog-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-        <div className="product-catalog-table-desktop overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-sm min-w-[28rem] xl:min-w-[36rem]">
-            <thead className="bg-slate-950/80 text-slate-400 text-xs uppercase">
+      <div className="product-catalog-results-bar">
+        {t('products.results', { count: displayList.length })}
+      </div>
+
+      <div className="product-catalog-table-panel">
+        <div className="product-catalog-table-head-bar">
+          {t('products.results', { count: displayList.length })}
+        </div>
+        <div className="product-catalog-table-desktop responsive-table-wrap">
+          <table className="product-catalog-table">
+            <thead>
               <tr>
-                <th className="text-left p-3">{t('products.colId')}</th>
-                <th className="text-left p-3">{t('products.colName')}</th>
-                <th className="text-left p-3 hidden md:table-cell">{t('products.colNameEn')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('products.colOrder')}</th>
-                <th className="text-left p-3 hidden sm:table-cell">{t('products.colStatus')}</th>
-                <th className="text-right p-3">{t('products.colActions')}</th>
+                <th>{t('products.colId')}</th>
+                <th>{t('products.colName')}</th>
+                <th className="product-catalog-col-name-en">{t('products.colNameEn')}</th>
+                <th className="product-catalog-col-order">{t('products.colOrder')}</th>
+                <th className="product-catalog-col-status">{t('products.colStatus')}</th>
+                <th className="product-catalog-col-actions">{t('products.colActions')}</th>
               </tr>
             </thead>
             <tbody>
               {displayList.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-slate-500">{t('products.empty')}</td>
+                  <td colSpan={6} className="product-catalog-table-empty">{t('products.empty')}</td>
                 </tr>
               ) : (
                 displayList.map(p => (
-                  <tr key={p.id} className="border-t border-slate-800 hover:bg-slate-800/50">
-                    <td className="p-3 font-mono text-xs text-slate-400">{p.id}</td>
-                    <td className="p-3 text-white">{p.name_ru}</td>
-                    <td className="p-3 text-slate-300 hidden md:table-cell">{p.name_en}</td>
-                    <td className="p-3 text-slate-400 hidden sm:table-cell">{p.sort_order ?? 0}</td>
-                    <td className="p-3 hidden sm:table-cell">{statusBadge(p)}</td>
-                    <td className="p-3 text-right">
-                      <div className="flex justify-end gap-1">
-                        <button
-                          type="button"
-                          onClick={() => openEdit(p)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-                          title={t('products.edit')}
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteTarget(p)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800"
-                          title={t('products.delete')}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                  <tr key={p.id}>
+                    <td>
+                      <span className="product-catalog-cell-id">{p.id}</span>
+                    </td>
+                    <td>
+                      <div className="product-catalog-cell-name">{p.name_ru}</div>
+                    </td>
+                    <td className="product-catalog-col-name-en">
+                      <div className="product-catalog-cell-name-en">{p.name_en}</div>
+                    </td>
+                    <td className="product-catalog-col-order product-catalog-cell-order">
+                      {p.sort_order ?? 0}
+                    </td>
+                    <td className="product-catalog-col-status">{statusBadge(p)}</td>
+                    <td className="product-catalog-col-actions">
+                      <ProductActions
+                        product={p}
+                        t={t}
+                        onEdit={openEdit}
+                        onDelete={setDeleteTarget}
+                        variant="table"
+                      />
                     </td>
                   </tr>
                 ))
@@ -373,15 +429,7 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
           <div className="product-catalog-empty">{t('products.empty')}</div>
         ) : (
           displayList.map(p => (
-            <ProductCard
-              key={p.id}
-              product={p}
-              locale={locale}
-              t={t}
-              onEdit={openEdit}
-              onDelete={setDeleteTarget}
-              statusBadge={statusBadge}
-            />
+            <ProductCard key={p.id} product={p} {...cardProps} />
           ))
         )}
       </div>
@@ -389,68 +437,67 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
       {modalOpen && (
         <ProductModalShell onClose={() => setModalOpen(false)}>
           <form onSubmit={handleSave} className="product-catalog-form-modal flex flex-col flex-1 min-h-0">
-            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">
+            <header className="modal-panel-header app-modal-sheet-header">
+              <div className="product-catalog-modal-head">
+                <h3 className="product-catalog-modal-title">
                   {editing ? t('products.editTitle') : t('products.addTitle')}
                 </h3>
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="product-catalog-modal-close-btn"
                   aria-label={t('common.close')}
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </header>
-            <div className="modal-panel-body modal-scrollbar px-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
-              {error && <p className="text-sm text-red-400">{error}</p>}
+            <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
+              {error && <p className="product-catalog-form-error">{error}</p>}
               {!editing && (
-                <label className="block space-y-1 text-xs">
-                  <span className="text-slate-400">{t('products.colId')}</span>
+                <label className="product-catalog-form-field">
+                  <span className="product-catalog-form-label">{t('products.colId')}</span>
                   <input
                     required
                     value={form.id}
                     onChange={e => setForm(f => ({ ...f, id: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '') }))}
                     placeholder="scraps"
-                    className={`${fieldClass} font-mono`}
+                    className="product-catalog-field product-catalog-field--mono"
                   />
-                  <span className="text-slate-500">{t('products.idHint')}</span>
+                  <span className="product-catalog-form-hint">{t('products.idHint')}</span>
                 </label>
               )}
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('products.nameRu')}</span>
-                <input required value={form.name_ru} onChange={e => setForm(f => ({ ...f, name_ru: e.target.value }))} className={fieldClass} />
+              <label className="product-catalog-form-field">
+                <span className="product-catalog-form-label">{t('products.nameRu')}</span>
+                <input required value={form.name_ru} onChange={e => setForm(f => ({ ...f, name_ru: e.target.value }))} className="product-catalog-field" />
               </label>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('products.nameEn')}</span>
-                <input required value={form.name_en} onChange={e => setForm(f => ({ ...f, name_en: e.target.value }))} className={fieldClass} />
+              <label className="product-catalog-form-field">
+                <span className="product-catalog-form-label">{t('products.nameEn')}</span>
+                <input required value={form.name_en} onChange={e => setForm(f => ({ ...f, name_en: e.target.value }))} className="product-catalog-field" />
               </label>
-              <label className="block space-y-1 text-xs">
-                <span className="text-slate-400">{t('products.colOrder')}</span>
+              <label className="product-catalog-form-field">
+                <span className="product-catalog-form-label">{t('products.colOrder')}</span>
                 <input
                   type="number"
                   value={form.sort_order}
                   onChange={e => setForm(f => ({ ...f, sort_order: e.target.value }))}
-                  className={fieldClass}
+                  className="product-catalog-field"
                 />
               </label>
-              <label className="flex items-center gap-2 text-xs text-slate-300 min-h-[2.75rem] sm:min-h-0">
+              <label className="product-catalog-form-checkbox">
                 <input
                   type="checkbox"
                   checked={form.is_active}
                   onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))}
-                  className="rounded border-slate-600"
                 />
                 {t('products.active')}
               </label>
             </div>
-            <footer className="product-catalog-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-              <button type="button" onClick={() => setModalOpen(false)} className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0">
+            <footer className="product-catalog-form-modal-footer modal-panel-footer">
+              <button type="button" onClick={() => setModalOpen(false)} className="product-catalog-form-cancel">
                 {t('common.cancel')}
               </button>
-              <button type="submit" disabled={saving} className="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0">
+              <button type="submit" disabled={saving} className="product-catalog-form-submit">
                 {saving ? t('admin.users.saving') : t('admin.users.save')}
               </button>
             </footer>
@@ -460,24 +507,24 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
 
       {deleteTarget && (
         <ProductModalShell onClose={() => setDeleteTarget(null)} maxWidthClass="max-w-sm">
-          <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
-            <h3 className="font-bold text-white">{t('products.deleteTitle')}</h3>
+          <header className="modal-panel-header app-modal-sheet-header">
+            <h3 className="product-catalog-modal-title">{t('products.deleteTitle')}</h3>
           </header>
-          <div className="modal-panel-body px-4 pb-2 space-y-2">
-            <p className="text-sm text-slate-400">
+          <div className="modal-panel-body">
+            <p className="product-catalog-modal-text">
               {t('products.deleteConfirm', { name: productLabel(deleteTarget) })}
             </p>
-            <p className="text-xs text-slate-500">{t('products.deleteHint')}</p>
+            <p className="product-catalog-modal-hint">{t('products.deleteHint')}</p>
           </div>
-          <footer className="product-catalog-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-            <button type="button" onClick={() => setDeleteTarget(null)} className="px-3 py-2 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0">
+          <footer className="product-catalog-form-modal-footer modal-panel-footer">
+            <button type="button" onClick={() => setDeleteTarget(null)} className="product-catalog-form-cancel">
               {t('common.cancel')}
             </button>
             <button
               type="button"
               onClick={() => void handleDelete()}
               disabled={saving}
-              className="px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0"
+              className="product-catalog-form-delete"
             >
               {t('products.delete')}
             </button>
