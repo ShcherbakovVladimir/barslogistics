@@ -99,18 +99,20 @@ export const FactoriesSchematicMap: React.FC<FactoriesSchematicMapProps> = ({
 
   if (tree.length === 0) {
     return (
-      <div className="factories-schematic-map-empty bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-sm shadow-xl">
+      <div className="factories-schematic-map-empty">
         {t('factories.empty')}
       </div>
     );
   }
 
   return (
-    <div className="factories-schematic-layout space-y-4">
-      <div className="factories-schematic-map-wrap bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-        <div className="factories-schematic-map-toolbar flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 border-b border-slate-800 text-[11px]">
-          <span className="text-slate-400">{t('factories.schematicHint')}</span>
-          <span className="text-slate-500">{t('factories.schematicMapRegions', { count: regionCounts.size })}</span>
+    <div className="factories-schematic-layout">
+      <div className="factories-schematic-map-wrap">
+        <div className="factories-schematic-map-toolbar">
+          <span className="factories-schematic-map-hint">{t('factories.schematicHint')}</span>
+          <span className="factories-schematic-map-meta">
+            {t('factories.schematicMapRegions', { count: regionCounts.size })}
+          </span>
         </div>
 
         <RussiaRegionsMap
@@ -120,35 +122,31 @@ export const FactoriesSchematicMap: React.FC<FactoriesSchematicMapProps> = ({
         />
       </div>
 
-      <div className="factories-schematic-regions-toolbar flex flex-wrap items-center justify-between gap-2">
-        <span className="text-xs text-slate-400 px-1">{t('factories.regionsListLabel')}</span>
-        <div className="factories-region-layout-toggle inline-flex rounded-xl border border-slate-800 p-0.5 bg-slate-950">
+      <div className="factories-schematic-regions-toolbar">
+        <span className="factories-schematic-regions-label">{t('factories.regionsListLabel')}</span>
+        <div className="factories-region-layout-toggle" role="group">
           <button
             type="button"
             onClick={() => setRegionLayout('list')}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-colors ${
-              regionLayout === 'list' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`factories-region-layout-btn${regionLayout === 'list' ? ' is-active' : ''}`}
             aria-pressed={regionLayout === 'list'}
           >
-            <Rows3 className="w-3.5 h-3.5" />
+            <Rows3 aria-hidden />
             {t('factories.layoutList')}
           </button>
           <button
             type="button"
             onClick={() => setRegionLayout('tiles')}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-colors ${
-              regionLayout === 'tiles' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`factories-region-layout-btn${regionLayout === 'tiles' ? ' is-active' : ''}`}
             aria-pressed={regionLayout === 'tiles'}
           >
-            <Grid2x2 className="w-3.5 h-3.5" />
+            <Grid2x2 aria-hidden />
             {t('factories.layoutTiles')}
           </button>
         </div>
       </div>
 
-      <div ref={accordionRef} className="factories-schematic-accordion space-y-4">
+      <div ref={accordionRef} className="factories-schematic-accordion">
         <FactoryRegionTreeView
           tree={domestic}
           searchQuery={searchQuery}
@@ -160,8 +158,8 @@ export const FactoriesSchematicMap: React.FC<FactoriesSchematicMapProps> = ({
         />
 
         {foreign.length > 0 && (
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 px-1">
+          <div className="factories-schematic-foreign">
+            <h3 className="factories-schematic-foreign-title">
               {t('factories.schematicForeignLabel')}
             </h3>
             <FactoryRegionTreeView

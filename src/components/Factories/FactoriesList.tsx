@@ -127,7 +127,7 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
     try { localStorage.setItem(REGION_LAYOUT_KEY, layout); } catch { /* ignore */ }
   };
 
-  const modalFieldClass = 'factory-add-modal-input w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20';
+  const modalFieldClass = 'factory-add-modal-input';
 
   const filteredFactories = useMemo(() => {
     return factories.filter(f => {
@@ -215,54 +215,58 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
     const routeCount = supplyLinks.filter(l => l.origin_id === factory.id || l.destination_id === factory.id).length;
 
     return (
-      <div
+      <article
         key={factory.id}
         onClick={() => onSelectFactory(factory)}
-        className="factories-card bg-slate-950/70 border border-slate-800 hover:border-slate-700 p-4 rounded-2xl shadow-lg transition-all hover:scale-[1.01] cursor-pointer relative group flex flex-col justify-between"
+        className="factories-card"
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelectFactory(factory);
+          }
+        }}
       >
-        <div>
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: badge.color }} />
-              <h3 className="font-bold text-white text-sm group-hover:text-indigo-400 transition-colors">
-                {factory.name}
-              </h3>
+        <div className="factories-card-body">
+          <div className="factories-card-top">
+            <div className="factories-card-title-row">
+              <span className="factories-card-dot" style={{ backgroundColor: badge.color }} aria-hidden />
+              <h3 className="factories-card-name">{factory.name}</h3>
             </div>
             {factory.is_ours && (
-              <span className="px-2 py-0.5 text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full font-bold flex items-center gap-1 shrink-0">
-                <ShieldCheck className="w-3 h-3" /> {t('common.ours')}
+              <span className="factories-card-ours">
+                <ShieldCheck aria-hidden /> {t('common.ours')}
               </span>
             )}
           </div>
 
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-            <span className={`px-2 py-0.5 rounded-lg border font-semibold text-[11px] ${badge.badgeBg}`}>
+          <div className="factories-card-meta-row">
+            <span className={`factories-card-type ${badge.badgeBg}`}>
               {typeLabels[factory.type]}
             </span>
-            <span className="text-slate-400 font-medium">
+            <span className="factories-card-region">
               {factory.region}, {factory.country}
             </span>
           </div>
 
           {factory.holding && (
-            <div className="mt-2 text-xs text-slate-300">
+            <div className="factories-card-holding">
               {t('factories.holdingLabel', { name: factory.holding })}
             </div>
           )}
 
           {factory.description && (
-            <p className="mt-2 text-xs text-slate-400 line-clamp-2 italic">
-              {factory.description}
-            </p>
+            <p className="factories-card-desc">{factory.description}</p>
           )}
         </div>
 
-        <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs text-slate-400">
-          <div className="flex items-center gap-1 text-[11px] min-w-0">
-            <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            <span className="truncate">{factory.latitude.toFixed(2)}, {factory.longitude.toFixed(2)}</span>
+        <div className="factories-card-footer">
+          <div className="factories-card-coords">
+            <MapPin aria-hidden />
+            <span>{factory.latitude.toFixed(2)}, {factory.longitude.toFixed(2)}</span>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="factories-card-actions">
             {canEdit && onSitesChanged && (
               <button
                 type="button"
@@ -270,50 +274,52 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                   e.stopPropagation();
                   setEditingSite(factory);
                 }}
-                className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-600/20 text-amber-300 hover:bg-amber-600 hover:text-white text-[10px] font-semibold border border-amber-500/30"
+                className="factories-card-edit"
                 title={t('siteDirectory.admin.edit')}
               >
-                <Pencil className="w-3 h-3" />
+                <Pencil aria-hidden />
               </button>
             )}
-            <div className="font-medium text-slate-300 flex items-center gap-2">
+            <div className="factories-card-routes">
               {(factory.edit_count ?? 0) > 0 && (
-                <span className="text-[10px] text-slate-500 font-mono" title={t('factories.editCount', { count: factory.edit_count ?? 0 })}>
+                <span className="factories-card-edits" title={t('factories.editCount', { count: factory.edit_count ?? 0 })}>
                   #{factory.edit_count}
                 </span>
               )}
               <span>{t('factories.routesCount', { count: routeCount })}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-indigo-400" />
+              <ArrowUpRight aria-hidden />
             </div>
           </div>
         </div>
-      </div>
+      </article>
     );
   };
 
   return (
-    <div className="factories-page p-4 sm:p-6 space-y-6 bg-slate-950 min-h-full text-slate-100">
-
-      <div className="factories-list-toolbar shipments-list-toolbar flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl">
-        <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-indigo-400" />
-            <span>{t('factories.title', { filtered: filteredFactories.length, total: factories.length })}</span>
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            {t('factories.subtitle')}
-          </p>
+    <div className="factories-page">
+      <div className="factories-list-toolbar shipments-list-toolbar">
+        <div className="shipments-list-toolbar-head">
+          <span className="shipments-list-toolbar-icon" aria-hidden>
+            <Building2 />
+          </span>
+          <div className="shipments-list-toolbar-text">
+            <h2 className="shipments-list-title">
+              <span className="truncate">
+                {t('factories.title', { filtered: filteredFactories.length, total: factories.length })}
+              </span>
+            </h2>
+            <p className="shipments-list-subtitle">{t('factories.subtitle')}</p>
+          </div>
         </div>
 
-        <div className="shipments-list-filters flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs text-white w-full sm:w-60">
-            <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+        <div className="shipments-list-filters shipments-list-filters-grid">
+          <div className="shipments-list-search">
+            <Search aria-hidden />
             <input
               type="text"
               placeholder={t('factories.searchPlaceholder')}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="bg-transparent focus:outline-none w-full placeholder-slate-500"
             />
           </div>
 
@@ -354,40 +360,39 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
             <button
               type="button"
               onClick={() => setShowAddModal(true)}
-              className="factories-add-btn flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-lg transition-colors shrink-0"
+              className="factories-add-btn"
             >
-              <Plus className="w-4 h-4" />
+              <Plus aria-hidden />
               <span>{t('factories.addButton')}</span>
             </button>
           )}
         </div>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <div className="inline-flex rounded-xl border border-slate-800 p-0.5 bg-slate-950">
-            <button
-              type="button"
-              onClick={() => setViewMode('schematic')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                viewMode === 'schematic'
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              {t('factories.viewSchematic')}
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                viewMode === 'list'
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <ListTree className="w-3.5 h-3.5" />
-              {t('factories.viewList')}
-            </button>
-          </div>
+
+        <div
+          className="factories-view-modes"
+          role="tablist"
+          aria-label={t('mapFilter.viewMode')}
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'schematic'}
+            className={`factories-view-mode-tab${viewMode === 'schematic' ? ' is-active' : ''}`}
+            onClick={() => setViewMode('schematic')}
+          >
+            <LayoutGrid aria-hidden />
+            {t('factories.viewSchematic')}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'list'}
+            className={`factories-view-mode-tab${viewMode === 'list' ? ' is-active' : ''}`}
+            onClick={() => setViewMode('list')}
+          >
+            <ListTree aria-hidden />
+            {t('factories.viewList')}
+          </button>
         </div>
       </div>
 
@@ -426,23 +431,30 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
         <div className="modal-backdrop">
           <form
             onSubmit={handleCreate}
-            className="factory-add-modal modal-panel bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4 text-slate-100 shadow-2xl"
+            className="factory-add-modal modal-panel"
           >
-            <div className="modal-panel-header flex items-center justify-between border-b border-slate-800 pb-3 -mt-1">
-              <h3 className="font-bold text-base text-white flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-indigo-400" />
+            <div className="modal-panel-header factory-add-modal-header">
+              <h3 className="factory-add-modal-title">
+                <Building2 aria-hidden />
                 <span>{t('factories.modalTitle')}</span>
               </h3>
-              <button type="button" onClick={() => { setShowAddModal(false); setAddError(''); }} className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors">✕</button>
+              <button
+                type="button"
+                onClick={() => { setShowAddModal(false); setAddError(''); }}
+                className="factory-add-modal-close"
+                aria-label={t('common.cancel')}
+              >
+                ✕
+              </button>
             </div>
 
             {addError && (
-              <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-2">{addError}</div>
+              <div className="factory-add-modal-error">{addError}</div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.nameLabel')}</label>
+            <div className="factory-add-modal-grid">
+              <div className="factory-add-modal-field factory-add-modal-field--full">
+                <label>{t('factories.nameLabel')}</label>
                 <input
                   type="text"
                   required
@@ -453,8 +465,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.typeLabel')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.typeLabel')}</label>
                 <div className="factory-add-modal-select map-filter-panel">
                   <SearchableSelect
                     value={newFacType}
@@ -468,8 +480,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.ownershipLabel')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.ownershipLabel')}</label>
                 <div className="factory-add-modal-select map-filter-panel">
                   <SearchableSelect
                     value={newFacIsOurs ? 'true' : 'false'}
@@ -483,8 +495,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.latitude')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.latitude')}</label>
                 <input
                   type="number"
                   step="0.0001"
@@ -494,8 +506,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.longitude')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.longitude')}</label>
                 <input
                   type="number"
                   step="0.0001"
@@ -505,8 +517,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.region')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.region')}</label>
                 <KladrAddressInput
                   mode="region"
                   value={newFacRegion}
@@ -516,8 +528,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.country')}</label>
+              <div className="factory-add-modal-field">
+                <label>{t('factories.country')}</label>
                 <input
                   type="text"
                   value={newFacCountry}
@@ -526,8 +538,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">{t('siteDirectory.admin.colAddress')}</label>
+              <div className="factory-add-modal-field factory-add-modal-field--full">
+                <label>{t('siteDirectory.admin.colAddress')}</label>
                 <KladrAddressInput
                   value={newFacAddress}
                   onChange={setNewFacAddress}
@@ -536,8 +548,8 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.holdingField')}</label>
+              <div className="factory-add-modal-field factory-add-modal-field--full">
+                <label>{t('factories.holdingField')}</label>
                 <input
                   type="text"
                   placeholder={t('factories.holdingPlaceholder')}
@@ -547,30 +559,30 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
                 />
               </div>
 
-              <div className="col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">{t('factories.description')}</label>
+              <div className="factory-add-modal-field factory-add-modal-field--full">
+                <label>{t('factories.description')}</label>
                 <textarea
                   rows={2}
                   placeholder={t('factories.descriptionPlaceholder')}
                   value={newFacDesc}
                   onChange={e => setNewFacDesc(e.target.value)}
-                  className={`${modalFieldClass} resize-y min-h-[4.5rem]`}
+                  className={`${modalFieldClass} factory-add-modal-textarea`}
                 />
               </div>
             </div>
 
-            <div className="modal-panel-footer flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+            <div className="modal-panel-footer factory-add-modal-footer">
               <button
                 type="button"
                 onClick={() => { setShowAddModal(false); setAddError(''); }}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold"
+                className="factory-add-modal-cancel"
               >
                 {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={addSaving}
-                className="factory-add-modal-submit px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow-lg"
+                className="factory-add-modal-submit"
               >
                 {addSaving ? t('admin.users.saving') : t('factories.save')}
               </button>

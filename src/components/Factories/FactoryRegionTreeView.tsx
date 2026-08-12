@@ -36,37 +36,37 @@ function RegionSettlementsBody({
 }) {
   const { t } = useI18n();
   return (
-    <div className="factories-region-body border-t border-slate-800/80">
+    <div className="factories-region-body">
       {region.settlements.map(settlement => {
         const compound = `${region.key}::${settlement.key}`;
         const settlementOpen = expandedSettlements.has(compound)
           || (searchQuery.trim() !== '' && searchExpandedSettlements.has(compound));
 
         return (
-          <div key={compound} className="factories-settlement-node border-b border-slate-800/60 last:border-b-0">
+          <div key={compound} className="factories-settlement-node">
             <button
               type="button"
               onClick={() => toggleSettlement(region.key, settlement.key)}
-              className="factories-settlement-header w-full flex items-center gap-2 pl-6 pr-4 py-2.5 text-left hover:bg-slate-800/40 transition-colors"
+              className="factories-settlement-header"
               aria-expanded={settlementOpen}
             >
               {settlementOpen ? (
-                <ChevronDown className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <ChevronDown className="factories-tree-chevron is-open" aria-hidden />
               ) : (
-                <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <ChevronRight className="factories-tree-chevron" aria-hidden />
               )}
-              <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <div className="font-semibold text-xs text-slate-200 truncate">{settlement.label}</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">
+              <MapPin className="factories-tree-pin" aria-hidden />
+              <div className="factories-settlement-text">
+                <div className="factories-settlement-name">{settlement.label}</div>
+                <div className="factories-settlement-count">
                   {t('factories.settlementObjects', { count: settlement.factories.length })}
                 </div>
               </div>
             </button>
 
             {settlementOpen && (
-              <div className="factories-settlement-body px-4 pb-4 pl-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+              <div className="factories-settlement-body">
+                <div className="factories-settlement-grid">
                   {settlement.factories.map(factory => (
                     <React.Fragment key={factory.id}>
                       {renderFactory(factory)}
@@ -180,55 +180,43 @@ export const FactoryRegionTreeView: React.FC<FactoryRegionTreeViewProps> = ({
 
   if (tree.length === 0) {
     return (
-      <div className="factories-region-tree-empty bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-sm shadow-xl">
+      <div className="factories-region-tree-empty">
         {t('factories.empty')}
       </div>
     );
   }
 
   const toolbar = (showLayoutToggle || (!effectiveSingleOpen && layout === 'list')) ? (
-    <div className="factories-region-tree-toolbar flex flex-wrap items-center justify-between gap-2">
+    <div className="factories-region-tree-toolbar">
       {showLayoutToggle && onLayoutChange ? (
-        <div className="factories-region-layout-toggle inline-flex rounded-xl border border-slate-800 p-0.5 bg-slate-950">
+        <div className="factories-region-layout-toggle" role="group">
           <button
             type="button"
             onClick={() => onLayoutChange('list')}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-colors ${
-              layout === 'list' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`factories-region-layout-btn${layout === 'list' ? ' is-active' : ''}`}
             aria-pressed={layout === 'list'}
           >
-            <Rows3 className="w-3.5 h-3.5" />
+            <Rows3 aria-hidden />
             {t('factories.layoutList')}
           </button>
           <button
             type="button"
             onClick={() => onLayoutChange('tiles')}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-colors ${
-              layout === 'tiles' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`factories-region-layout-btn${layout === 'tiles' ? ' is-active' : ''}`}
             aria-pressed={layout === 'tiles'}
           >
-            <Grid2x2 className="w-3.5 h-3.5" />
+            <Grid2x2 aria-hidden />
             {t('factories.layoutTiles')}
           </button>
         </div>
       ) : <span />}
 
       {!effectiveSingleOpen && layout === 'list' ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={expandAll}
-            className="px-3 py-1.5 rounded-lg text-[11px] font-semibold border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-          >
+        <div className="factories-region-tree-actions">
+          <button type="button" onClick={expandAll} className="factories-region-action-btn">
             {t('factories.expandAll')}
           </button>
-          <button
-            type="button"
-            onClick={collapseAll}
-            className="px-3 py-1.5 rounded-lg text-[11px] font-semibold border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-          >
+          <button type="button" onClick={collapseAll} className="factories-region-action-btn">
             {t('factories.collapseAll')}
           </button>
         </div>
@@ -238,7 +226,7 @@ export const FactoryRegionTreeView: React.FC<FactoryRegionTreeViewProps> = ({
 
   if (layout === 'tiles') {
     return (
-      <div className="factories-region-tree factories-region-tree--tiles space-y-3">
+      <div className="factories-region-tree factories-region-tree--tiles">
         {toolbar}
         <div className="factories-region-tiles" role="list">
           {displayTree.map(region => {
@@ -272,19 +260,19 @@ export const FactoryRegionTreeView: React.FC<FactoryRegionTreeViewProps> = ({
         {openRegion ? (
           <section
             data-region-key={openRegion.key}
-            className="factories-region-tile-detail factories-region-node bg-slate-900 border border-indigo-500/50 ring-1 ring-indigo-500/20 rounded-2xl shadow-xl overflow-hidden"
+            className="factories-region-tile-detail factories-region-node is-active"
           >
-            <div className="factories-region-header flex items-center gap-2 px-4 py-3">
-              <ChevronDown className="w-4 h-4 text-indigo-400 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <div className="font-bold text-sm text-white truncate">
+            <div className="factories-region-header factories-region-header--static">
+              <ChevronDown className="factories-tree-chevron is-open" aria-hidden />
+              <div className="factories-region-text">
+                <div className="factories-region-name">
                   {(() => {
                     const code = getRegionNumberForLabel(openRegion.label);
                     return code ? <span className="factories-region-detail-code">{code}</span> : null;
                   })()}
                   {openRegion.label}
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">
+                <div className="factories-region-count">
                   {t('factories.regionObjects', { count: openRegion.factoryCount })}
                 </div>
               </div>
@@ -304,7 +292,7 @@ export const FactoryRegionTreeView: React.FC<FactoryRegionTreeViewProps> = ({
   }
 
   return (
-    <div className="factories-region-tree space-y-3">
+    <div className="factories-region-tree">
       {toolbar}
 
       {tree.map(region => {
@@ -317,24 +305,22 @@ export const FactoryRegionTreeView: React.FC<FactoryRegionTreeViewProps> = ({
           <section
             key={region.key}
             data-region-key={region.key}
-            className={`factories-region-node bg-slate-900 border rounded-2xl shadow-xl overflow-hidden transition-colors ${
-              isActive ? 'border-indigo-500/50 ring-1 ring-indigo-500/20' : 'border-slate-800'
-            }`}
+            className={`factories-region-node${isActive ? ' is-active' : ''}`}
           >
             <button
               type="button"
               onClick={() => toggleRegion(region.key)}
-              className="factories-region-header w-full flex items-center gap-2 px-4 py-3 text-left hover:bg-slate-800/60 transition-colors"
+              className="factories-region-header"
               aria-expanded={regionOpen}
             >
               {regionOpen ? (
-                <ChevronDown className="w-4 h-4 text-indigo-400 shrink-0" />
+                <ChevronDown className="factories-tree-chevron is-open" aria-hidden />
               ) : (
-                <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
+                <ChevronRight className="factories-tree-chevron" aria-hidden />
               )}
-              <div className="min-w-0 flex-1">
-                <div className="font-bold text-sm text-white truncate">{region.label}</div>
-                <div className="text-[10px] text-slate-400 mt-0.5">
+              <div className="factories-region-text">
+                <div className="factories-region-name">{region.label}</div>
+                <div className="factories-region-count">
                   {t('factories.regionObjects', { count: region.factoryCount })}
                 </div>
               </div>
