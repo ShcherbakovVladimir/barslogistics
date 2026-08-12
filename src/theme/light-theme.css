@@ -3663,6 +3663,31 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   color: #0f172a !important;
 }
 
+[data-theme="light"] .map-top-controls .map-desktop-theme-toggle {
+  background: rgb(255 255 255 / 0.95) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.08) !important;
+}
+
+[data-theme="light"] .map-top-controls .map-desktop-theme-toggle:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .map-top-controls .map-desktop-theme-toggle button {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .map-top-controls .map-desktop-theme-toggle button:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+[data-theme="light"] .map-top-controls .map-desktop-theme-toggle button.is-active {
+  background: #4f46e5 !important;
+  color: #fff !important;
+}
+
 [data-theme="light"] .map-search-input {
   color: #0f172a !important;
 }
@@ -3679,10 +3704,6 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 [data-theme="light"] .map-chrome-panel--highlight,
 [data-theme="light"] .map-chrome-panel--position {
   border-color: rgb(217 119 6 / 0.35) !important;
-}
-
-[data-theme="light"] .map-chrome-panel--csv {
-  border-left-color: #d97706 !important;
 }
 
 [data-theme="light"] .map-csv-preview-title,
@@ -3968,7 +3989,6 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 
 [data-theme="light"] .map-imported-hint {
   border-color: #cbd5e1 !important;
-  border-left-color: #d97706 !important;
 }
 
 [data-theme="light"] .map-imported-hint p {

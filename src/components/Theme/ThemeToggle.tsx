@@ -15,20 +15,17 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
   const mode = useAppSelector(state => state.theme.mode);
 
   if (compact) {
-    const inHeader = className.includes('app-header-theme-toggle');
+    const useChromeToggle =
+      className.includes('app-header-theme-toggle') ||
+      className.includes('map-desktop-theme-toggle');
+
     return (
-      <div
-        className={`flex items-center ${
-          inHeader
-            ? className
-            : `p-1 rounded-lg border border-slate-700/80 bg-slate-900/90 backdrop-blur-md shadow-lg ${className}`
-        }`}
-      >
+      <div className={useChromeToggle ? className : `p-1 rounded-lg border border-slate-700/80 bg-slate-900/90 backdrop-blur-md shadow-lg ${className}`}>
         <button
           type="button"
           onClick={() => dispatch(setTheme('dark'))}
           className={
-            inHeader
+            useChromeToggle
               ? mode === 'dark'
                 ? 'is-active'
                 : ''
@@ -44,7 +41,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
           type="button"
           onClick={() => dispatch(setTheme('light'))}
           className={
-            inHeader
+            useChromeToggle
               ? mode === 'light'
                 ? 'is-active'
                 : ''
