@@ -485,7 +485,11 @@ html.portal-embed .header-nav-scroll {
   overflow: auto;
 }
 
-.scroll-area:has(> .site-directory-page) {
+.scroll-area:has(> .site-directory-page),
+.scroll-area:has(> .product-catalog-page),
+.scroll-area:has(> .my-data-page),
+.scroll-area:has(.admin-sites-page),
+.scroll-area:has(.admin-backups-embedded) {
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -4873,7 +4877,10 @@ html.portal-embed .header-nav-scroll {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  min-height: 100%;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
   padding: 1rem;
   color: #e2e8f0;
   background: #020617;
@@ -4890,6 +4897,10 @@ html.portal-embed .header-nav-scroll {
   flex-direction: column;
   align-items: stretch;
   gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.product-catalog-page > :not(.product-catalog-table-panel):not(.product-catalog-cards-mobile) {
   flex-shrink: 0;
 }
 
@@ -5018,6 +5029,17 @@ html.portal-embed .header-nav-scroll {
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.28);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 12rem;
+}
+
+.product-catalog-table-desktop {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .product-catalog-table-head-bar {
@@ -5038,17 +5060,25 @@ html.portal-embed .header-nav-scroll {
 .product-catalog-table {
   width: 100%;
   min-width: 28rem;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.8125rem;
 }
 
 .product-catalog-table thead {
-  background: rgb(2 6 23 / 0.55);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgb(15 23 42);
   color: #94a3b8;
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.product-catalog-table th {
+  background: rgb(15 23 42);
 }
 
 .product-catalog-table th,
@@ -5181,6 +5211,10 @@ html.portal-embed .header-nav-scroll {
 
 .product-catalog-cards-mobile {
   display: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .product-catalog-card {
@@ -6852,7 +6886,10 @@ html.portal-embed .header-nav-scroll {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  min-height: 100%;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
   padding: 1rem;
   color: #e2e8f0;
   background: #020617;
@@ -6869,6 +6906,11 @@ html.portal-embed .header-nav-scroll {
   flex-direction: column;
   align-items: stretch;
   gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.my-data-page > .my-data-toolbar,
+.my-data-page > .my-data-results-bar {
   flex-shrink: 0;
 }
 
@@ -6988,15 +7030,35 @@ html.portal-embed .header-nav-scroll {
   overflow: hidden;
 }
 
+.my-data-table-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 12rem;
+}
+
+.my-data-imports-panel,
+.my-data-changelog {
+  flex: 0 1 auto;
+  max-height: 14rem;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
 .my-data-table-desktop,
 .my-data-imports-table-desktop {
-  overflow-x: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .my-data-table {
   width: 100%;
   min-width: 28rem;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.8125rem;
 }
 
@@ -7005,12 +7067,19 @@ html.portal-embed .header-nav-scroll {
 }
 
 .my-data-table thead {
-  background: rgb(2 6 23 / 0.55);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgb(15 23 42);
   color: #94a3b8;
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.my-data-table th {
+  background: rgb(15 23 42);
 }
 
 .my-data-table th,
@@ -7338,11 +7407,10 @@ html.portal-embed .header-nav-scroll {
 .my-data-shipments-cards-mobile,
 .my-data-imports-cards-mobile {
   display: none;
-}
-
-.my-data-shipments-cards-mobile,
-.my-data-imports-cards-mobile {
-  display: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
   flex-direction: column;
   gap: 0.65rem;
   padding: 0.85rem;
@@ -7697,6 +7765,7 @@ html.portal-embed .header-nav-scroll {
   flex-direction: column;
   gap: 0.85rem;
   min-width: 0;
+  min-height: 0;
   flex: 1;
 }
 
@@ -7711,6 +7780,34 @@ html.portal-embed .header-nav-scroll {
 
 .admin-section-body {
   min-width: 0;
+}
+
+.admin-panel:has(.admin-sites-page),
+.admin-panel:has(.admin-backups-embedded) {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.admin-panel:has(.admin-sites-page) .admin-panel-layout,
+.admin-panel:has(.admin-backups-embedded) .admin-panel-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+.admin-panel:has(.admin-sites-page) .admin-content,
+.admin-panel:has(.admin-backups-embedded) .admin-content {
+  overflow: hidden;
+}
+
+.admin-panel:has(.admin-sites-page) .admin-section-body,
+.admin-panel:has(.admin-backups-embedded) .admin-section-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Shared admin cards / panels */
@@ -8266,6 +8363,105 @@ html.portal-embed .header-nav-scroll {
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.25);
 }
 
+.admin-sites-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.admin-sites-page > :not(.admin-sites-table-panel) {
+  flex-shrink: 0;
+}
+
+.admin-sites-page > .admin-sites-table-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.admin-sites-table-desktop {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-sites-cards-mobile {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-backups-embedded {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  gap: 1rem;
+}
+
+.admin-backups-embedded .admin-backups-toolbar {
+  flex-shrink: 0;
+}
+
+.admin-backups-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 1rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-backups-embedded .admin-db-tools {
+  flex-shrink: 0;
+}
+
+.admin-backups-embedded .admin-db-migrations {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 45%;
+  min-height: 12rem;
+  overflow: hidden;
+}
+
+.admin-backups-embedded .admin-backups-table-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-backups-list-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 40%;
+  min-height: 10rem;
+  overflow: hidden;
+  gap: 1rem;
+}
+
+.admin-backups-list-section .admin-backups-section-title {
+  flex-shrink: 0;
+}
+
+.admin-backups-list-section .admin-backups-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  align-content: start;
+}
+
 .admin-users-table-panel table,
 .admin-sites-table-panel table,
 .admin-backups-table-panel table {
@@ -8276,8 +8472,17 @@ html.portal-embed .header-nav-scroll {
 .admin-users-table-panel thead,
 .admin-sites-table-panel thead,
 .admin-backups-table-panel thead {
-  background: rgb(2 6 23 / 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgb(15 23 42);
   color: #64748b;
+}
+
+.admin-users-table-panel th,
+.admin-sites-table-panel th,
+.admin-backups-table-panel th {
+  background: rgb(15 23 42);
 }
 
 .admin-users-table-panel th,

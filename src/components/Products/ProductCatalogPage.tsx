@@ -374,7 +374,7 @@ export const ProductCatalogPage: React.FC<ProductCatalogPageProps> = ({
         <div className="product-catalog-table-head-bar">
           {t('products.results', { count: displayList.length })}
         </div>
-        <div className="product-catalog-table-desktop responsive-table-wrap">
+        <div className="product-catalog-table-desktop responsive-table-wrap theme-scrollbar">
           <table className="product-catalog-table">
             <thead>
               <tr>

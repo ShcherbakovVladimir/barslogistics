@@ -1715,6 +1715,9 @@ html.layout-fold .product-catalog-cards-mobile {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 html.layout-mobile .product-catalog-filters-grid,
@@ -1828,6 +1831,9 @@ html.layout-fold .my-data-imports-cards-mobile {
   flex-direction: column;
   gap: 0.625rem;
   padding: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 html.layout-mobile .my-data-form-modal-footer button,
@@ -1909,6 +1915,9 @@ html.layout-fold .admin-sites-cards-mobile {
   flex-direction: column;
   gap: 0.625rem;
   padding: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 html.layout-mobile .admin-users-form-grid,

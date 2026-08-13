@@ -182,7 +182,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
   };
 
   return (
-    <div className={embedded ? 'admin-backups-embedded space-y-4' : 'admin-backups admin-panel space-y-6'}>
+    <div className={embedded ? 'admin-backups-embedded' : 'admin-backups admin-panel space-y-6'}>
 
       <div className="admin-backups-toolbar">
         {!embedded ? (
@@ -227,6 +227,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
         </div>
       </div>
 
+      <div className="admin-backups-body">
       {canBackup && (
         <>
           <section className="admin-db-tools space-y-4">
@@ -325,7 +326,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
               </div>
             </div>
 
-            <div className="admin-backups-table-panel overflow-x-auto responsive-table-wrap">
+            <div className="admin-backups-table-panel responsive-table-wrap theme-scrollbar">
               <table>
                 <thead>
                   <tr>
@@ -374,14 +375,14 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
         </>
       )}
 
-      <section className="space-y-4">
+      <section className="admin-backups-list-section">
         <h3 className="admin-backups-section-title">
           <Database aria-hidden />
           {t('backups.sectionBackups')}
           <span className="admin-backups-section-count">({backups.length})</span>
         </h3>
 
-        <div className="admin-backups-grid">
+        <div className="admin-backups-grid theme-scrollbar">
           {backups.length === 0 && (
             <div className="admin-backups-empty">—</div>
           )}
@@ -462,6 +463,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
           ))}
         </div>
       </section>
+      </div>
 
     </div>
   );

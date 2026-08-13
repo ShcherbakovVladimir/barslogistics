@@ -2229,7 +2229,8 @@ html.layout-fold[data-theme="light"] .modal-backdrop .carrier-directory-modal.ap
 }
 
 [data-theme="light"] .product-catalog-table thead,
-[data-theme="light"] .product-catalog-table-head-bar {
+[data-theme="light"] .product-catalog-table-head-bar,
+[data-theme="light"] .product-catalog-table th {
   background: #f8fafc !important;
   border-color: #e2e8f0 !important;
   color: #64748b !important;
@@ -3085,6 +3086,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
 }
 
 [data-theme="light"] .my-data-table thead,
+[data-theme="light"] .my-data-table th,
 [data-theme="light"] .my-data-imports-title,
 [data-theme="light"] .my-data-changelog-title {
   background: #f8fafc !important;
@@ -3764,7 +3766,10 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 /* ── Admin: Пользователи ── */
 [data-theme="light"] .admin-users-table-panel thead,
 [data-theme="light"] .admin-sites-table-panel thead,
-[data-theme="light"] .admin-backups-table-panel thead {
+[data-theme="light"] .admin-backups-table-panel thead,
+[data-theme="light"] .admin-users-table-panel th,
+[data-theme="light"] .admin-sites-table-panel th,
+[data-theme="light"] .admin-backups-table-panel th {
   background: #f8fafc !important;
   color: #64748b !important;
 }

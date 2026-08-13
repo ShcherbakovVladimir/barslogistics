@@ -301,8 +301,8 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
         <div className="admin-alert admin-alert--error">{error}</div>
       ) : null}
 
-      <div className="admin-sites-table-panel overflow-x-auto responsive-table-wrap">
-        <div className="admin-sites-table-desktop">
+      <div className="admin-sites-table-panel">
+        <div className="admin-sites-table-desktop responsive-table-wrap theme-scrollbar">
         <table>
           <thead>
             <tr>
