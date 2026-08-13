@@ -890,11 +890,12 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
 /* ── Shipment events (light) ── */
 [data-theme="light"] .shipment-events-panel {
   --se-field-bg: #ffffff;
-  --se-field-border: #cbd5e1;
-  --se-field-border-hover: rgb(16 185 129 / 0.45);
-  --se-field-focus: #059669;
-  --se-field-focus-ring: rgb(16 185 129 / 0.18);
+  --se-field-border: #e2e8f0;
+  --se-field-border-hover: rgb(99 102 241 / 0.45);
+  --se-field-focus: #6366f1;
+  --se-field-focus-ring: rgb(99 102 241 / 0.18);
   --se-option-bg: #ffffff;
+  color: #334155;
 }
 
 /* Shipments page — chrome panels (light) */
@@ -1192,20 +1193,89 @@ html.layout-fold[data-theme="light"] .app-modal-sheet .modal-panel-footer {
   border-color: rgb(110 231 183) !important;
 }
 
-[data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger {
+[data-theme="light"] .shipment-events-panel label > span {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-event-check {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .shipment-events-panel select,
+[data-theme="light"] .shipment-events-panel input,
+[data-theme="light"] .shipment-events-panel textarea {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-events-panel select:hover:not(:disabled),
+[data-theme="light"] .shipment-events-panel input:hover:not(:disabled),
+[data-theme="light"] .shipment-events-panel textarea:hover:not(:disabled) {
+  background-color: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .shipment-events-panel option,
+[data-theme="light"] .shipment-events-panel optgroup {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-events-panel input::placeholder,
+[data-theme="light"] .shipment-events-panel textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .shipment-events-panel .modal-dropdown-trigger {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   color: #0f172a !important;
   border-radius: 9999px !important;
 }
 
-[data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger:hover:not(:disabled),
-[data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-trigger.is-open {
+[data-theme="light"] .shipment-events-panel .modal-dropdown-trigger:hover:not(:disabled),
+[data-theme="light"] .shipment-events-panel .modal-dropdown-trigger.is-open {
   background-color: #f8fafc !important;
   border-color: rgb(99 102 241 / 0.45) !important;
 }
 
-[data-theme="light"] .shipments-page .shipment-events-panel .modal-dropdown-chevron {
+[data-theme="light"] .shipment-events-panel .modal-dropdown-chevron {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .shipment-events-panel .modal-dropdown-placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel,
+[data-theme="light"] .shipment-events-dropdown-panel {
+  background: rgb(255 255 255 / 0.98) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.12) !important;
+}
+
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel .modal-dropdown-option,
+[data-theme="light"] .shipment-events-dropdown-panel .modal-dropdown-option {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel .modal-dropdown-option:hover,
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel .modal-dropdown-option:focus-visible,
+[data-theme="light"] .shipment-events-dropdown-panel .modal-dropdown-option:hover,
+[data-theme="light"] .shipment-events-dropdown-panel .modal-dropdown-option:focus-visible {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel .modal-dropdown-option.is-selected,
+[data-theme="light"] .shipment-events-dropdown-panel .modal-dropdown-option.is-selected {
+  background: rgb(99 102 241 / 0.12) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .shipment-events-panel .shipments-list-dropdown-panel .modal-dropdown-check,
+[data-theme="light"] .shipment-events-dropdown-panel .modal-dropdown-check {
   color: #6366f1 !important;
 }
 
