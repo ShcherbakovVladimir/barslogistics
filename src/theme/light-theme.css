@@ -3109,6 +3109,21 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
   color: #334155 !important;
 }
 
+[data-theme="light"] .my-data-resize-handle {
+  background: #f8fafc !important;
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .my-data-resize-handle-bar {
+  background: rgb(148 163 184 / 0.85);
+}
+
+[data-theme="light"] .my-data-resize-handle:hover .my-data-resize-handle-bar,
+[data-theme="light"] .my-data-resize-handle:focus-visible .my-data-resize-handle-bar,
+[data-theme="light"] .my-data-resize-handle.is-dragging .my-data-resize-handle-bar {
+  background: #6366f1;
+}
+
 [data-theme="light"] .my-data-empty {
   background: #f8fafc;
   border-color: #e2e8f0;

@@ -463,6 +463,7 @@ const ru = {
     colDuplicates: 'Дубликаты',
     results: 'Записей: {count}',
     empty: 'Нет записей',
+    resizePanel: 'Изменить высоту блока',
   },
   routeModal: {
     title: 'Маршрут',
@@ -2214,6 +2215,7 @@ const en: DeepStringRecord<TranslationDict> = {
     colDuplicates: 'Duplicates',
     results: 'Records: {count}',
     empty: 'No records',
+    resizePanel: 'Resize panel height',
   },
   routeModal: {
     title: 'Route',

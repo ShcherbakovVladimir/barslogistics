@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { Plus, Save, History, Upload, ClipboardList, X, Download } from 'lucide-react';
 import type {
   Factory,
@@ -48,6 +48,86 @@ export interface MyDataPanelProps {
 
 const STATUSES: CargoStatus[] = ['en_route', 'delayed', 'arrived', 'loading', 'alert'];
 const FLOWS: FlowType[] = ['shipment', 'purchase', 'internal'];
+
+type MyDataPanelId = 'table' | 'imports' | 'changelog';
+
+const PANEL_HEIGHTS_KEY = 'bars.myData.panelHeights';
+const PANEL_MIN_HEIGHT = 128;
+const PANEL_MAX_HEIGHT = 2000;
+const PANEL_DEFAULT_SECONDARY = 224;
+
+function clampPanelHeight(value: number): number {
+  return Math.round(Math.min(Math.max(value, PANEL_MIN_HEIGHT), PANEL_MAX_HEIGHT));
+}
+
+function readStoredPanelHeights(): Partial<Record<MyDataPanelId, number>> {
+  try {
+    const raw = localStorage.getItem(PANEL_HEIGHTS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const next: Partial<Record<MyDataPanelId, number>> = {};
+    for (const id of ['table', 'imports', 'changelog'] as const) {
+      const value = parsed[id];
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        next[id] = clampPanelHeight(value);
+      }
+    }
+    return next;
+  } catch {
+    return {};
+  }
+}
+
+function persistPanelHeights(heights: Partial<Record<MyDataPanelId, number>>) {
+  try {
+    localStorage.setItem(PANEL_HEIGHTS_KEY, JSON.stringify(heights));
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+interface PanelResizeHandleProps {
+  label: string;
+  dragging: boolean;
+  onPointerDown: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onPointerMove: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onPointerUp: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onKeyNudge: (delta: number) => void;
+}
+
+const PanelResizeHandle: React.FC<PanelResizeHandleProps> = ({
+  label,
+  dragging,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onKeyNudge,
+}) => (
+  <div
+    className={`my-data-resize-handle${dragging ? ' is-dragging' : ''}`}
+    role="separator"
+    aria-orientation="horizontal"
+    aria-label={label}
+    title={label}
+    tabIndex={0}
+    onPointerDown={onPointerDown}
+    onPointerMove={onPointerMove}
+    onPointerUp={onPointerUp}
+    onPointerCancel={onPointerUp}
+    onLostPointerCapture={onPointerUp}
+    onKeyDown={e => {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        onKeyNudge(-24);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        onKeyNudge(24);
+      }
+    }}
+  >
+    <span className="my-data-resize-handle-bar" aria-hidden />
+  </div>
+);
 
 interface MyDataModalShellProps {
   onClose: () => void;
@@ -156,6 +236,13 @@ export function MyDataPanel({
 }: MyDataPanelProps) {
   const { t, locale, localeTag } = useI18n();
   const fileRef = useRef<HTMLInputElement>(null);
+  const tablePanelRef = useRef<HTMLDivElement>(null);
+  const importsPanelRef = useRef<HTMLDivElement>(null);
+  const changelogPanelRef = useRef<HTMLDivElement>(null);
+  const panelHeightsRef = useRef(readStoredPanelHeights());
+  const resizeDragRef = useRef<{ id: MyDataPanelId; startY: number; startH: number } | null>(null);
+  const [panelHeights, setPanelHeights] = useState(panelHeightsRef.current);
+  const [resizingPanel, setResizingPanel] = useState<MyDataPanelId | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -190,6 +277,76 @@ export function MyDataPanel({
     if (!canUploadData(user.role)) return;
     void ApiService.getShipmentImportBatches().then(setImportBatches).catch(() => {});
   }, [user.role]);
+
+  useEffect(() => {
+    panelHeightsRef.current = panelHeights;
+  }, [panelHeights]);
+
+  useEffect(() => () => {
+    document.documentElement.classList.remove('is-ns-resizing');
+  }, []);
+
+  const applyPanelHeight = useCallback((id: MyDataPanelId, height: number, persist = false) => {
+    const next = { ...panelHeightsRef.current, [id]: clampPanelHeight(height) };
+    panelHeightsRef.current = next;
+    setPanelHeights(next);
+    if (persist) persistPanelHeights(next);
+  }, []);
+
+  const beginPanelResize = useCallback((
+    id: MyDataPanelId,
+    panelEl: HTMLElement | null,
+    e: React.PointerEvent<HTMLDivElement>,
+  ) => {
+    if (!panelEl || e.button !== 0) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    resizeDragRef.current = {
+      id,
+      startY: e.clientY,
+      startH: panelEl.getBoundingClientRect().height,
+    };
+    setResizingPanel(id);
+    document.documentElement.classList.add('is-ns-resizing');
+  }, []);
+
+  const onPanelResizeMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const drag = resizeDragRef.current;
+    if (!drag) return;
+    applyPanelHeight(drag.id, drag.startH + (e.clientY - drag.startY));
+  }, [applyPanelHeight]);
+
+  const endPanelResize = useCallback(() => {
+    if (!resizeDragRef.current) return;
+    resizeDragRef.current = null;
+    setResizingPanel(null);
+    document.documentElement.classList.remove('is-ns-resizing');
+    persistPanelHeights(panelHeightsRef.current);
+  }, []);
+
+  const nudgePanelHeight = useCallback((
+    id: MyDataPanelId,
+    panelEl: HTMLElement | null,
+    delta: number,
+  ) => {
+    const current =
+      panelHeightsRef.current[id]
+      ?? panelEl?.getBoundingClientRect().height
+      ?? PANEL_DEFAULT_SECONDARY;
+    applyPanelHeight(id, current + delta, true);
+  }, [applyPanelHeight]);
+
+  const tablePanelStyle = panelHeights.table
+    ? { height: panelHeights.table, flex: `0 0 ${panelHeights.table}px` }
+    : undefined;
+  const importsPanelStyle = {
+    height: panelHeights.imports ?? PANEL_DEFAULT_SECONDARY,
+    flex: `0 0 ${panelHeights.imports ?? PANEL_DEFAULT_SECONDARY}px`,
+  };
+  const changelogPanelStyle = {
+    height: panelHeights.changelog ?? PANEL_DEFAULT_SECONDARY,
+    flex: `0 0 ${panelHeights.changelog ?? PANEL_DEFAULT_SECONDARY}px`,
+  };
 
   const [form, setForm] = useState({
     site_id: ourSites[0]?.id ?? '',
@@ -491,7 +648,11 @@ export function MyDataPanel({
         </p>
       </div>
 
-      <div className="my-data-table-panel">
+      <div
+        ref={tablePanelRef}
+        className={`my-data-table-panel${panelHeights.table ? ' is-resized' : ''}${resizingPanel === 'table' ? ' is-resizing' : ''}`}
+        style={tablePanelStyle}
+      >
         <div className="my-data-table-desktop responsive-table-wrap theme-scrollbar">
           <table className="my-data-table">
             <thead>
@@ -548,10 +709,22 @@ export function MyDataPanel({
             ))
           )}
         </div>
+        <PanelResizeHandle
+          label={t('myData.resizePanel')}
+          dragging={resizingPanel === 'table'}
+          onPointerDown={e => beginPanelResize('table', tablePanelRef.current, e)}
+          onPointerMove={onPanelResizeMove}
+          onPointerUp={endPanelResize}
+          onKeyNudge={delta => nudgePanelHeight('table', tablePanelRef.current, delta)}
+        />
       </div>
 
       {importBatches.length > 0 && (
-        <div className="my-data-imports-panel">
+        <div
+          ref={importsPanelRef}
+          className={`my-data-imports-panel${resizingPanel === 'imports' ? ' is-resizing' : ''}`}
+          style={importsPanelStyle}
+        >
           <div className="my-data-imports-title">
             {t('myData.importHistory')}
           </div>
@@ -584,11 +757,23 @@ export function MyDataPanel({
               <ImportBatchCard key={b.id} batch={b} localeTag={localeTag} t={t} />
             ))}
           </div>
+          <PanelResizeHandle
+            label={t('myData.resizePanel')}
+            dragging={resizingPanel === 'imports'}
+            onPointerDown={e => beginPanelResize('imports', importsPanelRef.current, e)}
+            onPointerMove={onPanelResizeMove}
+            onPointerUp={endPanelResize}
+            onKeyNudge={delta => nudgePanelHeight('imports', importsPanelRef.current, delta)}
+          />
         </div>
       )}
 
       {changeLogs.length > 0 && (
-        <div className="my-data-changelog">
+        <div
+          ref={changelogPanelRef}
+          className={`my-data-changelog${resizingPanel === 'changelog' ? ' is-resizing' : ''}`}
+          style={changelogPanelStyle}
+        >
           <div className="my-data-changelog-title">
             <History aria-hidden />
             {t('myData.changeLog')}
@@ -601,6 +786,14 @@ export function MyDataPanel({
               </div>
             ))}
           </div>
+          <PanelResizeHandle
+            label={t('myData.resizePanel')}
+            dragging={resizingPanel === 'changelog'}
+            onPointerDown={e => beginPanelResize('changelog', changelogPanelRef.current, e)}
+            onPointerMove={onPanelResizeMove}
+            onPointerUp={endPanelResize}
+            onKeyNudge={delta => nudgePanelHeight('changelog', changelogPanelRef.current, delta)}
+          />
         </div>
       )}
 
