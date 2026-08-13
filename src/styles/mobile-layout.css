@@ -205,12 +205,20 @@ html.layout-fold .app-header-actions--bar {
 
 html.layout-mobile .app-header-nav,
 html.layout-fold .app-header-nav {
+  position: fixed;
   top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: min(100%, 100vw);
+  min-width: 0;
   max-width: 100%;
+  border: none;
   border-right: none;
   border-radius: 0;
   box-shadow: none;
+  animation: nav-drawer-slide-in 0.24s ease-out forwards;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 html.layout-mobile .header-nav-section-title,
@@ -732,10 +740,11 @@ html.layout-fold .header-nav-item--search {
   display: flex;
 }
 
-html.layout-mobile .header-nav-scroll,
-html.layout-fold .header-nav-scroll {
+html.layout-mobile .app-header-nav .header-nav-scroll,
+html.layout-fold .app-header-nav .header-nav-scroll {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
   scroll-behavior: smooth;
+  max-height: none;
 }
 
 /* Mobile menu: collapse nav sections & expand notifications with animation */

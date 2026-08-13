@@ -12824,25 +12824,27 @@ html.app-tab-map:not(.layout-mobile):not(.layout-fold) .app-header-actions .app-
   padding-top: env(safe-area-inset-top);
 }
 
-/* Mobile: left drawer — same chrome surface as header / side rail */
+/* Desktop / tablet: floating panel under the header (not a phone drawer) */
 .app-header-nav {
-  position: fixed;
+  position: absolute;
   z-index: 70;
-  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
-  left: 0;
-  bottom: 0;
-  width: min(100%, 20rem);
-  max-width: calc(100vw - env(safe-area-inset-left, 0px));
+  top: calc(var(--app-header-height) + 0.4rem + env(safe-area-inset-top, 0px));
+  left: max(0.75rem, env(safe-area-inset-left, 0px));
+  bottom: auto;
+  width: max-content;
+  min-width: 16rem;
+  max-width: min(calc(100vw - 1.5rem), 20.5rem);
   display: flex;
   flex-direction: column;
   background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-right: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  border-radius: 0.85rem;
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
   overflow: hidden;
-  animation: nav-drawer-slide-in 0.24s ease-out forwards;
-  padding-bottom: env(safe-area-inset-bottom);
+  animation: nav-slide-in 0.22s ease-out forwards;
+  padding-bottom: 0.35rem;
 }
 
 .app-header-nav-head {
@@ -12924,15 +12926,78 @@ html.layout-fold.app-tab-map .app-header-nav {
 .app-header-nav .header-nav-scroll {
   flex: 1;
   min-height: 0;
-  max-height: none;
+  max-height: min(32rem, calc(var(--bars-viewport-height, 100dvh) - var(--app-header-height, 3.5rem) - 2.5rem));
+  padding: 0.4rem 0 0.25rem;
+}
+
+.app-header-nav .header-nav-grid {
+  gap: 0.2rem;
+  padding: 0 0.45rem;
+}
+
+/* Narrow desktop: keep a floating card, fit the viewport, move tools into the menu */
+@media (max-width: 767.98px) {
+  html.layout-desktop .app-header-actions--bar,
+  html.layout-tablet .app-header-actions--bar {
+    display: none;
+  }
+
+  html.layout-desktop .header-nav-tools-block,
+  html.layout-tablet .header-nav-tools-block {
+    display: block;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgb(71 85 105 / 0.55);
+  }
+
+  html.layout-desktop .header-nav-section-title,
+  html.layout-tablet .header-nav-section-title {
+    display: block;
+  }
+
+  html.layout-desktop .header-nav-item--search,
+  html.layout-tablet .header-nav-item--search {
+    display: flex;
+  }
+
+  html.layout-desktop .app-header-nav,
+  html.layout-tablet .app-header-nav {
+    left: max(0.5rem, env(safe-area-inset-left, 0px));
+    right: max(0.5rem, env(safe-area-inset-right, 0px));
+    width: auto;
+    min-width: 0;
+    max-width: min(22rem, calc(100vw - 1rem));
+    max-height: calc(var(--bars-viewport-height, 100dvh) - var(--app-header-height, 3.5rem) - 1rem);
+  }
+
+  html.layout-desktop .app-header-nav .header-nav-scroll,
+  html.layout-tablet .app-header-nav .header-nav-scroll {
+    max-height: calc(var(--bars-viewport-height, 100dvh) - var(--app-header-height, 3.5rem) - 4.5rem);
+  }
+
+  html.layout-desktop .app-header-nav .header-nav-item,
+  html.layout-tablet .app-header-nav .header-nav-item {
+    padding: 0.42rem 0.65rem;
+    font-size: 0.75rem;
+    gap: 0.5rem;
+    border-radius: 0.65rem;
+  }
+
+  html.layout-desktop .app-header-nav .header-nav-item-icon,
+  html.layout-tablet .app-header-nav .header-nav-item-icon {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 @media (max-width: 639px) {
-  .app-header-nav .header-nav-scroll button {
+  html.layout-mobile .app-header-nav .header-nav-scroll button,
+  html.layout-fold .app-header-nav .header-nav-scroll button {
     min-height: 2.75rem;
   }
 
-  .app-header-popover {
+  html.layout-mobile .app-header-popover,
+  html.layout-fold .app-header-popover {
     position: fixed;
     top: auto;
     right: max(0.75rem, env(safe-area-inset-right, 0px));
@@ -12990,33 +13055,6 @@ html.layout-fold.app-tab-map .app-header-nav {
   }
 }
 
-@media (min-width: 640px) {
-  .app-header-nav {
-    position: absolute;
-    top: calc(var(--app-header-height) + 0.35rem + env(safe-area-inset-top, 0px));
-    left: max(0.75rem, env(safe-area-inset-left, 0px));
-    bottom: auto;
-    width: max-content;
-    min-width: 15.5rem;
-    max-width: min(calc(100vw - 2rem), 20rem);
-    border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
-    border-radius: 0.85rem;
-    box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
-    animation: nav-slide-in 0.22s ease-out forwards;
-    padding-bottom: 0.35rem;
-  }
-
-  .app-header-nav .header-nav-scroll {
-    max-height: calc(var(--bars-viewport-height, 100dvh) - 6rem);
-    padding: 0.4rem 0 0.25rem;
-  }
-
-  .app-header-nav .header-nav-grid {
-    gap: 0.2rem;
-    padding: 0 0.45rem;
-  }
-}
-
 html.portal-embed .app-header-nav {
   top: calc(var(--bars-shell-top, 0px) + var(--app-header-height));
 }
@@ -13032,13 +13070,7 @@ html.compact-laptop {
 }
 
 html.compact-laptop .app-header-nav {
-  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
-}
-
-@media (min-width: 640px) {
-  html.compact-laptop .app-header-nav {
-    top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
-  }
+  top: calc(var(--app-header-height) + 0.35rem + env(safe-area-inset-top, 0px));
 }
 
 /* Modal overlay — lighter in dark theme so map stays visible behind */
@@ -14845,9 +14877,13 @@ html.compact-laptop .app-header-nav {
   top: 0;
   z-index: 10;
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem;
+  align-items: stretch;
+  gap: 0.15rem;
+  min-height: 2.35rem;
+  padding: 0 0.3rem 0 0;
+  overflow: hidden;
+  border-top-left-radius: calc(var(--map-filter-shell-radius, 0.85rem) - 1px);
+  border-top-right-radius: calc(var(--map-filter-shell-radius, 0.85rem) - 1px);
   border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
   background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
 }
@@ -14858,6 +14894,7 @@ html.compact-laptop .app-header-nav {
   gap: 0.375rem;
   flex: 1;
   min-width: 0;
+  padding-left: 0.45rem;
   font-weight: 600;
   color: #f1f5f9;
 }
@@ -14873,16 +14910,21 @@ html.compact-laptop .app-header-nav {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
   border: none;
-  border-radius: 9999px;
+  border-radius: 0.45rem;
   background: transparent;
   color: #94a3b8;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
   touch-action: none;
   user-select: none;
+}
+
+.map-filter-panel-header .map-filter-header-btn {
+  align-self: center;
 }
 
 .map-filter-header-btn:hover,
@@ -14893,6 +14935,14 @@ html.compact-laptop .app-header-nav {
 
 .map-filter-drag-handle {
   cursor: grab;
+}
+
+.map-filter-panel-header .map-filter-drag-handle {
+  width: 2.15rem;
+  height: auto;
+  align-self: stretch;
+  border-radius: 0;
+  border-right: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
 }
 
 .map-filter-drag-handle.is-dragging {
@@ -17882,9 +17932,9 @@ html.map-chrome-compact .map-filter-panel {
   gap: 0.5rem;
 }
 
-html.map-chrome-compact .map-filter-header-btn {
-  height: 1.75rem;
-  width: 1.75rem;
+html.map-chrome-compact .map-filter-panel-header .map-filter-header-btn {
+  height: 1.65rem;
+  width: 1.65rem;
 }
 
 html.map-chrome-compact .map-legend {
@@ -17925,18 +17975,23 @@ html.map-chrome-tight .map-filter-collapsed-drag {
 }
 
 html.map-chrome-tight .map-filter-panel-header {
-  padding: 0.35rem 0.45rem;
+  min-height: 2rem;
+  padding-right: 0.25rem;
+}
+
+html.map-chrome-tight .map-filter-panel-header .map-filter-header-btn {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+html.map-chrome-tight .map-filter-panel-header .map-filter-drag-handle {
+  width: 1.85rem;
 }
 
 html.map-chrome-tight .map-filter-panel {
   padding: 0.35rem;
   gap: 0.4rem;
   font-size: 0.5625rem;
-}
-
-html.map-chrome-tight .map-filter-header-btn {
-  height: 1.5rem;
-  width: 1.5rem;
 }
 
 html.map-chrome-tight .map-filter-panel .modal-dropdown-trigger {
@@ -18044,6 +18099,9 @@ html.map-chrome-tight .map-imported-hint {
 
 .map-filter-collapsed-drag {
   width: 2.25rem;
+  height: auto;
+  align-self: stretch;
+  border-radius: 0;
 }
 
 html.compact-laptop .map-position-preview-wrap {
