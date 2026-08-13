@@ -18,6 +18,8 @@ import { computeAvgDeliveryHours } from '../../utils/kpi';
 import { canSeeGlobalFinancials, canSeeSiteFinancials } from '../../utils/permissions';
 import { KpiPeriodSelector } from './KpiPeriodSelector';
 import { KpiVolumeWidget } from './KpiVolumeWidget';
+import accountBackgroundWebp from '../../../assets/img/Background.webp';
+import accountBackgroundJpg from '../../../assets/img/Background.jpg';
 import {
   BarChart3,
   TrendingUp,
@@ -108,6 +110,17 @@ export const KpiDashboard: React.FC<KpiDashboardProps> = ({
 
   return (
     <div className="kpi-dashboard-page">
+      <picture className="account-page-bg" aria-hidden>
+        <source srcSet={accountBackgroundWebp} type="image/webp" />
+        <img
+          src={accountBackgroundJpg}
+          alt=""
+          decoding="async"
+          fetchPriority="low"
+          draggable={false}
+        />
+      </picture>
+      <div className="kpi-dashboard-inner">
       <header className="kpi-toolbar">
         <div className="kpi-toolbar-head">
           <span className="kpi-toolbar-icon" aria-hidden>
@@ -298,6 +311,7 @@ export const KpiDashboard: React.FC<KpiDashboardProps> = ({
           </div>
         </section>
       )}
+      </div>
     </div>
   );
 };

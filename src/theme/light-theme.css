@@ -4582,7 +4582,8 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 
 /* ── KPI dashboard (analytics & efficiency) ── */
 [data-theme="light"] .kpi-dashboard-page {
-  background: #f1f5f9 !important;
+  --account-page-bg-scrim: rgb(248 250 252 / 0.42);
+  background-color: #f1f5f9;
   color: #0f172a;
 }
 
@@ -7287,7 +7288,8 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
   color: #64748b;
 }
 
-[data-theme="light"] .account-page {
+[data-theme="light"] .account-page,
+[data-theme="light"] .kpi-dashboard-page {
   --account-page-bg-scrim: rgb(248 250 252 / 0.42);
   background-color: #f1f5f9;
 }
