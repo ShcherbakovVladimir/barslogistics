@@ -16225,6 +16225,7 @@ html.compact-laptop .app-header-nav {
 .factories-schematic-map-empty,
 .factories-region-tree-empty,
 .factories-region-node {
+  --factories-map-fill: rgb(2 6 23 / 0.25);
   border-radius: 0.85rem;
   border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
   background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
@@ -16253,8 +16254,8 @@ html.compact-laptop .app-header-nav {
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
-  background: rgb(2 6 23 / 0.45);
+  border-bottom: 1px solid transparent;
+  background: var(--factories-map-fill, rgb(2 6 23 / 0.25));
   font-size: 0.6875rem;
 }
 
@@ -17294,6 +17295,10 @@ html.compact-laptop .app-header-nav {
 .russia-map-region:focus,
 .russia-map-region:focus-visible {
   outline: none;
+}
+
+.russia-regions-map-ocean {
+  fill: var(--factories-map-fill, rgb(2 6 23 / 0.25));
 }
 
 .russia-regions-map-canvas {

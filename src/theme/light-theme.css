@@ -4945,6 +4945,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 [data-theme="light"] .factories-schematic-map-empty,
 [data-theme="light"] .factories-region-tree-empty,
 [data-theme="light"] .factories-region-node {
+  --factories-map-fill: #e2e8f0;
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
@@ -5008,7 +5009,8 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 }
 
 [data-theme="light"] .factories-schematic-map-toolbar {
-  background: #f8fafc !important;
+  background: var(--factories-map-fill, #e2e8f0) !important;
+  border-bottom-color: transparent !important;
 }
 
 [data-theme="light"] .factories-card-coords svg,
@@ -5218,7 +5220,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 
 [data-theme="light"] .factories-schematic-svg rect:first-of-type,
 [data-theme="light"] .russia-regions-map-ocean {
-  fill: #e2e8f0 !important;
+  fill: var(--factories-map-fill, #e2e8f0) !important;
 }
 
 [data-theme="light"] .russia-map-region {
