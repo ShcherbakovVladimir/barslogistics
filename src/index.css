@@ -20858,10 +20858,26 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   min-height: 0;
   overflow-y: auto;
   background-color: #020617;
-  background-image: var(--account-page-bg-image, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+}
+
+.account-page-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.account-page-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .account-page::before {

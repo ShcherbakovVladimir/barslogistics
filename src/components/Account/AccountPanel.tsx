@@ -5,7 +5,8 @@ import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
 import { UserAvatar } from '../UI/UserAvatar';
 import { invalidateUserAvatarCache } from '../../utils/userAvatar';
-import accountBackground from '../../../assets/img/Background.jpg';
+import accountBackgroundWebp from '../../../assets/img/Background.webp';
+import accountBackgroundJpg from '../../../assets/img/Background.jpg';
 
 export interface AccountPanelProps {
   user: User;
@@ -129,10 +130,17 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
   };
 
   return (
-    <div
-      className="account-page theme-scrollbar"
-      style={{ '--account-page-bg-image': `url(${accountBackground})` } as React.CSSProperties}
-    >
+    <div className="account-page theme-scrollbar">
+      <picture className="account-page-bg" aria-hidden>
+        <source srcSet={accountBackgroundWebp} type="image/webp" />
+        <img
+          src={accountBackgroundJpg}
+          alt=""
+          decoding="async"
+          fetchPriority="low"
+          draggable={false}
+        />
+      </picture>
       <div className="account-page-inner">
         <header className="account-hero">
           <span className="account-hero-icon" aria-hidden>
