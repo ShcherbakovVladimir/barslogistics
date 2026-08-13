@@ -158,14 +158,18 @@ export const AuditLogs: React.FC<AuditLogsProps> = ({ logs }) => {
 
   return (
     <div className="audit-logs-page">
-      <div className="audit-logs-toolbar">
-        <div className="audit-logs-toolbar-head">
-          <div className="audit-logs-toolbar-title">
-            <h2>
-              <FileText className="audit-logs-toolbar-icon" aria-hidden="true" />
-              <span className="truncate">{t('audit.title', { count: filteredLogs.length })}</span>
-            </h2>
-            <p className="audit-logs-subtitle">{t('audit.subtitle')}</p>
+      <div className="audit-logs-toolbar shipments-list-toolbar">
+        <div className="audit-logs-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <FileText />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{t('audit.title', { count: filteredLogs.length })}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('audit.subtitle')}</p>
+            </div>
           </div>
           <button
             type="button"
@@ -173,20 +177,19 @@ export const AuditLogs: React.FC<AuditLogsProps> = ({ logs }) => {
             className="audit-logs-export-btn"
             disabled={filteredLogs.length === 0}
           >
-            <Download className="audit-logs-export-icon" aria-hidden="true" />
+            <Download aria-hidden />
             <span>{t('audit.exportCsv')}</span>
           </button>
         </div>
 
-        <div className="audit-logs-filters-grid">
-          <div className="audit-logs-search">
-            <Search className="audit-logs-search-icon" aria-hidden="true" />
+        <div className="shipments-list-filters shipments-list-filters-grid audit-logs-filters-grid">
+          <div className="shipments-list-search audit-logs-search">
+            <Search aria-hidden />
             <input
               type="search"
               placeholder={t('audit.searchPlaceholder')}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="audit-logs-search-input"
               aria-label={t('audit.searchPlaceholder')}
             />
             {search ? (
@@ -196,37 +199,37 @@ export const AuditLogs: React.FC<AuditLogsProps> = ({ logs }) => {
                 onClick={() => setSearch('')}
                 aria-label={t('common.close')}
               >
-                <X className="w-3.5 h-3.5" />
+                <X aria-hidden />
               </button>
             ) : null}
           </div>
 
-          <div className="audit-logs-filter">
+          <div className="shipments-list-filter">
             <SearchableSelect
               value={categoryFilter}
               onChange={setCategoryFilter}
               options={categoryFilterOptions}
               searchable={false}
-              panelClassName="audit-logs-dropdown-panel"
-              listClassName="audit-logs-dropdown-scroll"
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </div>
 
-          <div className="audit-logs-filter audit-logs-filter--sort">
+          <div className="shipments-list-filter audit-logs-filter--sort">
             <SearchableSelect
               value={sortOrder}
               onChange={v => setSortOrder(v as SortOrder)}
               options={sortOptions}
               searchable={false}
-              panelClassName="audit-logs-dropdown-panel"
-              listClassName="audit-logs-dropdown-scroll"
+              panelClassName="shipments-list-dropdown-panel"
+              listClassName="shipment-events-scroll"
             />
           </div>
         </div>
 
         <div className="audit-logs-toolbar-foot">
-          <p className="audit-logs-results">
-            <Filter className="audit-logs-results-icon" aria-hidden="true" />
+          <p className="audit-logs-results-bar">
+            <Filter aria-hidden />
             {t('audit.results', { count: filteredLogs.length })}
           </p>
           {hasActiveFilters ? (

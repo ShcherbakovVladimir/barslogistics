@@ -1990,8 +1990,8 @@ html.layout-fold .audit-logs-toolbar {
   border-radius: 1rem !important;
 }
 
-html.layout-mobile .audit-logs-toolbar h2,
-html.layout-fold .audit-logs-toolbar h2 {
+html.layout-mobile .audit-logs-toolbar .shipments-list-title,
+html.layout-fold .audit-logs-toolbar .shipments-list-title {
   font-size: 1rem;
 }
 
@@ -2004,12 +2004,15 @@ html.layout-mobile .audit-logs-filters-grid,
 html.layout-fold .audit-logs-filters-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
-html.layout-mobile .audit-logs-filter,
-html.layout-fold .audit-logs-filter {
+html.layout-mobile .audit-logs-filters-grid .shipments-list-filter,
+html.layout-fold .audit-logs-filters-grid .shipments-list-filter,
+html.layout-mobile .audit-logs-filters-grid .audit-logs-search,
+html.layout-fold .audit-logs-filters-grid .audit-logs-search {
   width: 100%;
+  flex: 1 1 100%;
 }
 
 html.layout-mobile .audit-logs-cards-mobile,
