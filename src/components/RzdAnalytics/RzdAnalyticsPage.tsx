@@ -375,21 +375,21 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
 
             <div className="shipments-list-filters shipments-list-filters-grid rzd-analytics-filters-grid">
               <label className="shipments-list-filter rzd-analytics-date-filter">
-                <span className="rzd-analytics-date-filter-label">{t('rzdAnalytics.dateFrom')}</span>
                 <input
                   type="date"
                   value={filters.dateFrom ?? ''}
                   onChange={e => updateFilters({ dateFrom: e.target.value || undefined })}
                   aria-label={t('rzdAnalytics.dateFrom')}
+                  title={t('rzdAnalytics.dateFrom')}
                 />
               </label>
               <label className="shipments-list-filter rzd-analytics-date-filter">
-                <span className="rzd-analytics-date-filter-label">{t('rzdAnalytics.dateTo')}</span>
                 <input
                   type="date"
                   value={filters.dateTo ?? ''}
                   onChange={e => updateFilters({ dateTo: e.target.value || undefined })}
                   aria-label={t('rzdAnalytics.dateTo')}
+                  title={t('rzdAnalytics.dateTo')}
                 />
               </label>
               <div className="shipments-list-filter">

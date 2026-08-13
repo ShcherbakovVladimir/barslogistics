@@ -2042,17 +2042,24 @@ html.layout-fold .rzd-analytics-list-toolbar .shipments-list-title {
 html.layout-mobile .rzd-analytics-filters-grid,
 html.layout-fold .rzd-analytics-filters-grid {
   width: 100%;
+  align-items: stretch;
 }
 
 html.layout-mobile .rzd-analytics-filters-grid .shipments-list-filter,
 html.layout-fold .rzd-analytics-filters-grid .shipments-list-filter,
-html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-date-filter,
-html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-date-filter,
 html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-refresh-btn,
 html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-refresh-btn,
 html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-upload-btn,
-html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-upload-btn {
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-upload-btn,
+html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-search,
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-search {
   flex: 1 1 100%;
+  min-width: 0;
+}
+
+html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-date-filter,
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-date-filter {
+  flex: 1 1 calc(50% - 0.225rem);
   min-width: 0;
 }
 

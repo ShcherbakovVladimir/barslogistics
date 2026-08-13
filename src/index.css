@@ -7961,6 +7961,7 @@ html.compact-laptop .audit-logs-filters-grid {
   width: 100%;
   max-width: none;
   justify-content: flex-start;
+  align-items: center;
 }
 
 @media (min-width: 1024px) {
@@ -8090,31 +8091,22 @@ html.compact-laptop .audit-logs-filters-grid {
 
 .rzd-analytics-date-filter {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: center;
   min-width: 9.5rem;
 }
 
-.rzd-analytics-date-filter-label {
-  font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #64748b;
-  padding-left: 0.35rem;
-}
-
-.rzd-analytics-list-toolbar .rzd-analytics-date-filter input[type="date"] {
+.rzd-analytics-date-filter input[type="date"] {
   box-sizing: border-box;
   width: 100%;
   min-height: 2.35rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 9999px;
   border: 1px solid var(--se-field-border);
   background-color: var(--se-field-bg);
   color: #f8fafc;
   font-size: 0.75rem;
   font-family: inherit;
+  line-height: 1.35;
   transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 

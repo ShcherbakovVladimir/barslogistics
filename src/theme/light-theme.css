@@ -4887,9 +4887,9 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
 [data-theme="light"] .rzd-analytics-map-shell,
 [data-theme="light"] .rzd-analytics-card,
 [data-theme="light"] .rzd-analytics-routes-sheet {
-  background: #ffffff !important;
+  background: #fff !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
 }
 
 [data-theme="light"] .rzd-analytics-list-toolbar {
@@ -4927,12 +4927,11 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
 
 [data-theme="light"] .rzd-analytics-kpi-item,
 [data-theme="light"] .rzd-analytics-route-item {
-  background: #ffffff !important;
+  background: #fff !important;
   border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .rzd-analytics-kpi-label,
-[data-theme="light"] .rzd-analytics-date-filter-label {
+[data-theme="light"] .rzd-analytics-kpi-label {
   color: #94a3b8 !important;
 }
 
