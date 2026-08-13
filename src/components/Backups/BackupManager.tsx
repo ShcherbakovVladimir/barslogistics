@@ -383,7 +383,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
             </div>
           )}
           {backups.map(bkp => (
-            <div key={bkp.id} className="admin-backup-card bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between space-y-4">
+            <div key={bkp.id} className="admin-backup-card p-5 flex flex-col justify-between space-y-4">
               <div>
                 <div className="flex items-center justify-between">
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
