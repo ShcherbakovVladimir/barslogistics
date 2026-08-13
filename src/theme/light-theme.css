@@ -6039,7 +6039,7 @@ html[data-theme="light"].layout-fold .app-side-rail.is-mobile-dock .app-side-rai
 
 /* Tasks drawer — light */
 [data-theme="light"] .tasks-drawer-panel {
-  background: rgb(255 255 255 / 0.5) !important;
+  background: rgb(255 255 255 / 0.72) !important;
   border-color: #e2e8f0 !important;
   color: #334155 !important;
   box-shadow: 0 16px 48px rgb(15 23 42 / 0.14) !important;

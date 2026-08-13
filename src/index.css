@@ -19178,6 +19178,7 @@ html.layout-mobile.layout-landscape.app-side-rail-active.app-side-rail-collapsed
 }
 
 .tasks-drawer-panel {
+  --tasks-drawer-bg: rgb(15 23 42 / 0.98);
   --tasks-field-bg: rgb(15 23 42 / 0.7);
   --tasks-field-border: rgb(51 65 85 / 0.95);
   --tasks-field-border-hover: rgb(99 102 241 / 0.45);
@@ -19193,7 +19194,7 @@ html.layout-mobile.layout-landscape.app-side-rail-active.app-side-rail-collapsed
   overflow: hidden;
   border-radius: 0.75rem;
   border: 1px solid var(--app-chrome-border, rgb(30 41 59));
-  background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
+  background: var(--tasks-drawer-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
@@ -20106,13 +20107,14 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 }
 
 [data-theme="light"] .tasks-drawer-panel {
-  --tasks-field-bg: #ffffff80;
+  --tasks-drawer-bg: rgb(255 255 255 / 0.72);
+  --tasks-field-bg: #ffffff;
   --tasks-field-border: #cbd5e1;
   --tasks-field-border-hover: rgb(99 102 241 / 0.45);
   --tasks-field-focus: #4f46e5;
   --tasks-field-focus-ring: rgb(99 102 241 / 0.18);
-  --tasks-surface-bg: #ffffff80;
-  background-color: var(--tasks-surface-bg) !important;
+  --tasks-surface-bg: rgb(255 255 255 / 0.72);
+  background-color: var(--tasks-drawer-bg) !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
   box-shadow: 0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.08);
