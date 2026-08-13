@@ -3326,6 +3326,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 [data-theme="light"] .admin-sites-table-panel,
 [data-theme="light"] .admin-support-panel,
 [data-theme="light"] .admin-backups-toolbar,
+[data-theme="light"] .admin-backups-table-panel,
 [data-theme="light"] .admin-backup-card,
 [data-theme="light"] .admin-sites-duplicates-panel,
 [data-theme="light"] .admin-sites-hint,
@@ -3370,8 +3371,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 }
 
 [data-theme="light"] .admin-backups .admin-db-migrations table tbody tr:hover,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations table tbody tr:hover,
-[data-theme="light"] .admin-backups-table-panel tbody tr:hover {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations table tbody tr:hover {
   background-color: #f1f5f9 !important;
 }
 
@@ -3408,15 +3408,37 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   color: #fff !important;
 }
 
+[data-theme="light"] .admin-db-migration-submit:hover:not(:disabled) {
+  background: #4338ca !important;
+}
+
 [data-theme="light"] .admin-db-migration-submit--warn {
   background: rgb(217 119 6 / 0.15) !important;
   border-color: rgb(245 158 11 / 0.35) !important;
   color: #b45309 !important;
 }
 
+[data-theme="light"] .admin-db-migration-submit--warn:hover:not(:disabled) {
+  background: rgb(217 119 6 / 0.22) !important;
+}
+
+[data-theme="light"] .admin-db-field:focus {
+  border-color: rgb(99 102 241 / 0.55) !important;
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.18) !important;
+}
+
+[data-theme="light"] .admin-db-field--warn:focus {
+  border-color: rgb(245 158 11 / 0.55) !important;
+  box-shadow: 0 0 0 2px rgb(245 158 11 / 0.15) !important;
+}
+
 [data-theme="light"] .admin-backups-section-title,
 [data-theme="light"] .admin-backup-filename {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-backups-section-title svg {
+  color: #6366f1 !important;
 }
 
 [data-theme="light"] .admin-backups-section-count,
@@ -3766,19 +3788,26 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 
 /* ── Admin: Пользователи ── */
 [data-theme="light"] .admin-users-table-panel thead,
-[data-theme="light"] .admin-sites-table-panel thead {
+[data-theme="light"] .admin-sites-table-panel thead,
+[data-theme="light"] .admin-backups-table-panel thead {
   background: #f8fafc !important;
   color: #64748b !important;
 }
 
+[data-theme="light"] .admin-backups-table-panel th {
+  color: #64748b !important;
+}
+
 [data-theme="light"] .admin-users-table-panel td,
-[data-theme="light"] .admin-sites-table-panel td {
+[data-theme="light"] .admin-sites-table-panel td,
+[data-theme="light"] .admin-backups-table-panel td {
   color: #334155 !important;
   border-top-color: #e2e8f0 !important;
 }
 
 [data-theme="light"] .admin-users-table-panel tbody tr:hover,
-[data-theme="light"] .admin-sites-table-panel tbody tr:hover {
+[data-theme="light"] .admin-sites-table-panel tbody tr:hover,
+[data-theme="light"] .admin-backups-table-panel tbody tr:hover {
   background: #f8fafc !important;
 }
 
@@ -3804,15 +3833,6 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 
 [data-theme="light"] .admin-panel .modal-dropdown-chevron {
   color: #6366f1 !important;
-}
-
-[data-theme="light"] .admin-backups-table-panel {
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .admin-backups-table-panel td {
-  color: #334155 !important;
-  border-top-color: #e2e8f0 !important;
 }
 
 [data-theme="light"] .admin-users-card,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackupItem, DbMaintenanceInfo, UserRole } from '../../types';
+import { BackupItem, DbMaintenanceInfo, MigrationScope, UserRole } from '../../types';
 import { useI18n } from '../../i18n';
 import { ApiService } from '../../services/api';
 import {
@@ -28,6 +28,10 @@ interface BackupManagerProps {
 const CONFIRM_APPLY = 'APPLY';
 const CONFIRM_ROLLBACK = 'ROLLBACK';
 const CONFIRM_RESTORE = 'RESTORE';
+
+const DB_MAINTENANCE_TOOLS = ['pg_dump', 'psql'] as const satisfies ReadonlyArray<
+  keyof DbMaintenanceInfo['tools']
+>;
 
 export const BackupManager: React.FC<BackupManagerProps> = ({
   backups,
@@ -166,11 +170,15 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
   const canDownload = (backup: BackupItem) => Boolean(backup.storage_path);
   const migrations = maintenance?.migrations;
 
-  const scopeLabel = (scope: string) => {
-    if (scope === 'bootstrap') return t('backups.scopeBootstrap');
-    if (scope === 'schema') return t('backups.scopeSchema');
-    if (scope === 'data') return t('backups.scopeData');
-    return scope;
+  const scopeLabel = (scope: MigrationScope): string => {
+    switch (scope) {
+      case 'bootstrap':
+        return t('backups.scopeBootstrap');
+      case 'schema':
+        return t('backups.scopeSchema');
+      case 'data':
+        return t('backups.scopeData');
+    }
   };
 
   return (
@@ -233,8 +241,8 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
               </p>
             ) : null}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {(['pg_dump', 'psql'] as const).map(tool => {
-                const available = maintenance?.tools[tool === 'pg_dump' ? 'pg_dump' : 'psql'];
+              {DB_MAINTENANCE_TOOLS.map(tool => {
+                const available = maintenance?.tools[tool] ?? false;
                 return (
                   <div key={tool} className="admin-db-tool-row">
                     <span className="admin-db-tool-name">

@@ -8188,6 +8188,12 @@ html.portal-embed .header-nav-scroll {
 .admin-sites-table-panel,
 .admin-backups-table-panel {
   overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
+  background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.25);
 }
 
 .admin-users-table-panel table,
