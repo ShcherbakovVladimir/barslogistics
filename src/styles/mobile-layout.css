@@ -649,8 +649,8 @@ html.layout-fold.layout-landscape .auth-login-shell {
   overflow-y: auto;
 }
 
-html.layout-mobile.layout-landscape .auth-login-shell .max-w-md,
-html.layout-fold.layout-landscape .auth-login-shell .max-w-md {
+html.layout-mobile.layout-landscape .auth-login-shell .auth-login-inner,
+html.layout-fold.layout-landscape .auth-login-shell .auth-login-inner {
   max-width: min(28rem, 92vw);
 }
 

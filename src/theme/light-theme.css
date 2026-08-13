@@ -650,7 +650,6 @@
 }
 
 /* Auth login — light */
-[data-theme="light"] .auth-login-shell,
 [data-theme="light"] .app-loading-shell {
   background-color: var(--app-shell-bg) !important;
 }
@@ -661,14 +660,28 @@
 
 [data-theme="light"] .auth-login-subtitle,
 [data-theme="light"] .auth-login-label,
-[data-theme="light"] .auth-login-status {
+[data-theme="light"] .auth-login-status,
+[data-theme="light"] .auth-login-link {
   color: #64748b !important;
 }
 
+[data-theme="light"] .auth-login-hero,
 [data-theme="light"] .auth-login-card {
-  background: #ffffff !important;
+  background: rgb(255 255 255 / 0.86) !important;
   border-color: #e2e8f0 !important;
   box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
+}
+
+[data-theme="light"] .auth-login-alert--error {
+  color: #b91c1c !important;
+  background: #fef2f2 !important;
+  border-color: rgb(252 165 165) !important;
+}
+
+[data-theme="light"] .auth-login-alert--success {
+  color: #047857 !important;
+  background: #ecfdf5 !important;
+  border-color: rgb(110 231 183) !important;
 }
 
 [data-theme="light"] .auth-login-mode-tabs {
@@ -680,18 +693,68 @@
   color: #64748b !important;
 }
 
-[data-theme="light"] .auth-login-input {
-  background: #ffffff !important;
-  border-color: #cbd5e1 !important;
+[data-theme="light"] .auth-login-mode-tab:hover:not(.is-active) {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .auth-login-link {
+[data-theme="light"] .auth-login-mode-tab.is-active {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .auth-login-input {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .auth-login-input:hover:not(:disabled) {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+}
+
+[data-theme="light"] .auth-login-input:focus {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.65) !important;
+}
+
+[data-theme="light"] .auth-login-input:disabled {
+  background: #f8fafc !important;
   color: #64748b !important;
+}
+
+[data-theme="light"] .auth-login-submit-btn {
+  color: #ffffff !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  background: #4f46e5 !important;
+}
+
+[data-theme="light"] .auth-login-submit-btn:hover:not(:disabled) {
+  color: #ffffff !important;
+  border-color: rgb(99 102 241 / 0.65) !important;
+  background: #4338ca !important;
+}
+
+[data-theme="light"] .auth-login-link:hover {
+  color: #4338ca !important;
 }
 
 [data-theme="light"] .auth-login-link--accent {
   color: #4338ca !important;
+}
+
+[data-theme="light"] .auth-login-link--accent:hover {
+  color: #3730a3 !important;
+}
+
+[data-theme="light"] .auth-login-warning {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .auth-login-theme-toggle .theme-toggle-standalone {
+  background: rgb(255 255 255 / 0.86) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.08) !important;
 }
 
 [data-theme="light"] .theme-toggle-standalone {
@@ -710,6 +773,11 @@
 
 [data-theme="light"] .theme-toggle-standalone-btn:hover:not(.is-active) {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone-btn.is-active {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
 }
 
 [data-theme="light"] .theme-toggle-standalone--compact .theme-toggle-standalone-btn:hover:not(.is-active) {
@@ -7289,7 +7357,8 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
 }
 
 [data-theme="light"] .account-page,
-[data-theme="light"] .kpi-dashboard-page {
+[data-theme="light"] .kpi-dashboard-page,
+[data-theme="light"] .auth-login-shell {
   --account-page-bg-scrim: rgb(248 250 252 / 0.42);
   background-color: #f1f5f9;
 }

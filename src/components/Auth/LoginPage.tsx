@@ -4,6 +4,8 @@ import { useI18n } from '../../i18n';
 import { ThemeToggle } from '../Theme/ThemeToggle';
 import { BrandLogo } from '../Brand/BrandLogo';
 import { ApiService } from '../../services/api';
+import accountBackgroundWebp from '../../../assets/img/Background.webp';
+import accountBackgroundJpg from '../../../assets/img/Background.jpg';
 
 interface LoginPageProps {
   onLogin: (username: string, password: string) => Promise<void>;
@@ -178,33 +180,45 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
     : t('auth.subtitle');
 
   return (
-    <div className="auth-login-shell flex flex-col items-center justify-center p-4 relative">
-      <div className="auth-login-theme-toggle absolute top-4 right-4">
+    <div className="auth-login-shell">
+      <picture className="account-page-bg" aria-hidden>
+        <source srcSet={accountBackgroundWebp} type="image/webp" />
+        <img
+          src={accountBackgroundJpg}
+          alt=""
+          decoding="async"
+          fetchPriority="low"
+          draggable={false}
+        />
+      </picture>
+      <div className="auth-login-theme-toggle">
         <ThemeToggle />
       </div>
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <BrandLogo size="lg" className="mx-auto mb-4" />
-          <h1 className="auth-login-heading">{title}</h1>
-          <p className="auth-login-subtitle">{subtitle}</p>
-        </div>
+      <div className="auth-login-inner">
+        <header className="auth-login-hero">
+          <BrandLogo size="lg" className="auth-login-logo" />
+          <div className="auth-login-hero-text">
+            <h1 className="auth-login-heading">{title}</h1>
+            <p className="auth-login-subtitle">{subtitle}</p>
+          </div>
+        </header>
 
-        <div className="auth-login-card space-y-4">
+        <div className="auth-login-card">
           {error && (
             <div className="auth-login-alert auth-login-alert--error">
-              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+              <AlertCircle aria-hidden />
               <span>{error}</span>
             </div>
           )}
           {info && (
             <div className="auth-login-alert auth-login-alert--success">
-              <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" />
+              <CheckCircle2 aria-hidden />
               <span>{info}</span>
             </div>
           )}
 
           {view === 'login' && (
-            <form onSubmit={handleLogin} className="space-y-4">
+            <form onSubmit={handleLogin} className="auth-login-form">
               {onPortalLogin ? (
                 <div className="auth-login-mode-tabs">
                   <button
@@ -223,10 +237,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   </button>
                 </div>
               ) : null}
-              <div>
-                <label htmlFor="username" className="auth-login-label">
-                  {t('auth.username')}
-                </label>
+              <label className="auth-login-field" htmlFor="username">
+                <span className="auth-login-label">{t('auth.username')}</span>
                 <input
                   id="username"
                   name="username"
@@ -237,11 +249,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   className={inputClass}
                   required
                 />
-              </div>
-              <div>
-                <label htmlFor="password" className="auth-login-label">
-                  {t('auth.password')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="password">
+                <span className="auth-login-label">{t('auth.password')}</span>
                 <input
                   id="password"
                   name="password"
@@ -252,16 +262,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   className={inputClass}
                   required
                 />
-              </div>
+              </label>
               <button
                 type="submit"
                 disabled={loading}
                 className="auth-login-submit-btn"
               >
-                <LogIn className="w-4 h-4" />
+                <LogIn aria-hidden />
                 {loading ? t('auth.signingIn') : t('auth.signIn')}
               </button>
-              <div className="flex flex-wrap justify-between gap-2 text-xs">
+              <div className="auth-login-links">
                 <button type="button" onClick={() => go('forgot')} className="auth-login-link">
                   {t('auth.forgotLink')}
                 </button>
@@ -275,11 +285,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
           )}
 
           {view === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-4" autoComplete="on">
-              <div>
-                <label htmlFor="register-username" className="auth-login-label">
-                  {t('auth.username')}
-                </label>
+            <form onSubmit={handleRegister} className="auth-login-form" autoComplete="on">
+              <label className="auth-login-field" htmlFor="register-username">
+                <span className="auth-login-label">{t('auth.username')}</span>
                 <input
                   id="register-username"
                   name="username"
@@ -290,11 +298,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
-              </div>
-              <div>
-                <label htmlFor="register-name" className="auth-login-label">
-                  {t('auth.fullName')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="register-name">
+                <span className="auth-login-label">{t('auth.fullName')}</span>
                 <input
                   id="register-name"
                   name="name"
@@ -305,11 +311,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
-              </div>
-              <div>
-                <label htmlFor="register-email" className="auth-login-label">
-                  {t('auth.email')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="register-email">
+                <span className="auth-login-label">{t('auth.email')}</span>
                 <input
                   id="register-email"
                   name="email"
@@ -320,11 +324,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </div>
-              <div>
-                <label htmlFor="register-password" className="auth-login-label">
-                  {t('auth.password')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="register-password">
+                <span className="auth-login-label">{t('auth.password')}</span>
                 <input
                   id="register-password"
                   name="password"
@@ -336,11 +338,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   required
                   minLength={8}
                 />
-              </div>
-              <div>
-                <label htmlFor="register-password-confirm" className="auth-login-label">
-                  {t('auth.passwordConfirm')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="register-password-confirm">
+                <span className="auth-login-label">{t('auth.passwordConfirm')}</span>
                 <input
                   id="register-password-confirm"
                   name="password_confirm"
@@ -352,27 +352,25 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   required
                   minLength={8}
                 />
-              </div>
+              </label>
               <button
                 type="submit"
                 disabled={loading}
                 className="auth-login-submit-btn"
               >
-                <UserPlus className="w-4 h-4" />
+                <UserPlus aria-hidden />
                 {loading ? t('auth.registering') : t('auth.register')}
               </button>
-              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
+              <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--block">
                 {t('auth.backToLogin')}
               </button>
             </form>
           )}
 
           {view === 'forgot' && (
-            <form onSubmit={handleForgot} className="space-y-4" autoComplete="on">
-              <div>
-                <label htmlFor="forgot-email" className="auth-login-label">
-                  {t('auth.email')}
-                </label>
+            <form onSubmit={handleForgot} className="auth-login-form" autoComplete="on">
+              <label className="auth-login-field" htmlFor="forgot-email">
+                <span className="auth-login-label">{t('auth.email')}</span>
                 <input
                   id="forgot-email"
                   name="email"
@@ -383,30 +381,28 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </div>
+              </label>
               <button
                 type="submit"
                 disabled={loading}
                 className="auth-login-submit-btn"
               >
-                <KeyRound className="w-4 h-4" />
+                <KeyRound aria-hidden />
                 {loading ? t('auth.sending') : t('auth.sendResetLink')}
               </button>
-              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
+              <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--block">
                 {t('auth.backToLogin')}
               </button>
             </form>
           )}
 
           {view === 'reset' && (
-            <form onSubmit={handleReset} className="space-y-4" autoComplete="on">
+            <form onSubmit={handleReset} className="auth-login-form" autoComplete="on">
               {!token && (
                 <p className="auth-login-warning">{t('auth.invalidToken')}</p>
               )}
-              <div>
-                <label htmlFor="reset-password" className="auth-login-label">
-                  {t('auth.newPassword')}
-                </label>
+              <label className="auth-login-field" htmlFor="reset-password">
+                <span className="auth-login-label">{t('auth.newPassword')}</span>
                 <input
                   id="reset-password"
                   name="password"
@@ -419,11 +415,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   minLength={8}
                   disabled={!token}
                 />
-              </div>
-              <div>
-                <label htmlFor="reset-password-confirm" className="auth-login-label">
-                  {t('auth.passwordConfirm')}
-                </label>
+              </label>
+              <label className="auth-login-field" htmlFor="reset-password-confirm">
+                <span className="auth-login-label">{t('auth.passwordConfirm')}</span>
                 <input
                   id="reset-password-confirm"
                   name="password_confirm"
@@ -436,16 +430,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                   minLength={8}
                   disabled={!token}
                 />
-              </div>
+              </label>
               <button
                 type="submit"
                 disabled={loading || !token}
                 className="auth-login-submit-btn"
               >
-                <KeyRound className="w-4 h-4" />
+                <KeyRound aria-hidden />
                 {loading ? t('auth.saving') : t('auth.resetPassword')}
               </button>
-              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
+              <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--block">
                 {t('auth.backToLogin')}
               </button>
             </form>
@@ -455,7 +449,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
             <p className="auth-login-status">{t('auth.confirming')}</p>
           )}
           {view === 'confirm' && !loading && (
-            <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--accent w-full">
+            <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--accent auth-login-link--block">
               {t('auth.backToLogin')}
             </button>
           )}
