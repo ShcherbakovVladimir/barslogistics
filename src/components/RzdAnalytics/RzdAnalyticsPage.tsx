@@ -58,19 +58,15 @@ const RouteListItem = ({
   <button
     type="button"
     onClick={() => onSelect(route)}
-    className={`rzd-analytics-route-item w-full text-left p-2 rounded-lg border text-xs transition-colors ${
-      selected
-        ? 'rzd-analytics-route-item--selected border-indigo-500 bg-indigo-500/10'
-        : 'border-slate-800 hover:border-slate-600'
-    }`}
+    className={`rzd-analytics-route-item${selected ? ' rzd-analytics-route-item--selected' : ''}`}
   >
-    <div className="rzd-analytics-route-item-cargo font-semibold text-white truncate">
+    <div className="rzd-analytics-route-item-cargo">
       {route.cargo_name || route.cargo_code}
     </div>
-    <div className="rzd-analytics-route-item-path text-slate-400 truncate">
+    <div className="rzd-analytics-route-item-path">
       {route.origin_name} → {route.dest_name}
     </div>
-    <div className="rzd-analytics-route-item-meta text-emerald-400 mt-0.5">
+    <div className="rzd-analytics-route-item-meta">
       {route.total_volume.toLocaleString(localeTag)} {tonsLabel} · {route.shipment_count}
     </div>
   </button>
@@ -127,11 +123,11 @@ const ImportCard = ({ batch, localeTag, t }: ImportCardProps) => (
       </div>
       <div className="rzd-analytics-import-card-stat">
         <span className="rzd-analytics-import-card-stat-label">{t('rzdAnalytics.colInserted')}</span>
-        <span className="text-emerald-400">{batch.inserted_count}</span>
+        <span className="rzd-analytics-import-card-stat-value rzd-analytics-import-card-stat-value--inserted">{batch.inserted_count}</span>
       </div>
       <div className="rzd-analytics-import-card-stat">
         <span className="rzd-analytics-import-card-stat-label">{t('rzdAnalytics.colDuplicates')}</span>
-        <span className="text-amber-400">{batch.duplicate_count}</span>
+        <span className="rzd-analytics-import-card-stat-value rzd-analytics-import-card-stat-value--duplicates">{batch.duplicate_count}</span>
       </div>
     </div>
   </article>
@@ -172,16 +168,16 @@ const RoutesSheet = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`rzd-analytics-routes-sheet app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`rzd-analytics-routes-sheet app-modal-sheet modal-panel ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
           isDragging={isDragging}
         />
-        <header className="modal-panel-header px-4 pb-2 shrink-0">
-          <h3 className="text-sm font-bold text-white">{t('rzdAnalytics.topRoutes')}</h3>
+        <header className="modal-panel-header app-modal-sheet-header">
+          <h3 className="rzd-analytics-routes-sheet-title">{t('rzdAnalytics.topRoutes')}</h3>
         </header>
-        <div className="flex-1 min-h-0 overflow-y-auto theme-scrollbar px-4 pb-4 space-y-2">
+        <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
           {routes.slice(0, 20).map(r => (
             <RouteListItem
               key={`${r.origin_station_id}-${r.dest_station_id}-${r.cargo_code}`}
@@ -337,25 +333,27 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
   const pageTo = (page - 1) * 50 + records.length;
 
   return (
-    <div className="rzd-analytics-page h-full min-h-0 flex flex-col overflow-hidden bg-slate-950 text-slate-100">
-      <div className="rzd-analytics-header shrink-0 px-3 pt-3 sm:px-6 sm:pt-6 space-y-2 sm:space-y-4">
-        <div className="rzd-analytics-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 lg:p-5 shadow-xl space-y-3 sm:space-y-4">
-          <div className="rzd-analytics-toolbar-head flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-            <div className="min-w-0">
-              <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                <Train className="w-5 h-5 text-blue-400 shrink-0" />
-                <span className="truncate">{t('rzdAnalytics.title')}</span>
-              </h2>
-              <p className="rzd-analytics-subtitle text-[11px] sm:text-xs text-slate-400 mt-1 max-w-2xl line-clamp-2 sm:line-clamp-none">
-                {t('rzdAnalytics.subtitle')}
-              </p>
+    <div className="rzd-analytics-page">
+      <div className="rzd-analytics-header">
+        <div className="rzd-analytics-toolbar shipments-list-toolbar">
+          <div className="rzd-analytics-toolbar-top">
+            <div className="shipments-list-toolbar-head">
+              <span className="shipments-list-toolbar-icon" aria-hidden>
+                <Train />
+              </span>
+              <div className="shipments-list-toolbar-text">
+                <h2 className="shipments-list-title">
+                  <span className="truncate">{t('rzdAnalytics.title')}</span>
+                </h2>
+                <p className="shipments-list-subtitle rzd-analytics-subtitle">{t('rzdAnalytics.subtitle')}</p>
+              </div>
             </div>
-            <div className="rzd-analytics-toolbar-actions flex flex-wrap gap-2 shrink-0">
+            <div className="rzd-analytics-toolbar-actions">
               <button
                 type="button"
                 onClick={() => void loadData()}
                 disabled={loading}
-                className="rzd-analytics-toolbar-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+                className="rzd-analytics-toolbar-btn rzd-analytics-toolbar-btn--refresh"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                 {t('rzdAnalytics.refresh')}
@@ -366,7 +364,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                     ref={fileRef}
                     type="file"
                     accept=".csv,text/csv"
-                    className="hidden"
+                    className="rzd-analytics-file-input"
                     onChange={e => {
                       const f = e.target.files?.[0];
                       if (f) void handleImport(f);
@@ -377,7 +375,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                     type="button"
                     onClick={() => fileRef.current?.click()}
                     disabled={importing}
-                    className="rzd-analytics-toolbar-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 flex items-center justify-center gap-1.5 min-h-[2.75rem] sm:min-h-0"
+                    className="rzd-analytics-toolbar-btn rzd-analytics-toolbar-btn--upload"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     {importing ? t('rzdAnalytics.importing') : t('rzdAnalytics.uploadCsv')}
@@ -388,7 +386,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
           </div>
 
           {(error || importMsg) && (
-            <div className={`rzd-analytics-alert text-sm rounded-lg px-3 py-2 border ${error ? 'text-red-400 bg-red-500/10 border-red-500/30' : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'}`}>
+            <div className={`rzd-analytics-alert ${error ? 'rzd-analytics-alert--error' : 'rzd-analytics-alert--success'}`}>
               {error || importMsg}
             </div>
           )}
@@ -397,10 +395,10 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
             <button
               type="button"
               onClick={() => setToolsExpanded(v => !v)}
-              className="rzd-analytics-tools-toggle w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-200 min-h-[2.75rem]"
+              className="rzd-analytics-tools-toggle"
             >
-              <span className="flex items-center gap-2">
-                <Filter className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="rzd-analytics-tools-toggle-label">
+                <Filter className="w-3.5 h-3.5" />
                 {t('rzdAnalytics.filters')}
               </span>
               {toolsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -409,25 +407,21 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
 
           {(toolsExpanded || !showToolsToggle) && (
             <div className="rzd-analytics-tools-body theme-scrollbar">
-              <div className="rzd-analytics-kpi-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+              <div className="rzd-analytics-kpi-grid">
                 {kpiCards.map(card => (
-                  <div key={card.label} className="rzd-analytics-kpi-card bg-slate-950 border border-slate-800 rounded-xl p-2.5 sm:p-3">
-                    <div className="rzd-analytics-kpi-label text-[9px] sm:text-[10px] uppercase tracking-wide text-slate-500 truncate">
-                      {card.label}
-                    </div>
-                    <div className="rzd-analytics-kpi-value text-base sm:text-lg font-bold text-white mt-0.5 sm:mt-1 truncate">
-                      {card.value}
-                    </div>
+                  <div key={card.label} className="rzd-analytics-kpi-card">
+                    <div className="rzd-analytics-kpi-label">{card.label}</div>
+                    <div className="rzd-analytics-kpi-value">{card.value}</div>
                   </div>
                 ))}
               </div>
 
               <div className="rzd-analytics-filters theme-scrollbar">
-                <div className="rzd-analytics-filters-title flex items-center gap-2 text-xs font-semibold text-slate-300">
-                  <Filter className="w-3.5 h-3.5 text-indigo-400" />
+                <div className="rzd-analytics-filters-title">
+                  <Filter className="w-3.5 h-3.5" />
                   {t('rzdAnalytics.filters')}
                 </div>
-                <div className="rzd-analytics-filters-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="rzd-analytics-filters-grid">
                   <label className="rzd-analytics-filter-item">
                     <span className="rzd-analytics-filter-label">{t('rzdAnalytics.dateFrom')}</span>
                     <input
@@ -476,7 +470,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                       listClassName="rzd-analytics-dropdown-list"
                     />
                   </label>
-                  <label className="rzd-analytics-filter-item sm:col-span-2">
+                  <label className="rzd-analytics-filter-item rzd-analytics-filter-item--wide">
                     <span className="rzd-analytics-filter-label">{t('rzdAnalytics.search')}</span>
                     <input
                       type="text"
@@ -486,7 +480,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                       className="rzd-analytics-field"
                     />
                   </label>
-                  <label className="rzd-analytics-filter-item sm:col-span-2">
+                  <label className="rzd-analytics-filter-item rzd-analytics-filter-item--wide">
                     <span className="rzd-analytics-filter-label">{t('rzdAnalytics.destRegion')}</span>
                     <SearchableSelect
                       value={filters.destRegion ?? ''}
@@ -506,7 +500,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
             </div>
           )}
 
-          <div className="rzd-analytics-tabs flex gap-1 p-1 bg-slate-950 border border-slate-800 rounded-xl w-fit">
+          <div className="rzd-analytics-tabs">
             {([
               ['map', MapIcon, t('rzdAnalytics.tabMap')] as const,
               ['table', Table2, t('rzdAnalytics.tabTable')] as const,
@@ -516,7 +510,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                 key={id}
                 type="button"
                 onClick={() => setView(id)}
-                className={`rzd-analytics-tab px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 min-h-[2.5rem] sm:min-h-0 ${view === id ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                className={`rzd-analytics-tab${view === id ? ' is-active' : ''}`}
               >
                 <Icon className="w-3.5 h-3.5 shrink-0" />
                 <span className="rzd-analytics-tab-label">{label}</span>
@@ -526,10 +520,10 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
         </div>
       </div>
 
-      <div className="rzd-analytics-content flex-1 min-h-0 px-3 pb-3 sm:px-6 sm:pb-6 pt-2 sm:pt-3 overflow-hidden">
+      <div className="rzd-analytics-content">
         {view === 'map' && (
-          <div className="rzd-analytics-map-layout h-full min-h-0 flex flex-col lg:grid lg:grid-cols-3 gap-3 sm:gap-4">
-            <div className="rzd-analytics-map-wrap relative flex-1 min-h-[180px] lg:col-span-2 lg:min-h-0">
+          <div className="rzd-analytics-map-layout">
+            <div className="rzd-analytics-map-wrap">
               <RzdAnalyticsMap routes={routes} onSelectRoute={setSelectedRoute} />
               {mobileLayout && (
                 <div className="rzd-analytics-map-fab-bar">
@@ -545,10 +539,11 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                 </div>
               )}
             </div>
-            <div className="rzd-analytics-routes rzd-analytics-routes--desktop shrink-0 max-h-[26vh] sm:max-h-[30vh] lg:max-h-none lg:min-h-0 lg:h-full bg-slate-900 border border-slate-800 rounded-xl p-3 overflow-y-auto theme-scrollbar space-y-2">
-              <div className="rzd-analytics-routes-title text-xs font-semibold text-slate-300 sticky top-0 bg-slate-900 pb-1 z-[1]">
+            <div className="rzd-analytics-routes rzd-analytics-routes--desktop">
+              <div className="rzd-analytics-routes-title">
                 {t('rzdAnalytics.topRoutes')}
               </div>
+              <div className="rzd-analytics-routes-list theme-scrollbar">
               {routes.slice(0, 20).map(r => (
                 <RouteListItem
                   key={`${r.origin_station_id}-${r.dest_station_id}-${r.cargo_code}`}
@@ -559,51 +554,52 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                   onSelect={setSelectedRoute}
                 />
               ))}
+              </div>
             </div>
           </div>
         )}
 
         {view === 'table' && (
-          <div className="rzd-analytics-table-panel h-full min-h-0 flex flex-col bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-            <div className="rzd-analytics-table-desktop flex-1 min-h-0 overflow-auto theme-scrollbar responsive-table-wrap">
-              <table className="w-full text-xs min-w-[36rem] xl:min-w-[48rem]">
-                <thead className="bg-slate-950 text-slate-400 sticky top-0 z-[1]">
+          <div className="rzd-analytics-table-panel">
+            <div className="rzd-analytics-table-desktop responsive-table-wrap theme-scrollbar">
+              <table className="rzd-analytics-table">
+                <thead>
                   <tr>
-                    <th className="p-2 text-left">{t('rzdAnalytics.colDate')}</th>
-                    <th className="p-2 text-left">{t('rzdAnalytics.colCargo')}</th>
-                    <th className="p-2 text-left">{t('rzdAnalytics.colOrigin')}</th>
-                    <th className="p-2 text-left">{t('rzdAnalytics.colDest')}</th>
-                    <th className="p-2 text-left">{t('rzdAnalytics.colShipper')}</th>
-                    <th className="p-2 text-right">{t('rzdAnalytics.colVolume')}</th>
+                    <th>{t('rzdAnalytics.colDate')}</th>
+                    <th>{t('rzdAnalytics.colCargo')}</th>
+                    <th>{t('rzdAnalytics.colOrigin')}</th>
+                    <th>{t('rzdAnalytics.colDest')}</th>
+                    <th>{t('rzdAnalytics.colShipper')}</th>
+                    <th className="rzd-analytics-col-volume">{t('rzdAnalytics.colVolume')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {records.map(r => (
-                    <tr key={r.id} className="border-t border-slate-800 hover:bg-slate-800/40">
-                      <td className="p-2 whitespace-nowrap">{r.shipment_date}</td>
-                      <td className="p-2">{r.cargo_name}</td>
-                      <td className="p-2">{r.origin_station_name}</td>
-                      <td className="p-2">{r.dest_station_name}</td>
-                      <td className="p-2 text-slate-400 truncate max-w-[10rem]">{r.shipper || '—'}</td>
-                      <td className="p-2 text-right text-emerald-400">{r.volume.toLocaleString(localeTag)}</td>
+                    <tr key={r.id}>
+                      <td className="rzd-analytics-cell-date">{r.shipment_date}</td>
+                      <td>{r.cargo_name}</td>
+                      <td>{r.origin_station_name}</td>
+                      <td>{r.dest_station_name}</td>
+                      <td className="rzd-analytics-cell-shipper">{r.shipper || '—'}</td>
+                      <td className="rzd-analytics-col-volume rzd-analytics-cell-volume">{r.volume.toLocaleString(localeTag)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="rzd-analytics-records-cards-mobile flex-1 min-h-0 overflow-y-auto theme-scrollbar p-3 space-y-2">
+            <div className="rzd-analytics-records-cards-mobile theme-scrollbar">
               {records.map(r => (
                 <RecordCard key={r.id} record={r} localeTag={localeTag} t={t} />
               ))}
             </div>
-            <div className="rzd-analytics-pagination shrink-0 flex items-center justify-between p-3 border-t border-slate-800 text-xs text-slate-400">
+            <div className="rzd-analytics-pagination">
               <span>{t('rzdAnalytics.pageInfo', { from: pageFrom, to: pageTo, total: recordsTotal })}</span>
-              <div className="rzd-analytics-pagination-actions flex gap-2">
+              <div className="rzd-analytics-pagination-actions">
                 <button
                   type="button"
                   disabled={page <= 1}
                   onClick={() => setPage(p => p - 1)}
-                  className="rzd-analytics-pagination-btn px-2 py-1 rounded bg-slate-800 disabled:opacity-40 min-h-[2.5rem] sm:min-h-0"
+                  className="rzd-analytics-pagination-btn"
                 >
                   ←
                 </button>
@@ -611,7 +607,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                   type="button"
                   disabled={page * 50 >= recordsTotal}
                   onClick={() => setPage(p => p + 1)}
-                  className="rzd-analytics-pagination-btn px-2 py-1 rounded bg-slate-800 disabled:opacity-40 min-h-[2.5rem] sm:min-h-0"
+                  className="rzd-analytics-pagination-btn"
                 >
                   →
                 </button>
@@ -621,32 +617,32 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
         )}
 
         {view === 'imports' && (
-          <div className="rzd-analytics-imports-panel h-full min-h-0 flex flex-col bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-            <div className="rzd-analytics-imports-table-desktop flex-1 min-h-0 overflow-auto theme-scrollbar responsive-table-wrap">
-              <table className="w-full text-xs min-w-[28rem] xl:min-w-[36rem]">
-                <thead className="bg-slate-950 text-slate-400 sticky top-0 z-[1]">
+          <div className="rzd-analytics-imports-panel">
+            <div className="rzd-analytics-imports-table-desktop responsive-table-wrap theme-scrollbar">
+              <table className="rzd-analytics-table rzd-analytics-imports-table">
+                <thead>
                   <tr>
-                    <th className="p-3 text-left">{t('rzdAnalytics.colFile')}</th>
-                    <th className="p-3 text-right">{t('rzdAnalytics.colRows')}</th>
-                    <th className="p-3 text-right">{t('rzdAnalytics.colInserted')}</th>
-                    <th className="p-3 text-right">{t('rzdAnalytics.colDuplicates')}</th>
-                    <th className="p-3 text-left">{t('rzdAnalytics.colDate')}</th>
+                    <th>{t('rzdAnalytics.colFile')}</th>
+                    <th className="rzd-analytics-col-num">{t('rzdAnalytics.colRows')}</th>
+                    <th className="rzd-analytics-col-num">{t('rzdAnalytics.colInserted')}</th>
+                    <th className="rzd-analytics-col-num">{t('rzdAnalytics.colDuplicates')}</th>
+                    <th>{t('rzdAnalytics.colDate')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {batches.map(b => (
-                    <tr key={b.id} className="border-t border-slate-800">
-                      <td className="p-3 text-white">{b.filename}</td>
-                      <td className="p-3 text-right">{b.row_count}</td>
-                      <td className="p-3 text-right text-emerald-400">{b.inserted_count}</td>
-                      <td className="p-3 text-right text-amber-400">{b.duplicate_count}</td>
-                      <td className="p-3 text-slate-400">{new Date(b.created_at).toLocaleString(localeTag)}</td>
+                    <tr key={b.id}>
+                      <td className="rzd-analytics-cell-filename">{b.filename}</td>
+                      <td className="rzd-analytics-col-num">{b.row_count}</td>
+                      <td className="rzd-analytics-col-num rzd-analytics-cell-inserted">{b.inserted_count}</td>
+                      <td className="rzd-analytics-col-num rzd-analytics-cell-duplicates">{b.duplicate_count}</td>
+                      <td className="rzd-analytics-cell-date">{new Date(b.created_at).toLocaleString(localeTag)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="rzd-analytics-imports-cards-mobile flex-1 min-h-0 overflow-y-auto theme-scrollbar p-3 space-y-2">
+            <div className="rzd-analytics-imports-cards-mobile theme-scrollbar">
               {batches.map(b => (
                 <ImportCard key={b.id} batch={b} localeTag={localeTag} t={t} />
               ))}

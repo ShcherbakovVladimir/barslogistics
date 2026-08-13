@@ -4874,89 +4874,134 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
   color: #4338ca;
 }
 
-[data-theme="light"] .rzd-analytics-page .bg-slate-950,
-[data-theme="light"] .rzd-analytics-page.bg-slate-950 {
-  background-color: #f8fafc !important;
+/* ── RZD Analytics (chrome + light) ── */
+[data-theme="light"] .rzd-analytics-page {
+  background: #f1f5f9 !important;
+  color: #0f172a;
 }
 
-[data-theme="light"] .rzd-analytics-page .bg-slate-900 {
-  background-color: #ffffff !important;
-}
-
-[data-theme="light"] .rzd-analytics-page .border-slate-800 {
+[data-theme="light"] .rzd-analytics-toolbar,
+[data-theme="light"] .rzd-analytics-table-panel,
+[data-theme="light"] .rzd-analytics-imports-panel,
+[data-theme="light"] .rzd-analytics-routes,
+[data-theme="light"] .rzd-analytics-routes-sheet {
+  background: #ffffff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
 }
 
-[data-theme="light"] .rzd-analytics-page .text-white {
+[data-theme="light"] .rzd-analytics-toolbar .shipments-list-toolbar-icon {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .rzd-analytics-toolbar .shipments-list-title,
+[data-theme="light"] .rzd-analytics-kpi-value,
+[data-theme="light"] .rzd-analytics-cell-filename,
+[data-theme="light"] .rzd-analytics-routes-sheet-title {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .rzd-analytics-page .bg-indigo-600.text-white,
-[data-theme="light"] .rzd-analytics-page .bg-indigo-500.text-white,
-[data-theme="light"] .rzd-analytics-page button.bg-indigo-600,
-[data-theme="light"] .rzd-analytics-page button.bg-indigo-500 {
-  color: #ffffff !important;
-}
-
-[data-theme="light"] .rzd-analytics-page .text-slate-300 {
-  color: #475569 !important;
-}
-
-[data-theme="light"] .rzd-analytics-page .text-slate-400 {
+[data-theme="light"] .rzd-analytics-subtitle,
+[data-theme="light"] .rzd-analytics-pagination,
+[data-theme="light"] .rzd-analytics-route-item-path,
+[data-theme="light"] .rzd-analytics-cell-shipper,
+[data-theme="light"] .rzd-analytics-record-card-route,
+[data-theme="light"] .rzd-analytics-record-card-shipper {
   color: #64748b !important;
 }
 
-[data-theme="light"] .rzd-analytics-page .text-slate-500 {
+[data-theme="light"] .rzd-analytics-toolbar-btn--refresh,
+[data-theme="light"] .rzd-analytics-pagination-btn {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .rzd-analytics-toolbar-btn--refresh:hover:not(:disabled),
+[data-theme="light"] .rzd-analytics-pagination-btn:hover:not(:disabled) {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .rzd-analytics-toolbar-btn--upload {
+  background: #4f46e5 !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .rzd-analytics-toolbar-btn--upload:hover:not(:disabled) {
+  background: #4338ca !important;
+  border-color: #3730a3 !important;
+}
+
+[data-theme="light"] .rzd-analytics-kpi-card,
+[data-theme="light"] .rzd-analytics-tools-toggle,
+[data-theme="light"] .rzd-analytics-tabs {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .rzd-analytics-kpi-label {
   color: #94a3b8 !important;
+}
+
+[data-theme="light"] .rzd-analytics-tools-toggle {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .rzd-analytics-tab:not(.is-active) {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .rzd-analytics-tab.is-active {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .rzd-analytics-table thead {
+  background: #f8fafc !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .rzd-analytics-table tbody tr {
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .rzd-analytics-table tbody tr:hover {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .rzd-analytics-pagination {
+  border-top-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item--selected {
+  border-color: rgb(99 102 241 / 0.55) !important;
+  background: rgb(99 102 241 / 0.08) !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-cargo {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .rzd-analytics-routes-title {
+  color: #475569 !important;
 }
 
 [data-theme="light"] .rzd-analytics-routes {
   scrollbar-color: #6366f1 rgb(226 232 240 / 0.9);
 }
 
-[data-theme="light"] .rzd-analytics-routes .sticky.bg-slate-900 {
-  background-color: #ffffff !important;
-}
-
-[data-theme="light"] .rzd-analytics-routes-title {
-  background: #ffffff !important;
-}
-
-[data-theme="light"] .rzd-analytics-toolbar {
-  background: #ffffff !important;
+[data-theme="light"] .rzd-analytics-map {
+  background: #e2e8f0 !important;
   border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .rzd-analytics-toolbar h2 {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .rzd-analytics-subtitle {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .rzd-analytics-kpi-card {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .rzd-analytics-kpi-value {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .rzd-analytics-tools-toggle {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-  color: #334155 !important;
-}
-
-[data-theme="light"] .rzd-analytics-tabs {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .rzd-analytics-tab:not(.bg-indigo-600) {
-  color: #64748b !important;
 }
 
 [data-theme="light"] .rzd-analytics-record-card,
@@ -4968,15 +5013,6 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
 [data-theme="light"] .rzd-analytics-record-card-cargo,
 [data-theme="light"] .rzd-analytics-import-card-filename {
   color: #0f172a;
-}
-
-[data-theme="light"] .rzd-analytics-record-card-route,
-[data-theme="light"] .rzd-analytics-record-card-shipper {
-  color: #475569;
-}
-
-[data-theme="light"] .rzd-analytics-route-item-cargo {
-  color: #0f172a !important;
 }
 
 [data-theme="light"] .rzd-analytics-map-fab {
@@ -4992,26 +5028,27 @@ html.layout-fold[data-theme="light"] .modal-backdrop .manager-directory-modal.ap
   color: #ffffff;
 }
 
-[data-theme="light"] .rzd-analytics-routes-sheet {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  color: #334155 !important;
-}
-
-[data-theme="light"] .rzd-analytics-routes-sheet .text-white {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .rzd-analytics-alert.text-red-400 {
+[data-theme="light"] .rzd-analytics-alert--error {
   color: #dc2626 !important;
   background-color: rgb(239 68 68 / 0.08) !important;
   border-color: rgb(239 68 68 / 0.22) !important;
 }
 
-[data-theme="light"] .rzd-analytics-alert.text-emerald-400 {
+[data-theme="light"] .rzd-analytics-alert--success {
   color: #059669 !important;
   background-color: rgb(16 185 129 / 0.1) !important;
   border-color: rgb(16 185 129 / 0.25) !important;
+}
+
+[data-theme="light"] .rzd-analytics-cell-volume,
+[data-theme="light"] .rzd-analytics-cell-inserted,
+[data-theme="light"] .rzd-analytics-import-card-stat-value--inserted {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .rzd-analytics-cell-duplicates,
+[data-theme="light"] .rzd-analytics-import-card-stat-value--duplicates {
+  color: #d97706 !important;
 }
 
 /* ── Map ── */

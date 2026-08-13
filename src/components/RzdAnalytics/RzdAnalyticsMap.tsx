@@ -95,8 +95,8 @@ export function RzdAnalyticsMap({ routes, onSelectRoute }: RzdAnalyticsMapProps)
   }, [routes, onSelectRoute]);
 
   return (
-    <div className="rzd-analytics-map relative w-full h-full min-h-0 rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
-      <div ref={containerRef} className="absolute inset-0" />
+    <div className="rzd-analytics-map">
+      <div ref={containerRef} className="rzd-analytics-map-canvas" />
     </div>
   );
 }
