@@ -1306,8 +1306,7 @@ html.layout-mobile .transport-directory-page,
 html.layout-mobile .manager-directory-page,
 html.layout-mobile .my-data-page,
 html.layout-mobile .admin-panel,
-html.layout-mobile .audit-logs-page,
-html.layout-mobile .bg-slate-950.min-h-full.p-4 {
+html.layout-mobile .audit-logs-page {
   padding: 0.75rem !important;
 }
 

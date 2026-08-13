@@ -153,7 +153,7 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
 
   if (!form) {
     return (
-      <div className="text-sm text-slate-400">{t('integrations.settingsError')}</div>
+      <div className="admin-form-msg--muted text-sm">{t('integrations.settingsError')}</div>
     );
   }
 
@@ -306,7 +306,7 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
 
       {message ? <p className="admin-alert admin-alert--success">{message}</p> : null}
       {errors.length > 0 && (
-        <ul className="text-xs text-amber-400/90 space-y-1 list-disc pl-4">
+        <ul className="admin-form-error-list">
           {errors.map((err, i) => <li key={i}>{err}</li>)}
         </ul>
       )}

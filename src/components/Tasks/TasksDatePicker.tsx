@@ -358,7 +358,7 @@ export const TasksDatePicker: React.FC<TasksDatePickerProps> = ({
         aria-haspopup="dialog"
         onClick={() => !disabled && setOpen(v => !v)}
       >
-        <Calendar className="w-3.5 h-3.5 shrink-0 text-indigo-400" aria-hidden />
+        <Calendar className="tasks-date-picker-trigger-icon" aria-hidden />
         <span className="truncate flex-1 text-left">{displayLabel}</span>
         {value && !required ? (
           <span

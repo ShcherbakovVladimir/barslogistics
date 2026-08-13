@@ -62,6 +62,15 @@ html.layout-mobile #root {
   background-color: var(--app-shell-bg, rgb(2 6 23));
 }
 
+.app-loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--app-loading-spinner-track, #6366f1);
+  border-top-color: transparent;
+  border-radius: 9999px;
+  animation: spin 1s linear infinite;
+}
+
 .app-portal-await {
   color: #94a3b8;
 }
@@ -2664,6 +2673,51 @@ html.portal-embed .header-nav-scroll {
   border-style: solid;
 }
 
+.shipments-status-badge--en_route,
+.shipment-card-badge--en_route,
+.shipment-card-badge.shipments-status-badge--en_route,
+.active-shipment-status-badge--en_route {
+  background: rgb(16 185 129 / 0.1);
+  color: #34d399;
+  border-color: rgb(16 185 129 / 0.3);
+}
+
+.shipments-status-badge--delayed,
+.shipment-card-badge--delayed,
+.shipment-card-badge.shipments-status-badge--delayed,
+.active-shipment-status-badge--delayed {
+  background: rgb(245 158 11 / 0.1);
+  color: #fbbf24;
+  border-color: rgb(245 158 11 / 0.3);
+}
+
+.shipments-status-badge--arrived,
+.shipment-card-badge--arrived,
+.shipment-card-badge.shipments-status-badge--arrived,
+.active-shipment-status-badge--arrived {
+  background: rgb(100 116 139 / 0.1);
+  color: #94a3b8;
+  border-color: rgb(100 116 139 / 0.3);
+}
+
+.shipments-status-badge--loading,
+.shipment-card-badge--loading,
+.shipment-card-badge.shipments-status-badge--loading,
+.active-shipment-status-badge--loading {
+  background: rgb(168 85 247 / 0.1);
+  color: #c084fc;
+  border-color: rgb(168 85 247 / 0.3);
+}
+
+.shipments-status-badge--alert,
+.shipment-card-badge--alert,
+.shipment-card-badge.shipments-status-badge--alert,
+.active-shipment-status-badge--alert {
+  background: rgb(239 68 68 / 0.1);
+  color: #f87171;
+  border-color: rgb(239 68 68 / 0.3);
+}
+
 .shipments-cell-progress {
   margin-top: 0.4rem;
   height: 0.3rem;
@@ -2900,6 +2954,13 @@ html.portal-embed .header-nav-scroll {
   font-weight: 600;
   color: #e2e8f0;
   min-width: 0;
+}
+
+.shipment-card-route-arrow {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: #64748b;
 }
 
 .shipment-card-regions {
@@ -8791,6 +8852,19 @@ html.portal-embed .header-nav-scroll {
   border: 1px solid rgb(245 158 11 / 0.35);
 }
 
+.admin-form-error-list {
+  list-style: disc;
+  padding-left: 1rem;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgb(251 191 36 / 0.9);
+}
+
+.admin-form-error-list > li + li {
+  margin-top: 0.25rem;
+}
+
 /* ── Admin modals (users, sites delete) ── */
 .admin-modal,
 .admin-users-modal,
@@ -11752,12 +11826,16 @@ html.compact-laptop .audit-logs-filters-grid {
   display: none;
   max-width: 100%;
   margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.375;
   color: #94a3b8;
 }
 
 .app-header-sync-badge {
   padding: 0.2rem 0.45rem;
   max-width: 100%;
+  font-size: 0.625rem;
+  font-weight: 600;
   line-height: 1.2;
   align-self: center;
   margin-top: 0;
@@ -12387,6 +12465,17 @@ html.compact-laptop .app-header-nav {
 }
 
 /* Modal overlay — lighter in dark theme so map stays visible behind */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgb(0 0 0 / 0.6);
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -15240,6 +15329,51 @@ html.compact-laptop .app-header-nav {
   font-weight: 650;
 }
 
+.factory-type-badge--gok,
+.site-directory-type-badge.factory-type-badge--gok,
+.site-directory-card-category.factory-type-badge--gok,
+.site-directory-chip--type.factory-type-badge--gok:not(.is-active) {
+  background: rgb(245 158 11 / 0.1);
+  color: #fbbf24;
+  border-color: rgb(245 158 11 / 0.3);
+}
+
+.factory-type-badge--port,
+.site-directory-type-badge.factory-type-badge--port,
+.site-directory-card-category.factory-type-badge--port,
+.site-directory-chip--type.factory-type-badge--port:not(.is-active) {
+  background: rgb(59 130 246 / 0.1);
+  color: #60a5fa;
+  border-color: rgb(59 130 246 / 0.3);
+}
+
+.factory-type-badge--steel_mill,
+.site-directory-type-badge.factory-type-badge--steel_mill,
+.site-directory-card-category.factory-type-badge--steel_mill,
+.site-directory-chip--type.factory-type-badge--steel_mill:not(.is-active) {
+  background: rgb(239 68 68 / 0.1);
+  color: #f87171;
+  border-color: rgb(239 68 68 / 0.3);
+}
+
+.factory-type-badge--slag_dump,
+.site-directory-type-badge.factory-type-badge--slag_dump,
+.site-directory-card-category.factory-type-badge--slag_dump,
+.site-directory-chip--type.factory-type-badge--slag_dump:not(.is-active) {
+  background: rgb(100 116 139 / 0.1);
+  color: #94a3b8;
+  border-color: rgb(100 116 139 / 0.3);
+}
+
+.factory-type-badge--coal_mine,
+.site-directory-type-badge.factory-type-badge--coal_mine,
+.site-directory-card-category.factory-type-badge--coal_mine,
+.site-directory-chip--type.factory-type-badge--coal_mine:not(.is-active) {
+  background: rgb(168 85 247 / 0.1);
+  color: #c084fc;
+  border-color: rgb(168 85 247 / 0.3);
+}
+
 .factories-card-region,
 .factories-card-holding,
 .factories-card-desc,
@@ -16433,6 +16567,30 @@ html.compact-laptop .app-header-nav {
   min-height: 12rem;
 }
 
+.russia-regions-map-tooltip {
+  pointer-events: none;
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  max-width: 20rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(2 6 23 / 0.95);
+  font-size: 0.75rem;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
+}
+
+.russia-regions-map-tooltip-title {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.russia-regions-map-tooltip-meta {
+  margin-top: 0.125rem;
+  color: #94a3b8;
+}
+
 .russia-map-region-count {
   paint-order: stroke fill;
   stroke: rgb(15 23 42 / 0.55);
@@ -16876,6 +17034,54 @@ button.map-legend-item--ours {
   gap: 0.25rem 0.5rem;
 }
 
+.map-legend-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.map-legend-line {
+  display: inline-block;
+  width: 0.75rem;
+  height: 2px;
+  flex-shrink: 0;
+}
+
+.map-legend-line--own {
+  background-color: #10b981;
+}
+
+.map-legend-line--rzd {
+  background-color: #60a5fa;
+  border-bottom: 1px dashed #60a5fa;
+}
+
+.map-legend-status-dot {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background: transparent;
+}
+
+.map-legend-status-dot--active {
+  border-color: #22c55e;
+}
+
+.map-legend-status-dot--paused {
+  border-color: #eab308;
+}
+
+.map-legend-status-dot--inactive {
+  border-color: #ef4444;
+}
+
+.map-legend-status-dot--never {
+  border-color: #9ca3af;
+}
+
 .map-legend-status {
   margin-top: 0.5rem;
   padding-top: 0.5rem;
@@ -17108,14 +17314,8 @@ html.compact-laptop .rzd-analytics-page .shipments-list-title {
 }
 
 html.compact-laptop .scroll-area > .p-4,
-html.compact-laptop .scroll-area > .p-4.sm\:p-6,
-html.compact-laptop .bg-slate-950.min-h-full.p-4,
-html.compact-laptop .bg-slate-950.min-h-full.p-4.sm\:p-6 {
+html.compact-laptop .scroll-area > .p-4.sm\:p-6 {
   padding: 0.75rem !important;
-}
-
-html.compact-laptop .bg-slate-900.border.p-5.rounded-2xl {
-  padding: 0.875rem !important;
 }
 
 html.compact-laptop .modal-backdrop > form,
@@ -17198,7 +17398,13 @@ html.compact-laptop .logistics-map .leaflet-control-zoom {
 /* Factory / site ID in map panel & facility modal */
 .map-factory-id,
 .facility-modal-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.625rem;
   color: #a5b4fc;
+}
+
+.facility-modal-id {
+  font-size: 0.6875rem;
 }
 
 [data-theme="light"] .map-factory-id,
@@ -17206,15 +17412,103 @@ html.compact-laptop .logistics-map .leaflet-control-zoom {
   color: #4338ca !important;
 }
 
-[data-theme="light"] .text-amber-300\/90 {
-  color: rgb(146 64 14 / 0.95) !important;
-}
-
 /* Leaflet divIcon defaults to white box — hide for custom HTML pins */
 .logistics-map .custom-factory-icon.leaflet-div-icon,
 .logistics-map .custom-vehicle-icon.leaflet-div-icon {
   background: transparent !important;
   border: none !important;
+}
+
+@keyframes map-marker-ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes map-marker-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.logistics-map .map-marker-root {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.logistics-map .map-marker-root:hover {
+  transform: scale(1.25);
+}
+
+.logistics-map .map-marker-root.is-dimmed {
+  opacity: 0.3;
+}
+
+.logistics-map .map-marker-root.is-repositioning {
+  opacity: 0.4;
+}
+
+.logistics-map .map-marker-ping {
+  position: absolute;
+  inset: -0.375rem;
+  border-radius: 9999px;
+  background: rgb(52 211 153 / 0.5);
+  animation: map-marker-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.logistics-map .map-marker-pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.12), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.logistics-map .map-marker-pin.is-selected {
+  transform: scale(1.25);
+  z-index: 50;
+  box-shadow:
+    0 0 0 4px rgb(251 191 36 / 0.4),
+    0 4px 6px -1px rgb(0 0 0 / 0.12),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.logistics-map .map-marker-pin-label {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.logistics-map .map-marker-vehicle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 8px 16px -4px rgb(0 0 0 / 0.2);
+  animation: map-marker-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.logistics-map .map-marker-vehicle-icon {
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 .logistics-map .factory-trend-badge {
@@ -19182,36 +19476,6 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   font-weight: 600;
 }
 
-.active-shipment-status-badge--en_route {
-  background: rgb(16 185 129 / 0.1);
-  color: #34d399;
-  border-color: rgb(16 185 129 / 0.3);
-}
-
-.active-shipment-status-badge--delayed {
-  background: rgb(245 158 11 / 0.1);
-  color: #fbbf24;
-  border-color: rgb(245 158 11 / 0.3);
-}
-
-.active-shipment-status-badge--arrived {
-  background: rgb(100 116 139 / 0.1);
-  color: #94a3b8;
-  border-color: rgb(100 116 139 / 0.3);
-}
-
-.active-shipment-status-badge--loading {
-  background: rgb(168 85 247 / 0.1);
-  color: #c084fc;
-  border-color: rgb(168 85 247 / 0.3);
-}
-
-.active-shipment-status-badge--alert {
-  background: rgb(239 68 68 / 0.1);
-  color: #f87171;
-  border-color: rgb(239 68 68 / 0.3);
-}
-
 .active-shipment-eta {
   display: inline-flex;
   align-items: center;
@@ -19604,6 +19868,13 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
+.tasks-date-picker-trigger-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: #818cf8;
+}
+
 .tasks-date-picker-trigger.is-placeholder {
   color: #94a3b8;
 }
@@ -19960,6 +20231,10 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   color: #64748b;
 }
 
+[data-theme="light"] .tasks-date-picker-trigger-icon {
+  color: #4f46e5;
+}
+
 [data-theme="light"] .tasks-dropdown-panel.modal-dropdown-panel,
 [data-theme="light"] .tasks-dropdown-panel,
 [data-theme="light"] .tasks-date-picker-panel {
@@ -20272,6 +20547,18 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   background: rgb(15 23 42 / 0.4);
 }
 
+.tasks-file-row-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #818cf8;
+}
+
+.tasks-file-row-meta {
+  font-size: 0.625rem;
+  color: #94a3b8;
+}
+
 [data-theme="light"] .tasks-workspace {
   border-top-color: #e2e8f0;
 }
@@ -20374,6 +20661,29 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   border-bottom: 1px solid rgb(51 65 85 / 0.9);
   flex-shrink: 0;
 }
+
+.global-search-input-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #94a3b8;
+}
+
+.global-search-result-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.global-search-result-icon--nav { color: #94a3b8; }
+.global-search-result-icon--factory { color: #34d399; }
+.global-search-result-icon--shipment { color: #818cf8; }
+.global-search-result-icon--product { color: #fbbf24; }
+.global-search-result-icon--transport { color: #34d399; }
+.global-search-result-icon--carrier { color: #22d3ee; }
+.global-search-result-icon--manager { color: #a78bfa; }
+.global-search-result-icon--board { color: #818cf8; }
 
 .global-search-input {
   flex: 1;

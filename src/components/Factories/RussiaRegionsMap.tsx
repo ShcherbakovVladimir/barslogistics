@@ -134,9 +134,9 @@ export const RussiaRegionsMap: React.FC<RussiaRegionsMapProps> = ({
       </svg>
 
       {hoveredRegion && (
-        <div className="russia-regions-map-tooltip pointer-events-none absolute left-3 bottom-3 max-w-xs rounded-xl border border-slate-700 bg-slate-950/95 px-3 py-2 text-xs shadow-xl">
-          <div className="font-semibold text-white">{hoveredRegion.title}</div>
-          <div className="text-slate-400 mt-0.5">
+        <div className="russia-regions-map-tooltip">
+          <div className="russia-regions-map-tooltip-title">{hoveredRegion.title}</div>
+          <div className="russia-regions-map-tooltip-meta">
             {hoveredCount > 0
               ? t('factories.regionObjects', { count: hoveredCount })
               : t('factories.schematicNoObjects')}

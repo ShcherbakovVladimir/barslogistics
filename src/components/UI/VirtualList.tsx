@@ -158,7 +158,7 @@ export const ModalShell: React.FC<ModalShellProps> = ({
   }, [onClose]);
 
   return (
-    <div className="modal-overlay fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/60" role="presentation">
+    <div className="modal-overlay" role="presentation">
       <div
         ref={dialogRef}
         role="dialog"

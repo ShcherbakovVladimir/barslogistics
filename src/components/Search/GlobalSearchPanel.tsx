@@ -50,24 +50,24 @@ const GROUP_LABEL_KEYS: Record<GlobalSearchResult['type'], string> = {
 };
 
 function ResultIcon({ type }: { type: GlobalSearchResult['type'] }) {
-  const cls = 'w-4 h-4 shrink-0 mt-0.5';
+  const iconClass = `global-search-result-icon global-search-result-icon--${type}`;
   switch (type) {
     case 'nav':
-      return <MapPin className={`${cls} text-slate-400`} aria-hidden />;
+      return <MapPin className={iconClass} aria-hidden />;
     case 'factory':
-      return <Building2 className={`${cls} text-emerald-400`} aria-hidden />;
+      return <Building2 className={iconClass} aria-hidden />;
     case 'shipment':
-      return <Truck className={`${cls} text-indigo-400`} aria-hidden />;
+      return <Truck className={iconClass} aria-hidden />;
     case 'product':
-      return <Package className={`${cls} text-amber-400`} aria-hidden />;
+      return <Package className={iconClass} aria-hidden />;
     case 'transport':
-      return <Truck className={`${cls} text-emerald-400`} aria-hidden />;
+      return <Truck className={iconClass} aria-hidden />;
     case 'carrier':
-      return <Container className={`${cls} text-cyan-400`} aria-hidden />;
+      return <Container className={iconClass} aria-hidden />;
     case 'manager':
-      return <UserCircle className={`${cls} text-violet-400`} aria-hidden />;
+      return <UserCircle className={iconClass} aria-hidden />;
     case 'board':
-      return <LayoutGrid className={`${cls} text-indigo-400`} aria-hidden />;
+      return <LayoutGrid className={iconClass} aria-hidden />;
     default:
       return null;
   }
@@ -190,7 +190,7 @@ export const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
         aria-label={t('globalSearch.title')}
       >
         <div className="global-search-input-wrap">
-          <Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden />
+          <Search className="global-search-input-icon" aria-hidden />
           <input
             ref={inputRef}
             type="search"

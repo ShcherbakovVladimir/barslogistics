@@ -32,12 +32,12 @@ interface FactoriesListProps {
   onSitesChanged?: () => Promise<void>;
 }
 
-const typeBadgeStyles: Record<FactoryType, { color: string; badgeBg: string }> = {
-  gok: { color: '#f59e0b', badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
-  port: { color: '#3b82f6', badgeBg: 'bg-blue-500/10 text-blue-400 border-blue-500/30' },
-  steel_mill: { color: '#ef4444', badgeBg: 'bg-red-500/10 text-red-400 border-red-500/30' },
-  slag_dump: { color: '#6b7280', badgeBg: 'bg-slate-500/10 text-slate-400 border-slate-500/30' },
-  coal_mine: { color: '#8b5cf6', badgeBg: 'bg-purple-500/10 text-purple-400 border-purple-500/30' }
+const typeBadgeStyles: Record<FactoryType, { color: string; badgeClass: string }> = {
+  gok: { color: '#f59e0b', badgeClass: 'factory-type-badge--gok' },
+  port: { color: '#3b82f6', badgeClass: 'factory-type-badge--port' },
+  steel_mill: { color: '#ef4444', badgeClass: 'factory-type-badge--steel_mill' },
+  slag_dump: { color: '#6b7280', badgeClass: 'factory-type-badge--slag_dump' },
+  coal_mine: { color: '#8b5cf6', badgeClass: 'factory-type-badge--coal_mine' }
 };
 
 export const FactoriesList: React.FC<FactoriesListProps> = ({
@@ -242,7 +242,7 @@ export const FactoriesList: React.FC<FactoriesListProps> = ({
           </div>
 
           <div className="factories-card-meta-row">
-            <span className={`factories-card-type ${badge.badgeBg}`}>
+            <span className={`factories-card-type ${badge.badgeClass}`}>
               {typeLabels[factory.type]}
             </span>
             <span className="factories-card-region">

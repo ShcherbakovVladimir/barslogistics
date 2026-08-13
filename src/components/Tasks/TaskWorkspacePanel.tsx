@@ -429,10 +429,10 @@ export const TaskWorkspacePanel: React.FC<TaskWorkspacePanelProps> = ({
           ) : (
             attachments.map((a: KanbanTaskAttachment) => (
               <div key={a.id} className="tasks-file-row">
-                <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
+                <FileText className="tasks-file-row-icon" />
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold truncate text-xs">{a.original_name}</div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="tasks-file-row-meta">
                     {a.uploaded_by_name}
                     {' · '}
                     {new Date(a.created_at).toLocaleString(locale === 'en' ? 'en-GB' : 'ru-RU', {

@@ -5,7 +5,7 @@ import { ApiService } from '../../services/api';
 import { useI18n } from '../../i18n';
 import { SearchableSelect } from '../UI/SearchableSelect';
 
-const inputClass = 'admin-field geocoding-admin-field w-full rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[2.75rem] sm:min-h-0';
+const inputClass = 'admin-field geocoding-admin-field w-full rounded-xl p-2.5 text-xs min-h-[2.75rem] sm:min-h-0';
 const labelClass = 'admin-form-label';
 
 interface GeocodingAdminPanelProps {
@@ -65,7 +65,7 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
   };
 
   if (!form) {
-    return <p className="text-xs text-slate-400">…</p>;
+    return <p className="admin-form-msg--muted text-xs">…</p>;
   }
 
   const handleSave = async () => {

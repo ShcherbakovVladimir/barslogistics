@@ -158,7 +158,7 @@ export type RollbackResult = {
 export async function rollbackLastMigration(
   pool: pg.Pool,
   scopes: MigrationScope[],
-  baseDir = POSTGRES_MIGRATIONS_DIR,
+  _baseDir = POSTGRES_MIGRATIONS_DIR,
   rollbackDir = POSTGRES_ROLLBACK_DIR,
 ): Promise<RollbackResult> {
   await ensureMigrationsTable(pool);

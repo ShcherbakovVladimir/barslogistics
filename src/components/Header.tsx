@@ -385,13 +385,13 @@ export const Header: React.FC<HeaderProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="app-header-brand-subtitle text-[11px] truncate leading-snug">
+                  <p className="app-header-brand-subtitle truncate leading-snug">
                     {t('header.brandSubtitle')}
                   </p>
                 </div>
 
                 <span
-                  className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold shrink-0 self-center ${
+                  className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full shrink-0 self-center ${
                     wsConnected ? 'is-live' : 'is-polling'
                   }`}
                   title={wsConnected ? t('header.wsLive') : t('header.pollingSync')}

@@ -443,18 +443,36 @@ export function LogisticsMap({
           <>
             <span className="shrink-0">{t('map.legendRoutes', { count: filteredData.aggregatedRoutes.length })}</span>
             <div className="map-legend-route-keys">
-              <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-emerald-500 inline-block" /> {t('map.legendOwn')}</span>
-              <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-blue-400 border-b border-dashed inline-block" /> {t('map.legendRzd')}</span>
+              <span className="map-legend-key-item">
+                <span className="map-legend-line map-legend-line--own" aria-hidden />
+                {t('map.legendOwn')}
+              </span>
+              <span className="map-legend-key-item">
+                <span className="map-legend-line map-legend-line--rzd" aria-hidden />
+                {t('map.legendRzd')}
+              </span>
             </div>
           </>
         )}
       </div>
       {filters.viewMode === 'shipments' && (
         <div className="map-legend-status">
-          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full border-2 border-green-500" />{t('map.enterpriseActive')}</span>
-          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full border-2 border-yellow-500" />{t('map.enterprisePaused')}</span>
-          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full border-2 border-red-500" />{t('map.enterpriseInactive')}</span>
-          <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full border-2 border-gray-400" />{t('map.enterpriseNever')}</span>
+          <span className="map-legend-key-item">
+            <span className="map-legend-status-dot map-legend-status-dot--active" aria-hidden />
+            {t('map.enterpriseActive')}
+          </span>
+          <span className="map-legend-key-item">
+            <span className="map-legend-status-dot map-legend-status-dot--paused" aria-hidden />
+            {t('map.enterprisePaused')}
+          </span>
+          <span className="map-legend-key-item">
+            <span className="map-legend-status-dot map-legend-status-dot--inactive" aria-hidden />
+            {t('map.enterpriseInactive')}
+          </span>
+          <span className="map-legend-key-item">
+            <span className="map-legend-status-dot map-legend-status-dot--never" aria-hidden />
+            {t('map.enterpriseNever')}
+          </span>
         </div>
       )}
     </>
@@ -895,8 +913,8 @@ export function LogisticsMap({
 
         const vehicleColor = statusColors[shipmentStatus] || statusColors.en_route;
         const vehicleHtml = `
-          <div class="relative flex items-center justify-center w-6 h-6 rounded-full text-white shadow-lg border-2 border-white animate-pulse" style="background-color: ${vehicleColor}; box-shadow: 0 0 0 2px ${vehicleColor}80;">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <div class="map-marker-vehicle" style="background-color: ${vehicleColor}; box-shadow: 0 0 0 2px ${vehicleColor}80;">
+            <svg class="map-marker-vehicle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
         `;
         const vehicleIcon = L.divIcon({
@@ -938,10 +956,10 @@ export function LogisticsMap({
         : '';
 
       const markerHtml = `
-        <div class="relative group cursor-pointer transition-transform duration-200 hover:scale-125 ${isDimmed ? 'opacity-30' : isBeingRepositioned ? 'opacity-40' : 'opacity-100'}">
-          ${isOurs ? `<div class="absolute -inset-1.5 rounded-full bg-emerald-400/50 animate-ping"></div>` : ''}
-          <div class="relative flex items-center justify-center w-7 h-7 rounded-full text-white shadow-md border-${borderWidth} ${isSelected ? 'ring-4 ring-amber-400/40 scale-125 z-50' : ''}" style="background-color: ${bgColor}; border: ${borderWidth}px solid ${isSelected ? '#fcd34d' : borderColor};">
-            <span class="text-[9px] font-bold leading-none tracking-tight">${typePinLabels[factory.type]}</span>
+        <div class="map-marker-root${isDimmed ? ' is-dimmed' : ''}${isBeingRepositioned ? ' is-repositioning' : ''}">
+          ${isOurs ? '<div class="map-marker-ping"></div>' : ''}
+          <div class="map-marker-pin${isSelected ? ' is-selected' : ''}" style="background-color: ${bgColor}; border: ${borderWidth}px solid ${isSelected ? '#fcd34d' : borderColor};">
+            <span class="map-marker-pin-label">${typePinLabels[factory.type]}</span>
           </div>
           ${trendBadge}
         </div>
@@ -1212,7 +1230,7 @@ export function LogisticsMap({
         <div className="map-chrome-panel-head">
           <div className="min-w-0 flex-1">
             <div className="map-factory-highlight-name break-words">{highlightedFactory.name}</div>
-            <div className="text-[10px] font-mono map-factory-id mt-0.5 break-all">{highlightedFactory.id}</div>
+            <div className="map-factory-id mt-0.5 break-all">{highlightedFactory.id}</div>
             <div className="mt-1.5">{renderFactoryTypeField('map-factory-type-select map-filter-panel mt-0.5')}</div>
           </div>
           <button
@@ -1235,7 +1253,7 @@ export function LogisticsMap({
 
     return (
       <div className="map-sheet-panel">
-        <div className="text-[10px] font-mono map-factory-id break-all">{highlightedFactory.id}</div>
+        <div className="map-factory-id break-all">{highlightedFactory.id}</div>
         {renderFactoryTypeField('map-sheet-select mt-1.5', { inlinePanel: true })}
         {renderFactoryHighlightActions(false, true)}
       </div>

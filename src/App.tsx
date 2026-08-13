@@ -1079,7 +1079,7 @@ export default function App() {
   if (!authChecked) {
     return (
       <div className="app-loading-shell h-full min-h-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <div className="app-loading-spinner" role="status" aria-label={t('common.loading')} />
       </div>
     );
   }
@@ -1141,7 +1141,7 @@ export default function App() {
       <main id="main-content" className="flex-1 min-h-0 relative overflow-hidden" tabIndex={-1}>
         <Suspense fallback={
           <div className="h-full flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" aria-label={t('common.loading')} />
+            <div className="app-loading-spinner" role="status" aria-label={t('common.loading')} />
           </div>
         }>
         {activeTab === 'map' && (

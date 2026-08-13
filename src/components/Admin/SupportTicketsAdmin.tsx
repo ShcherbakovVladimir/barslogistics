@@ -312,7 +312,6 @@ export const SupportTicketsAdmin: React.FC<SupportTicketsAdminProps> = ({
                       value={selected.status}
                       onChange={v => void handleStatusChange(selected.id, v as SupportTicketStatus)}
                       options={statusOptions}
-                      searchable={false}
                       disabled={saving}
                       {...adminDropdownSelectProps}
                     />

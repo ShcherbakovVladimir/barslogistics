@@ -117,7 +117,7 @@ export function registerSupportRoutes(app: Express): void {
   app.patch('/api/support/tickets/:id', requireAuth, async (req, res) => {
     try {
       const user = (req as AuthRequest).user;
-      if (!requireAdmin(req, res)) return;
+      if (!requireAdmin(req as AuthRequest, res)) return;
 
       const body = req.body as { status?: string };
       const status = body.status as SupportTicketStatus;

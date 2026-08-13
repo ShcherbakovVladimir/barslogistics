@@ -25,9 +25,7 @@ interface ShipmentsListProps {
 
 type StatusBadge = {
   text: string;
-  bg: string;
-  textCol: string;
-  border: string;
+  badgeClass: string;
 };
 
 interface ShipmentCardProps {
@@ -84,7 +82,7 @@ const ShipmentCard: React.FC<ShipmentCardProps> = ({
 
     <div className="shipment-card-route">
       <span className="truncate">{orig?.name || t('common.sender')}</span>
-      <ArrowRight className="w-3.5 h-3.5 shrink-0 text-slate-500" aria-hidden="true" />
+      <ArrowRight className="shipment-card-route-arrow" aria-hidden="true" />
       <span className="truncate">{dest?.name || t('common.receiver')}</span>
     </div>
     {(orig?.region || dest?.region) && (
@@ -95,7 +93,7 @@ const ShipmentCard: React.FC<ShipmentCardProps> = ({
 
     <div className="shipment-card-status">
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`shipment-card-badge ${badge.bg} ${badge.textCol} ${badge.border}`}>
+        <span className={`shipment-card-badge ${badge.badgeClass}`}>
           {badge.text}
         </span>
         {link.eta && (
@@ -228,11 +226,11 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
   }, [pageMode, recentEvents.length, eventFormShipments.length]);
 
   const statusLabels = useMemo(() => ({
-    en_route: { text: t('status.en_route'), bg: 'bg-emerald-500/10', textCol: 'text-emerald-400', border: 'border-emerald-500/30' },
-    delayed: { text: t('status.delayed'), bg: 'bg-amber-500/10', textCol: 'text-amber-400', border: 'border-amber-500/30' },
-    arrived: { text: t('status.arrived'), bg: 'bg-slate-500/10', textCol: 'text-slate-400', border: 'border-slate-500/30' },
-    loading: { text: t('status.loading'), bg: 'bg-purple-500/10', textCol: 'text-purple-400', border: 'border-purple-500/30' },
-    alert: { text: t('status.alert'), bg: 'bg-red-500/10', textCol: 'text-red-400', border: 'border-red-500/30' },
+    en_route: { text: t('status.en_route'), badgeClass: 'shipments-status-badge--en_route' },
+    delayed: { text: t('status.delayed'), badgeClass: 'shipments-status-badge--delayed' },
+    arrived: { text: t('status.arrived'), badgeClass: 'shipments-status-badge--arrived' },
+    loading: { text: t('status.loading'), badgeClass: 'shipments-status-badge--loading' },
+    alert: { text: t('status.alert'), badgeClass: 'shipments-status-badge--alert' },
   }), [t]);
 
   const factoryMap = useMemo(() => new Map(factories.map(f => [f.id, f])), [factories]);
@@ -542,7 +540,7 @@ export const ShipmentsList: React.FC<ShipmentsListProps> = ({
                       </div>
                     </div>
                     <div className="shipments-table-virtual-cell shipments-col-status" role="cell">
-                      <span className={`shipments-status-badge ${badge.bg} ${badge.textCol} ${badge.border}`}>
+                      <span className={`shipments-status-badge ${badge.badgeClass}`}>
                         {badge.text}
                       </span>
                       <div className="shipments-cell-progress" aria-hidden>

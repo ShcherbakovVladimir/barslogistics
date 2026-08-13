@@ -123,7 +123,7 @@ export const FacilityModal: React.FC<FacilityModalProps> = ({
                   {factory.region}, {factory.country} ({factory.latitude.toFixed(2)}, {factory.longitude.toFixed(2)})
                 </span>
               </p>
-              <p className="facility-modal-meta facility-modal-id text-[11px] font-mono mt-1 truncate">{t('facilityModal.idLabel')}: {factory.id}</p>
+              <p className="facility-modal-meta facility-modal-id mt-1 truncate">{t('facilityModal.idLabel')}: {factory.id}</p>
             </div>
             <button
               type="button"

@@ -21,11 +21,11 @@ interface SiteDirectoryPageProps {
 type ContourFilter = 'all' | 'inner' | 'outer';
 
 const typeBadgeStyles: Record<FactoryType, string> = {
-  gok: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-  port: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-  steel_mill: 'bg-red-500/10 text-red-400 border-red-500/30',
-  slag_dump: 'bg-slate-500/10 text-slate-400 border-slate-500/30',
-  coal_mine: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+  gok: 'factory-type-badge--gok',
+  port: 'factory-type-badge--port',
+  steel_mill: 'factory-type-badge--steel_mill',
+  slag_dump: 'factory-type-badge--slag_dump',
+  coal_mine: 'factory-type-badge--coal_mine',
 };
 
 interface SiteActionsProps {
