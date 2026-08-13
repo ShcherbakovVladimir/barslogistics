@@ -49,9 +49,6 @@ export interface MyDataPanelProps {
 const STATUSES: CargoStatus[] = ['en_route', 'delayed', 'arrived', 'loading', 'alert'];
 const FLOWS: FlowType[] = ['shipment', 'purchase', 'internal'];
 
-const fieldClass =
-  'my-data-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
-
 interface MyDataModalShellProps {
   onClose: () => void;
   children: React.ReactNode;
@@ -71,7 +68,7 @@ const MyDataModalShell: React.FC<MyDataModalShellProps> = ({ onClose, children }
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`my-data-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`my-data-modal app-modal-sheet modal-panel ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -90,12 +87,12 @@ interface ShipmentCardProps {
 }
 
 const ShipmentCard = ({ shipment, user, t }: ShipmentCardProps) => (
-  <article className="my-data-shipment-card">
+  <article className="my-data-card">
     <div className="my-data-shipment-card-header">
       <span className="my-data-shipment-card-date">
         {shipment.shipment_date || shipment.period}
       </span>
-      <span className="my-data-shipment-card-status px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+      <span className="my-data-status-badge">
         {shipment.status ? t(`status.${shipment.status}`) : '—'}
       </span>
     </div>
@@ -128,7 +125,7 @@ interface ImportBatchCardProps {
 }
 
 const ImportBatchCard = ({ batch, localeTag, t }: ImportBatchCardProps) => (
-  <article className="my-data-import-card">
+  <article className="my-data-card">
     <div className="my-data-import-card-filename">{batch.filename}</div>
     <div className="my-data-import-card-date">
       {new Date(batch.created_at).toLocaleString(localeTag)}
@@ -136,11 +133,11 @@ const ImportBatchCard = ({ batch, localeTag, t }: ImportBatchCardProps) => (
     <div className="my-data-import-card-stats">
       <div className="my-data-import-card-stat">
         <span className="my-data-import-card-stat-label">{t('myData.colInserted')}</span>
-        <span className="text-emerald-400">{batch.inserted_count}</span>
+        <span className="my-data-import-stat-value--inserted">{batch.inserted_count}</span>
       </div>
       <div className="my-data-import-card-stat">
         <span className="my-data-import-card-stat-label">{t('myData.colDuplicates')}</span>
-        <span className="text-amber-400">{batch.duplicate_count}</span>
+        <span className="my-data-import-stat-value--duplicates">{batch.duplicate_count}</span>
       </div>
     </div>
   </article>
@@ -296,9 +293,9 @@ export function MyDataPanel({
 
   const formFields = (
     <>
-      <div className="my-data-form-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.site')}</span>
+      <div className="my-data-form-grid">
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.site')}</span>
           <SearchableSelect
             value={form.site_id}
             onChange={v => setForm({ ...form, site_id: v })}
@@ -309,8 +306,8 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.counterparty')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.counterparty')}</span>
           <SearchableSelect
             value={form.counterparty_id}
             onChange={v => setForm({ ...form, counterparty_id: v })}
@@ -321,8 +318,8 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.product')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.product')}</span>
           <SearchableSelect
             value={form.product_id}
             onChange={v => setForm({ ...form, product_id: v })}
@@ -336,8 +333,8 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.carrier')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.carrier')}</span>
           <SearchableSelect
             value={form.carrier_id}
             onChange={v => setForm({ ...form, carrier_id: v })}
@@ -350,8 +347,8 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.manager')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.manager')}</span>
           <SearchableSelect
             value={form.sales_manager_id}
             onChange={v => setForm({ ...form, sales_manager_id: v })}
@@ -364,8 +361,8 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.flowType')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.flowType')}</span>
           <SearchableSelect
             value={form.flow_type}
             onChange={v => setForm({ ...form, flow_type: v as FlowType })}
@@ -376,20 +373,20 @@ export function MyDataPanel({
             panelClassName="my-data-dropdown-panel map-filter-dropdown-panel"
           />
         </div>
-        <label className="block space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.volume')}</span>
+        <label className="my-data-form-field">
+          <span className="my-data-form-label">{t('myData.volume')}</span>
           <input
             type="number"
             min="0"
             step="0.01"
             value={form.volume}
             onChange={e => setForm({ ...form, volume: e.target.value })}
-            className={fieldClass}
+            className="my-data-field"
             required
           />
         </label>
-        <div className="my-data-date space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.date')}</span>
+        <div className="my-data-form-field my-data-date">
+          <span className="my-data-form-label">{t('myData.date')}</span>
           <TasksDatePicker
             value={form.shipment_date}
             onChange={v => setForm({ ...form, shipment_date: v })}
@@ -397,8 +394,8 @@ export function MyDataPanel({
             placeholder={t('myData.date')}
           />
         </div>
-        <div className="my-data-select space-y-1 text-xs">
-          <span className="text-slate-400">{t('myData.status')}</span>
+        <div className="my-data-form-field my-data-select">
+          <span className="my-data-form-label">{t('myData.status')}</span>
           <SearchableSelect
             value={form.status}
             onChange={v => setForm({ ...form, status: v as CargoStatus })}
@@ -410,14 +407,14 @@ export function MyDataPanel({
           />
         </div>
         {showAmountField && (
-          <label className="block space-y-1 text-xs">
-            <span className="text-slate-400">{t('myData.amount')}</span>
+          <label className="my-data-form-field">
+            <span className="my-data-form-label">{t('myData.amount')}</span>
             <input
               type="number"
               min="0"
               value={form.amount}
               onChange={e => setForm({ ...form, amount: e.target.value })}
-              className={fieldClass}
+              className="my-data-field"
             />
           </label>
         )}
@@ -426,24 +423,26 @@ export function MyDataPanel({
   );
 
   return (
-    <div className="my-data-page p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-950 min-h-full text-slate-100">
-      <div className="my-data-toolbar bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-3 sm:space-y-4">
-        <div className="my-data-toolbar-head flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-indigo-400 shrink-0" />
-              <span className="truncate">{title}</span>
-            </h2>
-            <p className="my-data-hint text-[11px] sm:text-xs text-slate-500 mt-1">
-              {t('myData.importHint')}
-            </p>
+    <div className="my-data-page">
+      <div className="my-data-toolbar shipments-list-toolbar">
+        <div className="my-data-toolbar-top">
+          <div className="shipments-list-toolbar-head">
+            <span className="shipments-list-toolbar-icon" aria-hidden>
+              <ClipboardList />
+            </span>
+            <div className="shipments-list-toolbar-text">
+              <h2 className="shipments-list-title">
+                <span className="truncate">{title}</span>
+              </h2>
+              <p className="shipments-list-subtitle">{t('myData.importHint')}</p>
+            </div>
           </div>
-          <div className="my-data-toolbar-actions flex flex-wrap gap-2 shrink-0">
+          <div className="my-data-toolbar-actions">
             <input
               ref={fileRef}
               type="file"
               accept=".csv,text/csv"
-              className="hidden"
+              className="my-data-file-input"
               onChange={e => {
                 const f = e.target.files?.[0];
                 if (f) void handleImportCsv(f);
@@ -453,18 +452,18 @@ export function MyDataPanel({
             <button
               type="button"
               onClick={() => downloadInternalShipmentsCsvTemplate()}
-              className="my-data-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg min-h-[2.75rem] sm:min-h-0"
+              className="my-data-toolbar-btn my-data-toolbar-btn--secondary"
             >
-              <Download className="w-3.5 h-3.5 shrink-0" />
+              <Download aria-hidden />
               {t('myData.downloadTemplate')}
             </button>
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={importing}
-              className="my-data-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 text-xs font-semibold rounded-lg min-h-[2.75rem] sm:min-h-0"
+              className="my-data-toolbar-btn my-data-toolbar-btn--secondary"
             >
-              <Upload className="w-3.5 h-3.5 shrink-0" />
+              <Upload aria-hidden />
               {importing ? t('myData.importing') : t('myData.importCsv')}
             </button>
             <button
@@ -473,71 +472,63 @@ export function MyDataPanel({
                 setError('');
                 setShowForm(true);
               }}
-              className="my-data-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg min-h-[2.75rem] sm:min-h-0"
+              className="my-data-toolbar-btn my-data-toolbar-btn--add"
             >
-              <Plus className="w-3.5 h-3.5 shrink-0" />
+              <Plus aria-hidden />
               {t('myData.add')}
             </button>
           </div>
         </div>
 
         {(error || importMsg) && !showForm && (
-          <div
-            className={`my-data-alert text-sm rounded-lg px-3 py-2 border ${
-              error
-                ? 'text-red-400 bg-red-500/10 border-red-500/30'
-                : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
-            }`}
-          >
+          <div className={`my-data-alert ${error ? 'my-data-alert--error' : 'my-data-alert--success'}`}>
             {error || importMsg}
           </div>
         )}
 
-        <p className="my-data-results text-xs text-slate-500">
+        <p className="my-data-results-bar">
           {t('myData.results', { count: scopedShipments.length })}
         </p>
       </div>
 
-      <div className="my-data-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-        <div className="my-data-table-desktop overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-xs min-w-[28rem]">
-            <thead className="bg-slate-950 text-slate-400">
+      <div className="my-data-table-panel">
+        <div className="my-data-table-desktop responsive-table-wrap theme-scrollbar">
+          <table className="my-data-table">
+            <thead>
               <tr>
-                <th className="px-3 py-2 text-left">{t('myData.colDate')}</th>
-                <th className="px-3 py-2 text-left">{t('myData.colProduct')}</th>
-                <th className="px-3 py-2 text-right">{t('myData.colVolume')}</th>
+                <th>{t('myData.colDate')}</th>
+                <th>{t('myData.colProduct')}</th>
+                <th className="my-data-col-volume">{t('myData.colVolume')}</th>
                 {user.role !== 'local_employee' && (
-                  <th className="px-3 py-2 text-right hidden sm:table-cell">{t('myData.colAmount')}</th>
+                  <th className="my-data-col-amount">{t('myData.colAmount')}</th>
                 )}
-                <th className="px-3 py-2">{t('myData.colStatus')}</th>
+                <th className="my-data-col-status">{t('myData.colStatus')}</th>
               </tr>
             </thead>
             <tbody>
               {scopedShipments.length === 0 ? (
                 <tr>
-                  <td colSpan={user.role !== 'local_employee' ? 5 : 4} className="p-6 text-center text-slate-500">
+                  <td colSpan={user.role !== 'local_employee' ? 5 : 4} className="my-data-table-empty">
                     {t('myData.empty')}
                   </td>
                 </tr>
               ) : (
                 scopedShipments.slice(0, 50).map(s => (
-                  <tr key={s.id} className="border-t border-slate-800 hover:bg-slate-800/50">
-                    <td className="px-3 py-2 text-slate-300 whitespace-nowrap">
-                      {s.shipment_date || s.period}
-                    </td>
-                    <td className="px-3 py-2 text-white">{s.cargo_type}</td>
-                    <td className="px-3 py-2 text-right text-emerald-400 whitespace-nowrap">
+                  <tr key={s.id}>
+                    <td className="my-data-cell-date">{s.shipment_date || s.period}</td>
+                    <td className="my-data-cell-product">{s.cargo_type}</td>
+                    <td className="my-data-col-volume my-data-cell-volume">
                       {s.volume} {s.unit}
                     </td>
                     {user.role !== 'local_employee' && (
-                      <td className="px-3 py-2 text-right text-slate-300 hidden sm:table-cell">
+                      <td className="my-data-col-amount my-data-cell-amount">
                         {canSeeDealAmount(user, s) && s.amount != null
                           ? s.amount.toLocaleString()
                           : '—'}
                       </td>
                     )}
-                    <td className="px-3 py-2 text-center">
-                      <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                    <td className="my-data-col-status">
+                      <span className="my-data-status-badge">
                         {s.status ? t(`status.${s.status}`) : '—'}
                       </span>
                     </td>
@@ -548,7 +539,7 @@ export function MyDataPanel({
           </table>
         </div>
 
-        <div className="my-data-shipments-cards-mobile">
+        <div className="my-data-shipments-cards-mobile theme-scrollbar">
           {scopedShipments.length === 0 ? (
             <div className="my-data-empty">{t('myData.empty')}</div>
           ) : (
@@ -560,27 +551,27 @@ export function MyDataPanel({
       </div>
 
       {importBatches.length > 0 && (
-        <div className="my-data-imports-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-          <div className="my-data-imports-title px-3 py-2.5 text-xs font-semibold text-slate-300 border-b border-slate-800">
+        <div className="my-data-imports-panel">
+          <div className="my-data-imports-title">
             {t('myData.importHistory')}
           </div>
-          <div className="my-data-imports-table-desktop overflow-x-auto responsive-table-wrap">
-            <table className="w-full text-xs min-w-[24rem]">
-              <thead className="bg-slate-950 text-slate-400">
+          <div className="my-data-imports-table-desktop responsive-table-wrap theme-scrollbar">
+            <table className="my-data-table my-data-imports-table">
+              <thead>
                 <tr>
-                  <th className="px-3 py-2 text-left">{t('myData.colFile')}</th>
-                  <th className="px-3 py-2 text-right">{t('myData.colInserted')}</th>
-                  <th className="px-3 py-2 text-right">{t('myData.colDuplicates')}</th>
-                  <th className="px-3 py-2 text-left">{t('myData.colDate')}</th>
+                  <th>{t('myData.colFile')}</th>
+                  <th className="my-data-col-num">{t('myData.colInserted')}</th>
+                  <th className="my-data-col-num">{t('myData.colDuplicates')}</th>
+                  <th>{t('myData.colDate')}</th>
                 </tr>
               </thead>
               <tbody>
                 {importBatches.slice(0, 10).map(b => (
-                  <tr key={b.id} className="border-t border-slate-800">
-                    <td className="px-3 py-2 text-white truncate max-w-[12rem]">{b.filename}</td>
-                    <td className="px-3 py-2 text-right text-emerald-400">{b.inserted_count}</td>
-                    <td className="px-3 py-2 text-right text-amber-400">{b.duplicate_count}</td>
-                    <td className="px-3 py-2 text-slate-400 whitespace-nowrap">
+                  <tr key={b.id}>
+                    <td className="my-data-cell-filename">{b.filename}</td>
+                    <td className="my-data-col-num my-data-cell-inserted">{b.inserted_count}</td>
+                    <td className="my-data-col-num my-data-cell-duplicates">{b.duplicate_count}</td>
+                    <td className="my-data-cell-date">
                       {new Date(b.created_at).toLocaleString(localeTag)}
                     </td>
                   </tr>
@@ -588,7 +579,7 @@ export function MyDataPanel({
               </tbody>
             </table>
           </div>
-          <div className="my-data-imports-cards-mobile">
+          <div className="my-data-imports-cards-mobile theme-scrollbar">
             {importBatches.slice(0, 10).map(b => (
               <ImportBatchCard key={b.id} batch={b} localeTag={localeTag} t={t} />
             ))}
@@ -597,18 +588,15 @@ export function MyDataPanel({
       )}
 
       {changeLogs.length > 0 && (
-        <div className="my-data-changelog bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 space-y-2">
-          <div className="my-data-changelog-title flex items-center gap-1.5 text-xs font-semibold text-slate-300">
-            <History className="w-3.5 h-3.5 shrink-0" />
+        <div className="my-data-changelog">
+          <div className="my-data-changelog-title">
+            <History aria-hidden />
             {t('myData.changeLog')}
           </div>
-          <div className="my-data-changelog-list space-y-1">
+          <div className="my-data-changelog-list">
             {changeLogs.slice(0, 10).map(log => (
-              <div
-                key={log.id}
-                className="my-data-changelog-entry text-[10px] sm:text-xs text-slate-400 border-t border-slate-800 pt-2 first:border-t-0 first:pt-0"
-              >
-                <span className="text-slate-300">{log.username}</span> — {log.action} —{' '}
+              <div key={log.id} className="my-data-changelog-entry">
+                <span className="my-data-changelog-user">{log.username}</span> — {log.action} —{' '}
                 {new Date(log.timestamp).toLocaleString(localeTag)}
               </div>
             ))}
@@ -619,41 +607,39 @@ export function MyDataPanel({
       {showForm && (
         <MyDataModalShell onClose={() => setShowForm(false)}>
           <form onSubmit={e => void handleSubmit(e)} className="my-data-form-modal flex flex-col flex-1 min-h-0">
-            <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
+            <header className="modal-panel-header app-modal-sheet-header">
               <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">{t('myData.add')}</h3>
+                <h3 className="my-data-modal-title">{t('myData.add')}</h3>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                  className="my-data-modal-close-btn"
                   aria-label={t('common.close')}
                 >
-                  <X className="w-4 h-4" />
+                  <X aria-hidden />
                 </button>
               </div>
             </header>
-            <div className="modal-panel-body modal-scrollbar px-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
+            <div className="modal-panel-body modal-scrollbar flex-1 min-h-0 overflow-y-auto">
               {error && (
-                <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
-                  {error}
-                </p>
+                <p className="my-data-form-error">{error}</p>
               )}
               {formFields}
             </div>
-            <footer className="my-data-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
+            <footer className="my-data-form-modal-footer modal-panel-footer">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700"
+                className="my-data-form-cancel"
               >
                 {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-lg text-xs font-semibold"
+                className="my-data-form-submit"
               >
-                <Save className="w-3.5 h-3.5 shrink-0" />
+                <Save aria-hidden />
                 {saving ? t('myData.saving') : t('myData.save')}
               </button>
             </footer>

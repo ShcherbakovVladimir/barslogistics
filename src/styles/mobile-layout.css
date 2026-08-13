@@ -1809,6 +1809,11 @@ html.layout-fold .my-data-toolbar-actions .my-data-toolbar-btn {
   flex: 1 1 calc(50% - 0.25rem);
 }
 
+html.layout-mobile .my-data-toolbar-actions .my-data-toolbar-btn--add,
+html.layout-fold .my-data-toolbar-actions .my-data-toolbar-btn--add {
+  flex: 1 1 100%;
+}
+
 html.layout-mobile .my-data-table-desktop,
 html.layout-fold .my-data-table-desktop,
 html.layout-mobile .my-data-imports-table-desktop,
