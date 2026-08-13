@@ -14108,6 +14108,8 @@ html.compact-laptop .app-header-nav {
   overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: 0.85rem;
+  --map-filter-shell-radius: 0.85rem;
+  scrollbar-gutter: stable;
   border: 1px solid var(--app-chrome-border, rgb(71 85 105 / 0.45));
   background: var(--app-chrome-bg, rgb(15 23 42 / 0.96));
   backdrop-filter: blur(12px);
@@ -14115,6 +14117,16 @@ html.compact-laptop .app-header-nav {
   box-shadow: 0 12px 32px rgb(0 0 0 / 0.35);
   color: #e2e8f0;
   font-size: 0.6875rem;
+}
+
+/* Scrollbar follows shell corner radius (top-right, bottom-right) */
+.map-filter-panel-shell::-webkit-scrollbar-track {
+  margin-block: var(--map-filter-shell-radius);
+  border-radius: 0 var(--map-filter-shell-radius) var(--map-filter-shell-radius) 0;
+}
+
+.map-filter-panel-shell::-webkit-scrollbar-thumb {
+  border-radius: 9999px var(--map-filter-shell-radius) var(--map-filter-shell-radius) 9999px;
 }
 
 .map-filter-panel-shell.is-floating {
