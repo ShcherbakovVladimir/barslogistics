@@ -16808,9 +16808,30 @@ html.compact-laptop .modal-panel:not(.facility-modal) {
   max-height: min(88dvh, calc(var(--bars-viewport-height, 100dvh) - 0.75rem));
 }
 
-/* True dark OSM: invert tiles so labels stay readable (Cyrillic preserved) */
+/*
+ * Map tile seams (visible square grid between OSM/CARTO tiles):
+ * 1. Leaflet 1.9+ sets mix-blend-mode: plus-lighter on img tiles (Chromium gap workaround)
+ *    — at 90%/110% page zoom this often becomes a white/dark grid.
+ * 2. Sub-pixel gaps between 256px tiles show --map-canvas-bg; wrong bg color = strong grid.
+ * 3. ru + dark: invert filter on tile-pane left gaps unfiltered (fixed: filter per tile).
+ * 4. Fractional browser zoom / devicePixelRatio (Leaflet #3575) — not fully fixable in CSS.
+ */
+.logistics-map .leaflet-container img.leaflet-tile {
+  mix-blend-mode: normal;
+}
+
+/* Dark OSM (ru locale): invert each tile; gap fill uses neutral dark below */
 .map-tiles-inverted .leaflet-tile-pane {
+  filter: none;
+}
+
+.map-tiles-inverted .leaflet-container img.leaflet-tile {
   filter: invert(100%) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.85);
+}
+
+.map-tiles-inverted .logistics-map-canvas.leaflet-container {
+  --map-canvas-bg: #1c1c1c;
+  background-color: var(--map-canvas-bg);
 }
 
 /* Leaflet defaults use z-index 200–1000; scope lower inside our map so UI stays on top */
@@ -16818,7 +16839,8 @@ html.compact-laptop .modal-panel:not(.facility-modal) {
   isolation: isolate;
   container-type: size;
   container-name: logistics-map;
-  --map-canvas-bg: rgb(2 6 23);
+  /* Gap fill between tiles — neutral dark (CARTO dark / inverted OSM) */
+  --map-canvas-bg: #1a1a1a;
   --map-tooltip-bg: rgba(15, 23, 42, 0.96);
   --map-tooltip-border: rgba(71, 85, 105, 0.85);
   --map-tooltip-text: #f8fafc;
@@ -16836,7 +16858,7 @@ html.compact-laptop .modal-panel:not(.facility-modal) {
 }
 
 [data-theme="light"] .logistics-map {
-  --map-canvas-bg: #e2e8f0;
+  --map-canvas-bg: #ececec;
   --map-tooltip-bg: #ffffff;
   --map-tooltip-border: #cbd5e1;
   --map-tooltip-text: #0f172a;
