@@ -11,6 +11,21 @@
  */
 :root {
   --bars-viewport-height: var(--layout-vh, 100dvh);
+
+  /* Unified scrollbar tokens (dark default) */
+  --app-scrollbar-size: 6px;
+  --app-scrollbar-size-x: 4px;
+  --app-scrollbar-track: rgb(15 23 42 / 0.6);
+  --app-scrollbar-track-x: rgb(30 41 59 / 0.5);
+  --app-scrollbar-thumb: linear-gradient(180deg, #6366f1 0%, #10b981 100%);
+  --app-scrollbar-thumb-hover: linear-gradient(180deg, #818cf8 0%, #34d399 100%);
+  --app-scrollbar-thumb-x: linear-gradient(90deg, #4f46e5 0%, #10b981 100%);
+  --app-scrollbar-thumb-x-hover: linear-gradient(90deg, #6366f1 0%, #34d399 100%);
+  --app-scrollbar-thumb-border: rgb(30 41 59 / 0.8);
+  --app-scrollbar-track-margin-y: 2px;
+  --app-scrollbar-track-margin-x: 4px;
+  --app-scrollbar-color-thumb: #6366f1;
+  --app-scrollbar-color-track: #1e293b;
 }
 
 html.portal-embed {
@@ -466,11 +481,9 @@ html.portal-embed .header-nav-scroll {
   max-height: calc(var(--bars-app-height, 100%) - 5.5rem);
 }
 
-/* Scrollable panels without visible scrollbar (wheel/touch still works) */
+/* Scrollable panels */
 .scroll-area {
   overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 .scroll-area:has(> .site-directory-page) {
@@ -480,64 +493,156 @@ html.portal-embed .header-nav-scroll {
   min-height: 0;
 }
 
-.scroll-area::-webkit-scrollbar {
-  display: none;
-}
-
-/* ── Themed scrollbars (header & panels) ── */
-.theme-scrollbar {
+/* ── Unified themed scrollbars ── */
+.scroll-area,
+.theme-scrollbar,
+.modal-scrollbar,
+.shipment-events-scroll,
+.shipment-datetime-picker-panel,
+.modal-panel-body,
+.modal-dropdown-list,
+.facility-modal-list,
+.map-filter-panel-shell,
+.map-filter-year-list,
+.map-filter-period-list,
+.map-search-dropdown,
+.rzd-analytics-dropdown-list,
+.rzd-analytics-routes,
+.geocoding-admin-dropdown-list,
+.admin-form-dropdown-list,
+.factories-schematic-panel-body {
   scrollbar-width: thin;
-  scrollbar-color: #6366f1 #1e293b;
+  scrollbar-color: var(--app-scrollbar-color-thumb) var(--app-scrollbar-color-track);
 }
 
-.theme-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+.scroll-area::-webkit-scrollbar,
+.theme-scrollbar::-webkit-scrollbar,
+.modal-scrollbar::-webkit-scrollbar,
+.shipment-events-scroll::-webkit-scrollbar,
+.shipment-datetime-picker-panel::-webkit-scrollbar,
+.modal-panel-body::-webkit-scrollbar,
+.modal-dropdown-list::-webkit-scrollbar,
+.facility-modal-list::-webkit-scrollbar,
+.map-filter-panel-shell::-webkit-scrollbar,
+.map-filter-year-list::-webkit-scrollbar,
+.map-filter-period-list::-webkit-scrollbar,
+.map-search-dropdown::-webkit-scrollbar,
+.rzd-analytics-dropdown-list::-webkit-scrollbar,
+.rzd-analytics-routes::-webkit-scrollbar,
+.geocoding-admin-dropdown-list::-webkit-scrollbar,
+.admin-form-dropdown-list::-webkit-scrollbar,
+.factories-schematic-panel-body::-webkit-scrollbar {
+  width: var(--app-scrollbar-size);
+  height: var(--app-scrollbar-size);
 }
 
-.theme-scrollbar::-webkit-scrollbar-track {
-  background: rgb(15 23 42 / 0.6);
+.scroll-area::-webkit-scrollbar-track,
+.theme-scrollbar::-webkit-scrollbar-track,
+.modal-scrollbar::-webkit-scrollbar-track,
+.shipment-events-scroll::-webkit-scrollbar-track,
+.shipment-datetime-picker-panel::-webkit-scrollbar-track,
+.modal-panel-body::-webkit-scrollbar-track,
+.modal-dropdown-list::-webkit-scrollbar-track,
+.facility-modal-list::-webkit-scrollbar-track,
+.map-filter-panel-shell::-webkit-scrollbar-track,
+.map-filter-year-list::-webkit-scrollbar-track,
+.map-filter-period-list::-webkit-scrollbar-track,
+.map-search-dropdown::-webkit-scrollbar-track,
+.rzd-analytics-dropdown-list::-webkit-scrollbar-track,
+.rzd-analytics-routes::-webkit-scrollbar-track,
+.geocoding-admin-dropdown-list::-webkit-scrollbar-track,
+.admin-form-dropdown-list::-webkit-scrollbar-track,
+.factories-schematic-panel-body::-webkit-scrollbar-track {
+  background: var(--app-scrollbar-track);
   border-radius: 9999px;
-  margin: 2px 0;
+  margin: var(--app-scrollbar-track-margin-y) 0;
 }
 
-.theme-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #6366f1 0%, #10b981 100%);
+.scroll-area::-webkit-scrollbar-thumb,
+.theme-scrollbar::-webkit-scrollbar-thumb,
+.modal-scrollbar::-webkit-scrollbar-thumb,
+.shipment-events-scroll::-webkit-scrollbar-thumb,
+.shipment-datetime-picker-panel::-webkit-scrollbar-thumb,
+.modal-panel-body::-webkit-scrollbar-thumb,
+.modal-dropdown-list::-webkit-scrollbar-thumb,
+.facility-modal-list::-webkit-scrollbar-thumb,
+.map-filter-panel-shell::-webkit-scrollbar-thumb,
+.map-filter-year-list::-webkit-scrollbar-thumb,
+.map-filter-period-list::-webkit-scrollbar-thumb,
+.map-search-dropdown::-webkit-scrollbar-thumb,
+.rzd-analytics-dropdown-list::-webkit-scrollbar-thumb,
+.rzd-analytics-routes::-webkit-scrollbar-thumb,
+.geocoding-admin-dropdown-list::-webkit-scrollbar-thumb,
+.admin-form-dropdown-list::-webkit-scrollbar-thumb,
+.factories-schematic-panel-body::-webkit-scrollbar-thumb {
+  background: var(--app-scrollbar-thumb);
   border-radius: 9999px;
-  border: 1px solid rgb(30 41 59 / 0.8);
+  border: 1px solid var(--app-scrollbar-thumb-border);
 }
 
-.theme-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #818cf8 0%, #34d399 100%);
+.scroll-area::-webkit-scrollbar-thumb:hover,
+.theme-scrollbar::-webkit-scrollbar-thumb:hover,
+.modal-scrollbar::-webkit-scrollbar-thumb:hover,
+.shipment-events-scroll::-webkit-scrollbar-thumb:hover,
+.shipment-datetime-picker-panel::-webkit-scrollbar-thumb:hover,
+.modal-panel-body::-webkit-scrollbar-thumb:hover,
+.modal-dropdown-list::-webkit-scrollbar-thumb:hover,
+.facility-modal-list::-webkit-scrollbar-thumb:hover,
+.map-filter-panel-shell::-webkit-scrollbar-thumb:hover,
+.map-filter-year-list::-webkit-scrollbar-thumb:hover,
+.map-filter-period-list::-webkit-scrollbar-thumb:hover,
+.map-search-dropdown::-webkit-scrollbar-thumb:hover,
+.rzd-analytics-dropdown-list::-webkit-scrollbar-thumb:hover,
+.rzd-analytics-routes::-webkit-scrollbar-thumb:hover,
+.geocoding-admin-dropdown-list::-webkit-scrollbar-thumb:hover,
+.admin-form-dropdown-list::-webkit-scrollbar-thumb:hover,
+.factories-schematic-panel-body::-webkit-scrollbar-thumb:hover {
+  background: var(--app-scrollbar-thumb-hover);
 }
 
-.theme-scrollbar::-webkit-scrollbar-corner {
+.scroll-area::-webkit-scrollbar-corner,
+.theme-scrollbar::-webkit-scrollbar-corner,
+.modal-scrollbar::-webkit-scrollbar-corner,
+.shipment-events-scroll::-webkit-scrollbar-corner,
+.shipment-datetime-picker-panel::-webkit-scrollbar-corner,
+.modal-panel-body::-webkit-scrollbar-corner,
+.modal-dropdown-list::-webkit-scrollbar-corner,
+.facility-modal-list::-webkit-scrollbar-corner,
+.map-filter-panel-shell::-webkit-scrollbar-corner,
+.map-filter-year-list::-webkit-scrollbar-corner,
+.map-filter-period-list::-webkit-scrollbar-corner,
+.map-search-dropdown::-webkit-scrollbar-corner,
+.rzd-analytics-dropdown-list::-webkit-scrollbar-corner,
+.rzd-analytics-routes::-webkit-scrollbar-corner,
+.geocoding-admin-dropdown-list::-webkit-scrollbar-corner,
+.admin-form-dropdown-list::-webkit-scrollbar-corner,
+.factories-schematic-panel-body::-webkit-scrollbar-corner {
   background: transparent;
 }
 
 /* Horizontal nav: thin bottom scrollbar */
 .theme-scrollbar-x {
   scrollbar-width: thin;
-  scrollbar-color: #6366f1 #1e293b;
+  scrollbar-color: var(--app-scrollbar-color-thumb) var(--app-scrollbar-color-track);
 }
 
 .theme-scrollbar-x::-webkit-scrollbar {
-  height: 4px;
+  height: var(--app-scrollbar-size-x);
 }
 
 .theme-scrollbar-x::-webkit-scrollbar-track {
-  background: rgb(30 41 59 / 0.5);
+  background: var(--app-scrollbar-track-x);
   border-radius: 9999px;
-  margin: 0 4px;
+  margin: 0 var(--app-scrollbar-track-margin-x);
 }
 
 .theme-scrollbar-x::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #4f46e5 0%, #10b981 100%);
+  background: var(--app-scrollbar-thumb-x);
   border-radius: 9999px;
 }
 
 .theme-scrollbar-x::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(90deg, #6366f1 0%, #34d399 100%);
+  background: var(--app-scrollbar-thumb-x-hover);
 }
 
 /* ── Shipment events: custom selects & scrollbars ── */
@@ -548,9 +653,6 @@ html.portal-embed .header-nav-scroll {
   --se-field-focus: rgb(129 140 248);
   --se-field-focus-ring: rgb(129 140 248 / 0.22);
   --se-option-bg: rgb(15 23 42);
-  --se-scroll-track: rgb(15 23 42 / 0.75);
-  --se-scroll-thumb: linear-gradient(180deg, #818cf8 0%, #6366f1 100%);
-  --se-scroll-thumb-hover: linear-gradient(180deg, #a5b4fc 0%, #818cf8 100%);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -748,35 +850,9 @@ html.portal-embed .header-nav-scroll {
 }
 
 .shipment-events-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: #10b981 var(--se-scroll-track, rgb(15 23 42 / 0.75));
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.35rem;
-}
-
-.shipment-events-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.shipment-events-scroll::-webkit-scrollbar-track {
-  background: var(--se-scroll-track, rgb(15 23 42 / 0.75));
-  border-radius: 9999px;
-  margin: 4px 0;
-}
-
-.shipment-events-scroll::-webkit-scrollbar-thumb {
-  background: var(--se-scroll-thumb, linear-gradient(180deg, #10b981 0%, #6366f1 100%));
-  border-radius: 9999px;
-  border: 1px solid rgb(30 41 59 / 0.85);
-}
-
-.shipment-events-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--se-scroll-thumb-hover, linear-gradient(180deg, #34d399 0%, #818cf8 100%));
-}
-
-.shipment-events-scroll::-webkit-scrollbar-corner {
-  background: transparent;
 }
 
 /* ── Custom searchable dropdown (modal / panel) ── */
@@ -1030,9 +1106,6 @@ html.portal-embed .header-nav-scroll {
   --se-field-border-hover: rgb(129 140 248 / 0.55);
   --se-field-focus: rgb(129 140 248);
   --se-field-focus-ring: rgb(129 140 248 / 0.22);
-  --se-scroll-track: rgb(15 23 42 / 0.75);
-  --se-scroll-thumb: linear-gradient(180deg, #818cf8 0%, #6366f1 100%);
-  --se-scroll-thumb-hover: linear-gradient(180deg, #a5b4fc 0%, #818cf8 100%);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1899,15 +1972,6 @@ html.portal-embed .header-nav-scroll {
 
 .shipment-datetime-picker-panel {
   min-width: min(11rem, calc(100vw - 1rem));
-}
-
-.shipment-datetime-picker-panel::-webkit-scrollbar {
-  width: 6px;
-}
-
-.shipment-datetime-picker-panel::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #10b981, #6366f1);
-  border-radius: 999px;
 }
 
 .shipment-datetime-picker-day.is-selected.is-today {
@@ -7542,16 +7606,24 @@ html.portal-embed .header-nav-scroll {
   color: #94a3b8;
 }
 
+.admin-nav,
+.map-factory-highlight,
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.admin-nav::-webkit-scrollbar,
+.map-factory-highlight::-webkit-scrollbar,
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 .admin-nav {
   display: flex;
   gap: 0.45rem;
   overflow-x: auto;
   padding-bottom: 0.15rem;
-  scrollbar-width: none;
-}
-
-.admin-nav::-webkit-scrollbar {
-  display: none;
 }
 
 @media (min-width: 1024px) {
@@ -10246,7 +10318,6 @@ html.compact-laptop .audit-logs-filters-grid {
   --mf-field-border-hover: rgb(99 102 241 / 0.55);
   --mf-field-focus: rgb(99 102 241);
   --mf-field-focus-ring: rgb(99 102 241 / 0.22);
-  --mf-scroll-track: rgb(15 23 42 / 0.75);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -10316,7 +10387,6 @@ html.compact-laptop .audit-logs-filters-grid {
   gap: 0.375rem;
   max-height: 11rem;
   padding: 0.5rem;
-  scrollbar-color: #6366f1 var(--mf-scroll-track, rgb(15 23 42 / 0.75));
 }
 
 .map-filter-year-list .modal-dropdown-option {
@@ -10329,7 +10399,6 @@ html.compact-laptop .audit-logs-filters-grid {
   gap: 0.2rem;
   max-height: 11rem;
   padding: 0.4rem;
-  scrollbar-color: #6366f1 var(--mf-scroll-track, rgb(15 23 42 / 0.75));
 }
 
 .map-filter-panel .modal-dropdown-list {
@@ -10338,7 +10407,6 @@ html.compact-laptop .audit-logs-filters-grid {
   gap: 0.3rem;
   max-height: 11rem;
   padding: 0.45rem;
-  scrollbar-color: #6366f1 var(--mf-scroll-track);
 }
 
 .map-filter-panel input[type="date"] {
@@ -10695,7 +10763,6 @@ html.compact-laptop .audit-logs-filters-grid {
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.28);
   overflow: hidden;
-  scrollbar-color: #6366f1 rgb(15 23 42 / 0.75);
 }
 
 .rzd-analytics-routes--desktop {
@@ -11016,7 +11083,6 @@ html.compact-laptop .audit-logs-filters-grid {
   --rzd-field-border-hover: rgb(99 102 241 / 0.55);
   --rzd-field-focus: rgb(99 102 241);
   --rzd-field-focus-ring: rgb(99 102 241 / 0.22);
-  --rzd-scroll-track: rgb(15 23 42 / 0.75);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -11177,7 +11243,6 @@ html.compact-laptop .audit-logs-filters-grid {
   padding: 0.4rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-color: #6366f1 var(--rzd-scroll-track, rgb(15 23 42 / 0.75));
 }
 
 /* ── Admin: Geocoding panel dropdowns ── */
@@ -11187,7 +11252,6 @@ html.compact-laptop .audit-logs-filters-grid {
   --geo-field-border-hover: rgb(99 102 241 / 0.55);
   --geo-field-focus: rgb(99 102 241);
   --geo-field-focus-ring: rgb(99 102 241 / 0.22);
-  --geo-scroll-track: rgb(15 23 42 / 0.75);
 }
 
 .geocoding-admin-field {
@@ -11282,7 +11346,6 @@ html.compact-laptop .audit-logs-filters-grid {
   gap: 0.15rem;
   max-height: min(14rem, 40vh);
   padding: 0.35rem;
-  scrollbar-color: #6366f1 var(--geo-scroll-track);
 }
 
 /* ── Admin: shared form dropdowns (cloud, users, map data, …) ── */
@@ -11292,7 +11355,6 @@ html.compact-laptop .audit-logs-filters-grid {
   --admin-field-border-hover: rgb(99 102 241 / 0.55);
   --admin-field-focus: rgb(99 102 241);
   --admin-field-focus-ring: rgb(99 102 241 / 0.22);
-  --admin-scroll-track: rgb(15 23 42 / 0.75);
 }
 
 .admin-form-field {
@@ -11395,7 +11457,6 @@ html.compact-laptop .audit-logs-filters-grid {
   gap: 0.15rem;
   max-height: min(14rem, 40vh);
   padding: 0.35rem;
-  scrollbar-color: #6366f1 var(--admin-scroll-track);
 }
 
 .kladr-suggest {
@@ -11579,10 +11640,6 @@ html.compact-laptop .audit-logs-filters-grid {
 
 .rzd-analytics-map-layout {
   contain: layout style;
-}
-
-.rzd-analytics-routes {
-  scrollbar-color: #6366f1 rgb(15 23 42 / 0.75);
 }
 
 .rzd-analytics-map-fab-bar {
@@ -12515,13 +12572,8 @@ html.compact-laptop .app-header-nav {
   background-color: rgb(15 23 42 / 0.55);
 }
 
-/* Modal panel shell + themed scrollbars */
+/* Modal panel shell */
 .modal-panel {
-  --modal-scroll-track: rgb(30 41 59 / 0.55);
-  --modal-scroll-thumb: #6366f1;
-  --modal-scroll-thumb-hover: #818cf8;
-  --modal-scroll-border: rgb(51 65 85 / 0.45);
-
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13702,38 +13754,6 @@ html.compact-laptop .app-header-nav {
   border-color: rgb(99 102 241 / 0.5);
 }
 
-.modal-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--modal-scroll-thumb) var(--modal-scroll-track);
-}
-
-.modal-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.modal-scrollbar::-webkit-scrollbar-track {
-  background: var(--modal-scroll-track);
-  border-radius: 999px;
-  margin: 2px 0;
-}
-
-.modal-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--modal-scroll-thumb);
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-
-.modal-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--modal-scroll-thumb-hover);
-  background-clip: padding-box;
-}
-
-.modal-scrollbar::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
 /* Facility modal (map site click) */
 .facility-modal {
   max-width: 36rem;
@@ -14097,7 +14117,6 @@ html.compact-laptop .app-header-nav {
   box-shadow: 0 12px 32px rgb(0 0 0 / 0.35);
   color: #e2e8f0;
   font-size: 0.6875rem;
-  scrollbar-width: thin;
 }
 
 .map-filter-panel-shell.is-floating {
@@ -14482,7 +14501,6 @@ html.compact-laptop .app-header-nav {
   background: var(--app-chrome-bg, rgb(15 23 42 / 0.98));
   backdrop-filter: blur(12px);
   box-shadow: 0 12px 32px rgb(0 0 0 / 0.4);
-  scrollbar-width: thin;
 }
 
 .map-search-empty {
@@ -16715,10 +16733,6 @@ html.compact-laptop .app-header-nav {
   stroke-width: 3;
 }
 
-.factories-schematic-panel-body {
-  scrollbar-width: thin;
-}
-
 .factories-schematic-tooltip {
   backdrop-filter: blur(8px);
 }
@@ -16891,12 +16905,6 @@ html.compact-laptop .modal-panel:not(.facility-modal) {
   max-height: min(40dvh, 14rem);
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.map-factory-highlight::-webkit-scrollbar {
-  display: none;
 }
 
 .map-legend-toggle {

@@ -87,7 +87,7 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({
           </div>
         </header>
 
-        <div className="tasks-drawer-body scroll-area theme-scrollbar app-notifications-drawer-body">
+        <div className="tasks-drawer-body scroll-area app-notifications-drawer-body">
           {notifications.length === 0 ? (
             <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
           ) : (
