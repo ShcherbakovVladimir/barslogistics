@@ -30,6 +30,7 @@ import { SkipLink } from './components/UI/VirtualList';
 import { ChatWidget } from './components/Chat/ChatWidget';
 import { TasksDrawer } from './components/Tasks/TasksDrawer';
 import { ActiveShipmentsDrawer } from './components/Shipments/ActiveShipmentsDrawer';
+import { NotificationsDrawer } from './components/Notifications/NotificationsDrawer';
 import { isActiveShipment } from './components/Shipments/activeShipments';
 import { showChatPushNotification, syncWebPushSubscription } from './utils/chatNotifications';
 
@@ -119,6 +120,7 @@ export default function App() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [tasksDrawerOpen, setTasksDrawerOpen] = useState(false);
   const [activeShipmentsDrawerOpen, setActiveShipmentsDrawerOpen] = useState(false);
+  const [notificationsDrawerOpen, setNotificationsDrawerOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [chatUnread, setChatUnread] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
@@ -1106,30 +1108,24 @@ export default function App() {
         onLogout={handleLogout}
         wsConnected={wsConnected}
         notifications={notifications}
-        onMarkNotificationRead={handleMarkNotificationRead}
-        onDeleteNotification={handleDeleteNotification}
-        onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
-        onClearAllNotifications={handleClearAllNotifications}
         onOpenExportModal={() => setIsExportModalOpen(true)}
         onOpenGlobalSearch={() => setGlobalSearchOpen(true)}
         onOpenTasks={() => setTasksDrawerOpen(true)}
         tasksOpenCount={tasksOpenCount}
         onOpenActiveShipments={() => setActiveShipmentsDrawerOpen(true)}
         activeShipmentsCount={activeShipmentsCount}
+        onOpenNotifications={() => setNotificationsDrawerOpen(true)}
         hideDesktopQuickActions={activeTab !== 'map'}
       />
 
       {activeTab !== 'map' ? (
         <AppSideRail
           notifications={notifications}
-          onMarkNotificationRead={handleMarkNotificationRead}
-          onDeleteNotification={handleDeleteNotification}
-          onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
-          onClearAllNotifications={handleClearAllNotifications}
           onOpenTasks={() => setTasksDrawerOpen(true)}
           tasksOpenCount={tasksOpenCount}
           onOpenActiveShipments={() => setActiveShipmentsDrawerOpen(true)}
           activeShipmentsCount={activeShipmentsCount}
+          onOpenNotifications={() => setNotificationsDrawerOpen(true)}
           chatUnread={chatUnread}
           chatOpen={chatOpen}
           onToggleChat={() => {
@@ -1462,6 +1458,17 @@ export default function App() {
           currentUser={currentUser}
           onSelectShipment={setSelectedShipment}
           onShowOnMap={handleShowShipmentOnMap}
+        />
+      ) : null}
+      {currentUser ? (
+        <NotificationsDrawer
+          open={notificationsDrawerOpen}
+          onClose={() => setNotificationsDrawerOpen(false)}
+          notifications={notifications}
+          onMarkNotificationRead={handleMarkNotificationRead}
+          onDeleteNotification={handleDeleteNotification}
+          onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
+          onClearAllNotifications={handleClearAllNotifications}
         />
       ) : null}
       {currentUser ? (

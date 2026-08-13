@@ -3,7 +3,7 @@ import { NotificationItem, User } from '../types';
 import {
   MapPin, BarChart3, Truck, Building2, FileText, Download,
   Bell, Shield, Menu, X, Languages, LogOut, LayoutGrid, BookOpen, Package, Container, Train, UserCircle, UserCog, Search,
-  Moon, Sun, Trash2, CheckCheck, ListTodo, Wrench,
+  Moon, Sun, ListTodo, Wrench,
 } from 'lucide-react';
 import { useI18n } from '../i18n';
 import { canAccessTab, canExport } from '../utils/rbac';
@@ -13,33 +13,6 @@ import { UserAvatar } from './UI/UserAvatar';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setTheme } from '../store/themeSlice';
 
-/** Open Tasks drawer from a notification link (task or board). */
-function dispatchSupportOpenFromNotification(linkId?: string) {
-  window.dispatchEvent(
-    new CustomEvent('bars-support-open', { detail: { ticketId: linkId } }),
-  );
-}
-
-function dispatchTasksOpenFromNotification(linkType?: string, linkId?: string) {
-  if (linkType === 'support') {
-    dispatchSupportOpenFromNotification(linkId);
-    return;
-  }
-  if (!linkId) return;
-  // Board invites historically used link_type=task with a kboard_* id
-  if (linkType === 'board' || linkId.startsWith('kboard_')) {
-    window.dispatchEvent(
-      new CustomEvent('bars-tasks-open', { detail: { boardId: linkId } }),
-    );
-    return;
-  }
-  if (linkType === 'task') {
-    window.dispatchEvent(
-      new CustomEvent('bars-tasks-open', { detail: { taskId: linkId } }),
-    );
-  }
-}
-
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -47,16 +20,13 @@ interface HeaderProps {
   onLogout: () => void;
   wsConnected: boolean;
   notifications: NotificationItem[];
-  onMarkNotificationRead: (id: string) => void;
-  onDeleteNotification: (id: string) => void;
-  onMarkAllNotificationsRead: () => void;
-  onClearAllNotifications: () => void;
   onOpenExportModal: () => void;
   onOpenGlobalSearch?: () => void;
   onOpenTasks?: () => void;
   tasksOpenCount?: number;
   onOpenActiveShipments?: () => void;
   activeShipmentsCount?: number;
+  onOpenNotifications?: () => void;
   /** Hide bell/tasks in the desktop header bar (moved to AppSideRail). */
   hideDesktopQuickActions?: boolean;
 }
@@ -68,25 +38,20 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout,
   wsConnected,
   notifications,
-  onMarkNotificationRead,
-  onDeleteNotification,
-  onMarkAllNotificationsRead,
-  onClearAllNotifications,
   onOpenExportModal,
   onOpenGlobalSearch,
   onOpenTasks,
   tasksOpenCount = 0,
   onOpenActiveShipments,
   activeShipmentsCount = 0,
+  onOpenNotifications,
   hideDesktopQuickActions = false,
 }) => {
-  const { t, locale, setLocale, localeTag } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const dispatch = useAppDispatch();
   const themeMode = useAppSelector(state => state.theme.mode);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
-  const notificationsRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const navScrollRef = useRef<HTMLDivElement>(null);
 
@@ -111,20 +76,17 @@ export const Header: React.FC<HeaderProps> = ({
 
   const closeNav = useCallback(() => {
     setNavOpen(false);
-    setShowNotifications(false);
     setShowUserMenu(false);
   }, []);
 
   const openNav = useCallback(() => {
     setShowUserMenu(false);
-    setShowNotifications(false);
     setNavOpen(true);
   }, []);
 
   const selectTab = useCallback((tabId: string) => {
     setActiveTab(tabId);
     setNavOpen(false);
-    setShowNotifications(false);
     setShowUserMenu(false);
   }, [setActiveTab]);
 
@@ -135,14 +97,13 @@ export const Header: React.FC<HeaderProps> = ({
       || document.documentElement.classList.contains('layout-fold');
     if (!isMobileNav) return;
     el.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [showNotifications, navOpen]);
+  }, [navOpen]);
 
   useEffect(() => {
     if (!navOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (showNotifications || showUserMenu) {
-        setShowNotifications(false);
+      if (showUserMenu) {
         setShowUserMenu(false);
         return;
       }
@@ -150,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [navOpen, closeNav, showNotifications, showUserMenu]);
+  }, [navOpen, closeNav, showUserMenu]);
 
   useEffect(() => {
     if (!navOpen) return;
@@ -162,19 +123,11 @@ export const Header: React.FC<HeaderProps> = ({
   }, [navOpen]);
 
   useEffect(() => {
-    if (!showNotifications && !showUserMenu) return;
+    if (!showUserMenu) return;
 
     const onPointerDown = (e: MouseEvent | TouchEvent) => {
-      const isMobileNav = document.documentElement.classList.contains('layout-mobile')
-        || document.documentElement.classList.contains('layout-fold');
-      /* Mobile drawer: notifications close only via the bell (or closing the menu). */
-      if (isMobileNav && navOpen) return;
-
       const target = e.target as Node;
-      if (showNotifications && notificationsRef.current && !notificationsRef.current.contains(target)) {
-        setShowNotifications(false);
-      }
-      if (showUserMenu && userMenuRef.current && !userMenuRef.current.contains(target)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setShowUserMenu(false);
       }
     };
@@ -185,123 +138,11 @@ export const Header: React.FC<HeaderProps> = ({
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('touchstart', onPointerDown);
     };
-  }, [showNotifications, showUserMenu, navOpen]);
+  }, [showUserMenu]);
 
   const toggleLocale = () => setLocale(locale === 'ru' ? 'en' : 'ru');
 
   const activeNavItem = navItems.find(item => item.id === activeTab);
-
-  const notificationsPanel = (
-    <div className="header-nav-inline-panel header-nav-notifications-panel">
-      <div className="header-nav-inline-panel-title flex items-center justify-between gap-2">
-        <span className="header-nav-notifications-panel-heading">{t('header.notificationsPanel')}</span>
-        {notifications.length > 0 ? (
-          <div className="header-nav-notifications-panel-actions flex items-center gap-1">
-            {unreadCount > 0 ? (
-              <button
-                type="button"
-                className="header-nav-notifications-action"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onMarkAllNotificationsRead();
-                }}
-              >
-                {t('header.notificationsMarkAll')}
-              </button>
-            ) : null}
-            <button
-              type="button"
-              className="header-nav-notifications-action header-nav-notifications-action--danger"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClearAllNotifications();
-              }}
-            >
-              {t('header.notificationsClear')}
-            </button>
-          </div>
-        ) : null}
-      </div>
-      <div className="header-nav-inline-panel-body theme-scrollbar">
-        {notifications.length === 0 ? (
-          <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
-        ) : (
-          notifications.map(n => (
-            <div
-              key={n.id}
-              className={`header-nav-notify-item${n.read ? ' is-read' : ''}`}
-            >
-              <div
-                className="header-nav-notify-item-main cursor-pointer"
-                onClick={() => {
-                  onMarkNotificationRead(n.id);
-                  if (n.link_type === 'chat' && n.link_id) {
-                    window.dispatchEvent(
-                      new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
-                    );
-                  }
-                  if (n.link_type === 'task' || n.link_type === 'board') {
-                    dispatchTasksOpenFromNotification(n.link_type, n.link_id);
-                  }
-                  if (n.link_type === 'support') {
-                    dispatchSupportOpenFromNotification(n.link_id);
-                  }
-                  if (n.link_type === 'shipment' && n.link_id) {
-                    window.dispatchEvent(
-                      new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
-                    );
-                  }
-                }}
-              >
-                <div className="header-nav-notify-item-top">
-                  <span className={`header-nav-notify-item-title header-nav-notify-item-title--${n.type === 'alert' || n.type === 'success' ? n.type : 'info'}`}>
-                    {n.title}
-                  </span>
-                  <span className="header-nav-notify-item-time">
-                    {new Date(n.timestamp).toLocaleString(localeTag, {
-                      day: '2-digit',
-                      month: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-                <p className="header-nav-notify-item-message">{n.message}</p>
-              </div>
-              <div className="header-nav-notify-item-actions">
-                {!n.read ? (
-                  <button
-                    type="button"
-                    className="header-nav-notify-item-action"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onMarkNotificationRead(n.id);
-                    }}
-                    title={t('header.notificationsMarkRead')}
-                  >
-                    <CheckCheck size={12} />
-                    {t('header.notificationsMarkRead')}
-                  </button>
-                ) : null}
-                <button
-                  type="button"
-                  className="header-nav-notify-item-action header-nav-notify-item-action--danger"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteNotification(n.id);
-                  }}
-                  title={t('header.notificationsDelete')}
-                >
-                  <Trash2 size={12} />
-                  {t('header.notificationsDelete')}
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
 
   const userPanel = (
     <div className="header-nav-inline-panel">
@@ -353,9 +194,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header
-        className={`app-header w-full shrink-0 z-50${
-          showNotifications || showUserMenu ? ' is-popover-open' : ''
-        }`}
+        className={`app-header w-full shrink-0 z-50${showUserMenu ? ' is-popover-open' : ''}`}
       >
         <div className="app-header-inner w-full max-w-none px-3 sm:px-4 lg:px-5 xl:px-6">
           <div className="app-header-row flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-12 sm:h-14">
@@ -436,9 +275,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setShowNotifications(false);
                     setShowUserMenu(false);
-                    onOpenTasks();
+                    onOpenTasks?.();
                   }}
                   className="app-header-btn"
                   title={t('header.tasksTitle')}
@@ -457,9 +295,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setShowNotifications(false);
                     setShowUserMenu(false);
-                    onOpenActiveShipments();
+                    onOpenActiveShipments?.();
                   }}
                   className="app-header-btn"
                   title={t('header.activeShipmentsTitle')}
@@ -474,17 +311,16 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               ) : null}
 
-              {!hideDesktopQuickActions ? (
-              <div className="relative" ref={notificationsRef}>
+              {onOpenNotifications && !hideDesktopQuickActions ? (
                 <button
                   type="button"
                   onClick={() => {
-                    setShowNotifications(!showNotifications);
                     setShowUserMenu(false);
+                    onOpenNotifications();
                   }}
-                  className={`app-header-btn${showNotifications ? ' is-open' : ''}`}
+                  className="app-header-btn"
                   title={t('header.notificationsTitle')}
-                  aria-expanded={showNotifications}
+                  aria-label={t('header.notificationsTitle')}
                 >
                   <Bell className="app-header-btn-icon" aria-hidden />
                   {unreadCount > 0 && (
@@ -493,114 +329,12 @@ export const Header: React.FC<HeaderProps> = ({
                     </span>
                   )}
                 </button>
-
-                {showNotifications && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] overflow-hidden">
-                    <div className="app-header-popover-head">
-                      <h3 className="app-header-popover-title">{t('header.notificationsPanel')}</h3>
-                      {notifications.length > 0 ? (
-                        <div className="app-header-popover-actions">
-                          {unreadCount > 0 ? (
-                            <button
-                              type="button"
-                              className="header-nav-notifications-action"
-                              onClick={() => onMarkAllNotificationsRead()}
-                            >
-                              {t('header.notificationsMarkAll')}
-                            </button>
-                          ) : null}
-                          <button
-                            type="button"
-                            className="header-nav-notifications-action header-nav-notifications-action--danger"
-                            onClick={() => onClearAllNotifications()}
-                          >
-                            {t('header.notificationsClear')}
-                          </button>
-                        </div>
-                      ) : null}
-                    </div>
-                    <div className="app-header-popover-body theme-scrollbar">
-                      {notifications.length === 0 ? (
-                        <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
-                      ) : (
-                        notifications.map(n => (
-                          <div
-                            key={n.id}
-                            className={`header-nav-notify-item${n.read ? ' is-read' : ''}`}
-                          >
-                            <div
-                              className="header-nav-notify-item-main cursor-pointer"
-                              onClick={() => {
-                                onMarkNotificationRead(n.id);
-                                if (n.link_type === 'chat' && n.link_id) {
-                                  window.dispatchEvent(
-                                    new CustomEvent('bars-chat-open', { detail: { conversationId: n.link_id } }),
-                                  );
-                                }
-                                if (n.link_type === 'task' || n.link_type === 'board') {
-                                  dispatchTasksOpenFromNotification(n.link_type, n.link_id);
-                                }
-                                if (n.link_type === 'support') {
-                                  dispatchSupportOpenFromNotification(n.link_id);
-                                }
-                                if (n.link_type === 'shipment' && n.link_id) {
-                                  window.dispatchEvent(
-                                    new CustomEvent('bars-shipment-open', { detail: { shipmentId: n.link_id } }),
-                                  );
-                                }
-                              }}
-                            >
-                              <div className="header-nav-notify-item-top">
-                                <span className={`header-nav-notify-item-title header-nav-notify-item-title--${n.type === 'alert' || n.type === 'success' ? n.type : 'info'}`}>
-                                  {n.title}
-                                </span>
-                                <span className="header-nav-notify-item-time">
-                                  {new Date(n.timestamp).toLocaleString(localeTag, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                  })}
-                                </span>
-                              </div>
-                              <p className="header-nav-notify-item-message">{n.message}</p>
-                            </div>
-                            <div className="header-nav-notify-item-actions">
-                              {!n.read ? (
-                                <button
-                                  type="button"
-                                  className="header-nav-notify-item-action"
-                                  onClick={() => onMarkNotificationRead(n.id)}
-                                >
-                                  <CheckCheck size={12} />
-                                  {t('header.notificationsMarkRead')}
-                                </button>
-                              ) : null}
-                              <button
-                                type="button"
-                                className="header-nav-notify-item-action header-nav-notify-item-action--danger"
-                                onClick={() => onDeleteNotification(n.id)}
-                              >
-                                <Trash2 size={12} />
-                                {t('header.notificationsDelete')}
-                              </button>
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
               ) : null}
 
               <div className="relative shrink-0" ref={userMenuRef}>
                 <button
                   type="button"
-                  onClick={() => {
-                    setShowUserMenu(!showUserMenu);
-                    setShowNotifications(false);
-                  }}
+                  onClick={() => setShowUserMenu(!showUserMenu)}
                   className={`app-header-btn app-header-btn--pill${showUserMenu ? ' is-open' : ''}`}
                   aria-expanded={showUserMenu}
                 >
@@ -695,7 +429,6 @@ export const Header: React.FC<HeaderProps> = ({
               ref={navScrollRef}
               className={[
                 'header-nav-scroll overflow-y-auto overscroll-contain',
-                showNotifications ? 'is-notifications-open' : '',
                 showUserMenu ? 'is-user-open' : '',
               ].filter(Boolean).join(' ')}
             >
@@ -773,31 +506,30 @@ export const Header: React.FC<HeaderProps> = ({
                       <span className="header-nav-item-label">{t('header.exportButton')}</span>
                     </button>
                   )}
+                  {onOpenNotifications ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        closeNav();
+                        onOpenNotifications();
+                      }}
+                      className="header-nav-item header-nav-item--tool header-nav-item--notify"
+                    >
+                      <span className="header-nav-item-icon-wrap">
+                        <Bell className="header-nav-item-icon" aria-hidden="true" />
+                        {unreadCount > 0 && (
+                          <span className="header-nav-notify-badge" aria-hidden="true">
+                            {unreadCount > 99 ? '99+' : unreadCount}
+                          </span>
+                        )}
+                      </span>
+                      <span className="header-nav-item-label">{t('header.notificationsTitle')}</span>
+                    </button>
+                  ) : null}
                   <button
                     type="button"
-                    onClick={() => {
-                      setShowUserMenu(false);
-                      setShowNotifications(v => !v);
-                    }}
-                    className={`header-nav-item header-nav-item--tool header-nav-item--notify${showNotifications ? ' is-active' : ''}`}
-                    aria-expanded={showNotifications}
-                  >
-                    <span className="header-nav-item-icon-wrap">
-                      <Bell className="header-nav-item-icon" aria-hidden="true" />
-                      {unreadCount > 0 && (
-                        <span className="header-nav-notify-badge" aria-hidden="true">
-                          {unreadCount > 99 ? '99+' : unreadCount}
-                        </span>
-                      )}
-                    </span>
-                    <span className="header-nav-item-label">{t('header.notificationsTitle')}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowNotifications(false);
-                      setShowUserMenu(v => !v);
-                    }}
+                    onClick={() => setShowUserMenu(v => !v)}
                     className={`header-nav-item header-nav-item--tool${showUserMenu ? ' is-active' : ''}`}
                     aria-expanded={showUserMenu}
                   >
@@ -813,15 +545,6 @@ export const Header: React.FC<HeaderProps> = ({
                   </button>
                 </div>
               </div>
-
-                <div
-                  className={`header-nav-notifications-sheet${showNotifications ? ' is-open' : ''}`}
-                  aria-hidden={!showNotifications}
-                >
-                  <div className="header-nav-notifications-sheet-inner">
-                    {notificationsPanel}
-                  </div>
-                </div>
 
                 <div
                   className={`header-nav-user-sheet${showUserMenu ? ' is-open' : ''}`}
