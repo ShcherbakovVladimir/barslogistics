@@ -25,11 +25,11 @@ interface ShipmentEventsHistoryPanelProps {
 }
 
 const eventIcons: Record<ShipmentEventType, React.ReactNode> = {
-  status_change: <RefreshCw className="w-3.5 h-3.5" />,
-  comment: <MessageSquare className="w-3.5 h-3.5" />,
-  delay: <TrendingDown className="w-3.5 h-3.5" />,
-  early: <TrendingUp className="w-3.5 h-3.5" />,
-  eta_update: <Clock className="w-3.5 h-3.5" />,
+  status_change: <RefreshCw aria-hidden />,
+  comment: <MessageSquare aria-hidden />,
+  delay: <TrendingDown aria-hidden />,
+  early: <TrendingUp aria-hidden />,
+  eta_update: <Clock aria-hidden />,
 };
 
 export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProps> = ({
@@ -95,14 +95,14 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
       <div className="shipment-events-history-head">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-sm font-semibold text-white">{t('shipmentEvents.tabHistoryFull')}</h3>
+            <h3 className="shipment-events-history-title">{t('shipmentEvents.tabHistoryFull')}</h3>
             <span className="shipment-events-history-count">
               {filtered.length === events.length
                 ? t('shipmentEvents.historyCount', { count: events.length })
                 : t('shipmentEvents.historyCountFiltered', { shown: filtered.length, total: events.length })}
             </span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">{t('shipmentEvents.historySubtitle')}</p>
+          <p className="shipment-events-history-subtitle">{t('shipmentEvents.historySubtitle')}</p>
         </div>
         <button
           type="button"
@@ -112,13 +112,13 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
           title={t('shipmentEvents.historyRefresh')}
           aria-label={t('shipmentEvents.historyRefresh')}
         >
-          <RefreshCw className={`w-3.5 h-3.5${loading ? ' animate-spin' : ''}`} />
+          <RefreshCw className={loading ? 'animate-spin' : ''} aria-hidden />
         </button>
       </div>
 
       <div className="shipment-events-history-toolbar">
         <div className="shipment-events-history-search">
-          <Search className="w-3.5 h-3.5 shrink-0 text-slate-500" aria-hidden />
+          <Search aria-hidden />
           <input
             type="search"
             value={query}
@@ -169,9 +169,9 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
 
       <div className="shipment-events-history-list shipment-events-scroll">
         {loading && events.length === 0 ? (
-          <div className="text-slate-500 text-xs py-6 text-center">{t('siteDirectory.admin.loading')}</div>
+          <div className="shipment-event-timeline-empty">{t('siteDirectory.admin.loading')}</div>
         ) : filtered.length === 0 ? (
-          <div className="text-slate-500 text-xs py-6 text-center">{t('shipmentEvents.historyEmptyFiltered')}</div>
+          <div className="shipment-event-timeline-empty">{t('shipmentEvents.historyEmptyFiltered')}</div>
         ) : (
           filtered.map((event) => {
             const shipment = shipmentMap.get(event.shipment_id);
@@ -179,59 +179,63 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
             const destName = factoryMap.get(event.destination_id || shipment?.destination_id || '')?.name;
             const timingClass =
               event.timing_kind === 'delay'
-                ? 'is-delay'
+                ? ' is-delay'
                 : event.timing_kind === 'early'
-                  ? 'is-early'
+                  ? ' is-early'
                   : '';
 
             return (
-              <article key={event.id} className={`shipment-events-history-card ${timingClass}`}>
-                <div className="shipment-events-history-card-top">
-                  <div className="flex items-center gap-1.5 min-w-0 text-white font-semibold text-xs">
-                    <span className="text-indigo-300 shrink-0">{eventIcons[event.event_type]}</span>
+              <article key={event.id} className={`shipment-events-history-card${timingClass}`}>
+                <div className="shipment-events-history-card-top shipment-event-timeline-head">
+                  <div className="shipment-events-history-type-row">
+                    <span className="shipment-event-timeline-type-icon">{eventIcons[event.event_type]}</span>
                     <span className="truncate">{t(`shipmentEvents.types.${event.event_type}`)}</span>
-                    {event.timing_kind && (
+                    {event.timing_kind ? (
                       <span className="shipment-events-history-badge">
                         {t(`shipmentEvents.timingKind.${event.timing_kind}`)}
                       </span>
-                    )}
+                    ) : null}
                   </div>
-                  <time className="text-[10px] text-slate-500 whitespace-nowrap shrink-0">
+                  <time className="shipment-event-timeline-time">
                     {new Date(event.created_at).toLocaleString(localeTag)}
                   </time>
                 </div>
 
-                {(shipment?.cargo_type || originName || destName) && (
-                  <div className="mt-1.5 text-[11px] text-slate-300 truncate">
-                    {shipment?.cargo_type && <span className="font-medium text-slate-200">{shipment.cargo_type}</span>}
-                    {(originName || destName) && (
-                      <span className="text-slate-500">
+                {(shipment?.cargo_type || originName || destName) ? (
+                  <div className="shipment-events-history-cargo">
+                    {shipment?.cargo_type ? (
+                      <span className="shipment-events-history-cargo-name">{shipment.cargo_type}</span>
+                    ) : null}
+                    {(originName || destName) ? (
+                      <span className="shipment-events-history-cargo-route">
                         {shipment?.cargo_type ? ' · ' : ''}
                         {originName || '—'} → {destName || '—'}
                       </span>
-                    )}
+                    ) : null}
                   </div>
-                )}
+                ) : null}
 
-                {(event.old_status || event.new_status) && (
-                  <div className="mt-1 text-[11px] text-slate-300">
-                    {event.old_status && <span>{t(`status.${event.old_status}`)}</span>}
-                    {event.old_status && event.new_status && <span className="mx-1 text-slate-500">→</span>}
-                    {event.new_status && (
-                      <span className="font-semibold text-emerald-300">{t(`status.${event.new_status}`)}</span>
-                    )}
+                {(event.old_status || event.new_status) ? (
+                  <div className="shipment-event-timeline-status">
+                    {event.old_status ? <span>{t(`status.${event.old_status}`)}</span> : null}
+                    {event.old_status && event.new_status ? (
+                      <span className="shipment-event-timeline-arrow">→</span>
+                    ) : null}
+                    {event.new_status ? (
+                      <span className="shipment-event-timeline-status-new">{t(`status.${event.new_status}`)}</span>
+                    ) : null}
                   </div>
-                )}
+                ) : null}
 
-                {event.delay_reason && (
-                  <div className="mt-1.5 text-[11px] text-amber-300 flex items-start gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                {event.delay_reason ? (
+                  <div className="shipment-event-timeline-delay">
+                    <AlertTriangle aria-hidden />
                     <span>{event.delay_reason}</span>
                   </div>
-                )}
+                ) : null}
 
-                {(event.delay_hours != null || event.early_hours != null || event.eta_after || event.progress_pct != null) && (
-                  <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-slate-400">
+                {(event.delay_hours != null || event.early_hours != null || event.eta_after || event.progress_pct != null) ? (
+                  <div className="shipment-event-timeline-meta flex flex-wrap gap-x-2 gap-y-0.5">
                     {event.delay_hours != null && (
                       <span>{t('shipmentEvents.delayHours')}: {event.delay_hours}</span>
                     )}
@@ -241,8 +245,8 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
                     {event.progress_pct != null && (
                       <span>{t('shipmentEvents.progressPct')}: {Math.round(event.progress_pct)}%</span>
                     )}
-                    {event.eta_after && (
-                      <span className="text-blue-300">
+                    {event.eta_after ? (
+                      <span className="shipment-event-timeline-eta">
                         {t('shipmentEvents.etaAfter')}:{' '}
                         {(() => {
                           const d = new Date(event.eta_after!);
@@ -251,12 +255,12 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
                             : d.toLocaleString(localeTag);
                         })()}
                       </span>
-                    )}
+                    ) : null}
                   </div>
-                )}
+                ) : null}
 
-                {(event.transport_mode || event.vehicle_number || event.waybill_number) && (
-                  <div className="mt-1 text-[10px] text-slate-500 truncate">
+                {(event.transport_mode || event.vehicle_number || event.waybill_number) ? (
+                  <div className="shipment-event-timeline-route truncate">
                     {[
                       event.transport_mode ? t(`shipmentEvents.modes.${event.transport_mode}`) : null,
                       event.vehicle_number,
@@ -266,28 +270,26 @@ export const ShipmentEventsHistoryPanel: React.FC<ShipmentEventsHistoryPanelProp
                       .filter(Boolean)
                       .join(' · ')}
                   </div>
-                )}
+                ) : null}
 
-                {event.comment && (
-                  <div className="mt-1.5 text-[11px] text-slate-300 whitespace-pre-wrap line-clamp-3">
-                    {event.comment}
-                  </div>
-                )}
+                {event.comment ? (
+                  <div className="shipment-event-timeline-comment line-clamp-3">{event.comment}</div>
+                ) : null}
 
                 <div className="shipment-events-history-card-foot">
-                  <span className="truncate text-[10px] text-slate-500">{event.username}</span>
+                  <span className="truncate">{event.username}</span>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    {event.source && event.source !== 'manual' && (
+                    {event.source && event.source !== 'manual' ? (
                       <span className="shipment-events-history-badge">
                         {t(`shipmentEvents.source.${event.source}`)}
                       </span>
-                    )}
+                    ) : null}
                     <button
                       type="button"
                       className="shipment-events-history-open"
                       onClick={() => onOpenShipment(event.shipment_id)}
                     >
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink aria-hidden />
                       {t('shipmentEvents.openShipment')}
                     </button>
                   </div>

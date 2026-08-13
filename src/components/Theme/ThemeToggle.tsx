@@ -20,19 +20,11 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
       className.includes('map-desktop-theme-toggle');
 
     return (
-      <div className={useChromeToggle ? className : `p-1 rounded-lg border border-slate-700/80 bg-slate-900/90 backdrop-blur-md shadow-lg ${className}`}>
+      <div className={useChromeToggle ? className : `theme-toggle-standalone theme-toggle-standalone--compact ${className}`}>
         <button
           type="button"
           onClick={() => dispatch(setTheme('dark'))}
-          className={
-            useChromeToggle
-              ? mode === 'dark'
-                ? 'is-active'
-                : ''
-              : `px-2.5 py-1 text-xs rounded font-medium transition-colors ${
-                  mode === 'dark' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                }`
-          }
+          className={`theme-toggle-standalone-btn${mode === 'dark' ? ' is-active' : ''}`}
           title={t('theme.dark')}
         >
           {t('map.tileDark')}
@@ -40,15 +32,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
         <button
           type="button"
           onClick={() => dispatch(setTheme('light'))}
-          className={
-            useChromeToggle
-              ? mode === 'light'
-                ? 'is-active'
-                : ''
-              : `px-2.5 py-1 text-xs rounded font-medium transition-colors ${
-                  mode === 'light' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-                }`
-          }
+          className={`theme-toggle-standalone-btn${mode === 'light' ? ' is-active' : ''}`}
           title={t('theme.light')}
         >
           {t('map.tileLight')}
@@ -58,28 +42,24 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ compact = false, class
   }
 
   return (
-    <div className={`flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700 ${className}`}>
+    <div className={`theme-toggle-standalone ${className}`}>
       <button
         type="button"
         onClick={() => dispatch(setTheme('dark'))}
-        className={`p-1.5 rounded-md transition-colors ${
-          mode === 'dark' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-        }`}
+        className={`theme-toggle-standalone-btn theme-toggle-standalone-btn--icon${mode === 'dark' ? ' is-active' : ''}`}
         title={t('theme.dark')}
         aria-label={t('theme.dark')}
       >
-        <Moon className="w-4 h-4" />
+        <Moon aria-hidden="true" />
       </button>
       <button
         type="button"
         onClick={() => dispatch(setTheme('light'))}
-        className={`p-1.5 rounded-md transition-colors ${
-          mode === 'light' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
-        }`}
+        className={`theme-toggle-standalone-btn theme-toggle-standalone-btn--icon${mode === 'light' ? ' is-active' : ''}`}
         title={t('theme.light')}
         aria-label={t('theme.light')}
       >
-        <Sun className="w-4 h-4" />
+        <Sun aria-hidden="true" />
       </button>
     </div>
   );

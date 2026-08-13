@@ -6,6 +6,9 @@
   --map-sheet-info-border: #e2e8f0;
   --app-chrome-bg: rgb(255 255 255 / 0.5);
   --app-chrome-border: #e2e8f0;
+  --app-shell-bg: #f8fafc;
+  --app-shell-text: #1e293b;
+  --map-canvas-bg: #e2e8f0;
 }
 
 /* ── Backgrounds ── */
@@ -224,7 +227,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 }
 
 /* Shipment detail modal (Routes & Cargo) — light */
-[data-theme="light"] .shipment-detail-modal.bg-slate-900 {
+[data-theme="light"] .shipment-detail-modal {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow:
@@ -234,12 +237,88 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 }
 
 [data-theme="light"] .shipment-detail-modal .modal-panel-header,
-[data-theme="light"] .shipment-detail-modal .modal-panel-footer {
+[data-theme="light"] .shipment-detail-modal .modal-panel-footer,
+[data-theme="light"] .shipment-edit-modal .modal-panel-header,
+[data-theme="light"] .shipment-edit-modal .modal-panel-footer {
   border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .shipment-detail-modal .text-white {
+[data-theme="light"] .shipment-detail-modal-title,
+[data-theme="light"] .shipment-detail-route-row,
+[data-theme="light"] .shipment-detail-field-value,
+[data-theme="light"] .shipment-detail-timeline-heading,
+[data-theme="light"] .shipment-events-history-title,
+[data-theme="light"] .shipment-event-form-title,
+[data-theme="light"] .shipment-edit-modal-title,
+[data-theme="light"] .shipment-event-timeline-type {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-detail-modal-subtitle,
+[data-theme="light"] .shipment-detail-field-label,
+[data-theme="light"] .shipment-detail-stat-label,
+[data-theme="light"] .shipment-edit-modal-id,
+[data-theme="light"] .shipment-events-history-subtitle,
+[data-theme="light"] .shipment-event-timeline-time,
+[data-theme="light"] .shipment-event-timeline-route,
+[data-theme="light"] .shipment-event-timeline-foot,
+[data-theme="light"] .shipment-events-history-cargo-route {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-detail-summary-box,
+[data-theme="light"] .shipment-detail-stat-card,
+[data-theme="light"] .shipment-event-timeline-item {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-item.is-delay {
+  background: rgb(245 158 11 / 0.08) !important;
+  border-color: rgb(245 158 11 / 0.25) !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-item.is-early {
+  background: rgb(16 185 129 / 0.08) !important;
+  border-color: rgb(16 185 129 / 0.25) !important;
+}
+
+[data-theme="light"] .shipment-detail-field-value--status,
+[data-theme="light"] .shipment-detail-field-value--volume,
+[data-theme="light"] .shipment-event-timeline-status-new {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-detail-field-value--amount {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .shipment-detail-field-value--eta,
+[data-theme="light"] .shipment-event-timeline-eta {
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .shipment-detail-field-value--gps-ok {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-detail-progress-track {
+  background: #e2e8f0 !important;
+}
+
+[data-theme="light"] .shipment-detail-progress-fill {
+  background: #059669 !important;
+}
+
+[data-theme="light"] .shipment-detail-alert-delay {
+  background: rgb(245 158 11 / 0.1) !important;
+  border-color: rgb(245 158 11 / 0.3) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .shipment-detail-modal-icon {
+  color: #059669 !important;
 }
 
 [data-theme="light"] .shipment-detail-modal button[class*="bg-indigo-"].text-white,
@@ -248,22 +327,119 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
   color: #ffffff !important;
 }
 
-[data-theme="light"] .shipment-detail-modal .text-slate-400,
-[data-theme="light"] .shipment-detail-modal .text-slate-500 {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .shipment-detail-modal .bg-slate-950 {
-  background-color: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
 [data-theme="light"] .shipment-detail-modal-dismiss {
   color: #64748b !important;
 }
 
 [data-theme="light"] .shipment-detail-modal-dismiss:hover {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-detail-tab {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-detail-tab:hover {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-detail-tab.is-active,
+[data-theme="light"] .shipment-detail-tab--active {
+  background: rgb(16 185 129 / 0.12) !important;
+  border-color: rgb(5 150 105 / 0.35) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-edit-modal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow:
+    0 24px 48px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(99 102 241 / 0.08) !important;
+  --se-field-bg: #ffffff;
+  --se-field-border: #cbd5e1;
+  --se-field-border-hover: rgb(99 102 241 / 0.45);
+  --se-field-focus: #4f46e5;
+  --se-field-focus-ring: rgb(99 102 241 / 0.18);
+}
+
+[data-theme="light"] .shipment-edit-cancel {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .shipment-edit-cancel:hover {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-edit-submit {
+  background: #4f46e5 !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #fff !important;
+}
+
+[data-theme="light"] .shipment-edit-submit:hover:not(:disabled) {
+  background: #4338ca !important;
+}
+
+[data-theme="light"] .shipment-edit-swap-btn {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .shipment-edit-swap-btn:hover {
+  border-color: rgb(16 185 129 / 0.45) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-edit-modal label > span {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-type-icon {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-status,
+[data-theme="light"] .shipment-event-timeline-comment,
+[data-theme="light"] .shipment-event-timeline-meta,
+[data-theme="light"] .shipment-events-history-cargo,
+[data-theme="light"] .shipment-events-history-cargo-name {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-delay {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .shipment-event-timeline-badge,
+[data-theme="light"] .shipment-events-history-badge {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-event-alert--error {
+  color: #dc2626 !important;
+  background: rgb(239 68 68 / 0.08) !important;
+  border-color: rgb(239 68 68 / 0.25) !important;
+}
+
+[data-theme="light"] .shipment-event-success {
+  color: #047857 !important;
+  background: rgb(16 185 129 / 0.1) !important;
+  border-color: rgb(16 185 129 / 0.25) !important;
+}
+
+[data-theme="light"] .shipment-event-link-btn {
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .shipment-event-link-btn:hover {
+  color: #3730a3 !important;
 }
 
 [data-theme="light"] .shipment-detail-modal-btn--map {
@@ -458,18 +634,70 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
   color: #047857 !important;
 }
 
-[data-theme="light"] .shipment-logistics-panel .bg-slate-950,
-[data-theme="light"] .shipment-logistics-panel li {
-  background-color: #f8fafc !important;
+[data-theme="light"] .shipment-logistics-upload-box,
+[data-theme="light"] .shipment-logistics-doc-item {
+  background: #f8fafc !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
+}
+
+[data-theme="light"] .shipment-logistics-section-title,
+[data-theme="light"] .shipment-logistics-doc-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-logistics-field-label,
+[data-theme="light"] .shipment-logistics-hint,
+[data-theme="light"] .shipment-logistics-empty,
+[data-theme="light"] .shipment-logistics-loading,
+[data-theme="light"] .shipment-logistics-doc-meta,
+[data-theme="light"] .shipment-logistics-doc-note {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-logistics-doc-type {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-logistics-msg--error,
+[data-theme="light"] .shipment-logistics-save-msg--error {
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .shipment-logistics-save-msg--success {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .shipment-logistics-doc-action--download {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .shipment-logistics-doc-action--download:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shipment-logistics-doc-action--delete {
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .shipment-logistics-doc-action--delete:hover {
+  background: rgb(239 68 68 / 0.1) !important;
 }
 
 [data-theme="light"] .shipment-logistics-btn {
+  background: #059669 !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
   color: #ffffff !important;
 }
 
+[data-theme="light"] .shipment-logistics-btn:hover:not(:disabled) {
+  background: #047857 !important;
+  border-color: #065f46 !important;
+}
+
 /* Route detail modal — light */
-[data-theme="light"] .route-detail-modal.bg-slate-900 {
+[data-theme="light"] .route-detail-modal {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow:
@@ -483,12 +711,17 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
   border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .route-detail-modal .text-white {
+[data-theme="light"] .route-detail-modal-title,
+[data-theme="light"] .route-detail-summary-value,
+[data-theme="light"] .route-detail-shipment-title {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .route-detail-modal .text-slate-400,
-[data-theme="light"] .route-detail-modal .text-slate-500 {
+[data-theme="light"] .route-detail-modal-subtitle,
+[data-theme="light"] .route-detail-summary-label,
+[data-theme="light"] .route-detail-section-heading,
+[data-theme="light"] .route-detail-shipment-meta,
+[data-theme="light"] .route-detail-shipment-manager {
   color: #64748b !important;
 }
 
@@ -501,10 +734,6 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 [data-theme="light"] .route-detail-shipment-btn:hover {
   background-color: #f1f5f9 !important;
   border-color: rgb(99 102 241 / 0.45) !important;
-}
-
-[data-theme="light"] .route-detail-shipment-btn .text-white {
-  color: #0f172a !important;
 }
 
 [data-theme="light"] .route-detail-modal-dismiss {
@@ -524,6 +753,124 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
 [data-theme="light"] .route-detail-modal-btn--close:hover {
   background: #e2e8f0;
   color: #0f172a;
+}
+
+[data-theme="light"] .route-detail-summary-value--volume {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .route-detail-summary-value--amount,
+[data-theme="light"] .route-detail-shipment-amount {
+  color: #d97706 !important;
+}
+
+/* Export modal — light */
+[data-theme="light"] .export-modal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: 0 24px 48px rgb(15 23 42 / 0.12) !important;
+}
+
+[data-theme="light"] .export-modal .modal-panel-header,
+[data-theme="light"] .export-modal .modal-panel-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .export-modal-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .export-format-option {
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .export-format-option.is-active {
+  border-color: rgb(99 102 241 / 0.45) !important;
+  background: rgb(99 102 241 / 0.1) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .export-modal-checkbox-label {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .export-modal-dismiss,
+[data-theme="light"] .export-modal-btn-cancel {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .export-modal-dismiss:hover,
+[data-theme="light"] .export-modal-btn-cancel:hover {
+  color: #0f172a !important;
+}
+
+/* Auth login — light */
+[data-theme="light"] .auth-login-shell,
+[data-theme="light"] .app-loading-shell {
+  background-color: var(--app-shell-bg) !important;
+}
+
+[data-theme="light"] .auth-login-heading {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .auth-login-subtitle,
+[data-theme="light"] .auth-login-label,
+[data-theme="light"] .auth-login-status {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .auth-login-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.08) !important;
+}
+
+[data-theme="light"] .auth-login-mode-tabs {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .auth-login-mode-tab {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .auth-login-input {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .auth-login-link {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .auth-login-link--accent {
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone--compact {
+  background: rgb(255 255 255 / 0.92) !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone-btn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone-btn:hover:not(.is-active) {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .theme-toggle-standalone--compact .theme-toggle-standalone-btn:hover:not(.is-active) {
+  background: #e2e8f0 !important;
 }
 
 [data-theme="light"] .facility-modal .facility-modal-type-select.map-filter-panel {
@@ -3255,32 +3602,166 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 [data-theme="light"] .admin-backups .admin-db-tools .rounded-xl.border-slate-800,
 [data-theme="light"] .admin-backups .admin-db-migrations .rounded-xl.border-slate-800,
 [data-theme="light"] .admin-backups-embedded .admin-db-tools .rounded-xl.border-slate-800,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations .rounded-xl.border-slate-800 {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations .rounded-xl.border-slate-800,
+[data-theme="light"] .admin-db-migration-box,
+[data-theme="light"] .admin-db-migration-box--warn {
   background-color: #f8fafc !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
+}
+
+[data-theme="light"] .admin-db-migration-box--warn {
+  background: rgb(245 158 11 / 0.06) !important;
+  border-color: rgb(245 158 11 / 0.25) !important;
 }
 
 [data-theme="light"] .admin-backups .admin-db-migrations table thead.bg-slate-950,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations table thead.bg-slate-950 {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations table thead.bg-slate-950,
+[data-theme="light"] .admin-backups-table-panel thead {
   background-color: #f8fafc !important;
   color: #64748b !important;
 }
 
 [data-theme="light"] .admin-backups .admin-db-migrations table tbody tr:hover,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations table tbody tr:hover {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations table tbody tr:hover,
+[data-theme="light"] .admin-backups-table-panel tbody tr:hover {
   background-color: #f1f5f9 !important;
 }
 
 [data-theme="light"] .admin-backups .admin-db-migrations input,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations input {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations input,
+[data-theme="light"] .admin-db-field {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
+[data-theme="light"] .admin-db-field--warn {
+  border-color: rgb(245 158 11 / 0.35) !important;
+}
+
 [data-theme="light"] .admin-backups .admin-db-migrations input::placeholder,
-[data-theme="light"] .admin-backups-embedded .admin-db-migrations input::placeholder {
+[data-theme="light"] .admin-backups-embedded .admin-db-migrations input::placeholder,
+[data-theme="light"] .admin-db-field::placeholder {
   color: #94a3b8 !important;
+}
+
+[data-theme="light"] .admin-db-migration-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-db-migration-label--warn,
+[data-theme="light"] .admin-backup-restore-label {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-db-migration-submit {
+  background: #4f46e5 !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #fff !important;
+}
+
+[data-theme="light"] .admin-db-migration-submit--warn {
+  background: rgb(217 119 6 / 0.15) !important;
+  border-color: rgb(245 158 11 / 0.35) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-backups-section-title,
+[data-theme="light"] .admin-backup-filename {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-backups-section-count,
+[data-theme="light"] .admin-backup-desc,
+[data-theme="light"] .admin-backup-size,
+[data-theme="light"] .admin-backup-date,
+[data-theme="light"] .admin-backups-row-muted,
+[data-theme="light"] .admin-backups-empty,
+[data-theme="light"] .admin-backups-empty-cell {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-backups-row-file {
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .admin-backups-scope-badge {
+  background: #fff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-backups-migration-badge--applied {
+  background: rgb(16 185 129 / 0.12) !important;
+  color: #047857 !important;
+  border-color: rgb(16 185 129 / 0.35) !important;
+}
+
+[data-theme="light"] .admin-backups-migration-badge--pending {
+  background: rgb(245 158 11 / 0.12) !important;
+  color: #b45309 !important;
+  border-color: rgb(245 158 11 / 0.35) !important;
+}
+
+[data-theme="light"] .admin-backup-type-badge--auto {
+  background: rgb(59 130 246 / 0.1) !important;
+  color: #2563eb !important;
+  border-color: rgb(59 130 246 / 0.3) !important;
+}
+
+[data-theme="light"] .admin-backup-type-badge--manual {
+  background: rgb(99 102 241 / 0.1) !important;
+  color: #4338ca !important;
+  border-color: rgb(99 102 241 / 0.3) !important;
+}
+
+[data-theme="light"] .admin-backup-cloud {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .admin-backup-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
+}
+
+[data-theme="light"] .admin-backup-restore-box,
+[data-theme="light"] .admin-backup-card-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .admin-backup-btn {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-backup-btn:hover:not(:disabled) {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-backup-btn--restore {
+  background: rgb(245 158 11 / 0.1) !important;
+  border-color: rgb(245 158 11 / 0.3) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-backup-btn--restore:hover:not(:disabled) {
+  background: rgb(245 158 11 / 0.16) !important;
+}
+
+[data-theme="light"] .admin-backup-btn--upload svg {
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .admin-backup-btn--download svg {
+  color: #047857 !important;
+}
+
+[data-theme="light"] .admin-backups-empty {
+  border-color: #cbd5e1 !important;
 }
 
 [data-theme="light"] .admin-sidebar-header h2,
@@ -3594,53 +4075,13 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   color: #0f172a !important;
 }
 
-[data-theme="light"] .admin-backups-embedded .overflow-x-auto.rounded-xl.border-slate-800,
-[data-theme="light"] .admin-backups .overflow-x-auto.rounded-xl.border-slate-800 {
+[data-theme="light"] .admin-backups-table-panel {
   border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .admin-backups-embedded table thead.bg-slate-950,
-[data-theme="light"] .admin-backups table thead.bg-slate-950 {
-  background-color: #f8fafc !important;
-  color: #64748b !important;
-}
-
-[data-theme="light"] .admin-backups-embedded table tbody tr:hover,
-[data-theme="light"] .admin-backups table tbody tr:hover {
-  background-color: #f8fafc !important;
-}
-
-[data-theme="light"] .admin-backup-card h3,
-[data-theme="light"] .admin-backup-card .font-mono {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .admin-backup-card .border-slate-800,
-[data-theme="light"] .admin-backup-card .border-slate-800\/60 {
-  border-color: #e2e8f0 !important;
-}
-
-[data-theme="light"] .admin-backup-card .bg-slate-800 {
-  background-color: #f1f5f9 !important;
+[data-theme="light"] .admin-backups-table-panel td {
   color: #334155 !important;
-}
-
-[data-theme="light"] .admin-backup-card .bg-slate-800:hover {
-  background-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .admin-backup-card input.bg-slate-950,
-[data-theme="light"] .admin-backups-embedded input.bg-slate-900,
-[data-theme="light"] .admin-backups-embedded input.bg-slate-950 {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .admin-backup-card .border-dashed.border-slate-800 {
-  border-color: #cbd5e1 !important;
-  color: #64748b !important;
+  border-top-color: #e2e8f0 !important;
 }
 
 [data-theme="light"] .admin-users-card,
@@ -5733,8 +6174,9 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 }
 
 /* ── Map ── */
-[data-theme="light"] .logistics-map .bg-slate-950 {
-  background-color: #e2e8f0 !important;
+[data-theme="light"] .logistics-map,
+[data-theme="light"] .logistics-map-canvas {
+  background-color: var(--map-canvas-bg) !important;
 }
 
 [data-theme="light"] .map-imported-hint {
@@ -5899,16 +6341,80 @@ html[data-theme="light"].layout-fold .app-side-rail.is-mobile-dock .app-side-rai
   border-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .app-side-rail-notify .text-slate-300 {
-  color: #475569 !important;
-}
-
 /* Tasks drawer — light */
 [data-theme="light"] .tasks-drawer-panel {
   background: rgb(255 255 255 / 0.5) !important;
   border-color: #e2e8f0 !important;
   color: #334155 !important;
   box-shadow: 0 16px 48px rgb(15 23 42 / 0.14) !important;
+}
+
+[data-theme="light"] .tasks-drawer-search {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .tasks-drawer-search-icon {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .tasks-drawer-search-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .tasks-board-card-meta,
+[data-theme="light"] .tasks-board-card-foot,
+[data-theme="light"] .tasks-section-heading,
+[data-theme="light"] .active-shipment-eta {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .tasks-board-card-desc,
+[data-theme="light"] .tasks-board-card-route {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .tasks-board-card-route-arrow {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .active-shipment-progress {
+  background: #e2e8f0 !important;
+}
+
+[data-theme="light"] .active-shipment-progress-fill {
+  background: #10b981 !important;
+}
+
+[data-theme="light"] .active-shipment-status-badge--en_route {
+  background: rgb(16 185 129 / 0.12) !important;
+  color: #059669 !important;
+  border-color: rgb(16 185 129 / 0.28) !important;
+}
+
+[data-theme="light"] .active-shipment-status-badge--delayed {
+  background: rgb(245 158 11 / 0.12) !important;
+  color: #d97706 !important;
+  border-color: rgb(245 158 11 / 0.3) !important;
+}
+
+[data-theme="light"] .active-shipment-status-badge--arrived {
+  background: rgb(100 116 139 / 0.12) !important;
+  color: #64748b !important;
+  border-color: rgb(100 116 139 / 0.28) !important;
+}
+
+[data-theme="light"] .active-shipment-status-badge--loading {
+  background: rgb(168 85 247 / 0.12) !important;
+  color: #7c3aed !important;
+  border-color: rgb(168 85 247 / 0.28) !important;
+}
+
+[data-theme="light"] .active-shipment-status-badge--alert {
+  background: rgb(239 68 68 / 0.1) !important;
+  color: #dc2626 !important;
+  border-color: rgb(239 68 68 / 0.28) !important;
 }
 
 [data-theme="light"] .tasks-drawer-header {
@@ -6355,12 +6861,45 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
   --tw-ring-color: #ffffff !important;
 }
 
-[data-theme="light"] .app-header-nav .border-slate-700 {
-  border-color: #e2e8f0 !important;
+[data-theme="light"] .app-header-popover-head,
+[data-theme="light"] .app-header-user-head {
+  border-bottom-color: #e2e8f0 !important;
 }
 
-[data-theme="light"] .app-header-popover .border-slate-700 {
-  border-color: #e2e8f0 !important;
+[data-theme="light"] .app-header-popover-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .header-nav-user-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .header-nav-user-handle {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .header-nav-user-role {
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .app-header-popover .header-nav-item {
+  color: #475569;
+}
+
+[data-theme="light"] .app-header-popover .header-nav-item:hover {
+  background: #f8fafc;
+  border-color: rgb(99 102 241 / 0.45);
+  color: #0f172a;
+}
+
+[data-theme="light"] .app-header-popover .header-nav-item--logout {
+  color: #64748b;
+}
+
+[data-theme="light"] .app-header-popover .header-nav-item--logout:hover {
+  color: #dc2626;
+  background: rgb(254 226 226 / 0.65);
+  border-color: rgb(239 68 68 / 0.25);
 }
 
 [data-theme="light"] .shadow-xl,
@@ -6371,20 +6910,17 @@ html[data-theme="light"].layout-fold .chat-widget-back-mobile {
 
 [data-theme="light"] body,
 [data-theme="light"] .app-shell {
-  background-color: #f8fafc;
-  color: #1e293b;
+  background-color: var(--app-shell-bg);
+  color: var(--app-shell-text);
 }
 
-/* Table row hover */
-[data-theme="light"] .hover\:bg-slate-800\/50:hover {
-  background-color: rgb(226 232 240 / 0.6) !important;
-}
-
-/* Selection highlight */
-[data-theme="light"] .selection\:bg-indigo-500::selection,
-[data-theme="light"] .selection\:text-white::selection {
+[data-theme="light"] .app-shell ::selection {
   background-color: #6366f1;
   color: #ffffff;
+}
+
+[data-theme="light"] .app-portal-await {
+  color: #64748b !important;
 }
 
 /* Managers directory (light) — page-level inputs & legacy badge hooks */
@@ -6536,19 +7072,6 @@ html[data-theme="light"].layout-fold .app-header-nav .text-slate-400 {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .app-header .text-slate-400 {
-  color: #475569 !important;
-}
-
-[data-theme="light"] .app-header-popover .text-slate-100,
-[data-theme="light"] .app-header-popover .text-slate-300 {
-  color: #334155 !important;
-}
-
-[data-theme="light"] .app-header-popover .text-slate-500 {
-  color: #64748b !important;
-}
-
 [data-theme="light"] .header-nav-inline-panel {
   background: rgb(248 250 252);
   border-color: #e2e8f0;
@@ -6556,19 +7079,6 @@ html[data-theme="light"].layout-fold .app-header-nav .text-slate-400 {
 
 [data-theme="light"] .header-nav-inline-panel-title {
   color: #334155;
-}
-
-[data-theme="light"] .header-nav-inline-panel .text-slate-300 {
-  color: #475569 !important;
-}
-
-[data-theme="light"] .header-nav-inline-panel .text-slate-400,
-[data-theme="light"] .header-nav-inline-panel .text-slate-500 {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .header-nav-inline-panel .text-indigo-300 {
-  color: #4338ca !important;
 }
 
 [data-theme="light"] .header-nav-notify-empty {
@@ -6785,14 +7295,6 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
   box-shadow: 0 0 0 2px #ffffff;
 }
 
-[data-theme="light"] .header-nav-user-card .text-slate-100 {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .header-nav-user-card .text-slate-400 {
-  color: #64748b !important;
-}
-
 [data-theme="light"] .map-mobile-search-panel .map-search-box .map-search-input-wrap {
   background-color: rgb(255 255 255 / 0.98) !important;
   border-color: #cbd5e1 !important;
@@ -6965,27 +7467,42 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
   color: #334155;
 }
 
-[data-theme="light"] .map-mobile-dock-body .text-slate-200,
-[data-theme="light"] .map-mobile-sheet-body--factory .text-slate-200,
+[data-theme="light"] .map-mobile-dock-body .map-sheet-panel,
 [data-theme="light"] .map-mobile-sheet-body--factory .map-sheet-panel {
   color: #334155 !important;
 }
 
-[data-theme="light"] .map-mobile-dock-body .text-slate-300,
-[data-theme="light"] .map-mobile-sheet-body--factory .text-slate-300 {
-  color: #475569 !important;
-}
-
-[data-theme="light"] .map-mobile-dock-body .text-slate-400,
-[data-theme="light"] .map-mobile-dock-body .text-slate-500,
-[data-theme="light"] .map-mobile-sheet-body--factory .text-slate-400,
-[data-theme="light"] .map-mobile-sheet-body--factory .text-slate-500,
-[data-theme="light"] .map-mobile-sheet-body--factory .map-factory-id {
+[data-theme="light"] .map-sheet-meta,
+[data-theme="light"] .map-sheet-hint,
+[data-theme="light"] .map-sheet-factory-name,
+[data-theme="light"] .map-csv-empty-hint {
   color: #64748b !important;
 }
 
-[data-theme="light"] .map-mobile-dock-body .text-amber-200\/90 {
+[data-theme="light"] .map-sheet-label,
+[data-theme="light"] .map-sheet-coords {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .map-sheet-panel,
+[data-theme="light"] .map-sheet-loading {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .map-sheet-address-text {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .map-sheet-kladr-id {
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .map-sheet-warning {
   color: #b45309 !important;
+}
+
+[data-theme="light"] .map-sheet-type-error {
+  color: #dc2626 !important;
 }
 
 [data-theme="light"] .map-mobile-dock-body .map-position-kladr-input,

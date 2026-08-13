@@ -145,52 +145,45 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
 
   return (
     <div className="modal-backdrop">
-      <form
-        onSubmit={handleSubmit}
-        className="modal-panel shipment-events-panel bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full text-slate-100 shadow-2xl"
-      >
+      <form onSubmit={handleSubmit} className="modal-panel shipment-edit-modal max-w-2xl w-full">
         <div className="modal-panel-header">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="font-bold text-base text-white flex items-center gap-2">
-              <Edit3 className="w-4 h-4 text-indigo-400" />
+            <h3 className="shipment-edit-modal-title">
+              <Edit3 aria-hidden />
               <span>{t('shipments.editTitle')}</span>
             </h3>
-            <button type="button" onClick={onClose} className="text-slate-400 hover:text-white p-1" aria-label={t('common.close')}>
-              <X className="w-4 h-4" />
+            <button type="button" onClick={onClose} className="shipment-detail-modal-dismiss" aria-label={t('common.close')}>
+              <X aria-hidden />
             </button>
           </div>
-          <p className="text-[11px] text-slate-400 mt-1 font-mono truncate">{shipment.id}</p>
+          <p className="shipment-edit-modal-id">{shipment.id}</p>
         </div>
 
-        <div className="modal-panel-body modal-scrollbar space-y-4 text-xs">
-          {error && (
-            <div className="text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-2">{error}</div>
-          )}
+        <div className="modal-panel-body modal-scrollbar space-y-4">
+          {error ? (
+            <div className="shipment-event-alert shipment-event-alert--error">{error}</div>
+          ) : null}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="space-y-1 md:col-span-2">
-              <span className="text-slate-400">{t('shipmentEvents.origin')}</span>
+              <span>{t('shipmentEvents.origin')}</span>
               <SearchableSelect value={originId} onChange={setOriginId} options={siteOptions} />
             </label>
 
             <div className="md:col-span-2 flex justify-center">
-              <button
-                type="button"
-                onClick={swapDirection}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-200 text-[11px] font-semibold"
-              >
-                <ArrowLeftRight className="w-3.5 h-3.5" />
+              <button type="button" onClick={swapDirection} className="shipment-edit-swap-btn">
+                <ArrowLeftRight aria-hidden />
                 {t('shipments.swapDirection')}
               </button>
             </div>
 
             <label className="space-y-1 md:col-span-2">
-              <span className="text-slate-400">{t('shipmentEvents.destination')}</span>
+              <span>{t('shipmentEvents.destination')}</span>
               <SearchableSelect value={destinationId} onChange={setDestinationId} options={siteOptions} />
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipmentEvents.product')}</span>
+              <span>{t('shipmentEvents.product')}</span>
               <SearchableSelect
                 value={productId}
                 onChange={setProductId}
@@ -199,7 +192,7 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('myData.flowType')}</span>
+              <span>{t('myData.flowType')}</span>
               <SearchableSelect
                 value={flowType}
                 onChange={v => setFlowType(v as FlowType)}
@@ -209,7 +202,7 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('myData.volume')}</span>
+              <span>{t('myData.volume')}</span>
               <input
                 type="number"
                 min="0"
@@ -217,32 +210,21 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
                 required
                 value={volume}
                 onChange={e => setVolume(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
               />
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipments.unitLabel')}</span>
-              <input
-                value={unit}
-                onChange={e => setUnit(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
-              />
+              <span>{t('shipments.unitLabel')}</span>
+              <input value={unit} onChange={e => setUnit(e.target.value)} />
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipmentModal.shipmentDate')}</span>
-              <input
-                type="date"
-                required
-                value={shipmentDate}
-                onChange={e => setShipmentDate(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
-              />
+              <span>{t('shipmentModal.shipmentDate')}</span>
+              <input type="date" required value={shipmentDate} onChange={e => setShipmentDate(e.target.value)} />
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipments.newStatus')}</span>
+              <span>{t('shipments.newStatus')}</span>
               <SearchableSelect
                 value={status}
                 onChange={v => setStatus(v as CargoStatus)}
@@ -252,7 +234,7 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipments.allChannels')}</span>
+              <span>{t('shipments.allChannels')}</span>
               <SearchableSelect
                 value={source}
                 onChange={v => setSource(v as 'own' | 'rzd')}
@@ -265,7 +247,7 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('myData.carrier')}</span>
+              <span>{t('myData.carrier')}</span>
               <SearchableSelect
                 value={carrierId}
                 onChange={setCarrierId}
@@ -276,7 +258,7 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
             </label>
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('myData.manager')}</span>
+              <span>{t('myData.manager')}</span>
               <SearchableSelect
                 value={salesManagerId}
                 onChange={setSalesManagerId}
@@ -288,42 +270,26 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
 
             {showAmount && (
               <label className="space-y-1">
-                <span className="text-slate-400">{t('shipmentModal.amount')}</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="any"
-                  value={amount}
-                  onChange={e => setAmount(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
-                />
+                <span>{t('shipmentModal.amount')}</span>
+                <input type="number" min="0" step="any" value={amount} onChange={e => setAmount(e.target.value)} />
               </label>
             )}
 
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipmentModal.eta')}</span>
-              <input
-                value={eta}
-                onChange={e => setEta(e.target.value)}
-                placeholder={t('shipmentModal.etaPending')}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
-              />
+              <span>{t('shipmentModal.eta')}</span>
+              <input value={eta} onChange={e => setEta(e.target.value)} placeholder={t('shipmentModal.etaPending')} />
             </label>
 
             <label className="space-y-1 md:col-span-2">
-              <span className="text-slate-400">{t('shipments.driverInfo')}</span>
-              <input
-                value={driverInfo}
-                onChange={e => setDriverInfo(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white"
-              />
+              <span>{t('shipments.driverInfo')}</span>
+              <input value={driverInfo} onChange={e => setDriverInfo(e.target.value)} />
             </label>
           </div>
 
           {(status === 'delayed' || status === 'alert') && (
             <div className="space-y-2">
               <label className="block space-y-1">
-                <span className="text-slate-400">{t('shipments.delayReason')}</span>
+                <span>{t('shipments.delayReason')}</span>
                 <SearchableSelect
                   value={delayReasonKey}
                   onChange={setDelayReasonKey}
@@ -347,19 +313,11 @@ export const ShipmentEditModal: React.FC<ShipmentEditModalProps> = ({
         </div>
 
         <div className="modal-panel-footer flex items-center justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold"
-          >
+          <button type="button" onClick={onClose} className="shipment-edit-cancel">
             {t('common.cancel')}
           </button>
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-600/30"
-          >
-            <Save className="w-3.5 h-3.5" />
+          <button type="submit" disabled={saving} className="shipment-edit-submit">
+            <Save aria-hidden />
             {saving ? t('common.saving') : t('shipments.saveChanges')}
           </button>
         </div>

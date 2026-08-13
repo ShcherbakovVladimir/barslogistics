@@ -346,25 +346,25 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
   return (
     <form onSubmit={(e) => void handleSubmit(e)} className="shipment-events-panel">
       {!hideTitle && (
-        <div className="font-semibold text-white text-sm">{t('shipmentEvents.addEvent')}</div>
+        <div className="shipment-event-form-title">{t('shipmentEvents.addEvent')}</div>
       )}
 
       {error && (
-        <div className="text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-2">{error}</div>
+        <div className="shipment-event-alert shipment-event-alert--error">{error}</div>
       )}
       {success && (
-        <div className="shipment-event-success text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2 flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
+        <div className="shipment-event-success">
           <span className="inline-flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+            <CheckCircle2 aria-hidden />
             {success}
           </span>
           {lastSavedShipmentId && onOpenShipment ? (
             <button
               type="button"
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-300 hover:text-indigo-200"
+              className="shipment-event-link-btn"
               onClick={() => onOpenShipment(lastSavedShipmentId)}
             >
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink aria-hidden />
               {t('shipmentEvents.openShipment')}
             </button>
           ) : null}
@@ -375,7 +375,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         <h3 className="shipment-event-section-title">{t('shipmentEvents.sectionEvent')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="space-y-1 md:col-span-2">
-            <span className="text-slate-400">{t('shipmentEvents.shipment')}</span>
+            <span>{t('shipmentEvents.shipment')}</span>
             <SearchableSelect
               value={shipmentId}
               disabled={lockShipment}
@@ -390,7 +390,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           </label>
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.eventType')}</span>
+            <span>{t('shipmentEvents.eventType')}</span>
             <SearchableSelect
               value={eventType}
               onChange={v => setEventType(v as ShipmentEventType)}
@@ -402,7 +402,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           </label>
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.timing')}</span>
+            <span>{t('shipmentEvents.timing')}</span>
             <SearchableSelect
               value={timingKind}
               onChange={v => setTimingKind(v as ShipmentTimingKind)}
@@ -415,7 +415,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
 
           {(eventType === 'status_change' || eventType === 'delay' || eventType === 'early') && (
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipmentEvents.newStatus')}</span>
+              <span>{t('shipmentEvents.newStatus')}</span>
               <SearchableSelect
                 value={newStatus}
                 onChange={v => setNewStatus(v as CargoStatus)}
@@ -428,7 +428,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           )}
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.progressPct')}</span>
+            <span>{t('shipmentEvents.progressPct')}</span>
             <input
               type="number"
               min="0"
@@ -449,7 +449,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             <>
               {(eventType === 'delay' || newStatus === 'delayed') && (
                 <label className="space-y-1">
-                  <span className="text-slate-400">{t('shipmentEvents.delayHours')}</span>
+                  <span>{t('shipmentEvents.delayHours')}</span>
                   <input
                     type="number"
                     min="0"
@@ -460,7 +460,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
                 </label>
               )}
               <label className="space-y-1">
-                <span className="text-slate-400">{t('shipmentEvents.delayReason')}</span>
+                <span>{t('shipmentEvents.delayReason')}</span>
                 <SearchableSelect
                   value={delayReasonKey}
                   onChange={v => setDelayReasonKey(v as DelayReasonKey)}
@@ -472,7 +472,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
               </label>
               {delayReasonKey === 'other' && (
                 <label className="space-y-1 md:col-span-2">
-                  <span className="text-slate-400">{t('shipmentEvents.customReason')}</span>
+                  <span>{t('shipmentEvents.customReason')}</span>
                   <input
                     value={customDelayReason}
                     onChange={e => setCustomDelayReason(e.target.value)}
@@ -484,7 +484,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
 
           {eventType === 'early' && (
             <label className="space-y-1">
-              <span className="text-slate-400">{t('shipmentEvents.earlyHours')}</span>
+              <span>{t('shipmentEvents.earlyHours')}</span>
               <input
                 type="number"
                 min="0"
@@ -497,7 +497,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
 
           {(eventType === 'eta_update' || eventType === 'delay' || eventType === 'early') && (
             <label className="space-y-1">
-              <span className="text-slate-400">
+              <span>
                 {t('shipmentEvents.etaAfter')}
                 {eventType === 'eta_update' ? ' *' : ''}
               </span>
@@ -510,7 +510,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           )}
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.actualDeparture')}</span>
+            <span>{t('shipmentEvents.actualDeparture')}</span>
             <ShipmentDateTimePicker
               value={actualDepartureAt}
               onChange={setActualDepartureAt}
@@ -519,7 +519,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           </label>
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.actualArrival')}</span>
+            <span>{t('shipmentEvents.actualArrival')}</span>
             <ShipmentDateTimePicker
               value={actualArrivalAt}
               onChange={setActualArrivalAt}
@@ -536,7 +536,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.origin')}</span>
+            <span>{t('shipmentEvents.origin')}</span>
             <SearchableSelect
               value={originId}
               onChange={setOriginId}
@@ -547,7 +547,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           </label>
 
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.destination')}</span>
+            <span>{t('shipmentEvents.destination')}</span>
             <SearchableSelect
               value={destinationId}
               onChange={setDestinationId}
@@ -558,7 +558,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
           </label>
 
           <label className="space-y-1 md:col-span-2">
-            <span className="text-slate-400">{t('shipmentEvents.product')}</span>
+            <span>{t('shipmentEvents.product')}</span>
             <SearchableSelect
               value={productId}
               onChange={setProductId}
@@ -597,7 +597,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         </div>
         {transportAssetOptions.length > 0 && (
           <label className="space-y-1 block">
-            <span className="text-slate-400">{t('transport.selectFromDirectory')}</span>
+            <span>{t('transport.selectFromDirectory')}</span>
             <SearchableSelect
               value={transportAssetId}
               onChange={applyTransportAsset}
@@ -612,7 +612,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="space-y-1">
-            <span className="text-slate-400">
+            <span>
               {transportMode === 'rail'
                 ? t('shipmentEvents.vehicleNumberRail')
                 : t('shipmentEvents.vehicleNumber')}
@@ -620,7 +620,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             <input type="text" value={vehicleNumber} onChange={e => setVehicleNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
-            <span className="text-slate-400">
+            <span>
               {transportMode === 'rail'
                 ? t('shipmentEvents.trailerNumberRail')
                 : t('shipmentEvents.trailerNumber')}
@@ -628,11 +628,11 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             <input type="text" value={trailerNumber} onChange={e => setTrailerNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
-            <span className="text-slate-400">{t('shipmentEvents.containerNumber')}</span>
+            <span>{t('shipmentEvents.containerNumber')}</span>
             <input type="text" value={containerNumber} onChange={e => setContainerNumber(e.target.value)} />
           </label>
           <label className="space-y-1">
-            <span className="text-slate-400">
+            <span>
               {transportMode === 'rail'
                 ? t('shipmentEvents.waybillNumberRail')
                 : t('shipmentEvents.waybillNumber')}
@@ -640,14 +640,14 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
             <input type="text" value={waybillNumber} onChange={e => setWaybillNumber(e.target.value)} />
           </label>
           <label className="space-y-1 md:col-span-2">
-            <span className="text-slate-400">
+            <span>
               {transportMode === 'rail'
                 ? t('shipmentEvents.driverInfoRail')
                 : t('shipmentEvents.driverInfo')}
             </span>
             <input type="text" value={driverInfo} onChange={e => setDriverInfo(e.target.value)} />
           </label>
-          <label className="flex items-center gap-2 md:col-span-2 text-slate-300 min-h-[2.5rem]">
+          <label className="shipment-event-check md:col-span-2">
             <input
               type="checkbox"
               checked={applyTransport}
@@ -661,7 +661,7 @@ export const ShipmentEventForm: React.FC<ShipmentEventFormProps> = ({
       <section className="shipment-event-section space-y-3">
         <h3 className="shipment-event-section-title">{t('shipmentEvents.sectionComment')}</h3>
         <label className="space-y-1 block">
-          <span className="text-slate-400">{t('shipmentEvents.comment')}</span>
+          <span>{t('shipmentEvents.comment')}</span>
           <textarea
             rows={3}
             value={comment}

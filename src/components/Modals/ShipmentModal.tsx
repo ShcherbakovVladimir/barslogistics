@@ -90,27 +90,29 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
   };
 
   const tabs: { id: ModalTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'overview', label: t('shipmentModal.tabOverview'), icon: <Truck className="w-3.5 h-3.5" /> },
-    { id: 'events', label: t('shipmentModal.tabEvents'), icon: <Activity className="w-3.5 h-3.5" /> },
-    { id: 'logistics', label: t('shipmentModal.tabLogistics'), icon: <FileText className="w-3.5 h-3.5" /> },
+    { id: 'overview', label: t('shipmentModal.tabOverview'), icon: <Truck aria-hidden /> },
+    { id: 'events', label: t('shipmentModal.tabEvents'), icon: <Activity aria-hidden /> },
+    { id: 'logistics', label: t('shipmentModal.tabLogistics'), icon: <FileText aria-hidden /> },
   ];
 
   return (
     <div className="modal-backdrop">
-      <div className="modal-panel shipment-detail-modal bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full text-slate-100 shadow-2xl">
+      <div className="modal-panel shipment-detail-modal max-w-3xl w-full">
         <div className="modal-panel-header">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
-              <Truck className="w-5 h-5 text-emerald-400 shrink-0" />
+              <Truck className="shipment-detail-modal-icon" aria-hidden />
               <div className="min-w-0">
-                <h3 className="font-bold text-base text-white truncate">{productLabel}</h3>
-                <p className="text-xs text-slate-400 truncate">{t('shipmentModal.trip', { id: shipment.id.slice(0, 8) })} &bull; {shipment.carrier_name || shipment.manager_name}</p>
+                <h3 className="shipment-detail-modal-title truncate">{productLabel}</h3>
+                <p className="shipment-detail-modal-subtitle truncate">
+                  {t('shipmentModal.trip', { id: shipment.id.slice(0, 8) })} &bull; {shipment.carrier_name || shipment.manager_name}
+                </p>
               </div>
             </div>
-            <button type="button" onClick={onClose} className="shipment-detail-modal-dismiss shrink-0 text-slate-400 hover:text-white p-1" aria-label={t('common.close')}>✕</button>
+            <button type="button" onClick={onClose} className="shipment-detail-modal-dismiss" aria-label={t('common.close')}>✕</button>
           </div>
 
-          <div className="shipment-detail-tabs mt-3 flex gap-1 overflow-x-auto" role="tablist">
+          <div className="shipment-detail-tabs" role="tablist">
             {tabs.map((item) => (
               <button
                 key={item.id}
@@ -118,11 +120,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                 role="tab"
                 aria-selected={tab === item.id}
                 onClick={() => setTab(item.id)}
-                className={`shipment-detail-tab inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                  tab === item.id
-                    ? 'shipment-detail-tab--active bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-                    : 'text-slate-400 hover:text-white border border-transparent'
-                }`}
+                className={`shipment-detail-tab${tab === item.id ? ' is-active' : ''}`}
               >
                 {item.icon}
                 {item.label}
@@ -134,58 +132,64 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
         <div className="modal-panel-body modal-scrollbar space-y-4">
           {tab === 'overview' && (
             <>
-              <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3 text-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 font-bold text-sm text-white">
+              <div className="shipment-detail-summary-box space-y-3">
+                <div className="shipment-detail-route-row">
                   <span className="min-w-0 truncate">{orig?.name || t('shipmentModal.origin')}</span>
-                  <ArrowRight className="w-4 h-4 text-slate-500 shrink-0 hidden sm:block" />
+                  <ArrowRight className="shipment-detail-route-arrow hidden sm:block" aria-hidden />
                   <span className="min-w-0 truncate">{dest?.name || t('shipmentModal.destination')}</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                <div className="shipment-detail-fields-grid">
                   <div>
-                    <span className="text-slate-400">{t('shipmentModal.shipmentDate')}</span>
-                    <div className="font-semibold text-white">{shipment.shipment_date || shipment.period}</div>
+                    <span className="shipment-detail-field-label">{t('shipmentModal.shipmentDate')}</span>
+                    <div className="shipment-detail-field-value">{shipment.shipment_date || shipment.period}</div>
                   </div>
                   <div>
-                    <span className="text-slate-400">{t('common.status')}</span>
-                    <div className="font-semibold text-emerald-400">{shipment.status ? t(`status.${shipment.status}`) : '—'}</div>
+                    <span className="shipment-detail-field-label">{t('common.status')}</span>
+                    <div className="shipment-detail-field-value shipment-detail-field-value--status">
+                      {shipment.status ? t(`status.${shipment.status}`) : '—'}
+                    </div>
                   </div>
                   <div>
-                    <span className="text-slate-400">{t('shipmentModal.volume')}</span>
-                    <div className="font-semibold text-emerald-400">{shipment.volume} {shipment.unit}</div>
+                    <span className="shipment-detail-field-label">{t('shipmentModal.volume')}</span>
+                    <div className="shipment-detail-field-value shipment-detail-field-value--volume">
+                      {shipment.volume} {shipment.unit}
+                    </div>
                   </div>
                   <div>
-                    <span className="text-slate-400">{t('shipmentModal.amount')}</span>
-                    <div className="font-semibold text-amber-400">
+                    <span className="shipment-detail-field-label">{t('shipmentModal.amount')}</span>
+                    <div className="shipment-detail-field-value shipment-detail-field-value--amount">
                       {showAmount && shipment.amount != null
                         ? `${shipment.amount.toLocaleString()} ₽`
                         : t('shipmentModal.amountHidden')}
                     </div>
                   </div>
                   {shipment.manager_name && (
-                    <div className="col-span-2">
-                      <span className="text-slate-400">{t('shipmentModal.manager')}</span>
-                      <div className="font-semibold text-white">{shipment.manager_name}</div>
+                    <div className="sm:col-span-2">
+                      <span className="shipment-detail-field-label">{t('shipmentModal.manager')}</span>
+                      <div className="shipment-detail-field-value">{shipment.manager_name}</div>
                     </div>
                   )}
                   {(shipment.vehicle_number || shipment.waybill_number || shipment.transport_mode) && (
                     <>
                       {shipment.transport_mode && (
                         <div>
-                          <span className="text-slate-400">{t('shipmentLogistics.transportMode')}</span>
-                          <div className="font-semibold text-white">{t(`shipmentLogistics.modes.${shipment.transport_mode}`)}</div>
+                          <span className="shipment-detail-field-label">{t('shipmentLogistics.transportMode')}</span>
+                          <div className="shipment-detail-field-value">
+                            {t(`shipmentLogistics.modes.${shipment.transport_mode}`)}
+                          </div>
                         </div>
                       )}
                       {shipment.vehicle_number && (
                         <div>
-                          <span className="text-slate-400">{t('shipmentLogistics.vehicleNumber')}</span>
-                          <div className="font-semibold text-white font-mono">{shipment.vehicle_number}</div>
+                          <span className="shipment-detail-field-label">{t('shipmentLogistics.vehicleNumber')}</span>
+                          <div className="shipment-detail-field-value font-mono">{shipment.vehicle_number}</div>
                         </div>
                       )}
                       {shipment.waybill_number && (
                         <div>
-                          <span className="text-slate-400">{t('shipmentLogistics.waybillNumber')}</span>
-                          <div className="font-semibold text-white font-mono">{shipment.waybill_number}</div>
+                          <span className="shipment-detail-field-label">{t('shipmentLogistics.waybillNumber')}</span>
+                          <div className="shipment-detail-field-value font-mono">{shipment.waybill_number}</div>
                         </div>
                       )}
                     </>
@@ -193,54 +197,58 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                 </div>
 
                 <div className="pt-2">
-                  <div className="flex items-center justify-between text-[11px] font-semibold text-slate-300 mb-1">
+                  <div className="shipment-detail-progress-head">
                     <span>{t('shipmentModal.progress')}</span>
                     <span>{shipment.progress_pct || 0}%</span>
                   </div>
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div className="bg-emerald-400 h-full transition-all duration-500" style={{ width: `${shipment.progress_pct || 0}%` }} />
+                  <div className="shipment-detail-progress-track">
+                    <div className="shipment-detail-progress-fill" style={{ width: `${shipment.progress_pct || 0}%` }} />
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-slate-400">{t('shipmentModal.channel')}</span>
-                  <div className="font-bold text-white text-sm mt-0.5">{shipment.source === 'own' ? t('shipmentModal.channelOwn') : t('shipmentModal.channelRzd')}</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="shipment-detail-stat-card">
+                  <span className="shipment-detail-field-label">{t('shipmentModal.channel')}</span>
+                  <div className="shipment-detail-field-value">
+                    {shipment.source === 'own' ? t('shipmentModal.channelOwn') : t('shipmentModal.channelRzd')}
+                  </div>
                 </div>
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-slate-400">{t('shipmentModal.eta')}</span>
-                  <div className="font-bold text-blue-400 text-sm mt-0.5">{shipment.eta || t('shipmentModal.etaPending')}</div>
+                <div className="shipment-detail-stat-card">
+                  <span className="shipment-detail-field-label">{t('shipmentModal.eta')}</span>
+                  <div className="shipment-detail-field-value shipment-detail-field-value--eta">
+                    {shipment.eta || t('shipmentModal.etaPending')}
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-slate-400 flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="shipment-detail-stat-card">
+                  <span className="shipment-detail-stat-label">
+                    <MapPin aria-hidden />
                     {t('shipmentModal.coordinates')}
                   </span>
-                  <div className={`font-mono text-sm mt-0.5 ${hasGps ? 'text-emerald-300' : 'text-slate-500'}`}>
+                  <div className={hasGps ? 'shipment-detail-field-value--gps-ok' : 'shipment-detail-field-value--gps-missing'}>
                     {coordsLabel}
                   </div>
                 </div>
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-slate-400 flex items-center gap-1">
-                    <Gauge className="w-3 h-3" />
+                <div className="shipment-detail-stat-card">
+                  <span className="shipment-detail-stat-label">
+                    <Gauge aria-hidden />
                     {t('shipmentModal.speed')}
                   </span>
-                  <div className="font-bold text-white text-sm mt-0.5">
+                  <div className="shipment-detail-field-value">
                     {shipment.speed_kmh != null
                       ? `${Math.round(shipment.speed_kmh)} ${t('shipmentModal.speedUnit')}`
                       : t('shipmentModal.noGpsData')}
                   </div>
                 </div>
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                  <span className="text-slate-400 flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
+                <div className="shipment-detail-stat-card">
+                  <span className="shipment-detail-stat-label">
+                    <Clock aria-hidden />
                     {t('shipmentModal.lastUpdated')}
                   </span>
-                  <div className="font-bold text-white text-sm mt-0.5">
+                  <div className="shipment-detail-field-value">
                     {shipment.last_updated
                       ? new Date(shipment.last_updated).toLocaleString(localeTag)
                       : t('shipmentModal.noGpsData')}
@@ -248,17 +256,17 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                 </div>
               </div>
 
-              {shipment.delay_reason && (
-                <div className="p-3 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+              {shipment.delay_reason ? (
+                <div className="shipment-detail-alert-delay">
+                  <AlertTriangle aria-hidden />
                   <span>{t('shipmentModal.delayReason', { reason: shipment.delay_reason })}</span>
                 </div>
-              )}
+              ) : null}
             </>
           )}
 
           {tab === 'events' && (
-            <div className="space-y-4 shipment-events-panel">
+            <div className="space-y-4">
               {canManage && (
                 <ShipmentEventForm
                   shipments={supplyLinks}
@@ -271,7 +279,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                 />
               )}
               <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-white">{t('shipmentEvents.timeline')}</h4>
+                <h4 className="shipment-detail-timeline-heading">{t('shipmentEvents.timeline')}</h4>
                 <ShipmentEventTimeline
                   events={events}
                   factories={factories}
@@ -296,9 +304,9 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
             <button
               type="button"
               onClick={() => onShowOnMap(shipment)}
-              className="shipment-detail-modal-btn shipment-detail-modal-btn--map inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold"
+              className="shipment-detail-modal-btn shipment-detail-modal-btn--map"
             >
-              <MapPin className="w-3.5 h-3.5" />
+              <MapPin aria-hidden />
               {t('shipments.showOnMap')}
             </button>
           )}
@@ -306,21 +314,20 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
             <button
               type="button"
               onClick={() => onEdit(shipment)}
-              className="shipment-detail-modal-btn shipment-detail-modal-btn--edit inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold"
+              className="shipment-detail-modal-btn shipment-detail-modal-btn--edit"
             >
-              <Edit3 className="w-3.5 h-3.5" />
+              <Edit3 aria-hidden />
               {t('shipments.editButton')}
             </button>
           )}
           <button
             type="button"
             onClick={onClose}
-            className="shipment-detail-modal-btn shipment-detail-modal-btn--close px-4 py-2 rounded-xl text-xs font-semibold"
+            className="shipment-detail-modal-btn shipment-detail-modal-btn--close"
           >
             {t('common.close')}
           </button>
         </div>
-
       </div>
     </div>
   );

@@ -155,15 +155,15 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
 
   const renderNotificationsList = () => (
     notifications.length === 0 ? (
-      <p className="app-side-rail-empty tasks-empty">{t('header.notificationsEmpty')}</p>
+      <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
     ) : (
       notifications.map(n => (
         <div
           key={n.id}
-          className={`app-side-rail-notify${n.read ? ' is-read' : ''}`}
+          className={`header-nav-notify-item${n.read ? ' is-read' : ''}`}
         >
           <div
-            className="cursor-pointer"
+            className="header-nav-notify-item-main cursor-pointer"
             onClick={() => {
               onMarkNotificationRead(n.id);
               if (n.link_type === 'chat' && n.link_id) {
@@ -185,16 +185,11 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
               setShowNotifications(false);
             }}
           >
-            <div className="flex justify-between items-start gap-2">
-              <span className={`font-semibold text-xs ${
-                n.type === 'alert' ? 'text-red-400'
-                  : n.type === 'success' ? 'text-emerald-400'
-                    : 'text-indigo-300'
-              }`}
-              >
+            <div className="header-nav-notify-item-top">
+              <span className={`header-nav-notify-item-title header-nav-notify-item-title--${n.type === 'alert' || n.type === 'success' ? n.type : 'info'}`}>
                 {n.title}
               </span>
-              <span className="text-[10px] text-slate-500 shrink-0">
+              <span className="header-nav-notify-item-time">
                 {new Date(n.timestamp).toLocaleString(localeTag, {
                   day: '2-digit',
                   month: '2-digit',
@@ -203,13 +198,13 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
                 })}
               </span>
             </div>
-            <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
+            <p className="header-nav-notify-item-message">{n.message}</p>
           </div>
-          <div className="flex justify-end gap-1 mt-1.5">
+          <div className="header-nav-notify-item-actions">
             {!n.read ? (
               <button
                 type="button"
-                className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
+                className="header-nav-notify-item-action"
                 onClick={(e) => {
                   e.stopPropagation();
                   onMarkNotificationRead(n.id);
@@ -221,7 +216,7 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
             ) : null}
             <button
               type="button"
-              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+              className="header-nav-notify-item-action header-nav-notify-item-action--danger"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteNotification(n.id);
@@ -407,15 +402,15 @@ export const AppSideRail: React.FC<AppSideRailProps> = ({
             onClick={() => setShowNotifications(false)}
           />
           <aside
-            className="tasks-drawer-panel app-notifications-drawer-panel bg-slate-900/96 backdrop-blur-md border border-slate-800 shadow-xl text-slate-200"
+            className="tasks-drawer-panel app-notifications-drawer-panel"
             role="dialog"
             aria-modal="true"
             aria-label={t('header.notificationsPanel')}
           >
-            <header className="tasks-drawer-header border-b border-slate-700">
+            <header className="tasks-drawer-header">
               <div className="tasks-drawer-header-main min-w-0">
                 <div className="min-w-0 flex items-start gap-1.5">
-                  <Bell className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" aria-hidden />
+                  <Bell className="tasks-drawer-header-icon tasks-drawer-header-icon--indigo" aria-hidden />
                   <div className="min-w-0">
                     <h2 className="tasks-drawer-title truncate">{t('header.notificationsPanel')}</h2>
                     <p className="tasks-drawer-subtitle">{t('header.notificationsTitle')}</p>

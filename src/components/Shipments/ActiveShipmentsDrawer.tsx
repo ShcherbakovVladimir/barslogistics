@@ -35,11 +35,11 @@ export const ActiveShipmentsDrawer: React.FC<ActiveShipmentsDrawerProps> = ({
   const factoryMap = useMemo(() => new Map(factories.map(f => [f.id, f])), [factories]);
 
   const statusLabels = useMemo(() => ({
-    en_route: { text: t('status.en_route'), bg: 'bg-emerald-500/10', textCol: 'text-emerald-400', border: 'border-emerald-500/30' },
-    delayed: { text: t('status.delayed'), bg: 'bg-amber-500/10', textCol: 'text-amber-400', border: 'border-amber-500/30' },
-    arrived: { text: t('status.arrived'), bg: 'bg-slate-500/10', textCol: 'text-slate-400', border: 'border-slate-500/30' },
-    loading: { text: t('status.loading'), bg: 'bg-purple-500/10', textCol: 'text-purple-400', border: 'border-purple-500/30' },
-    alert: { text: t('status.alert'), bg: 'bg-red-500/10', textCol: 'text-red-400', border: 'border-red-500/30' },
+    en_route: { text: t('status.en_route'), badgeClass: 'active-shipment-status-badge--en_route' },
+    delayed: { text: t('status.delayed'), badgeClass: 'active-shipment-status-badge--delayed' },
+    arrived: { text: t('status.arrived'), badgeClass: 'active-shipment-status-badge--arrived' },
+    loading: { text: t('status.loading'), badgeClass: 'active-shipment-status-badge--loading' },
+    alert: { text: t('status.alert'), badgeClass: 'active-shipment-status-badge--alert' },
   }), [t]);
 
   const activeLinks = useMemo(() => {
@@ -93,15 +93,15 @@ export const ActiveShipmentsDrawer: React.FC<ActiveShipmentsDrawerProps> = ({
     <div className="tasks-drawer-root" role="presentation">
       <button type="button" className="tasks-drawer-backdrop" aria-label={t('common.close')} onClick={onClose} />
       <aside
-        className="tasks-drawer-panel bg-slate-900/96 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl text-slate-200"
+        className="tasks-drawer-panel"
         role="dialog"
         aria-modal="true"
         aria-label={t('shipments.activeDrawerTitle')}
       >
-        <header className="tasks-drawer-header border-b border-slate-700">
+        <header className="tasks-drawer-header">
           <div className="tasks-drawer-header-main min-w-0">
             <div className="min-w-0 flex items-start gap-1.5">
-              <Truck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" aria-hidden />
+              <Truck className="tasks-drawer-header-icon tasks-drawer-header-icon--emerald" aria-hidden />
               <div className="min-w-0">
                 <h2 className="tasks-drawer-title truncate">{t('shipments.activeDrawerTitle')}</h2>
                 <p className="tasks-drawer-subtitle">{t('shipments.activeDrawerSubtitle')}</p>
@@ -114,15 +114,15 @@ export const ActiveShipmentsDrawer: React.FC<ActiveShipmentsDrawerProps> = ({
         </header>
 
         <div className="tasks-drawer-body scroll-area">
-          <div className="px-3 pt-3 pb-1">
-            <div className="flex items-center gap-2 bg-slate-950/80 px-3 py-2 rounded-lg border border-slate-700 text-xs text-white">
-              <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <div className="tasks-drawer-search-wrap">
+            <div className="tasks-drawer-search">
+              <Search className="tasks-drawer-search-icon" />
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder={t('shipments.activeDrawerSearch')}
-                className="bg-transparent focus:outline-none w-full min-w-0 placeholder-slate-500"
+                className="tasks-drawer-search-input"
               />
             </div>
           </div>
@@ -142,34 +142,34 @@ export const ActiveShipmentsDrawer: React.FC<ActiveShipmentsDrawerProps> = ({
                       className="tasks-board-card-main"
                       onClick={() => onSelectShipment(link)}
                     >
-                      <Truck className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <Truck className="tasks-board-card-icon tasks-board-card-icon--emerald" />
                       <div className="min-w-0 text-left flex-1">
                         <div className="font-semibold truncate">{link.cargo_type}</div>
-                        <div className="text-[10px] text-slate-400 truncate">
+                        <div className="tasks-board-card-meta truncate">
                           {link.volume.toLocaleString(localeTag)} {link.unit}
                           {' · '}
                           {formatShipmentDate(link)}
                         </div>
-                        <div className="text-[10px] text-slate-300 truncate mt-0.5 flex items-center gap-1">
+                        <div className="tasks-board-card-route truncate">
                           <span className="truncate">{orig?.name || t('common.sender')}</span>
-                          <ArrowRight className="w-3 h-3 shrink-0 text-slate-500" aria-hidden />
+                          <ArrowRight className="tasks-board-card-route-arrow" aria-hidden />
                           <span className="truncate">{dest?.name || t('common.receiver')}</span>
                         </div>
                         <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                          <span className={`inline-flex px-1.5 py-0.5 rounded border text-[10px] font-semibold ${badge.bg} ${badge.textCol} ${badge.border}`}>
+                          <span className={`active-shipment-status-badge ${badge.badgeClass}`}>
                             {badge.text}
                           </span>
                           {link.eta ? (
-                            <span className="inline-flex items-center gap-0.5 text-[10px] text-slate-400">
+                            <span className="active-shipment-eta">
                               <Clock className="w-3 h-3 shrink-0" aria-hidden />
                               {t('shipments.eta', { eta: link.eta })}
                             </span>
                           ) : null}
                         </div>
                         {(link.progress_pct ?? 0) > 0 ? (
-                          <div className="mt-1.5 h-1 rounded-full bg-slate-800 overflow-hidden" aria-hidden>
+                          <div className="active-shipment-progress" aria-hidden>
                             <div
-                              className="h-full bg-emerald-500/80 rounded-full"
+                              className="active-shipment-progress-fill"
                               style={{ width: `${Math.min(100, link.progress_pct || 0)}%` }}
                             />
                           </div>

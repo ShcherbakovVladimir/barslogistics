@@ -160,8 +160,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
     }
   };
 
-  const inputClass =
-    'w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent';
+  const inputClass = 'auth-login-input';
 
   const title =
     view === 'register' ? t('auth.registerTitle')
@@ -179,26 +178,26 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
     : t('auth.subtitle');
 
   return (
-    <div className="auth-login-shell min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative">
+    <div className="auth-login-shell flex flex-col items-center justify-center p-4 relative">
       <div className="auth-login-theme-toggle absolute top-4 right-4">
         <ThemeToggle />
       </div>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <BrandLogo size="lg" className="mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-white">{title}</h1>
-          <p className="text-slate-400 text-sm mt-2">{subtitle}</p>
+          <h1 className="auth-login-heading">{title}</h1>
+          <p className="auth-login-subtitle">{subtitle}</p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="auth-login-card space-y-4">
           {error && (
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+            <div className="auth-login-alert auth-login-alert--error">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>
           )}
           {info && (
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm">
+            <div className="auth-login-alert auth-login-alert--success">
               <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" />
               <span>{info}</span>
             </div>
@@ -207,25 +206,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
           {view === 'login' && (
             <form onSubmit={handleLogin} className="space-y-4">
               {onPortalLogin ? (
-                <div className="auth-login-mode-tabs flex rounded-lg border border-slate-800 p-0.5 bg-slate-950/60">
+                <div className="auth-login-mode-tabs">
                   <button
                     type="button"
-                    className={`flex-1 px-3 py-2 text-xs font-semibold rounded-md transition-colors ${
-                      loginMode === 'local'
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
+                    className={`auth-login-mode-tab${loginMode === 'local' ? ' is-active' : ''}`}
                     onClick={() => setLoginMode('local')}
                   >
                     {t('auth.localTab')}
                   </button>
                   <button
                     type="button"
-                    className={`flex-1 px-3 py-2 text-xs font-semibold rounded-md transition-colors ${
-                      loginMode === 'portal'
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
+                    className={`auth-login-mode-tab${loginMode === 'portal' ? ' is-active' : ''}`}
                     onClick={() => setLoginMode('portal')}
                   >
                     {t('auth.portalTab')}
@@ -233,7 +224,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 </div>
               ) : null}
               <div>
-                <label htmlFor="username" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="username" className="auth-login-label">
                   {t('auth.username')}
                 </label>
                 <input
@@ -248,7 +239,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="password" className="auth-login-label">
                   {t('auth.password')}
                 </label>
                 <input
@@ -265,17 +256,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white font-medium rounded-lg transition-colors"
+                className="auth-login-submit-btn"
               >
                 <LogIn className="w-4 h-4" />
                 {loading ? t('auth.signingIn') : t('auth.signIn')}
               </button>
               <div className="flex flex-wrap justify-between gap-2 text-xs">
-                <button type="button" onClick={() => go('forgot')} className="text-slate-400 hover:text-indigo-300">
+                <button type="button" onClick={() => go('forgot')} className="auth-login-link">
                   {t('auth.forgotLink')}
                 </button>
                 {registrationEnabled && loginMode === 'local' ? (
-                  <button type="button" onClick={() => go('register')} className="text-indigo-400 hover:text-indigo-300">
+                  <button type="button" onClick={() => go('register')} className="auth-login-link auth-login-link--accent">
                     {t('auth.registerLink')}
                   </button>
                 ) : null}
@@ -286,7 +277,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
           {view === 'register' && (
             <form onSubmit={handleRegister} className="space-y-4" autoComplete="on">
               <div>
-                <label htmlFor="register-username" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="register-username" className="auth-login-label">
                   {t('auth.username')}
                 </label>
                 <input
@@ -301,7 +292,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="register-name" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="register-name" className="auth-login-label">
                   {t('auth.fullName')}
                 </label>
                 <input
@@ -316,7 +307,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="register-email" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="register-email" className="auth-login-label">
                   {t('auth.email')}
                 </label>
                 <input
@@ -331,7 +322,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="register-password" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="register-password" className="auth-login-label">
                   {t('auth.password')}
                 </label>
                 <input
@@ -347,7 +338,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="register-password-confirm" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="register-password-confirm" className="auth-login-label">
                   {t('auth.passwordConfirm')}
                 </label>
                 <input
@@ -365,12 +356,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white font-medium rounded-lg"
+                className="auth-login-submit-btn"
               >
                 <UserPlus className="w-4 h-4" />
                 {loading ? t('auth.registering') : t('auth.register')}
               </button>
-              <button type="button" onClick={() => go('login')} className="w-full text-xs text-slate-400 hover:text-indigo-300">
+              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
                 {t('auth.backToLogin')}
               </button>
             </form>
@@ -379,7 +370,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
           {view === 'forgot' && (
             <form onSubmit={handleForgot} className="space-y-4" autoComplete="on">
               <div>
-                <label htmlFor="forgot-email" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="forgot-email" className="auth-login-label">
                   {t('auth.email')}
                 </label>
                 <input
@@ -396,12 +387,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white font-medium rounded-lg"
+                className="auth-login-submit-btn"
               >
                 <KeyRound className="w-4 h-4" />
                 {loading ? t('auth.sending') : t('auth.sendResetLink')}
               </button>
-              <button type="button" onClick={() => go('login')} className="w-full text-xs text-slate-400 hover:text-indigo-300">
+              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
                 {t('auth.backToLogin')}
               </button>
             </form>
@@ -410,10 +401,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
           {view === 'reset' && (
             <form onSubmit={handleReset} className="space-y-4" autoComplete="on">
               {!token && (
-                <p className="text-xs text-amber-300">{t('auth.invalidToken')}</p>
+                <p className="auth-login-warning">{t('auth.invalidToken')}</p>
               )}
               <div>
-                <label htmlFor="reset-password" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="reset-password" className="auth-login-label">
                   {t('auth.newPassword')}
                 </label>
                 <input
@@ -430,7 +421,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
                 />
               </div>
               <div>
-                <label htmlFor="reset-password-confirm" className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label htmlFor="reset-password-confirm" className="auth-login-label">
                   {t('auth.passwordConfirm')}
                 </label>
                 <input
@@ -449,22 +440,22 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onPortalLogin }) 
               <button
                 type="submit"
                 disabled={loading || !token}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white font-medium rounded-lg"
+                className="auth-login-submit-btn"
               >
                 <KeyRound className="w-4 h-4" />
                 {loading ? t('auth.saving') : t('auth.resetPassword')}
               </button>
-              <button type="button" onClick={() => go('login')} className="w-full text-xs text-slate-400 hover:text-indigo-300">
+              <button type="button" onClick={() => go('login')} className="auth-login-link w-full">
                 {t('auth.backToLogin')}
               </button>
             </form>
           )}
 
           {view === 'confirm' && loading && (
-            <p className="text-sm text-slate-400 text-center">{t('auth.confirming')}</p>
+            <p className="auth-login-status">{t('auth.confirming')}</p>
           )}
           {view === 'confirm' && !loading && (
-            <button type="button" onClick={() => go('login')} className="w-full text-xs text-indigo-400 hover:text-indigo-300">
+            <button type="button" onClick={() => go('login')} className="auth-login-link auth-login-link--accent w-full">
               {t('auth.backToLogin')}
             </button>
           )}

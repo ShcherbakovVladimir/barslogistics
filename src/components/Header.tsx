@@ -315,11 +315,11 @@ export const Header: React.FC<HeaderProps> = ({
             size="md"
           />
           <div className="min-w-0">
-            <div className="font-semibold text-slate-100 truncate">{currentUser.name}</div>
-            <div className="text-slate-400 text-[10px] mt-0.5 truncate">@{currentUser.username}</div>
+            <div className="header-nav-user-name">{currentUser.name}</div>
+            <div className="header-nav-user-handle">@{currentUser.username}</div>
           </div>
         </div>
-        <div className="text-[10px] text-indigo-300 uppercase font-semibold">
+        <div className="header-nav-user-role">
           {t(`roles.${currentUser.role}.title`)}
         </div>
       </div>
@@ -353,7 +353,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header
-        className={`app-header w-full bg-slate-900/96 backdrop-blur-md shrink-0 z-50${
+        className={`app-header w-full shrink-0 z-50${
           showNotifications || showUserMenu ? ' is-popover-open' : ''
         }`}
       >
@@ -376,7 +376,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <div className="app-header-brand-text min-w-0 flex-1 overflow-hidden">
                   <div className="app-header-brand-title-row flex items-center gap-1.5 sm:gap-2 min-w-0">
-                    <h1 className="app-header-brand-title font-bold text-slate-100 text-sm sm:text-base tracking-tight truncate min-w-0">
+                    <h1 className="app-header-brand-title font-bold text-sm sm:text-base tracking-tight truncate min-w-0">
                       {t('header.brandTitle')}
                     </h1>
                     {activeNavItem && (
@@ -385,23 +385,19 @@ export const Header: React.FC<HeaderProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="app-header-brand-subtitle text-[11px] text-slate-400 truncate leading-snug">
+                  <p className="app-header-brand-subtitle text-[11px] truncate leading-snug">
                     {t('header.brandSubtitle')}
                   </p>
                 </div>
 
                 <span
-                  className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold border shrink-0 self-center ${
-                    wsConnected
-                      ? 'is-live bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                      : 'is-polling bg-amber-500/10 text-amber-400 border-amber-500/30'
+                  className={`app-header-sync-badge inline-flex items-center gap-1 rounded-full text-[10px] font-semibold shrink-0 self-center ${
+                    wsConnected ? 'is-live' : 'is-polling'
                   }`}
                   title={wsConnected ? t('header.wsLive') : t('header.pollingSync')}
                 >
                   <span
-                    className={`app-header-sync-dot w-1.5 h-1.5 rounded-full shrink-0 ${
-                      wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
-                    }`}
+                    className={`app-header-sync-dot ${wsConnected ? 'is-live' : 'is-polling'}`}
                   />
                   <span className="app-header-sync-label">
                     {wsConnected ? t('header.wsLive') : t('header.pollingSync')}
@@ -500,14 +496,14 @@ export const Header: React.FC<HeaderProps> = ({
 
                 {showNotifications && (
                   <div className="app-header-popover absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] overflow-hidden">
-                    <div className="px-4 py-3 border-b border-slate-700 bg-slate-900/95 flex items-center justify-between gap-2">
-                      <h3 className="text-xs font-semibold text-slate-100">{t('header.notificationsPanel')}</h3>
+                    <div className="app-header-popover-head">
+                      <h3 className="app-header-popover-title">{t('header.notificationsPanel')}</h3>
                       {notifications.length > 0 ? (
-                        <div className="flex items-center gap-1">
+                        <div className="app-header-popover-actions">
                           {unreadCount > 0 ? (
                             <button
                               type="button"
-                              className="text-[10px] text-indigo-300 hover:text-indigo-200 px-1.5 py-0.5 rounded"
+                              className="header-nav-notifications-action"
                               onClick={() => onMarkAllNotificationsRead()}
                             >
                               {t('header.notificationsMarkAll')}
@@ -515,7 +511,7 @@ export const Header: React.FC<HeaderProps> = ({
                           ) : null}
                           <button
                             type="button"
-                            className="text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+                            className="header-nav-notifications-action header-nav-notifications-action--danger"
                             onClick={() => onClearAllNotifications()}
                           >
                             {t('header.notificationsClear')}
@@ -523,19 +519,17 @@ export const Header: React.FC<HeaderProps> = ({
                         </div>
                       ) : null}
                     </div>
-                    <div className="max-h-80 overflow-y-auto theme-scrollbar p-2 space-y-1">
+                    <div className="app-header-popover-body theme-scrollbar">
                       {notifications.length === 0 ? (
-                        <p className="text-xs text-slate-500 text-center py-6">{t('header.notificationsEmpty')}</p>
+                        <p className="header-nav-notify-empty">{t('header.notificationsEmpty')}</p>
                       ) : (
                         notifications.map(n => (
                           <div
                             key={n.id}
-                            className={`p-2.5 rounded-lg text-xs border ${
-                              n.read ? 'bg-slate-800/50 border-transparent opacity-60' : 'bg-slate-800/80 border-slate-700/50'
-                            }`}
+                            className={`header-nav-notify-item${n.read ? ' is-read' : ''}`}
                           >
                             <div
-                              className="cursor-pointer"
+                              className="header-nav-notify-item-main cursor-pointer"
                               onClick={() => {
                                 onMarkNotificationRead(n.id);
                                 if (n.link_type === 'chat' && n.link_id) {
@@ -556,11 +550,11 @@ export const Header: React.FC<HeaderProps> = ({
                                 }
                               }}
                             >
-                              <div className="flex justify-between items-start gap-2">
-                                <span className={`font-semibold ${n.type === 'alert' ? 'text-red-400' : n.type === 'success' ? 'text-emerald-400' : 'text-indigo-300'}`}>
+                              <div className="header-nav-notify-item-top">
+                                <span className={`header-nav-notify-item-title header-nav-notify-item-title--${n.type === 'alert' || n.type === 'success' ? n.type : 'info'}`}>
                                   {n.title}
                                 </span>
-                                <span className="text-[10px] text-slate-500 shrink-0">
+                                <span className="header-nav-notify-item-time">
                                   {new Date(n.timestamp).toLocaleString(localeTag, {
                                     day: '2-digit',
                                     month: '2-digit',
@@ -569,13 +563,13 @@ export const Header: React.FC<HeaderProps> = ({
                                   })}
                                 </span>
                               </div>
-                              <p className="text-slate-300 mt-1 text-[11px] leading-relaxed">{n.message}</p>
+                              <p className="header-nav-notify-item-message">{n.message}</p>
                             </div>
-                            <div className="flex justify-end gap-1 mt-1.5">
+                            <div className="header-nav-notify-item-actions">
                               {!n.read ? (
                                 <button
                                   type="button"
-                                  className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-indigo-300 px-1.5 py-0.5 rounded"
+                                  className="header-nav-notify-item-action"
                                   onClick={() => onMarkNotificationRead(n.id)}
                                 >
                                   <CheckCheck size={12} />
@@ -584,7 +578,7 @@ export const Header: React.FC<HeaderProps> = ({
                               ) : null}
                               <button
                                 type="button"
-                                className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-red-300 px-1.5 py-0.5 rounded"
+                                className="header-nav-notify-item-action header-nav-notify-item-action--danger"
                                 onClick={() => onDeleteNotification(n.id)}
                               >
                                 <Trash2 size={12} />
@@ -625,8 +619,8 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
 
                 {showUserMenu && (
-                  <div className="app-header-popover absolute right-0 mt-2 w-56 p-2 text-xs">
-                    <div className="px-2 py-2 border-b border-slate-700 mb-1 flex items-center gap-2.5">
+                  <div className="app-header-popover app-header-user-popover absolute right-0 mt-2 w-56 text-xs">
+                    <div className="app-header-user-head">
                       <UserAvatar
                         userId={currentUser.id}
                         name={currentUser.name}
@@ -635,8 +629,8 @@ export const Header: React.FC<HeaderProps> = ({
                         size="md"
                       />
                       <div className="min-w-0">
-                        <div className="font-semibold text-slate-100 truncate">{currentUser.name}</div>
-                        <div className="text-slate-400 text-[10px] mt-0.5 truncate">@{currentUser.username}</div>
+                        <div className="header-nav-user-name">{currentUser.name}</div>
+                        <div className="header-nav-user-handle">@{currentUser.username}</div>
                       </div>
                     </div>
                     <button
@@ -645,10 +639,10 @@ export const Header: React.FC<HeaderProps> = ({
                         setShowUserMenu(false);
                         setActiveTab('account');
                       }}
-                      className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-slate-800 text-slate-200 transition-colors"
+                      className="header-nav-item w-full"
                     >
-                      <UserCog className="w-4 h-4 text-indigo-400" />
-                      <span>{t('account.open')}</span>
+                      <UserCog className="header-nav-item-icon" aria-hidden="true" />
+                      <span className="header-nav-item-label">{t('account.open')}</span>
                     </button>
                     <button
                       type="button"
@@ -656,10 +650,10 @@ export const Header: React.FC<HeaderProps> = ({
                         setShowUserMenu(false);
                         onLogout();
                       }}
-                      className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-slate-800 text-slate-300 transition-colors"
+                      className="header-nav-item header-nav-item--logout w-full mt-1"
                     >
-                      <LogOut className="w-4 h-4 text-red-400" />
-                      <span>{t('header.logout')}</span>
+                      <LogOut className="header-nav-item-icon" aria-hidden="true" />
+                      <span className="header-nav-item-label">{t('header.logout')}</span>
                     </button>
                   </div>
                 )}
@@ -673,7 +667,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="app-header-nav-overlay fixed inset-0 z-[60]" role="presentation">
           <button
             type="button"
-            className="app-header-nav-backdrop absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] nav-backdrop-enter"
+            className="app-header-nav-backdrop absolute inset-0 nav-backdrop-enter"
             onClick={closeNav}
             aria-label={t('common.close')}
           />

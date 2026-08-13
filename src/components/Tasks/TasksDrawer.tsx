@@ -633,12 +633,12 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
     <div className="tasks-drawer-root" role="presentation">
       <button type="button" className="tasks-drawer-backdrop" aria-label={t('common.close')} onClick={onClose} />
       <aside
-        className="tasks-drawer-panel bg-slate-900/96 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl text-slate-200"
+        className="tasks-drawer-panel"
         role="dialog"
         aria-modal="true"
         aria-label={t('tasks.title')}
       >
-        <header className="tasks-drawer-header border-b border-slate-700">
+        <header className="tasks-drawer-header">
           <div className="tasks-drawer-header-main min-w-0">
             {(view === 'board' || view === 'create-task' || view === 'edit-task' || view === 'support') && (
               <button
@@ -662,7 +662,7 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
               </button>
             )}
             <div className="min-w-0 flex items-start gap-1.5">
-              <ListTodo className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" aria-hidden />
+              <ListTodo className="tasks-drawer-header-icon tasks-drawer-header-icon--indigo" aria-hidden />
               <div className="min-w-0">
                 <h2 className="tasks-drawer-title truncate">{title}</h2>
                 {activeBoard && view === 'board' ? (
@@ -722,10 +722,10 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                       className="tasks-board-card-main"
                       onClick={() => void loadBoard(board.id)}
                     >
-                      <LayoutGrid className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <LayoutGrid className="tasks-board-card-icon tasks-board-card-icon--indigo" />
                       <div className="min-w-0 text-left">
                         <div className="font-semibold truncate">{board.name}</div>
-                        <div className="text-[10px] text-slate-400 truncate">
+                        <div className="tasks-board-card-meta truncate">
                           {t(`tasks.boardType.${board.board_type}`)}
                           {' · '}
                           {t('tasks.taskCount', { count: board.task_count ?? 0 })}
@@ -797,7 +797,7 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                 </button>
               </div>
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <h3 className="tasks-section-heading">
                   {currentUser.role === 'admin' ? t('tasks.supportAllTickets') : t('tasks.supportMyTickets')}
                 </h3>
                 {supportTickets.length === 0 ? (
@@ -806,17 +806,17 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                   supportTickets.map(ticket => (
                     <div key={ticket.id} className="tasks-board-card">
                       <div className="tasks-board-card-main cursor-default">
-                        <LifeBuoy className="w-4 h-4 text-sky-400 shrink-0" />
+                        <LifeBuoy className="tasks-board-card-icon tasks-board-card-icon--sky" />
                         <div className="min-w-0 text-left">
                           <div className="font-semibold truncate">{ticket.subject}</div>
-                          <div className="text-[10px] text-slate-400 truncate">
+                          <div className="tasks-board-card-meta truncate">
                             {t(`tasks.supportCategoryOptions.${ticket.category}`)}
                             {' · '}
                             {t(`tasks.supportStatus.${ticket.status}`)}
                             {currentUser.role === 'admin' && ticket.user_name ? ` · ${ticket.user_name}` : ''}
                           </div>
-                          <div className="text-[11px] text-slate-300 mt-1 line-clamp-2">{ticket.message}</div>
-                          <div className="text-[10px] text-slate-500 mt-1">
+                          <div className="tasks-board-card-desc line-clamp-2">{ticket.message}</div>
+                          <div className="tasks-board-card-foot">
                             {new Date(ticket.created_at).toLocaleString(locale === 'en' ? 'en-GB' : 'ru-RU')}
                           </div>
                         </div>
@@ -858,7 +858,7 @@ export const TasksDrawer: React.FC<TasksDrawerProps> = ({
                   triggerClassName="tasks-select-trigger"
                 />
               </div>
-              <p className="text-[11px] text-slate-400">{t(`tasks.boardTypeHint.${boardDraft.board_type}`)}</p>
+              <p className="tasks-board-card-meta">{t(`tasks.boardTypeHint.${boardDraft.board_type}`)}</p>
               {(boardDraft.board_type === 'team' || boardDraft.board_type === 'project') && (
                 <div className="tasks-field">
                   <span>{t('tasks.members')}</span>

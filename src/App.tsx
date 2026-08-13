@@ -1078,7 +1078,7 @@ export default function App() {
 
   if (!authChecked) {
     return (
-      <div className="h-full min-h-0 bg-slate-950 flex items-center justify-center">
+      <div className="app-loading-shell h-full min-h-0 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -1087,7 +1087,7 @@ export default function App() {
   if (!currentUser) {
     if (isPortalEmbed() || portalAwaitingLogin) {
       return (
-        <div className="h-full min-h-0 bg-transparent flex flex-col items-center justify-center text-slate-400 text-sm px-6 text-center gap-2">
+        <div className="app-portal-await h-full min-h-0 bg-transparent flex flex-col items-center justify-center text-sm px-6 text-center gap-2">
           <p>{t('auth.portalAwaitingLogin')}</p>
         </div>
       );
@@ -1096,7 +1096,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="app-shell flex flex-col overflow-hidden font-sans">
       <SkipLink targetId="main-content" label={t('a11y.skipToContent')} />
 
       <Header

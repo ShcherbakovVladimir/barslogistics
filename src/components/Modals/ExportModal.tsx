@@ -148,14 +148,14 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
   return (
     <div className="modal-backdrop">
-      <div className="modal-panel bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full text-slate-100 shadow-2xl">
+      <div className="modal-panel export-modal max-w-lg w-full">
         <div className="modal-panel-header">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="font-bold text-base text-white flex items-center gap-2 min-w-0">
-              <Download className="w-5 h-5 text-indigo-400 shrink-0" />
+            <h3 className="export-modal-title">
+              <Download className="export-modal-title-icon" />
               <span className="truncate">{t('export.title')}</span>
             </h3>
-            <button type="button" onClick={onClose} className="shrink-0 text-slate-400 hover:text-white p-1">✕</button>
+            <button type="button" onClick={onClose} className="export-modal-dismiss">✕</button>
           </div>
         </div>
 
@@ -164,11 +164,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             <button
               type="button"
               onClick={() => setExportFormat('excel')}
-              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl border text-sm ${
-                exportFormat === 'excel'
-                  ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300'
-                  : 'border-slate-700 text-slate-400'
-              }`}
+              className={`export-format-option${exportFormat === 'excel' ? ' is-active' : ''}`}
             >
               <FileSpreadsheet className="w-4 h-4" />
               Excel
@@ -176,11 +172,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             <button
               type="button"
               onClick={() => setExportFormat('pdf')}
-              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl border text-sm ${
-                exportFormat === 'pdf'
-                  ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300'
-                  : 'border-slate-700 text-slate-400'
-              }`}
+              className={`export-format-option${exportFormat === 'pdf' ? ' is-active' : ''}`}
             >
               <FileText className="w-4 h-4" />
               PDF
@@ -188,18 +180,18 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           </div>
 
           <div className="space-y-2 text-sm">
-            <label className="flex items-center gap-2 text-slate-300">
+            <label className="export-modal-checkbox-label">
               <input type="checkbox" checked={includeFactories} onChange={e => setIncludeFactories(e.target.checked)} />
               {t('export.dataFactories', { count: scopedFactories.length })}
             </label>
-            <label className="flex items-center gap-2 text-slate-300">
+            <label className="export-modal-checkbox-label">
               <input type="checkbox" checked={includeShipments} onChange={e => setIncludeShipments(e.target.checked)} />
               {t('export.dataShipments', { count: scopedLinks.length })}
             </label>
           </div>
 
           {successMsg && (
-            <div className="flex items-center gap-2 text-emerald-400 text-sm bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2">
+            <div className="export-modal-success">
               <Check className="w-4 h-4 shrink-0" />
               <span>{successMsg}</span>
             </div>
@@ -207,14 +199,14 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         </div>
 
         <div className="modal-panel-footer flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white">
+          <button type="button" onClick={onClose} className="export-modal-btn-cancel">
             {t('common.cancel')}
           </button>
           <button
             type="button"
             onClick={() => void handleExport()}
             disabled={exporting || (!includeFactories && !includeShipments)}
-            className="px-4 py-2 rounded-xl text-sm bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-50"
+            className="export-modal-btn-primary"
           >
             {exporting ? t('export.generating') : t('export.download')}
           </button>

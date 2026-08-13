@@ -180,7 +180,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
         {!embedded ? (
           <div>
             <h2 className="admin-form-heading">
-              <Cloud />
+              <Cloud aria-hidden />
               <span>{t('backups.title')}</span>
             </h2>
             <p className="admin-section-hint mt-1">{t('backups.subtitleReal')}</p>
@@ -197,7 +197,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
               disabled={maintenanceLoading}
               className="admin-form-actions-btn admin-form-actions-btn--secondary admin-backups-toolbar-btn--secondary"
             >
-              <RefreshCw className={maintenanceLoading ? 'animate-spin' : ''} />
+              <RefreshCw className={maintenanceLoading ? 'animate-spin' : ''} aria-hidden />
               <span>{t('backups.refresh')}</span>
             </button>
           ) : null}
@@ -208,7 +208,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
               disabled={creating}
               className="admin-backups-create-btn"
             >
-              <Plus className="w-4 h-4" />
+              <Plus aria-hidden />
               <span>{creating ? t('backups.creating') : t('backups.create')}</span>
             </button>
           ) : (
@@ -223,28 +223,25 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
         <>
           <section className="admin-db-tools space-y-4">
             <h3 className="admin-form-heading">
-              <Wrench />
+              <Wrench aria-hidden />
               {t('backups.sectionTools')}
             </h3>
-            {maintenanceError && (
-              <p className="text-xs text-red-400 flex items-center gap-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+            {maintenanceError ? (
+              <p className="admin-alert admin-alert--error flex items-center gap-1.5">
+                <AlertTriangle aria-hidden />
                 {maintenanceError}
               </p>
-            )}
+            ) : null}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {(['pg_dump', 'psql'] as const).map(tool => {
                 const available = maintenance?.tools[tool === 'pg_dump' ? 'pg_dump' : 'psql'];
                 return (
-                  <div
-                    key={tool}
-                    className="admin-db-tool-row"
-                  >
+                  <div key={tool} className="admin-db-tool-row">
                     <span className="admin-db-tool-name">
                       {tool === 'pg_dump' ? t('backups.toolPgDump') : t('backups.toolPsql')}
                     </span>
-                    <span className={`flex items-center gap-1 text-[11px] font-semibold ${available ? 'admin-db-tool-status--ok' : 'admin-db-tool-status--warn'}`}>
-                      {available ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                    <span className={`admin-db-tool-status ${available ? 'admin-db-tool-status--ok' : 'admin-db-tool-status--warn'}`}>
+                      {available ? <CheckCircle2 aria-hidden /> : <XCircle aria-hidden />}
                       {available ? t('backups.toolAvailable') : t('backups.toolUnavailable')}
                     </span>
                   </div>
@@ -257,7 +254,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div>
                 <h3 className="admin-form-heading">
-                  <GitBranch />
+                  <GitBranch aria-hidden />
                   {t('backups.sectionMigrations')}
                 </h3>
                 {migrations ? (
@@ -274,90 +271,90 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <div className="admin-db-migration-box space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <label className="admin-db-migration-label" htmlFor="backup-apply-confirm">
                   {t('backups.migrationsApply')}
                 </label>
                 <input
+                  id="backup-apply-confirm"
                   type="text"
                   value={applyConfirm}
                   onChange={e => setApplyConfirm(e.target.value)}
                   placeholder={CONFIRM_APPLY}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                  className="admin-db-field"
                   autoComplete="off"
                 />
                 <button
                   type="button"
                   onClick={() => void handleApplyMigrations()}
                   disabled={applyingMigrations || !migrations?.pending_count}
-                  className="w-full px-3 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white rounded-lg text-xs font-semibold transition-colors"
+                  className="admin-db-migration-submit"
                 >
                   {applyingMigrations ? t('backups.migrationsApplying') : t('backups.migrationsApply')}
                 </button>
               </div>
 
-              <div className="space-y-2 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-amber-400/80">
+              <div className="admin-db-migration-box admin-db-migration-box--warn space-y-2">
+                <label className="admin-db-migration-label admin-db-migration-label--warn" htmlFor="backup-rollback-confirm">
                   {t('backups.migrationsRollback')}
                 </label>
                 <input
+                  id="backup-rollback-confirm"
                   type="text"
                   value={rollbackConfirm}
                   onChange={e => setRollbackConfirm(e.target.value)}
                   placeholder={CONFIRM_ROLLBACK}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-amber-500/30 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500"
+                  className="admin-db-field admin-db-field--warn"
                   autoComplete="off"
                 />
                 <button
                   type="button"
                   onClick={() => void handleRollbackMigration()}
                   disabled={rollingBack}
-                  className="w-full px-3 py-2 bg-amber-600/30 hover:bg-amber-600/50 disabled:opacity-40 text-amber-200 rounded-lg text-xs font-semibold border border-amber-500/30 transition-colors"
+                  className="admin-db-migration-submit admin-db-migration-submit--warn"
                 >
                   {rollingBack ? t('backups.migrationsRollingBack') : t('backups.migrationsRollback')}
                 </button>
               </div>
             </div>
 
-            <div className="overflow-x-auto responsive-table-wrap rounded-xl border border-slate-800">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead className="bg-slate-950 text-slate-400 text-[10px] uppercase tracking-wider">
+            <div className="admin-backups-table-panel overflow-x-auto responsive-table-wrap">
+              <table>
+                <thead>
                   <tr>
-                    <th className="p-3">{t('backups.colMigrationFile')}</th>
-                    <th className="p-3 hidden sm:table-cell">{t('backups.colMigrationScope')}</th>
-                    <th className="p-3">{t('backups.colMigrationStatus')}</th>
-                    <th className="p-3 hidden md:table-cell">{t('backups.colMigrationApplied')}</th>
-                    <th className="p-3 hidden lg:table-cell">{t('backups.colMigrationRollback')}</th>
+                    <th>{t('backups.colMigrationFile')}</th>
+                    <th className="hidden sm:table-cell">{t('backups.colMigrationScope')}</th>
+                    <th>{t('backups.colMigrationStatus')}</th>
+                    <th className="hidden md:table-cell">{t('backups.colMigrationApplied')}</th>
+                    <th className="hidden lg:table-cell">{t('backups.colMigrationRollback')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody>
                   {(migrations?.migrations ?? []).map(row => (
-                    <tr key={row.file} className="hover:bg-slate-800/40">
-                      <td className="p-3 font-mono text-[11px] text-indigo-300">{row.file}</td>
-                      <td className="p-3 hidden sm:table-cell">
-                        <span className="px-2 py-0.5 rounded border border-slate-700 text-[10px] text-slate-400">
+                    <tr key={row.file}>
+                      <td className="admin-backups-row-file">{row.file}</td>
+                      <td className="hidden sm:table-cell">
+                        <span className="admin-backups-scope-badge">
                           {scopeLabel(row.scope)}
                         </span>
                       </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                          row.applied
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                            : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                      <td>
+                        <span className={`admin-backups-migration-badge ${
+                          row.applied ? 'admin-backups-migration-badge--applied' : 'admin-backups-migration-badge--pending'
                         }`}>
                           {row.applied ? t('backups.migrationApplied') : t('backups.migrationPending')}
                         </span>
                       </td>
-                      <td className="p-3 hidden md:table-cell text-[11px] text-slate-500">
+                      <td className="hidden md:table-cell admin-backups-row-muted">
                         {row.applied_at ? new Date(row.applied_at).toLocaleString(localeTag) : '—'}
                       </td>
-                      <td className="p-3 hidden lg:table-cell text-[11px]">
+                      <td className="hidden lg:table-cell admin-backups-row-muted">
                         {row.has_rollback ? t('backups.migrationRollbackYes') : t('backups.migrationRollbackNo')}
                       </td>
                     </tr>
                   ))}
                   {!migrations?.migrations.length && !maintenanceLoading && (
                     <tr>
-                      <td colSpan={5} className="p-6 text-center text-slate-500">
+                      <td colSpan={5} className="admin-backups-empty-cell">
                         {maintenanceError || '—'}
                       </td>
                     </tr>
@@ -370,91 +367,90 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
       )}
 
       <section className="space-y-4">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2 px-1">
-          <Database className="w-4 h-4 text-indigo-400" />
+        <h3 className="admin-backups-section-title">
+          <Database aria-hidden />
           {t('backups.sectionBackups')}
-          <span className="text-slate-500 font-normal">({backups.length})</span>
+          <span className="admin-backups-section-count">({backups.length})</span>
         </h3>
 
-        <div className="admin-backups-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="admin-backups-grid">
           {backups.length === 0 && (
-            <div className="col-span-full text-center text-sm text-slate-500 py-8 border border-dashed border-slate-800 rounded-2xl">
-              —
-            </div>
+            <div className="admin-backups-empty">—</div>
           )}
           {backups.map(bkp => (
-            <div key={bkp.id} className="admin-backup-card p-5 flex flex-col justify-between space-y-4">
+            <article key={bkp.id} className="admin-backup-card">
               <div>
-                <div className="flex items-center justify-between">
-                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-                    bkp.type === 'auto' ? 'bg-blue-500/10 text-blue-400 border-blue-500/30' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30'
+                <div className="admin-backup-card-head">
+                  <span className={`admin-backup-type-badge ${
+                    bkp.type === 'auto' ? 'admin-backup-type-badge--auto' : 'admin-backup-type-badge--manual'
                   }`}>
                     {bkp.type === 'auto' ? t('backups.typeAuto') : t('backups.typeManual')}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-mono">{(bkp.size_bytes / 1024).toFixed(1)} KB</span>
+                  <span className="admin-backup-size">{(bkp.size_bytes / 1024).toFixed(1)} KB</span>
                 </div>
 
-                <h3 className="font-mono font-bold text-white text-xs mt-3 truncate">{bkp.filename}</h3>
-                <p className="text-xs text-slate-400 mt-1">{getBackupDescription(bkp)}</p>
-                {bkp.cloud_uploaded && (
-                  <p className="text-[10px] text-emerald-400 mt-1">☁ {bkp.cloud_provider}</p>
-                )}
+                <h4 className="admin-backup-filename">{bkp.filename}</h4>
+                <p className="admin-backup-desc">{getBackupDescription(bkp)}</p>
+                {bkp.cloud_uploaded ? (
+                  <p className="admin-backup-cloud">☁ {bkp.cloud_provider}</p>
+                ) : null}
               </div>
 
-              {canBackup && canDownload(bkp) && (
-                <div className="space-y-2 pt-2 border-t border-slate-800/60">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-amber-400/80">
+              {canBackup && canDownload(bkp) ? (
+                <div className="admin-backup-restore-box space-y-2">
+                  <label className="admin-backup-restore-label" htmlFor={`restore-${bkp.id}`}>
                     {t('backups.restore')}
                   </label>
                   <input
+                    id={`restore-${bkp.id}`}
                     type="text"
                     value={restoreConfirmById[bkp.id] ?? ''}
                     onChange={e => setRestoreConfirmById(prev => ({ ...prev, [bkp.id]: e.target.value }))}
                     placeholder={CONFIRM_RESTORE}
-                    className="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-amber-500/30 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500"
+                    className="admin-db-field admin-db-field--warn"
                     autoComplete="off"
                   />
                 </div>
-              )}
+              ) : null}
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs gap-2">
-                <span className="text-[11px] text-slate-500">{new Date(bkp.created_at).toLocaleString(localeTag)}</span>
-                <div className="flex gap-1.5 flex-wrap justify-end">
-                  {canBackup && !bkp.cloud_uploaded && (
+              <footer className="admin-backup-card-footer">
+                <span className="admin-backup-date">{new Date(bkp.created_at).toLocaleString(localeTag)}</span>
+                <div className="admin-backup-actions">
+                  {canBackup && !bkp.cloud_uploaded ? (
                     <button
                       type="button"
                       onClick={() => uploadToCloud(bkp)}
-                      className="px-2 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold flex items-center gap-1 transition-colors"
+                      className="admin-backup-btn admin-backup-btn--upload"
                       title={t('backups.uploadCloud')}
                     >
-                      <Upload className="w-3.5 h-3.5 text-blue-400" />
+                      <Upload aria-hidden />
                     </button>
-                  )}
+                  ) : null}
                   <button
                     type="button"
                     onClick={() => downloadBackupFile(bkp)}
                     disabled={!canDownload(bkp)}
-                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-200 rounded-xl font-semibold flex items-center gap-1.5 transition-colors"
+                    className="admin-backup-btn admin-backup-btn--download"
                     title={canDownload(bkp) ? undefined : t('backups.fileMissing')}
                   >
-                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                    <Download aria-hidden />
                     <span className="hidden sm:inline">{t('backups.downloadSql')}</span>
                   </button>
-                  {canBackup && canDownload(bkp) && (
+                  {canBackup && canDownload(bkp) ? (
                     <button
                       type="button"
                       onClick={() => void restoreBackup(bkp)}
                       disabled={restoringId === bkp.id || restoreConfirmById[bkp.id] !== CONFIRM_RESTORE}
-                      className="px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600/40 disabled:opacity-40 text-amber-300 rounded-xl font-semibold flex items-center gap-1 transition-colors border border-amber-500/30"
+                      className="admin-backup-btn admin-backup-btn--restore"
                       title={t('backups.restore')}
                     >
-                      <RotateCcw className={`w-3.5 h-3.5 ${restoringId === bkp.id ? 'animate-spin' : ''}`} />
+                      <RotateCcw className={restoringId === bkp.id ? 'animate-spin' : ''} aria-hidden />
                       <span className="hidden sm:inline">{t('backups.restore')}</span>
                     </button>
-                  )}
+                  ) : null}
                 </div>
-              </div>
-            </div>
+              </footer>
+            </article>
           ))}
         </div>
       </section>

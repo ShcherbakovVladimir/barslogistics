@@ -1156,7 +1156,7 @@ export function LogisticsMap({
     if (canEditType && onSaveFactoryType) {
       return (
         <div className="block">
-          <span className="text-[10px] text-slate-500">{t('facilityModal.typeLabel')}</span>
+          <span className="map-sheet-label">{t('facilityModal.typeLabel')}</span>
           <div className={selectClassName}>
             <SearchableSelect
               value={highlightedFactory.type}
@@ -1190,15 +1190,15 @@ export function LogisticsMap({
             />
           </div>
           {typeSaveError && (
-            <div className="text-[10px] text-red-300 mt-1">{typeSaveError}</div>
+            <div className="map-sheet-type-error">{typeSaveError}</div>
           )}
-          <div className="text-[11px] text-slate-400 mt-1">{highlightedFactory.region}</div>
+          <div className="map-sheet-meta mt-1">{highlightedFactory.region}</div>
         </div>
       );
     }
 
     return (
-      <div className="text-[11px] text-slate-400">
+      <div className="map-sheet-meta">
         {typeLabels[highlightedFactory.type]} · {highlightedFactory.region}
       </div>
     );
@@ -1234,7 +1234,7 @@ export function LogisticsMap({
     if (!highlightedFactory) return null;
 
     return (
-      <div className="map-sheet-panel text-xs text-slate-200">
+      <div className="map-sheet-panel">
         <div className="text-[10px] font-mono map-factory-id break-all">{highlightedFactory.id}</div>
         {renderFactoryTypeField('map-sheet-select mt-1.5', { inlinePanel: true })}
         {renderFactoryHighlightActions(false, true)}
@@ -1244,10 +1244,10 @@ export function LogisticsMap({
 
   const renderPositionEditBody = () => (
     <>
-      <p className="text-[11px] text-slate-400">{t('map.positionEditHint')}</p>
+      <p className="map-sheet-hint">{t('map.positionEditHint')}</p>
 
       <div className="space-y-1">
-        <label className="block text-[10px] uppercase tracking-wide text-slate-500">
+        <label className="map-sheet-label block">
           {t('map.positionAddressRefine')}
         </label>
         <KladrAddressInput
@@ -1266,27 +1266,27 @@ export function LogisticsMap({
       </div>
 
       {positionLoading ? (
-        <div className="flex items-center gap-2 text-slate-300 py-2">
-          <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
+        <div className="map-sheet-loading">
+          <Loader2 className="map-sheet-loading-icon animate-spin" />
           <span>{t('map.positionLoading')}</span>
         </div>
       ) : positionPreview ? (
         <div className="space-y-2">
           {positionPreview.normalized_address ? (
             <div className="map-sheet-info-block rounded-lg p-2">
-              <div className="text-[10px] uppercase tracking-wide text-slate-500 mb-1">{t('map.positionAddress')}</div>
-              <div className="text-[11px] text-white leading-snug">{positionPreview.normalized_address}</div>
+              <div className="map-sheet-label mb-1">{t('map.positionAddress')}</div>
+              <div className="map-sheet-address-text">{positionPreview.normalized_address}</div>
               {positionPreview.region && (
-                <div className="text-[10px] text-slate-400 mt-1">{positionPreview.region}</div>
+                <div className="map-sheet-meta mt-1">{positionPreview.region}</div>
               )}
               {positionPreview.kladr_id && (
-                <div className="text-[10px] font-mono text-indigo-300/80 mt-1">KLADR: {positionPreview.kladr_id}</div>
+                <div className="map-sheet-kladr-id">KLADR: {positionPreview.kladr_id}</div>
               )}
             </div>
           ) : (
-            <div className="text-[11px] text-amber-200/90">{t('map.positionNoAddress')}</div>
+            <div className="map-sheet-warning">{t('map.positionNoAddress')}</div>
           )}
-          <div className="text-[10px] font-mono text-slate-500">
+          <div className="map-sheet-coords">
             {positionPreview.latitude.toFixed(5)}, {positionPreview.longitude.toFixed(5)}
           </div>
           <div className="map-position-actions flex flex-col sm:flex-row justify-end gap-2 pt-1">
@@ -1314,7 +1314,7 @@ export function LogisticsMap({
           </div>
         </div>
       ) : (
-        <div className="text-[11px] text-slate-400 py-1">{t('map.positionMoveHint')}</div>
+        <div className="map-sheet-hint py-1">{t('map.positionMoveHint')}</div>
       )}
     </>
   );
@@ -1348,12 +1348,12 @@ export function LogisticsMap({
   return (
     <div
       ref={mapShellRef}
-      className={`logistics-map relative w-full h-full min-h-0 overflow-hidden bg-slate-950${
+      className={`logistics-map relative w-full h-full min-h-0 overflow-hidden${
         isPositionEditing ? ' is-position-editing' : ''
       }${isFactorySheetOpen ? ' is-factory-sheet-open' : ''}`}
     >
       <div className={`absolute inset-0 z-0${tileFilterClass}`}>
-        <div ref={mapContainerRef} className="w-full h-full bg-slate-950" />
+        <div ref={mapContainerRef} className="logistics-map-canvas w-full h-full" />
       </div>
 
       {isPositionEditing && (
@@ -1382,7 +1382,7 @@ export function LogisticsMap({
                 <div className="map-mobile-dock-handle" aria-hidden="true" />
                 <div className="map-mobile-dock-header">
                   <span className="map-mobile-dock-title flex items-center gap-1.5 min-w-0">
-                    <Move className="w-4 h-4 text-amber-400 shrink-0" />
+                    <Move className="map-mobile-dock-title-icon" />
                     <span className="truncate">{t('map.positionEditTitle')}</span>
                   </span>
                   <button
@@ -1396,9 +1396,9 @@ export function LogisticsMap({
                 </div>
                 <div className="map-mobile-dock-body">
                   {editingFactory && (
-                    <div className="text-[11px] text-slate-400 mb-2 break-words">{editingFactory.name}</div>
+                    <div className="map-sheet-factory-name">{editingFactory.name}</div>
                   )}
-                  <div className="map-sheet-panel text-xs text-slate-200 space-y-2">
+                  <div className="map-sheet-panel space-y-2">
                     {renderPositionEditBody()}
                   </div>
                 </div>
@@ -1478,7 +1478,7 @@ export function LogisticsMap({
                 </div>
 
                 {csvPreviewFiles.length === 0 ? (
-                  <p className="text-slate-500 text-[10px]">{t('map.csvNoFiles')}</p>
+                  <p className="map-csv-empty-hint">{t('map.csvNoFiles')}</p>
                 ) : (
                   <div className="space-y-1">
                   <p className="map-csv-files-label">{t('map.csvSelectFile')}</p>
@@ -1674,7 +1674,7 @@ export function LogisticsMap({
             <div className="map-mobile-sheet-handle" aria-hidden="true" />
             <div className="map-mobile-sheet-header">
               <span className="map-mobile-sheet-title flex items-center gap-1.5 min-w-0">
-                <Filter className="w-4 h-4 text-indigo-400 shrink-0" />
+                <Filter className="map-mobile-sheet-title-icon" />
                 <span className="truncate">{t('map.mobileFilters')}</span>
               </span>
               <button
@@ -1709,7 +1709,7 @@ export function LogisticsMap({
             <div className="map-mobile-sheet-handle" aria-hidden="true" />
             <div className="map-mobile-sheet-header">
               <span className="map-mobile-sheet-title flex items-center gap-1.5 min-w-0">
-                <Layers className="w-4 h-4 text-indigo-400 shrink-0" />
+                <Layers className="map-mobile-sheet-title-icon" />
                 <span className="truncate">{t('map.legendTitle', { count: filteredData.filteredFactories.length })}</span>
               </span>
               <button

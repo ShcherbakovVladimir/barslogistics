@@ -204,10 +204,6 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
     }
   };
 
-  const fieldClass =
-    'shipment-logistics-field w-full rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/60';
-  const labelClass = 'block text-[10px] uppercase tracking-wide text-slate-400 mb-1';
-
   const docTypeOptions = useMemo(
     () => SHIPMENT_DOCUMENT_TYPES.map((type) => ({
       value: type,
@@ -225,21 +221,19 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
   );
 
   return (
-    <div className="space-y-5 shipment-logistics-panel">
-      <section className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-sm font-semibold text-white flex items-center gap-1.5">
-            <FileText className="w-4 h-4 text-emerald-400" />
-            {t('shipmentLogistics.documents')}
-            {documents.length > 0 ? ` (${documents.length})` : ''}
-          </h4>
-        </div>
+    <div className="shipment-logistics-panel space-y-5">
+      <section className="shipment-logistics-section">
+        <h4 className="shipment-logistics-section-title">
+          <FileText aria-hidden />
+          {t('shipmentLogistics.documents')}
+          {documents.length > 0 ? ` (${documents.length})` : ''}
+        </h4>
 
         {canManage && (
-          <div className="p-3 rounded-xl border border-slate-800 bg-slate-950 space-y-2">
+          <div className="shipment-logistics-upload-box space-y-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div className="shipment-logistics-select">
-                <label className={labelClass}>{t('shipmentLogistics.docType')}</label>
+                <label className="shipment-logistics-field-label">{t('shipmentLogistics.docType')}</label>
                 <SearchableSelect
                   value={docType}
                   onChange={(v) => setDocType(v as ShipmentDocumentType)}
@@ -251,16 +245,16 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
                 />
               </div>
               <div>
-                <label className={labelClass}>{t('shipmentLogistics.docNote')}</label>
+                <label className="shipment-logistics-field-label">{t('shipmentLogistics.docNote')}</label>
                 <input
-                  className={fieldClass}
+                  className="shipment-logistics-field"
                   value={docNote}
                   onChange={(e) => setDocNote(e.target.value)}
                   placeholder={t('shipmentLogistics.docNotePlaceholder')}
                 />
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="shipment-logistics-upload-actions">
               <input
                 ref={fileRef}
                 type="file"
@@ -274,63 +268,60 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
                 type="button"
                 disabled={uploading}
                 onClick={() => fileRef.current?.click()}
-                className="shipment-logistics-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50"
+                className="shipment-logistics-btn"
               >
-                {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                {uploading ? <Loader2 className="animate-spin" aria-hidden /> : <Upload aria-hidden />}
                 {uploading ? t('shipmentLogistics.uploading') : t('shipmentLogistics.upload')}
               </button>
-              <span className="text-[10px] text-slate-500">{t('shipmentLogistics.uploadHint')}</span>
+              <span className="shipment-logistics-hint">{t('shipmentLogistics.uploadHint')}</span>
             </div>
           </div>
         )}
 
-        {docError && (
-          <p className="text-xs text-rose-400">{docError}</p>
-        )}
+        {docError ? (
+          <p className="shipment-logistics-msg--error">{docError}</p>
+        ) : null}
 
         {loadingDocs ? (
-          <div className="flex items-center gap-2 text-xs text-slate-400 py-3">
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <div className="shipment-logistics-loading">
+            <Loader2 className="animate-spin" aria-hidden />
             {t('common.loading')}
           </div>
         ) : documents.length === 0 ? (
-          <p className="text-xs text-slate-500 py-2">{t('shipmentLogistics.noDocuments')}</p>
+          <p className="shipment-logistics-empty">{t('shipmentLogistics.noDocuments')}</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="shipment-logistics-doc-list">
             {documents.map((doc) => (
-              <li
-                key={doc.id}
-                className="flex flex-wrap items-center gap-2 justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-950 text-xs"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-white truncate">{doc.original_name}</div>
-                  <div className="text-[10px] text-slate-400 mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5">
-                    <span className="text-emerald-400/90">{t(`shipmentLogistics.docTypes.${doc.doc_type}`)}</span>
+              <li key={doc.id} className="shipment-logistics-doc-item">
+                <div className="shipment-logistics-doc-body">
+                  <div className="shipment-logistics-doc-name">{doc.original_name}</div>
+                  <div className="shipment-logistics-doc-meta">
+                    <span className="shipment-logistics-doc-type">{t(`shipmentLogistics.docTypes.${doc.doc_type}`)}</span>
                     <span>{formatBytes(doc.size_bytes)}</span>
                     <span>{doc.uploaded_by_name || '—'}</span>
                     <span>{new Date(doc.created_at).toLocaleString(localeTag)}</span>
                   </div>
-                  {doc.note ? <div className="text-[10px] text-slate-500 mt-0.5">{doc.note}</div> : null}
+                  {doc.note ? <div className="shipment-logistics-doc-note">{doc.note}</div> : null}
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="shipment-logistics-doc-actions">
                   <button
                     type="button"
-                    className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800"
+                    className="shipment-logistics-doc-action shipment-logistics-doc-action--download"
                     title={t('shipmentLogistics.download')}
                     onClick={() => void ApiService.downloadShipmentDocument(doc.id, doc.original_name)}
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download aria-hidden />
                   </button>
-                  {canManage && (
+                  {canManage ? (
                     <button
                       type="button"
-                      className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-500/10"
+                      className="shipment-logistics-doc-action shipment-logistics-doc-action--delete"
                       title={t('common.delete')}
                       onClick={() => void handleDelete(doc)}
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 aria-hidden />
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </li>
             ))}
@@ -338,11 +329,11 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
         )}
       </section>
 
-      <section className="space-y-3">
-        <h4 className="text-sm font-semibold text-white">{t('shipmentLogistics.transportDetails')}</h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      <section className="shipment-logistics-section">
+        <h4 className="shipment-logistics-section-title">{t('shipmentLogistics.transportDetails')}</h4>
+        <div className="shipment-logistics-grid">
           <div className="shipment-logistics-select sm:col-span-2">
-            <label className={labelClass}>{t('transport.selectFromDirectory')}</label>
+            <label className="shipment-logistics-field-label">{t('transport.selectFromDirectory')}</label>
             <SearchableSelect
               value={transportAssetId}
               onChange={applyTransportAsset}
@@ -357,7 +348,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div className="shipment-logistics-select">
-            <label className={labelClass}>{t('shipmentLogistics.transportMode')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.transportMode')}</label>
             <SearchableSelect
               value={transportMode}
               onChange={(v) => setTransportMode(v as TransportMode | '')}
@@ -373,31 +364,31 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.waybillNumber')}</label>
-            <input className={fieldClass} value={waybillNumber} disabled={!canManage} onChange={(e) => setWaybillNumber(e.target.value)} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.waybillNumber')}</label>
+            <input className="shipment-logistics-field" value={waybillNumber} disabled={!canManage} onChange={(e) => setWaybillNumber(e.target.value)} />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.vehicleNumber')}</label>
-            <input className={fieldClass} value={vehicleNumber} disabled={!canManage} onChange={(e) => setVehicleNumber(e.target.value)} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.vehicleNumber')}</label>
+            <input className="shipment-logistics-field" value={vehicleNumber} disabled={!canManage} onChange={(e) => setVehicleNumber(e.target.value)} />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.trailerNumber')}</label>
-            <input className={fieldClass} value={trailerNumber} disabled={!canManage} onChange={(e) => setTrailerNumber(e.target.value)} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.trailerNumber')}</label>
+            <input className="shipment-logistics-field" value={trailerNumber} disabled={!canManage} onChange={(e) => setTrailerNumber(e.target.value)} />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.containerNumber')}</label>
-            <input className={fieldClass} value={containerNumber} disabled={!canManage} onChange={(e) => setContainerNumber(e.target.value)} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.containerNumber')}</label>
+            <input className="shipment-logistics-field" value={containerNumber} disabled={!canManage} onChange={(e) => setContainerNumber(e.target.value)} />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.sealNumber')}</label>
-            <input className={fieldClass} value={sealNumber} disabled={!canManage} onChange={(e) => setSealNumber(e.target.value)} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.sealNumber')}</label>
+            <input className="shipment-logistics-field" value={sealNumber} disabled={!canManage} onChange={(e) => setSealNumber(e.target.value)} />
           </div>
           <div className="sm:col-span-2">
-            <label className={labelClass}>{t('shipmentLogistics.driverInfo')}</label>
-            <input className={fieldClass} value={driverInfo} disabled={!canManage} onChange={(e) => setDriverInfo(e.target.value)} placeholder={t('shipmentLogistics.driverPlaceholder')} />
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.driverInfo')}</label>
+            <input className="shipment-logistics-field" value={driverInfo} disabled={!canManage} onChange={(e) => setDriverInfo(e.target.value)} placeholder={t('shipmentLogistics.driverPlaceholder')} />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.plannedDeparture')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.plannedDeparture')}</label>
             <ShipmentDateTimePicker
               value={plannedDeparture}
               disabled={!canManage}
@@ -406,7 +397,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.plannedArrival')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.plannedArrival')}</label>
             <ShipmentDateTimePicker
               value={plannedArrival}
               disabled={!canManage}
@@ -415,7 +406,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.actualDeparture')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.actualDeparture')}</label>
             <ShipmentDateTimePicker
               value={actualDeparture}
               disabled={!canManage}
@@ -424,7 +415,7 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div>
-            <label className={labelClass}>{t('shipmentLogistics.actualArrival')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.actualArrival')}</label>
             <ShipmentDateTimePicker
               value={actualArrival}
               disabled={!canManage}
@@ -433,9 +424,9 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
             />
           </div>
           <div className="sm:col-span-2">
-            <label className={labelClass}>{t('shipmentLogistics.notes')}</label>
+            <label className="shipment-logistics-field-label">{t('shipmentLogistics.notes')}</label>
             <textarea
-              className={`${fieldClass} min-h-[72px] resize-y`}
+              className="shipment-logistics-field shipment-logistics-field--textarea"
               value={notes}
               disabled={!canManage}
               onChange={(e) => setNotes(e.target.value)}
@@ -445,18 +436,18 @@ export const ShipmentLogisticsPanel: React.FC<ShipmentLogisticsPanelProps> = ({
         </div>
 
         {canManage && (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="shipment-logistics-save-row">
             <button
               type="button"
               disabled={saving}
               onClick={() => void handleSaveLogistics()}
-              className="shipment-logistics-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50"
+              className="shipment-logistics-btn"
             >
-              {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+              {saving ? <Loader2 className="animate-spin" aria-hidden /> : <Save aria-hidden />}
               {saving ? t('common.saving') : t('common.save')}
             </button>
-            {saveMsg && <span className="text-xs text-emerald-400">{saveMsg}</span>}
-            {saveError && <span className="text-xs text-rose-400">{saveError}</span>}
+            {saveMsg ? <span className="shipment-logistics-save-msg shipment-logistics-save-msg--success">{saveMsg}</span> : null}
+            {saveError ? <span className="shipment-logistics-save-msg shipment-logistics-save-msg--error">{saveError}</span> : null}
           </div>
         )}
       </section>
