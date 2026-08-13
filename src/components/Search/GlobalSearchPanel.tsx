@@ -193,6 +193,8 @@ export const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
           <Search className="global-search-input-icon" aria-hidden />
           <input
             ref={inputRef}
+            id="global-search-query"
+            name="q"
             type="search"
             value={query}
             onChange={e => setQuery(e.target.value)}

@@ -96,6 +96,8 @@ export function MapSearchBox({
         <Search className="map-search-icon w-4 h-4 shrink-0" />
         <input
           ref={inputRef}
+          id="map-search-query"
+          name="map-search-query"
           type="text"
           role="combobox"
           aria-expanded={showDropdown}
@@ -109,6 +111,7 @@ export function MapSearchBox({
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
           className="map-search-input"
+          autoComplete="off"
         />
         {query && (
           <button

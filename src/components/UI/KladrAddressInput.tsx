@@ -232,6 +232,8 @@ export const KladrAddressInput: React.FC<KladrAddressInputProps> = ({
       <div className="kladr-suggest-input-wrap">
         <input
           ref={inputRef}
+          id={`${listboxId}-input`}
+          name={`${listboxId}-input`}
           type="text"
           value={value}
           disabled={disabled}

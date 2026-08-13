@@ -192,6 +192,8 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
               <div className="account-avatar-actions">
                 <input
                   ref={avatarInputRef}
+                  id="account-avatar"
+                  name="avatar"
                   type="file"
                   accept={AVATAR_ACCEPT}
                   className="hidden"
@@ -229,6 +231,8 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             <label className="account-field-wrap account-field-wrap--full">
               <span className="account-label">{t('auth.fullName')}</span>
               <input
+                id="account-name"
+                name="name"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -239,12 +243,14 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
 
             <label className="account-field-wrap">
               <span className="account-label">{t('auth.username')}</span>
-              <input value={user.username} disabled className="account-field" />
+              <input id="account-username" name="username" value={user.username} disabled className="account-field" />
             </label>
 
             <label className="account-field-wrap">
               <span className="account-label">{t('account.role')}</span>
               <input
+                id="account-role"
+                name="role"
                 value={t(`roles.${user.role}.title`)}
                 disabled
                 className="account-field"
@@ -254,9 +260,12 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             <label className="account-field-wrap account-field-wrap--full">
               <span className="account-label">{t('auth.email')}</span>
               <input
+                id="account-email"
+                name="email"
                 value={user.email || '—'}
                 disabled
                 className="account-field"
+                autoComplete="email"
               />
               <span className="account-field-hint">{t('account.emailReadonlyHint')}</span>
             </label>
@@ -264,15 +273,20 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, onUserUpdated 
             <label className="account-field-wrap account-field-wrap--full">
               <span className="account-label">{t('admin.users.colTelegram')}</span>
               <input
+                id="account-telegram"
+                name="telegram"
                 value={telegram}
                 onChange={(e) => setTelegram(e.target.value)}
                 className="account-field account-field--mono"
                 placeholder="123456789"
+                autoComplete="off"
               />
             </label>
 
             <label className="account-check">
               <input
+                id="account-notifications"
+                name="notificationsEnabled"
                 type="checkbox"
                 checked={notificationsEnabled}
                 onChange={(e) => setNotificationsEnabled(e.target.checked)}

@@ -188,11 +188,14 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
           <Search className="modal-dropdown-search-icon" />
           <input
             ref={searchRef}
+            id={`${listboxId}-search`}
+            name={`${listboxId}-search`}
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder={searchPlaceholder || t('searchableSelect.searchPlaceholder')}
             className="modal-dropdown-search"
+            autoComplete="off"
             onKeyDown={e => e.stopPropagation()}
           />
         </div>
