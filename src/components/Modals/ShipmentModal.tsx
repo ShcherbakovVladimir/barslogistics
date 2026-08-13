@@ -266,7 +266,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
           )}
 
           {tab === 'events' && (
-            <div className="space-y-4">
+            <div className="shipment-detail-events">
               {canManage && (
                 <ShipmentEventForm
                   shipments={supplyLinks}
@@ -278,7 +278,7 @@ export const ShipmentModal: React.FC<ShipmentModalProps> = ({
                   onSubmit={handleCreateEvent}
                 />
               )}
-              <div className="space-y-2">
+              <div className="shipment-detail-events-timeline">
                 <h4 className="shipment-detail-timeline-heading">{t('shipmentEvents.timeline')}</h4>
                 <ShipmentEventTimeline
                   events={events}
