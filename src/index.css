@@ -18244,29 +18244,19 @@ html:not([data-theme="light"]) {
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* «G» frame: header (top bar) + side rail (right leg), one surface */
+/* «Г» frame: header is the top bar (owns the corner); side rail is the right leg below it */
 html.app-side-rail-active .app-header {
   position: relative;
+  z-index: 50;
   width: 100%;
   max-width: 100%;
-  border-bottom: none;
+  border-bottom: 1px solid var(--app-chrome-border);
   box-shadow: none;
   background-color: var(--app-chrome-bg);
 }
 
 html.app-side-rail-active .app-header::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: calc(var(--app-side-rail-width) + env(safe-area-inset-right, 0px));
-  bottom: 0;
-  height: 1px;
-  background: var(--app-chrome-border);
-  pointer-events: none;
-}
-
-html.app-side-rail-active.app-side-rail-collapsed .app-header::after {
-  right: calc(var(--app-side-rail-collapsed-width) + env(safe-area-inset-right, 0px));
+  display: none;
 }
 
 html.app-side-rail-active .app-shell > main,
@@ -18281,7 +18271,7 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
 
 .app-side-rail {
   position: fixed;
-  top: 0;
+  top: var(--app-header-height);
   right: 0;
   bottom: 0;
   z-index: 40;
@@ -18290,7 +18280,7 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
   flex-direction: column;
   align-items: center;
   padding:
-    calc(var(--app-header-height) + 0.5rem)
+    0.5rem
     0.3rem
     calc(0.6rem + env(safe-area-inset-bottom, 0px));
   border: none;
@@ -18298,14 +18288,14 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: none;
-  transition: width 0.2s ease;
+  transition: width 0.2s ease, top 0.2s ease;
 }
 
-/* Vertical stroke of the «G» — from header baseline down (not through the top band) */
+/* Vertical stroke of the «Г» — meets the header baseline at the inner corner */
 .app-side-rail::before {
   content: '';
   position: absolute;
-  top: var(--app-header-height);
+  top: 0;
   left: 0;
   bottom: 0;
   width: 1px;
@@ -18316,12 +18306,13 @@ html.app-side-rail-active.app-side-rail-collapsed .app-shell > #main-content {
 /* Header grows with safe-area on touch — vertical rail only (not bottom dock) */
 html.layout-mobile .app-side-rail:not(.is-mobile-dock),
 html.layout-fold .app-side-rail:not(.is-mobile-dock) {
-  padding-top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px) + 0.5rem);
+  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
+  padding-top: 0.5rem;
 }
 
 html.layout-mobile .app-side-rail:not(.is-mobile-dock)::before,
 html.layout-fold .app-side-rail:not(.is-mobile-dock)::before {
-  top: calc(var(--app-header-height) + env(safe-area-inset-top, 0px));
+  top: 0;
 }
 
 .app-side-rail.is-collapsed {

@@ -5982,7 +5982,7 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 
 [data-theme="light"] html.app-side-rail-active .app-header {
   background-color: var(--app-chrome-bg) !important;
-  border-bottom: none !important;
+  border-bottom: 1px solid var(--app-chrome-border) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: none !important;
