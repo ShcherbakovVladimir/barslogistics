@@ -20851,13 +20851,31 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 
 /* ── Account / personal cabinet — chrome panels ── */
 .account-page {
+  --account-page-bg-scrim: rgb(2 6 23 / 0.58);
+  position: relative;
+  isolation: isolate;
   height: 100%;
   min-height: 0;
   overflow-y: auto;
-  background: #020617;
+  background-color: #020617;
+  background-image: var(--account-page-bg-image, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.account-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--account-page-bg-scrim);
 }
 
 .account-page-inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 42rem;
   margin: 0 auto;

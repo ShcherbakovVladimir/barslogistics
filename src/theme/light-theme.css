@@ -7216,7 +7216,8 @@ html[data-theme="light"].layout-fold .header-nav-item--logout:hover {
 }
 
 [data-theme="light"] .account-page {
-  background: #f1f5f9 !important;
+  --account-page-bg-scrim: rgb(248 250 252 / 0.42);
+  background-color: #f1f5f9;
 }
 
 [data-theme="light"] .account-hero,
