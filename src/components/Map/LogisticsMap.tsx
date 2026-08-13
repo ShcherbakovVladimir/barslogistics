@@ -874,6 +874,7 @@ export function LogisticsMap({
       if (!visibleFactoryIds.has(orig.id) || !visibleFactoryIds.has(dest.id)) return;
 
       const latest = route.shipments.find(s => s.id === route.latest_shipment_id) ?? route.shipments[0];
+      if (!latest) return;
 
       const isHighlighted =
         (highlightedFactoryId && (route.origin_id === highlightedFactoryId || route.destination_id === highlightedFactoryId)) ||

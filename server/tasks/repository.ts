@@ -217,6 +217,7 @@ async function seedBoardStructure(
   const cols = DEFAULT_COLUMNS[boardType] ?? DEFAULT_COLUMNS.classic;
   for (let i = 0; i < cols.length; i++) {
     const col = cols[i];
+    if (!col) continue;
     await client.query(
       `INSERT INTO kanban_columns (id, board_id, name, position, wip_limit)
        VALUES ($1, $2, $3, $4, $5)`,
@@ -228,7 +229,7 @@ async function seedBoardStructure(
       await client.query(
         `INSERT INTO kanban_swimlanes (id, board_id, name, position)
          VALUES ($1, $2, $3, $4)`,
-        [makeId('klane'), boardId, DEFAULT_SWIMLANES[i].name, i],
+        [makeId('klane'), boardId, DEFAULT_SWIMLANES[i]?.name ?? `Lane ${i + 1}`, i],
       );
     }
   }

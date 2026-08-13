@@ -90,6 +90,7 @@ async function mergeDuplicateGroup(
   });
 
   const winner = scored[0];
+  if (!winner) return { aliases: 0, deactivated: 0 };
   const losers = scored.slice(1);
 
   await client.query(

@@ -30,13 +30,15 @@ export function mapFiltersForImportedShipments(
     .filter((d): d is string => Boolean(d))
     .sort();
 
-  const period = dates.length > 0
+  const start = dates[0];
+  const end = dates[dates.length - 1];
+  const period = start && end
     ? {
         mode: 'range' as const,
         granularity: 'year' as const,
-        year: Number(dates[0].slice(0, 4)),
-        rangeStart: dates[0],
-        rangeEnd: dates[dates.length - 1],
+        year: Number(start.slice(0, 4)),
+        rangeStart: start,
+        rangeEnd: end,
       }
     : defaultPeriodFilter();
 

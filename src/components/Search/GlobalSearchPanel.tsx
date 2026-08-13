@@ -172,7 +172,8 @@ export const GlobalSearchPanel: React.FC<GlobalSearchPanelProps> = ({
       setActiveIndex(i => (i <= 0 ? flatResults.length - 1 : i - 1));
     } else if (e.key === 'Enter' && activeIndex >= 0) {
       e.preventDefault();
-      pickResult(flatResults[activeIndex]);
+      const selected = flatResults[activeIndex];
+      if (selected) pickResult(selected);
     }
   };
 

@@ -88,7 +88,10 @@ export function verifyToken(token: string): AuthUser {
   const parts = token.split(".");
   if (parts.length !== 3) throw new Error("Invalid token");
 
-  const [header, payload, signature] = parts;
+  const header = parts[0];
+  const payload = parts[1];
+  const signature = parts[2];
+  if (!header || !payload || !signature) throw new Error("Invalid token");
   const expected = crypto
     .createHmac("sha256", getJwtSecret())
     .update(`${header}.${payload}`)
@@ -174,7 +177,7 @@ export function extractWebSocketToken(req: IncomingMessage): string | null {
 export function getClientIp(req: Request): string {
   const forwarded = req.headers["x-forwarded-for"];
   if (typeof forwarded === "string" && forwarded.length > 0) {
-    return forwarded.split(",")[0].trim();
+    return forwarded.split(",")[0]?.trim() || "127.0.0.1";
   }
   return req.socket.remoteAddress || "127.0.0.1";
 }

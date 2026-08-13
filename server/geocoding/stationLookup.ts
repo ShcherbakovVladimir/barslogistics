@@ -80,5 +80,5 @@ export async function geocodeStationFromAddress(
 
 export function extractStationName(address: string): string | null {
   const m = address.match(/станц(?:ия|\.)\s+([^,;]+)/i);
-  return m ? m[1].trim() : null;
+  return m?.[1] ? m[1].trim() : null;
 }

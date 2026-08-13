@@ -18,6 +18,10 @@ function monthFromToken(token: string): number | null {
   return RU_MONTHS[key] ?? null;
 }
 
+function capture(match: RegExpMatchArray, index: number): string {
+  return match[index] ?? "";
+}
+
 /** Best-effort parse of display ETA strings (ru locale, ISO, time-only). */
 export function parseEtaToDate(eta: string, reference = new Date()): Date | null {
   const trimmed = eta.trim();
@@ -28,15 +32,15 @@ export function parseEtaToDate(eta: string, reference = new Date()): Date | null
 
   const dayMonthTime = trimmed.match(/(\d{1,2})\s*([а-яё]+)\.?\s*,?\s*(\d{1,2}):(\d{2})/i);
   if (dayMonthTime) {
-    const month = monthFromToken(dayMonthTime[2]);
+    const month = monthFromToken(capture(dayMonthTime, 2));
     if (month != null) {
       const year = reference.getFullYear();
       const d = new Date(
         year,
         month,
-        parseInt(dayMonthTime[1], 10),
-        parseInt(dayMonthTime[3], 10),
-        parseInt(dayMonthTime[4], 10),
+        parseInt(capture(dayMonthTime, 1), 10),
+        parseInt(capture(dayMonthTime, 3), 10),
+        parseInt(capture(dayMonthTime, 4), 10),
         0,
         0,
       );
@@ -49,15 +53,15 @@ export function parseEtaToDate(eta: string, reference = new Date()): Date | null
 
   const timeDayMonth = trimmed.match(/(\d{1,2}):(\d{2})\s*,?\s*(\d{1,2})\s*([а-яё]+)/i);
   if (timeDayMonth) {
-    const month = monthFromToken(timeDayMonth[4]);
+    const month = monthFromToken(capture(timeDayMonth, 4));
     if (month != null) {
       const year = reference.getFullYear();
       const d = new Date(
         year,
         month,
-        parseInt(timeDayMonth[3], 10),
-        parseInt(timeDayMonth[1], 10),
-        parseInt(timeDayMonth[2], 10),
+        parseInt(capture(timeDayMonth, 3), 10),
+        parseInt(capture(timeDayMonth, 1), 10),
+        parseInt(capture(timeDayMonth, 2), 10),
         0,
         0,
       );
@@ -72,7 +76,7 @@ export function parseEtaToDate(eta: string, reference = new Date()): Date | null
   if (timeOnly) {
     const d = new Date(reference);
     d.setSeconds(0, 0);
-    d.setHours(parseInt(timeOnly[1], 10), parseInt(timeOnly[2], 10), 0, 0);
+    d.setHours(parseInt(capture(timeOnly, 1), 10), parseInt(capture(timeOnly, 2), 10), 0, 0);
     if (d.getTime() < reference.getTime() - 60_000) {
       d.setDate(d.getDate() + 1);
     }

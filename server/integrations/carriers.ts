@@ -156,7 +156,9 @@ export async function updateCarrierSettings(
   );
 
   const { rows } = await pool.query<CarrierRow>("SELECT * FROM carriers WHERE id = $1", [carrierId]);
-  return mapCarrierRow(rows[0]);
+  const row = rows[0];
+  if (!row) throw new Error("Carrier not found after update");
+  return mapCarrierRow(row);
 }
 
 export async function getAllCarriersDetailed(activeOnly = false): Promise<ThirdPartyCarrier[]> {
@@ -201,7 +203,9 @@ export async function createCarrier(input: CarrierInput): Promise<ThirdPartyCarr
       input.api_key || null,
     ],
   );
-  return mapCarrierRow(rows[0]);
+  const created = rows[0];
+  if (!created) throw new Error("Failed to create carrier");
+  return mapCarrierRow(created);
 }
 
 export async function deleteCarrier(id: string): Promise<{ ok: boolean; error?: string; soft?: boolean }> {
@@ -212,7 +216,7 @@ export async function deleteCarrier(id: string): Promise<{ ok: boolean; error?: 
     `SELECT COUNT(*)::text AS count FROM supply_links WHERE carrier_id = $1`,
     [id],
   );
-  const inUse = Number(usage.rows[0].count) > 0;
+  const inUse = Number(usage.rows[0]?.count ?? 0) > 0;
 
   if (inUse) {
     await pool.query(`UPDATE carriers SET is_active = FALSE, enabled = FALSE WHERE id = $1`, [id]);

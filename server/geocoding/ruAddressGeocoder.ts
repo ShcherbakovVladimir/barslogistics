@@ -36,7 +36,9 @@ async function nominatimSearch(query: string, baseUrl?: string): Promise<[number
     if (!res.ok) return null;
     const data = await res.json() as { lat: string; lon: string }[];
     if (!data.length) return null;
-    return [Number(data[0].lat), Number(data[0].lon)];
+    const hit = data[0];
+    if (!hit) return null;
+    return [Number(hit.lat), Number(hit.lon)];
   } catch {
     return null;
   }

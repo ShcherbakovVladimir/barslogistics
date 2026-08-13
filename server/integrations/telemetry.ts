@@ -408,8 +408,10 @@ export async function syncCarrierById(carrierId: string): Promise<CarrierSyncRes
     );
 
     const { rows: updatedRows } = await pool.query<CarrierRow>("SELECT * FROM carriers WHERE id = $1", [carrierId]);
+    const updated = updatedRows[0];
+    if (!updated) throw new Error("Carrier not found after sync");
     return {
-      carrier: mapCarrierRow(updatedRows[0]),
+      carrier: mapCarrierRow(updated),
       updates,
       recordsFetched,
       message: `Synced ${recordsFetched} records, updated ${updates.length} shipments`,
@@ -421,7 +423,9 @@ export async function syncCarrierById(carrierId: string): Promise<CarrierSyncRes
       [carrierId, msg],
     );
     const { rows: errRows } = await pool.query<CarrierRow>("SELECT * FROM carriers WHERE id = $1", [carrierId]);
-    throw Object.assign(new Error(msg), { carrier: mapCarrierRow(errRows[0]) });
+    const errRow = errRows[0];
+    if (!errRow) throw new Error(msg);
+    throw Object.assign(new Error(msg), { carrier: mapCarrierRow(errRow) });
   }
 }
 

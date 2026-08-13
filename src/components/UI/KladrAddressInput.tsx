@@ -172,7 +172,8 @@ export const KladrAddressInput: React.FC<KladrAddressInputProps> = ({
       setActiveIndex(i => (i <= 0 ? suggestions.length - 1 : i - 1));
     } else if (e.key === 'Enter' && activeIndex >= 0) {
       e.preventDefault();
-      pick(suggestions[activeIndex]);
+      const selected = suggestions[activeIndex];
+      if (selected) pick(selected);
     } else if (e.key === 'Escape') {
       setOpen(false);
     }

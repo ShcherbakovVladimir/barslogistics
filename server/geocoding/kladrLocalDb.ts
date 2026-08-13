@@ -11,7 +11,7 @@ function formatPart(name: string, socr?: string): string {
 function stripHouseFromStreet(street?: string): { street?: string; house?: string } {
   if (!street) return {};
   const m = street.match(/^(.+?)\s+(\d+[a-zа-я]?)$/i);
-  if (m) return { street: m[1].trim(), house: m[2].trim() };
+  if (m?.[1] && m[2]) return { street: m[1].trim(), house: m[2].trim() };
   return { street };
 }
 
@@ -45,7 +45,7 @@ async function findSettlement(cityName: string, regionHint?: string): Promise<{
     if (byRegion) return byRegion;
   }
 
-  return rows.find(r => normalizeKladrSearchName(r.name) === search) || rows[0];
+  return rows.find(r => normalizeKladrSearchName(r.name) === search) || rows[0] || null;
 }
 
 async function findStreet(parentCode: string, streetName: string): Promise<{
@@ -123,7 +123,7 @@ export async function lookupKladrAddressLocal(address: string): Promise<KladrMat
     house = split.house ?? house;
   }
 
-  const cityName = parsed.city ?? (address.includes(',') ? address.split(',')[0].trim() : address.trim());
+  const cityName = parsed.city ?? (address.includes(',') ? address.split(',')[0]?.trim() : address.trim());
   if (!cityName) return null;
 
   const settlement = await findSettlement(cityName, parsed.region);
@@ -171,9 +171,11 @@ function pickSearchTerms(query: string): string[] {
   const terms = new Set<string>();
   terms.add(normalizeKladrSearchName(trimmed.replace(/,/g, ' ')));
   if (parts.length) {
-    terms.add(normalizeKladrSearchName(parts[parts.length - 1]));
-    if (parts.length > 1) {
-      terms.add(normalizeKladrSearchName(parts[0]));
+    const last = parts[parts.length - 1];
+    const first = parts[0];
+    if (last) terms.add(normalizeKladrSearchName(last));
+    if (parts.length > 1 && first) {
+      terms.add(normalizeKladrSearchName(first));
     }
   }
   return [...terms].filter(Boolean);

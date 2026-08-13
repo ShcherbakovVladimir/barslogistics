@@ -232,15 +232,22 @@ export function parseSitesCsv(csvText: string, category: FactoryType): { factori
     return { factories: [], errors: ["CSV file is empty"], skipped: 0 };
   }
 
-  const delimiter = detectDelimiter(lines[0]);
-  const headers = parseCsvLine(lines[0], delimiter).map(h => mapHeader(h, category));
+  const headerLine = lines[0];
+  if (!headerLine) {
+    return { factories: [], errors: ["CSV file is empty"], skipped: 0 };
+  }
+
+  const delimiter = detectDelimiter(headerLine);
+  const headers = parseCsvLine(headerLine, delimiter).map(h => mapHeader(h, category));
 
   const factories: Factory[] = [];
   const errors: string[] = [];
   let skipped = 0;
 
   for (let i = 1; i < lines.length; i++) {
-    const cells = parseCsvLine(lines[i], delimiter);
+    const line = lines[i];
+    if (!line) continue;
+    const cells = parseCsvLine(line, delimiter);
     const row: Record<string, string> = {};
     headers.forEach((h, idx) => {
       row[h] = cells[idx] ?? "";

@@ -293,7 +293,7 @@ const BOOTSTRAP_USERS: User[] = [
 /** Create default user accounts when the users table is empty (runs regardless of SEED_DEMO_DATA). */
 export async function seedUsersIfEmpty(): Promise<void> {
   const { rows } = await pool.query<{ count: string }>("SELECT COUNT(*)::text AS count FROM users");
-  if (Number(rows[0].count) > 0) return;
+  if (Number(rows[0]?.count ?? 0) > 0) return;
 
   const passwordHash = await hashPassword(getDefaultPassword());
   for (const user of BOOTSTRAP_USERS) {
@@ -313,7 +313,7 @@ export async function seedDatabaseIfEmpty(): Promise<void> {
   }
 
   const { rows } = await pool.query<{ count: string }>("SELECT COUNT(*)::text AS count FROM factories");
-  if (Number(rows[0].count) > 0) return;
+  if (Number(rows[0]?.count ?? 0) > 0) return;
 
   const st = getServerT("ru");
   const supplyLinks = getCleanSupplyLinks({ syntheticTelemetry: true });
@@ -561,7 +561,7 @@ export async function deleteFactory(id: string): Promise<{ ok: boolean; error?: 
      WHERE origin_id = $1 OR destination_id = $1`,
     [id]
   );
-  if (Number(rows[0].count) > 0) {
+  if (Number(rows[0]?.count ?? 0) > 0) {
     return { ok: false, error: "Factory is referenced by supply links" };
   }
 
@@ -1597,7 +1597,7 @@ function rowToProduct(row: ProductRow): Product {
 
 export async function seedProductsIfEmpty(): Promise<void> {
   const { rows } = await pool.query<{ count: string }>("SELECT COUNT(*)::text AS count FROM products");
-  if (Number(rows[0].count) > 0) return;
+  if (Number(rows[0]?.count ?? 0) > 0) return;
 
   for (const p of DEFAULT_PRODUCT_CATALOG) {
     await pool.query(
@@ -1631,7 +1631,9 @@ export async function createProduct(input: ProductInput): Promise<Product> {
      RETURNING *`,
     [input.id, input.name_ru.trim(), input.name_en.trim(), sortOrder, isActive],
   );
-  return rowToProduct(rows[0]);
+  const created = rows[0];
+  if (!created) throw new Error("Failed to create product");
+  return rowToProduct(created);
 }
 
 export async function updateProduct(id: string, input: Partial<ProductInput>): Promise<Product | null> {
@@ -1664,7 +1666,7 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
      )::text AS count`,
     [id],
   );
-  const inUse = Number(usage.rows[0].count) > 0;
+  const inUse = Number(usage.rows[0]?.count ?? 0) > 0;
 
   if (inUse) {
     await pool.query(`UPDATE products SET is_active = FALSE, updated_at = NOW() WHERE id = $1`, [id]);
@@ -1735,7 +1737,9 @@ export async function createSalesManager(input: SalesManagerInput): Promise<Sale
       isActive,
     ],
   );
-  return rowToSalesManager(rows[0]);
+  const created = rows[0];
+  if (!created) throw new Error("Failed to create sales manager");
+  return rowToSalesManager(created);
 }
 
 export async function updateSalesManager(id: string, input: Partial<SalesManagerInput>): Promise<SalesManager | null> {
@@ -1769,7 +1773,7 @@ export async function deleteSalesManager(id: string): Promise<{ ok: boolean; err
     `SELECT COUNT(*)::text AS count FROM supply_links WHERE sales_manager_id = $1`,
     [id],
   );
-  const inUse = Number(usage.rows[0].count) > 0;
+  const inUse = Number(usage.rows[0]?.count ?? 0) > 0;
 
   if (inUse) {
     await pool.query(`UPDATE sales_managers SET is_active = FALSE, updated_at = NOW() WHERE id = $1`, [id]);

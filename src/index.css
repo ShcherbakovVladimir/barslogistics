@@ -9606,6 +9606,238 @@ html.portal-embed .header-nav-scroll {
   font-size: 0.875rem;
 }
 
+/* ── Admin: error logs ── */
+.admin-errors-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .admin-errors-toolbar-actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+}
+
+.admin-errors-count-badge {
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: rgb(51 65 85 / 0.6);
+  color: #cbd5e1;
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.admin-errors-filters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .admin-errors-filters {
+    grid-template-columns: minmax(0, 1.4fr) minmax(8.5rem, 11rem) minmax(8.5rem, 11rem) minmax(9rem, 12rem);
+    align-items: center;
+  }
+}
+
+.admin-errors-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-errors-search svg {
+  position: absolute;
+  left: 0.75rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.admin-errors-search input {
+  width: 100%;
+  min-height: 2.35rem;
+  padding: 0.4rem 2rem 0.4rem 2.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(71 85 105 / 0.75);
+  background: rgb(15 23 42 / 0.9);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+}
+
+.admin-errors-search input:focus {
+  outline: none;
+  border-color: rgb(148 163 184 / 0.7);
+}
+
+.admin-errors-search-clear {
+  position: absolute;
+  right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.admin-errors-search-clear:hover {
+  color: #e2e8f0;
+  background: rgb(51 65 85 / 0.6);
+}
+
+.admin-errors-clear-btn {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin-errors-clear-btn:hover {
+  color: #e2e8f0;
+}
+
+.admin-errors-message {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.admin-errors-route {
+  color: #94a3b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.6875rem;
+}
+
+.admin-errors-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-errors-badge--error {
+  color: #fca5a5;
+  background: rgb(127 29 29 / 0.3);
+  border-color: rgb(248 113 113 / 0.25);
+}
+
+.admin-errors-badge--warn {
+  color: #fcd34d;
+  background: rgb(120 53 15 / 0.25);
+  border-color: rgb(245 158 11 / 0.25);
+}
+
+.admin-errors-badge--fatal {
+  color: #fda4af;
+  background: rgb(136 19 55 / 0.35);
+  border-color: rgb(244 63 94 / 0.3);
+}
+
+.admin-errors-badge--http {
+  color: #93c5fd;
+  background: rgb(30 58 138 / 0.25);
+  border-color: rgb(59 130 246 / 0.25);
+}
+
+.admin-errors-badge--unhandled {
+  color: #c4b5fd;
+  background: rgb(76 29 149 / 0.28);
+  border-color: rgb(139 92 246 / 0.3);
+}
+
+.admin-errors-badge--process {
+  color: #67e8f9;
+  background: rgb(21 94 117 / 0.28);
+  border-color: rgb(34 211 238 / 0.25);
+}
+
+.admin-errors-chevron {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: #64748b;
+  transition: transform 0.15s ease;
+}
+
+.admin-errors-chevron.is-open {
+  transform: rotate(180deg);
+  color: #e2e8f0;
+}
+
+.admin-errors-detail-row td {
+  background: rgb(2 6 23 / 0.65);
+  border-bottom: 1px solid rgb(30 41 59);
+}
+
+.admin-errors-detail-block + .admin-errors-detail-block {
+  margin-top: 0.75rem;
+}
+
+.admin-errors-detail-label {
+  margin-bottom: 0.35rem;
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-errors-stack {
+  max-height: 16rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(30 41 59);
+  background: rgb(2 6 23);
+  color: #cbd5e1;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-errors-cards-mobile {
+  display: none;
+}
+
+.admin-errors-card-details {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 1023px) {
+  .admin-errors-table-wrap {
+    display: none;
+  }
+
+  .admin-errors-cards-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+}
+
 @media (max-width: 1023px) {
   .admin-support-list-desktop {
     display: none;

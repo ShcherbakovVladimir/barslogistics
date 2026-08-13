@@ -95,7 +95,9 @@ export async function saveTransportPhoto(
     [assetId, storedName, mime],
   );
 
-  return { photo_updated_at: new Date(rows[0].photo_updated_at).toISOString() };
+  const saved = rows[0];
+  if (!saved) throw new Error("Transport asset not found after photo save");
+  return { photo_updated_at: new Date(saved.photo_updated_at).toISOString() };
 }
 
 export async function deleteTransportPhoto(assetId: string): Promise<boolean> {

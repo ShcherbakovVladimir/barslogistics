@@ -30,7 +30,10 @@ export function VirtualList<T>({
     estimateSize: () => estimateSize,
     overscan,
     getItemKey: getKey
-      ? (index) => getKey(items[index], index)
+      ? (index) => {
+          const item = items[index];
+          return item === undefined ? index : getKey(item, index);
+        }
       : (index) => index,
   });
 
@@ -48,6 +51,7 @@ export function VirtualList<T>({
       >
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const item = items[virtualRow.index];
+          if (item === undefined) return null;
           return (
             <div
               key={virtualRow.key}
@@ -104,6 +108,7 @@ export function useFocusTrap(active: boolean, containerRef: React.RefObject<HTML
       }
       const first = nodes[0];
       const last = nodes[nodes.length - 1];
+      if (!first || !last) return;
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();

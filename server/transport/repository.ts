@@ -178,7 +178,9 @@ export async function createTransportAsset(input: TransportAssetInput): Promise<
       input.sort_order ?? 0,
     ],
   );
-  return mapRow(rows[0]);
+  const created = rows[0];
+  if (!created) throw new Error("Failed to create transport asset");
+  return mapRow(created);
 }
 
 export async function updateTransportAsset(
@@ -292,7 +294,7 @@ export async function deleteTransportAsset(
     `SELECT COUNT(*)::text AS count FROM supply_links WHERE transport_asset_id = $1`,
     [id],
   );
-  const inUse = Number(usage.rows[0].count) > 0;
+  const inUse = Number(usage.rows[0]?.count ?? 0) > 0;
 
   if (inUse) {
     await pool.query(

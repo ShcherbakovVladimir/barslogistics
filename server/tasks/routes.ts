@@ -2,6 +2,7 @@ import type { Express } from 'express';
 import path from 'path';
 import multer from 'multer';
 import { requireAuth, type AuthRequest } from '../auth.js';
+import { requireRouteParam } from '../security/validate.js';
 import type {
   KanbanBoardType,
   KanbanClassOfService,
@@ -82,11 +83,13 @@ export function registerTaskRoutes(app: Express): void {
 
   app.get('/api/tasks/boards/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      if (!(await userCanAccessBoard(req.params.id, user.id))) {
+      if (!(await userCanAccessBoard(id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
       }
-      const data = await getBoardDetail(req.params.id);
+      const data = await getBoardDetail(id);
       if (!data) return res.status(404).json({ error: 'Not found' });
       res.json({ status: 'success', data });
     } catch (error) {
@@ -134,10 +137,12 @@ export function registerTaskRoutes(app: Express): void {
 
   app.patch('/api/tasks/boards/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const body = req.body as { name?: string; description?: string; member_ids?: string[] };
-      const before = await getBoardDetail(req.params.id);
-      const data = await updateBoard(req.params.id, user.id, body);
+      const before = await getBoardDetail(id);
+      const data = await updateBoard(id, user.id, body);
       if (!data) return res.status(404).json({ error: 'Not found' });
       await emitBoardSync(data.id, 'TASK_BOARD_UPDATED');
 
@@ -161,13 +166,15 @@ export function registerTaskRoutes(app: Express): void {
 
   app.delete('/api/tasks/boards/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const participants = await getBoardParticipantIds(req.params.id);
-      const ok = await deleteBoard(req.params.id, user.id);
+      const participants = await getBoardParticipantIds(id);
+      const ok = await deleteBoard(id, user.id);
       if (!ok) return res.status(404).json({ error: 'Not found or not owner' });
       broadcastTaskEvent(participants, {
         type: 'TASK_BOARD_DELETED',
-        board_id: req.params.id,
+        board_id: id,
       });
       res.json({ status: 'success', data: { deleted: true } });
     } catch (error) {
@@ -178,14 +185,16 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/boards/:id/columns', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      if (!(await userCanAccessBoard(req.params.id, user.id))) {
+      if (!(await userCanAccessBoard(id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
       }
       const { name, wip_limit } = req.body as { name?: string; wip_limit?: number | null };
       if (!name?.trim()) return res.status(400).json({ error: 'name is required' });
-      const column = await createColumn(req.params.id, name, wip_limit);
-      await emitBoardSync(req.params.id, 'TASK_BOARD_UPDATED');
+      const column = await createColumn(id, name, wip_limit);
+      await emitBoardSync(id, 'TASK_BOARD_UPDATED');
       res.status(201).json({ status: 'success', data: column });
     } catch (error) {
       console.error('POST /api/tasks/boards/:id/columns:', error);
@@ -195,14 +204,16 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/boards/:id/swimlanes', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      if (!(await userCanAccessBoard(req.params.id, user.id))) {
+      if (!(await userCanAccessBoard(id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
       }
       const { name } = req.body as { name?: string };
       if (!name?.trim()) return res.status(400).json({ error: 'name is required' });
-      const lane = await createSwimlane(req.params.id, name);
-      await emitBoardSync(req.params.id, 'TASK_BOARD_UPDATED');
+      const lane = await createSwimlane(id, name);
+      await emitBoardSync(id, 'TASK_BOARD_UPDATED');
       res.status(201).json({ status: 'success', data: lane });
     } catch (error) {
       console.error('POST /api/tasks/boards/:id/swimlanes:', error);
@@ -212,8 +223,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/boards/:id/tasks', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      if (!(await userCanAccessBoard(req.params.id, user.id))) {
+      if (!(await userCanAccessBoard(id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
       }
       const body = req.body as {
@@ -233,7 +246,7 @@ export function registerTaskRoutes(app: Express): void {
       if (!COS.includes(cos)) return res.status(400).json({ error: 'Invalid class_of_service' });
 
       const task = await createTask({
-        board_id: req.params.id,
+        board_id: id,
         column_id: body.column_id,
         swimlane_id: body.swimlane_id,
         title: body.title,
@@ -245,7 +258,7 @@ export function registerTaskRoutes(app: Express): void {
         priority: body.priority,
       });
 
-      await emitBoardSync(req.params.id, 'TASK_UPDATED', { task });
+      await emitBoardSync(id, 'TASK_UPDATED', { task });
 
       await notifyTaskAssigned({
         taskId: task.id,
@@ -264,8 +277,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.patch('/api/tasks/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const existing = await getTaskById(req.params.id);
+      const existing = await getTaskById(id);
       if (!existing) return res.status(404).json({ error: 'Not found' });
       if (!(await userCanAccessBoard(existing.board_id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
@@ -284,7 +299,7 @@ export function registerTaskRoutes(app: Express): void {
         return res.status(400).json({ error: 'Invalid class_of_service' });
       }
 
-      const task = await updateTask(req.params.id, {
+      const task = await updateTask(id, {
         ...body,
         class_of_service: body.class_of_service as KanbanClassOfService | undefined,
       });
@@ -314,8 +329,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/:id/move', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const existing = await getTaskById(req.params.id);
+      const existing = await getTaskById(id);
       if (!existing) return res.status(404).json({ error: 'Not found' });
       if (!(await userCanAccessBoard(existing.board_id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
@@ -330,7 +347,7 @@ export function registerTaskRoutes(app: Express): void {
         return res.status(400).json({ error: 'column_id and position are required' });
       }
 
-      const task = await moveTask(req.params.id, {
+      const task = await moveTask(id, {
         column_id: body.column_id,
         position: Number(body.position),
         swimlane_id: body.swimlane_id,
@@ -363,13 +380,15 @@ export function registerTaskRoutes(app: Express): void {
 
   app.delete('/api/tasks/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const existing = await getTaskById(req.params.id);
+      const existing = await getTaskById(id);
       if (!existing) return res.status(404).json({ error: 'Not found' });
       if (!(await userCanAccessBoard(existing.board_id, user.id))) {
         return res.status(403).json({ error: 'Forbidden' });
       }
-      await deleteTask(req.params.id);
+      await deleteTask(id);
       await emitBoardSync(existing.board_id, 'TASK_UPDATED', { deleted_task_id: existing.id });
       res.json({ status: 'success', data: { deleted: true } });
     } catch (error) {
@@ -382,8 +401,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.get('/api/tasks/:id/workspace', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const data = await getTaskWorkspace(req.params.id, user.id);
+      const data = await getTaskWorkspace(id, user.id);
       res.json({ status: 'success', data });
     } catch (error) {
       const msg = error instanceof Error ? error.message : 'Database error';
@@ -396,8 +417,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.get('/api/tasks/:id/messages', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const ws = await getTaskWorkspace(req.params.id, user.id);
+      const ws = await getTaskWorkspace(id, user.id);
       res.json({ status: 'success', data: ws.messages });
     } catch (error) {
       const msg = error instanceof Error ? error.message : 'Database error';
@@ -410,15 +433,17 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/:id/messages', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const body = req.body as { body?: string; milestone_id?: string | null };
       const message = await addTaskMessage(
-        req.params.id,
+        id,
         user.id,
         String(body.body ?? ''),
         body.milestone_id,
       );
-      const task = await getTaskById(req.params.id);
+      const task = await getTaskById(id);
       if (task) {
         await emitBoardSync(task.board_id, 'TASK_WORKSPACE_UPDATED', {
           task_id: task.id,
@@ -445,14 +470,16 @@ export function registerTaskRoutes(app: Express): void {
 
   app.post('/api/tasks/:id/milestones', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const body = req.body as { title?: string; description?: string; due_date?: string | null };
-      const milestone = await createMilestone(req.params.id, user.id, {
+      const milestone = await createMilestone(id, user.id, {
         title: String(body.title ?? ''),
         description: body.description,
         due_date: body.due_date,
       });
-      const task = await getTaskById(req.params.id);
+      const task = await getTaskById(id);
       if (task) {
         await emitBoardSync(task.board_id, 'TASK_WORKSPACE_UPDATED', {
           task_id: task.id,
@@ -471,6 +498,8 @@ export function registerTaskRoutes(app: Express): void {
 
   app.patch('/api/tasks/milestones/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const body = req.body as {
         status?: string;
@@ -479,7 +508,7 @@ export function registerTaskRoutes(app: Express): void {
         description?: string;
         due_date?: string | null;
       };
-      const milestone = await updateMilestoneStatus(req.params.id, user.id, {
+      const milestone = await updateMilestoneStatus(id, user.id, {
         status: body.status as KanbanMilestoneStatus | undefined,
         rejection_reason: body.rejection_reason,
         title: body.title,
@@ -514,13 +543,15 @@ export function registerTaskRoutes(app: Express): void {
 
   app.delete('/api/tasks/milestones/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const taskId = await deleteMilestone(req.params.id, user.id);
+      const taskId = await deleteMilestone(id, user.id);
       const task = await getTaskById(taskId);
       if (task) {
         await emitBoardSync(task.board_id, 'TASK_WORKSPACE_UPDATED', {
           task_id: task.id,
-          deleted_milestone_id: req.params.id,
+          deleted_milestone_id: id,
         });
       }
       res.json({ status: 'success', data: { deleted: true } });
@@ -548,16 +579,18 @@ export function registerTaskRoutes(app: Express): void {
     },
     async (req, res) => {
       try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
         const user = (req as AuthRequest).user;
         const file = req.file;
         if (!file) return res.status(400).json({ error: 'file is required' });
         const milestoneId = req.body?.milestone_id ? String(req.body.milestone_id) : null;
         const messageBody = req.body?.message ? String(req.body.message) : undefined;
-        const result = await saveTaskAttachment(user.id, req.params.id, file, {
+        const result = await saveTaskAttachment(user.id, id, file, {
           milestoneId,
           messageBody,
         });
-        const task = await getTaskById(req.params.id);
+        const task = await getTaskById(id);
         if (task) {
           await emitBoardSync(task.board_id, 'TASK_WORKSPACE_UPDATED', {
             task_id: task.id,
@@ -585,8 +618,10 @@ export function registerTaskRoutes(app: Express): void {
 
   app.get('/api/tasks/attachments/:id/download', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const file = await getTaskAttachmentForDownload(req.params.id, user.id);
+      const file = await getTaskAttachmentForDownload(id, user.id);
       res.setHeader('Content-Type', file.mimeType || 'application/octet-stream');
       res.setHeader('Content-Disposition', contentDispositionAttachment(file.originalName));
       res.sendFile(path.resolve(file.storagePath));
@@ -601,13 +636,15 @@ export function registerTaskRoutes(app: Express): void {
 
   app.delete('/api/tasks/attachments/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const taskId = await deleteTaskAttachment(req.params.id, user.id);
+      const taskId = await deleteTaskAttachment(id, user.id);
       const task = await getTaskById(taskId);
       if (task) {
         await emitBoardSync(task.board_id, 'TASK_WORKSPACE_UPDATED', {
           task_id: task.id,
-          deleted_attachment_id: req.params.id,
+          deleted_attachment_id: id,
         });
       }
       res.json({ status: 'success', data: { deleted: true } });

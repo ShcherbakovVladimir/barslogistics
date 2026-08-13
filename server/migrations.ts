@@ -37,6 +37,7 @@ export const POSTGRES_MIGRATIONS: PostgresMigration[] = [
   { file: "shipment_logistics.sql", scope: "schema", label: "Applying shipment logistics (documents, transport fields)" },
   { file: "transport_assets.sql", scope: "schema", label: "Applying transport assets directory" },
   { file: "user_avatars.sql", scope: "schema", label: "Applying user avatars migration" },
+  { file: "error_logs.sql", scope: "schema", label: "Applying error logs migration" },
   { file: "sync_users.sql", scope: "data", label: "Syncing demo user accounts" },
   { file: "seed_sites_catalog.sql", scope: "data", label: "Seeding site catalog into PostgreSQL (if not present)" },
 ];

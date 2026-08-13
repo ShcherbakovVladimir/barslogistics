@@ -8,12 +8,13 @@ import { setAdminSection, type AdminSection } from '../../store/adminSlice';
 import { saveAdminScrollBeforeSectionChange, useAdminScroll } from '../../hooks/useAdminScroll';
 import {
   Shield, Truck, Satellite, Send, Cloud, Database, Users, Terminal,
-  RefreshCw, Copy, LayoutDashboard, Map, BookOpen, MapPin, Mail, LifeBuoy,
+  RefreshCw, Copy, LayoutDashboard, Map, BookOpen, MapPin, Mail, LifeBuoy, Bug,
 } from 'lucide-react';
 import { MapDataImportPanel } from './MapDataImportPanel';
 import { GeocodingAdminPanel } from './GeocodingAdminPanel';
 import { UserManager } from './UserManager';
 import { SupportTicketsAdmin } from './SupportTicketsAdmin';
+import { ErrorLogsAdmin } from './ErrorLogsAdmin';
 import { SiteDirectoryAdmin } from './SiteDirectoryAdmin';
 import {
   TelegramSettingsForm, CloudSettingsForm, CarrierConfigForm, TelemetrySettingsForm, MailSettingsForm,
@@ -64,6 +65,7 @@ const SECTIONS: { id: AdminSection; icon: React.ElementType }[] = [
   { id: 'backups', icon: Database },
   { id: 'users', icon: Users },
   { id: 'support', icon: LifeBuoy },
+  { id: 'errors', icon: Bug },
   { id: 'sites', icon: BookOpen },
   { id: 'data', icon: Map },
   { id: 'geocoding', icon: MapPin },
@@ -115,7 +117,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     () => SECTIONS.find(s => s.id === section) ?? SECTIONS[0],
     [section],
   );
-  const SectionIcon = sectionMeta.icon;
 
   useEffect(() => {
     setTelegramMsg(t('integrations.telegramDefaultMsg'));
@@ -126,6 +127,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       setTelegramChatId(integrationSettings.telegram.default_chat_id);
     }
   }, [integrationSettings]);
+
+  if (!sectionMeta) return null;
+  const SectionIcon = sectionMeta.icon;
 
   const getCarrierName = (carrierId: string) => {
     const key = CARRIER_I18N_KEYS[carrierId];
@@ -390,6 +394,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             onFocusTicketConsumed={onFocusSupportTicketConsumed}
           />
         );
+      case 'errors':
+        return <ErrorLogsAdmin />;
       case 'sites':
         return <SiteDirectoryAdmin onSitesChanged={onSitesChanged} />;
       case 'data':

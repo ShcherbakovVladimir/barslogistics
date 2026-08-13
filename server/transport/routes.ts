@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import multer from "multer";
 import { requireAuth, requireMinRole, getClientIp, type AuthRequest } from "../auth.js";
+import { requireRouteParam } from "../security/validate.js";
 import { insertEventLog } from "../repositories.js";
 import type { TransportAssetInput, TransportPurpose } from "../../src/types.js";
 import { getTransportMaxFileBytes } from "./files.js";
@@ -61,7 +62,9 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
 
   app.get("/api/transport-assets/:id", requireAuth, async (req, res) => {
     try {
-      const data = await getTransportAssetById(req.params.id);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      const data = await getTransportAssetById(id);
       if (!data) return res.status(404).json({ error: "Not found" });
       res.json({ status: "success", data });
     } catch (error) {
@@ -99,7 +102,9 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
   app.put("/api/transport-assets/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
     const { st } = req as AuthRequest;
     try {
-      const updated = await updateTransportAsset(req.params.id, req.body as Partial<TransportAssetInput>);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      const updated = await updateTransportAsset(id, req.body as Partial<TransportAssetInput>);
       if (!updated) return res.status(404).json({ error: st("transport.notFound") });
       await logTransportEvent(req as AuthRequest, st("transport.logUpdate"), `${updated.name} (${updated.id})`);
       broadcast({ type: "TRANSPORT_ASSETS_UPDATED" });
@@ -122,9 +127,11 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
   app.delete("/api/transport-assets/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
     const { st } = req as AuthRequest;
     try {
-      const result = await deleteTransportAsset(req.params.id);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      const result = await deleteTransportAsset(id);
       if (!result.ok) return res.status(404).json({ error: result.error || st("transport.notFound") });
-      await logTransportEvent(req as AuthRequest, st("transport.logDelete"), req.params.id);
+      await logTransportEvent(req as AuthRequest, st("transport.logDelete"), id);
       broadcast({ type: "TRANSPORT_ASSETS_UPDATED" });
       res.json({ status: "success", soft: result.soft ?? false });
     } catch (error) {
@@ -135,7 +142,9 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
 
   app.get("/api/transport-assets/:id/photo", requireAuth, async (req, res) => {
     try {
-      const file = await getTransportPhotoFile(req.params.id);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      const file = await getTransportPhotoFile(id);
       if (!file) return res.status(404).json({ error: "Photo not found" });
       res.setHeader("Content-Type", file.mimeType);
       res.setHeader("Content-Disposition", "inline");
@@ -166,10 +175,12 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
     },
     async (req, res) => {
       try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
         const file = req.file;
         if (!file) return res.status(400).json({ error: "file is required" });
-        await saveTransportPhoto(req.params.id, file);
-        const data = await getTransportAssetById(req.params.id);
+        await saveTransportPhoto(id, file);
+        const data = await getTransportAssetById(id);
         if (!data) return res.status(404).json({ error: "Not found" });
         broadcast({ type: "TRANSPORT_ASSETS_UPDATED" });
         res.json({ status: "success", data });
@@ -191,8 +202,10 @@ export function registerTransportAssetRoutes(app: Express, broadcast: BroadcastF
 
   app.delete("/api/transport-assets/:id/photo", requireAuth, requireMinRole("manager"), async (req, res) => {
     try {
-      await deleteTransportPhoto(req.params.id);
-      const data = await getTransportAssetById(req.params.id);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      await deleteTransportPhoto(id);
+      const data = await getTransportAssetById(id);
       if (!data) return res.status(404).json({ error: "Not found" });
       broadcast({ type: "TRANSPORT_ASSETS_UPDATED" });
       res.json({ status: "success", data });

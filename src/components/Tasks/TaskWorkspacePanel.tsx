@@ -362,10 +362,10 @@ export const TaskWorkspacePanel: React.FC<TaskWorkspacePanelProps> = ({
                             type="button"
                             className="tasks-secondary-btn"
                             disabled={sending}
-                            onClick={() => void setMilestoneStatus(
-                              m,
-                              MILESTONE_FLOW[MILESTONE_FLOW.indexOf(m.status) + 1],
-                            )}
+                            onClick={() => {
+                              const next = MILESTONE_FLOW[MILESTONE_FLOW.indexOf(m.status) + 1];
+                              if (next) void setMilestoneStatus(m, next);
+                            }}
                           >
                             {t('tasks.milestoneAdvance')}
                           </button>

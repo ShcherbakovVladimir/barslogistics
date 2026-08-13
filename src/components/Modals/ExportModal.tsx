@@ -60,7 +60,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         const addJsonSheet = (sheetName: string, rows: Record<string, string | number | boolean>[]) => {
           const ws = wb.addWorksheet(sheetName.slice(0, 31));
           if (rows.length === 0) return;
-          const keys = Object.keys(rows[0]);
+          const keys = Object.keys(rows[0] ?? {});
           ws.columns = keys.map(key => ({ header: key, key, width: Math.min(32, key.length + 4) }));
           ws.addRows(rows);
         };

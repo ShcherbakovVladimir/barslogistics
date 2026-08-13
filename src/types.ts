@@ -444,6 +444,32 @@ export interface EventLog {
   ip_address?: string;
 }
 
+export type ErrorLogLevel = 'error' | 'warn' | 'fatal';
+export type ErrorLogSource = 'http' | 'unhandled' | 'process';
+
+export interface ErrorLog {
+  id: string;
+  timestamp: string;
+  level: ErrorLogLevel;
+  source: ErrorLogSource;
+  message: string;
+  stack: string | null;
+  route: string | null;
+  status_code: number | null;
+  user_id: string | null;
+  username: string | null;
+  ip_address: string | null;
+  meta: Record<string, unknown> | null;
+}
+
+export interface ErrorLogFilters {
+  search?: string;
+  level?: ErrorLogLevel;
+  source?: ErrorLogSource;
+  sort?: 'newest' | 'oldest';
+  limit?: number;
+}
+
 export interface KPIStats {
   total_factories: number;
   total_shipments: number;

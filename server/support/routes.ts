@@ -1,5 +1,6 @@
 import type { Express } from 'express';
 import { requireAuth, type AuthRequest } from '../auth.js';
+import { requireRouteParam } from '../security/validate.js';
 import type { SupportTicketCategory, SupportTicketStatus } from '../../src/types.js';
 import { notifyUsers } from '../notifications/service.js';
 import { getServerT } from '../../src/i18n/translations.js';
@@ -38,8 +39,10 @@ export function registerSupportRoutes(app: Express): void {
 
   app.get('/api/support/tickets/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const ticket = await getSupportTicketById(req.params.id);
+      const ticket = await getSupportTicketById(id);
       if (!ticket) {
         res.status(404).json({ error: 'Not found' });
         return;
@@ -116,6 +119,8 @@ export function registerSupportRoutes(app: Express): void {
 
   app.patch('/api/support/tickets/:id', requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       if (!requireAdmin(req as AuthRequest, res)) return;
 
@@ -126,13 +131,13 @@ export function registerSupportRoutes(app: Express): void {
         return;
       }
 
-      const existing = await getSupportTicketById(req.params.id);
+      const existing = await getSupportTicketById(id);
       if (!existing) {
         res.status(404).json({ error: 'Not found' });
         return;
       }
 
-      const ticket = await updateSupportTicketStatus(req.params.id, status);
+      const ticket = await updateSupportTicketStatus(id, status);
       if (!ticket) {
         res.status(404).json({ error: 'Not found' });
         return;

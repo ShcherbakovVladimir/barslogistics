@@ -25,7 +25,7 @@ export function decodeUploadFilename(raw: string | undefined | null): string {
 export function safeStoredBasename(originalName: string): string {
   const base = originalName.replace(/^.*[\\/]/, "") || "file";
   const extMatch = base.match(/(\.[A-Za-z0-9]{1,12})$/);
-  const ext = extMatch ? extMatch[1].toLowerCase() : "";
+  const ext = extMatch?.[1]?.toLowerCase() ?? "";
   const stem = (ext ? base.slice(0, -ext.length) : base)
     .normalize("NFKD")
     .replace(/[^\w.\-()+@ ]+/g, "_")

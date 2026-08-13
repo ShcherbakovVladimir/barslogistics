@@ -56,7 +56,9 @@ export async function createNotification(input: CreateNotificationInput): Promis
       input.linkId ?? null,
     ],
   );
-  return mapNotificationRow(rows[0]);
+  const created = rows[0];
+  if (!created) throw new Error("Failed to create notification");
+  return mapNotificationRow(created);
 }
 
 export async function createNotificationsForUsers(

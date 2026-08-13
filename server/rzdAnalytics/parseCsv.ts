@@ -47,7 +47,7 @@ function parseCsvLine(line: string, delimiter: string): string[] {
 function parseDate(value: string): string | null {
   const v = value.trim();
   const m = v.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-  if (!m) return null;
+  if (!m?.[1] || !m[2] || !m[3]) return null;
   return `${m[3]}-${m[2]}-${m[1]}`;
 }
 
@@ -82,7 +82,10 @@ export function parseRzdAnalyticsCsv(csvText: string): { rows: ParsedRzdRow[]; e
   const errors: string[] = [];
   if (lines.length < 2) return { rows: [], errors: ['CSV file is empty'] };
 
-  const headers = parseCsvLine(lines[0], ';').map(normalizeHeader);
+  const headerLine = lines[0];
+  if (!headerLine) return { rows: [], errors: ['CSV file is empty'] };
+
+  const headers = parseCsvLine(headerLine, ';').map(normalizeHeader);
   const colIndex: Partial<Record<keyof ParsedRzdRow, number>> = {};
   headers.forEach((h, idx) => {
     const mapped = HEADER_MAP[h];
@@ -97,7 +100,9 @@ export function parseRzdAnalyticsCsv(csvText: string): { rows: ParsedRzdRow[]; e
 
   const rows: ParsedRzdRow[] = [];
   for (let i = 1; i < lines.length; i++) {
-    const cells = parseCsvLine(lines[i], ';');
+    const line = lines[i];
+    if (!line) continue;
+    const cells = parseCsvLine(line, ';');
     const get = (key: keyof ParsedRzdRow) => {
       const idx = colIndex[key];
       return idx != null ? (cells[idx] ?? '').trim() : '';

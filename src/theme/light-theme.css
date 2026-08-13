@@ -3974,6 +3974,85 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   border-color: #e2e8f0;
 }
 
+[data-theme="light"] .admin-errors-count-badge {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+[data-theme="light"] .admin-errors-search input {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .admin-errors-search svg,
+[data-theme="light"] .admin-errors-search-clear,
+[data-theme="light"] .admin-errors-clear-btn,
+[data-theme="light"] .admin-errors-route,
+[data-theme="light"] .admin-errors-detail-label {
+  color: #64748b;
+}
+
+[data-theme="light"] .admin-errors-search-clear:hover,
+[data-theme="light"] .admin-errors-clear-btn:hover {
+  color: #0f172a;
+}
+
+[data-theme="light"] .admin-errors-message {
+  color: #0f172a;
+}
+
+[data-theme="light"] .admin-errors-badge--error {
+  color: #b91c1c;
+  background: rgb(254 226 226 / 0.9);
+  border-color: rgb(248 113 113 / 0.35);
+}
+
+[data-theme="light"] .admin-errors-badge--warn {
+  color: #b45309;
+  background: rgb(254 243 199 / 0.9);
+  border-color: rgb(245 158 11 / 0.3);
+}
+
+[data-theme="light"] .admin-errors-badge--fatal {
+  color: #9f1239;
+  background: rgb(255 228 230 / 0.95);
+  border-color: rgb(244 63 94 / 0.3);
+}
+
+[data-theme="light"] .admin-errors-badge--http {
+  color: #1d4ed8;
+  background: rgb(219 234 254 / 0.9);
+  border-color: rgb(59 130 246 / 0.3);
+}
+
+[data-theme="light"] .admin-errors-badge--unhandled {
+  color: #6d28d9;
+  background: rgb(237 233 254 / 0.95);
+  border-color: rgb(139 92 246 / 0.3);
+}
+
+[data-theme="light"] .admin-errors-badge--process {
+  color: #0e7490;
+  background: rgb(207 250 254 / 0.95);
+  border-color: rgb(34 211 238 / 0.35);
+}
+
+[data-theme="light"] .admin-errors-chevron.is-open {
+  color: #0f172a;
+}
+
+[data-theme="light"] .admin-errors-detail-row td {
+  background: #f8fafc;
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-errors-stack {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
 [data-theme="light"] .admin-users-field,
 [data-theme="light"] .admin-field {
   background-color: #ffffff !important;

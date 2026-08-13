@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import multer from "multer";
 import { requireAuth, type AuthRequest } from "../auth.js";
+import { requireRouteParam } from "../security/validate.js";
 import { getUserById } from "../repositories.js";
 import { deleteUserAvatar, getUserAvatarFile, saveUserAvatar } from "./avatars.js";
 import { getAvatarMaxFileBytes } from "./files.js";
@@ -17,7 +18,9 @@ function canManageAvatar(actorId: string, actorRole: string, targetId: string): 
 export function registerUserAvatarRoutes(app: Express): void {
   app.get("/api/users/:id/avatar", requireAuth, async (req, res) => {
     try {
-      const file = await getUserAvatarFile(req.params.id);
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
+      const file = await getUserAvatarFile(id);
       if (!file) return res.status(404).json({ error: "Avatar not found" });
       res.setHeader("Content-Type", file.mimeType);
       res.setHeader("Content-Disposition", "inline");
@@ -47,8 +50,10 @@ export function registerUserAvatarRoutes(app: Express): void {
     },
     async (req, res) => {
       try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
         const actor = (req as AuthRequest).user;
-        const targetId = req.params.id;
+        const targetId = id;
         if (!canManageAvatar(actor.id, actor.role, targetId)) {
           return res.status(403).json({ error: "Forbidden" });
         }
@@ -74,8 +79,10 @@ export function registerUserAvatarRoutes(app: Express): void {
 
   app.delete("/api/users/:id/avatar", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const actor = (req as AuthRequest).user;
-      const targetId = req.params.id;
+      const targetId = id;
       if (!canManageAvatar(actor.id, actor.role, targetId)) {
         return res.status(403).json({ error: "Forbidden" });
       }

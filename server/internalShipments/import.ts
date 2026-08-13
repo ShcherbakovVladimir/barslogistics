@@ -102,7 +102,7 @@ function extractRegionFromAddress(address: string, fallback: string): string {
   const first = address.split(',')[0]?.trim() || '';
   if (/\b(обл\.|область|край|респ\.|республика|ао|округ)/i.test(first)) return first;
   const cityMatch = address.match(/(?:^|[,\s])(?:г\.|город|р\.?\s*п\.?)\s*([^,;]+)/i);
-  if (cityMatch) return cityMatch[1].trim();
+  if (cityMatch?.[1]) return cityMatch[1].trim();
   return fallback;
 }
 
@@ -322,8 +322,9 @@ export async function importInternalShipmentsCsv(
   }
 
   const { rows, errors: parseErrors } = parseInternalShipmentsCsv(csvText);
-  const dateFrom = rows.length ? rows.reduce((min, r) => (r.shipmentDate < min ? r.shipmentDate : min), rows[0].shipmentDate) : undefined;
-  const dateTo = rows.length ? rows.reduce((max, r) => (r.shipmentDate > max ? r.shipmentDate : max), rows[0].shipmentDate) : undefined;
+  const firstRow = rows[0];
+  const dateFrom = firstRow ? rows.reduce((min, r) => (r.shipmentDate < min ? r.shipmentDate : min), firstRow.shipmentDate) : undefined;
+  const dateTo = firstRow ? rows.reduce((max, r) => (r.shipmentDate > max ? r.shipmentDate : max), firstRow.shipmentDate) : undefined;
   const factories = await getAllFactories();
   const salesManagers = await getAllSalesManagers(false);
   const batchId = makeBatchId();
@@ -340,6 +341,7 @@ export async function importInternalShipmentsCsv(
 
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
+      if (!row) continue;
       const site = matchSite(row.siteName, factories);
       if (!site) {
         skipped++;
@@ -479,11 +481,12 @@ export async function previewInternalShipmentsCsv(
   products: Product[],
 ): Promise<ShipmentCsvPreviewResult> {
   const { rows, errors: parseErrors } = parseInternalShipmentsCsv(csvText);
-  const dateFrom = rows.length
-    ? rows.reduce((min, r) => (r.shipmentDate < min ? r.shipmentDate : min), rows[0].shipmentDate)
+  const firstRow = rows[0];
+  const dateFrom = firstRow
+    ? rows.reduce((min, r) => (r.shipmentDate < min ? r.shipmentDate : min), firstRow.shipmentDate)
     : undefined;
-  const dateTo = rows.length
-    ? rows.reduce((max, r) => (r.shipmentDate > max ? r.shipmentDate : max), rows[0].shipmentDate)
+  const dateTo = firstRow
+    ? rows.reduce((max, r) => (r.shipmentDate > max ? r.shipmentDate : max), firstRow.shipmentDate)
     : undefined;
 
   const factories = await getAllFactories();
@@ -497,6 +500,7 @@ export async function previewInternalShipmentsCsv(
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
+    if (!row) continue;
     const site = matchSite(row.siteName, factories);
     if (!site) {
       skipped++;

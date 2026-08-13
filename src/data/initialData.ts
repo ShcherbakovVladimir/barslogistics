@@ -15,7 +15,8 @@ export function cleanRefId(refStr: string): string {
     // Fallback: try taking last comma separated part
     const parts = refStr.split(/,\s*/);
     if (parts.length > 1) {
-      return parts[parts.length - 1].replace(')', '').trim();
+      const last = parts[parts.length - 1];
+      return (last ?? '').replace(')', '').trim();
     }
   }
   return refStr;

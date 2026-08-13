@@ -94,9 +94,11 @@ export async function saveUserAvatar(
     [userId, storedName, mime],
   );
 
+  const saved = rows[0];
+  if (!saved) throw new Error("User not found after avatar save");
   return {
     has_avatar: true,
-    avatar_version: new Date(rows[0].avatar_updated_at).toISOString(),
+    avatar_version: new Date(saved.avatar_updated_at).toISOString(),
   };
 }
 

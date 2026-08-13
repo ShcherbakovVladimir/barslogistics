@@ -41,17 +41,22 @@ export function buildRoutePoints(
 /** Position along route by progress 0–100 (matches the drawn curve). */
 export function pointOnRoute(points: RoutePoint[], progressPct: number): RoutePoint {
   if (points.length === 0) return [0, 0];
-  if (points.length === 1) return points[0];
+  const first = points[0];
+  if (points.length === 1) return first ?? [0, 0];
 
   const p = Math.max(0, Math.min(100, progressPct)) / 100;
   const idx = p * (points.length - 1);
   const i = Math.floor(idx);
   const frac = idx - i;
+  const last = points[points.length - 1];
 
-  if (i >= points.length - 1) return points[points.length - 1];
+  if (i >= points.length - 1) return last ?? first ?? [0, 0];
 
-  const [lat1, lng1] = points[i];
-  const [lat2, lng2] = points[i + 1];
+  const a = points[i];
+  const b = points[i + 1];
+  if (!a || !b) return a ?? b ?? [0, 0];
+  const [lat1, lng1] = a;
+  const [lat2, lng2] = b;
   return [lat1 + (lat2 - lat1) * frac, lng1 + (lng2 - lng1) * frac];
 }
 

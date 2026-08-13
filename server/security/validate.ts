@@ -72,3 +72,18 @@ export function validateBody<T extends z.ZodTypeAny>(schema: T) {
     next();
   };
 }
+
+/** Narrow `req.params[name]` under `noUncheckedIndexedAccess`. Sends 400 if missing. */
+export function requireRouteParam(req: Request, res: Response, name: string): string | null {
+  const value = req.params[name];
+  if (typeof value !== "string" || value.length === 0) {
+    const st = (req as LocalizedRequest).st;
+    res.status(400).json({
+      error: st?.("auth.validationRequired") ?? "Missing route parameter",
+      code: "VALIDATION_ERROR",
+      details: { [name]: ["required"] },
+    });
+    return null;
+  }
+  return value;
+}

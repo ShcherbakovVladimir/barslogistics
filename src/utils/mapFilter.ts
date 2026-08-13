@@ -241,12 +241,14 @@ export function aggregateRoutes(
 
   for (const [key, group] of groups) {
     const [origin_id, destination_id] = key.split('|');
+    if (!origin_id || !destination_id) continue;
     const sorted = [...group].sort((a, b) => {
       const da = a.shipment_date || a.last_updated || '';
       const db = b.shipment_date || b.last_updated || '';
       return db.localeCompare(da);
     });
     const latest = sorted[0];
+    if (!latest) continue;
     const totalVolume = group.reduce((s, l) => s + l.volume, 0);
     const totalAmount = group.reduce((s, l) => s + (l.amount ?? 0), 0);
 

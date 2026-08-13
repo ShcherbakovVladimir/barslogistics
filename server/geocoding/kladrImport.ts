@@ -117,7 +117,9 @@ export function extractKladrArchive(archivePath?: string): string {
 
   let lastErr = '';
   for (const cmd of commands) {
-    const result = spawnSync(cmd[0], cmd.slice(1), { encoding: 'utf-8' });
+    const bin = cmd[0];
+    if (!bin) continue;
+    const result = spawnSync(bin, cmd.slice(1), { encoding: 'utf-8' });
     if (result.status === 0) return extractDir;
     lastErr = result.stderr || result.stdout || `exit ${result.status}`;
   }

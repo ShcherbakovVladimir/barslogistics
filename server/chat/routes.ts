@@ -20,6 +20,7 @@ import { notifyChatRecipientsViaWebPush } from "../push/send.js";
 import { notifyUsers } from "../notifications/service.js";
 import { getServerT } from "../../src/i18n/translations.js";
 import { requireAuth, type AuthRequest } from "../auth.js";
+import { requireRouteParam } from "../security/validate.js";
 
 const st = getServerT("ru");
 
@@ -100,10 +101,12 @@ export function registerChatRoutes(app: Express): void {
 
   app.get("/api/chat/conversations/:id/messages", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const limit = req.query.limit ? Number(req.query.limit) : 50;
       const before = req.query.before ? String(req.query.before) : undefined;
-      const data = await getConversationMessages(req.params.id, user.id, { limit, before });
+      const data = await getConversationMessages(id, user.id, { limit, before });
       res.json({ status: "success", data });
     } catch (error) {
       console.error("GET /api/chat/conversations/:id/messages:", error);
@@ -115,11 +118,13 @@ export function registerChatRoutes(app: Express): void {
 
   app.post("/api/chat/conversations/:id/messages", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const body = String(req.body?.body ?? "");
-      const conv = await assertConversationAccess(req.params.id, user.id);
-      const message = await insertChatMessage(req.params.id, user.id, body);
-      dispatchChatMessage(conv, user.id, req.params.id, message);
+      const conv = await assertConversationAccess(id, user.id);
+      const message = await insertChatMessage(id, user.id, body);
+      dispatchChatMessage(conv, user.id, id, message);
       res.status(201).json({ status: "success", data: message });
     } catch (error) {
       console.error("POST /api/chat/conversations/:id/messages:", error);
@@ -133,12 +138,14 @@ export function registerChatRoutes(app: Express): void {
     upload.single("file"),
     async (req, res) => {
       try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
         const user = (req as AuthRequest).user;
-        const conv = await assertConversationAccess(req.params.id, user.id);
+        const conv = await assertConversationAccess(id, user.id);
         const file = req.file;
         if (!file) return res.status(400).json({ error: "file required" });
 
-        const attachment = await saveChatAttachment(user.id, req.params.id, {
+        const attachment = await saveChatAttachment(user.id, id, {
           originalname: decodeUploadFilename(file.originalname),
           mimetype: file.mimetype,
           size: file.size,
@@ -146,8 +153,8 @@ export function registerChatRoutes(app: Express): void {
         });
 
         const body = String(req.body?.body ?? "").trim() || `📎 ${attachment.original_name}`;
-        const message = await insertChatMessage(req.params.id, user.id, body, attachment.id);
-        dispatchChatMessage(conv, user.id, req.params.id, message);
+        const message = await insertChatMessage(id, user.id, body, attachment.id);
+        dispatchChatMessage(conv, user.id, id, message);
         res.status(201).json({ status: "success", data: message });
       } catch (error) {
         console.error("POST /api/chat/conversations/:id/attachments:", error);
@@ -158,13 +165,15 @@ export function registerChatRoutes(app: Express): void {
 
   app.post("/api/chat/conversations/:id/read", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const conv = await assertConversationAccess(req.params.id, user.id);
-      const updated = await markConversationRead(req.params.id, user.id);
+      const conv = await assertConversationAccess(id, user.id);
+      const updated = await markConversationRead(id, user.id);
       const participantIds = conversationParticipantIds(conv);
       broadcastChatToUsers(participantIds, {
         type: "CHAT_READ",
-        conversation_id: req.params.id,
+        conversation_id: id,
         reader_id: user.id,
         participant_ids: participantIds,
       });
@@ -177,8 +186,10 @@ export function registerChatRoutes(app: Express): void {
 
   app.get("/api/chat/attachments/:id/download", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const file = await getAttachmentForDownload(req.params.id, user.id);
+      const file = await getAttachmentForDownload(id, user.id);
       if (file.mimeType) res.setHeader("Content-Type", file.mimeType);
       res.setHeader("Content-Disposition", contentDispositionAttachment(file.originalName));
       res.sendFile(path.resolve(file.storagePath));

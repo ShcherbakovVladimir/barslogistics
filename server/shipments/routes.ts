@@ -2,6 +2,7 @@ import type { Express } from "express";
 import path from "path";
 import multer from "multer";
 import { requireAuth, type AuthRequest } from "../auth.js";
+import { requireRouteParam } from "../security/validate.js";
 import { contentDispositionAttachment } from "../chat/filename.js";
 import { getUserById } from "../repositories.js";
 import { scopeSupplyLinkForUser } from "../scoping.js";
@@ -22,10 +23,12 @@ const shipmentUpload = multer({
 export function registerShipmentLogisticsRoutes(app: Express): void {
   app.get("/api/shipments/:id/documents", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const fullUser = await getUserById(user.id);
       if (!fullUser) return res.status(401).json({ error: "Unauthorized" });
-      const data = await listShipmentDocuments(req.params.id, fullUser);
+      const data = await listShipmentDocuments(id, fullUser);
       res.json({ status: "success", data });
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Database error";
@@ -50,12 +53,14 @@ export function registerShipmentLogisticsRoutes(app: Express): void {
     },
     async (req, res) => {
       try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
         const user = (req as AuthRequest).user;
         const fullUser = await getUserById(user.id);
         if (!fullUser) return res.status(401).json({ error: "Unauthorized" });
         const file = req.file;
         if (!file) return res.status(400).json({ error: "file is required" });
-        const doc = await saveShipmentDocument(fullUser, req.params.id, file, {
+        const doc = await saveShipmentDocument(fullUser, id, file, {
           doc_type: req.body?.doc_type ? String(req.body.doc_type) : undefined,
           note: req.body?.note ? String(req.body.note) : undefined,
         });
@@ -72,10 +77,12 @@ export function registerShipmentLogisticsRoutes(app: Express): void {
 
   app.get("/api/shipments/documents/:id/download", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const fullUser = await getUserById(user.id);
       if (!fullUser) return res.status(401).json({ error: "Unauthorized" });
-      const file = await getShipmentDocumentForDownload(req.params.id, fullUser);
+      const file = await getShipmentDocumentForDownload(id, fullUser);
       res.setHeader("Content-Type", file.mimeType || "application/octet-stream");
       res.setHeader("Content-Disposition", contentDispositionAttachment(file.originalName));
       res.sendFile(path.resolve(file.storagePath));
@@ -92,10 +99,12 @@ export function registerShipmentLogisticsRoutes(app: Express): void {
 
   app.delete("/api/shipments/documents/:id", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const fullUser = await getUserById(user.id);
       if (!fullUser) return res.status(401).json({ error: "Unauthorized" });
-      const shipmentId = await deleteShipmentDocument(req.params.id, fullUser);
+      const shipmentId = await deleteShipmentDocument(id, fullUser);
       res.json({ status: "success", data: { deleted: true, shipment_id: shipmentId } });
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Database error";
@@ -108,11 +117,13 @@ export function registerShipmentLogisticsRoutes(app: Express): void {
 
   app.patch("/api/shipments/:id/logistics", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
       const fullUser = await getUserById(user.id);
       if (!fullUser) return res.status(401).json({ error: "Unauthorized" });
       const body = (req.body || {}) as Record<string, unknown>;
-      const updated = await updateShipmentLogistics(req.params.id, fullUser, body);
+      const updated = await updateShipmentLogistics(id, fullUser, body);
       const visible = scopeSupplyLinkForUser(updated, fullUser);
       if (!visible) return res.status(403).json({ error: "Forbidden" });
       res.json({ status: "success", data: visible });

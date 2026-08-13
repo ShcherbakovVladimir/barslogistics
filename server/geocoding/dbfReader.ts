@@ -50,9 +50,11 @@ export function parseDbfHeader(buffer: Buffer): DbfHeader {
   let offset = 32;
   while (offset + 32 <= headerLength - 1) {
     const name = buffer.subarray(offset, offset + 11).toString('ascii').replace(/\0/g, '').trim();
-    const type = String.fromCharCode(buffer[offset + 11]);
+    const typeCode = buffer[offset + 11];
     const length = buffer[offset + 16];
     const decimalCount = buffer[offset + 17];
+    if (typeCode === undefined || length === undefined || decimalCount === undefined) break;
+    const type = String.fromCharCode(typeCode);
     if (!name) break;
     fields.push({ name, type, length, decimalCount });
     offset += 32;

@@ -109,8 +109,10 @@ function parseValidatePayload(
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   const parts = token.split(".");
   if (parts.length !== 3) return null;
+  const payloadPart = parts[1];
+  if (!payloadPart) return null;
   try {
-    const padded = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
     const json = Buffer.from(padded, "base64").toString("utf8");
     const payload = JSON.parse(json) as Record<string, unknown>;
     const exp = typeof payload.exp === "number" ? payload.exp : null;

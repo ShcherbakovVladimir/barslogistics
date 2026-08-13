@@ -156,6 +156,13 @@ import { registerSupportRoutes } from "./server/support/routes.js";
 import { registerShipmentLogisticsRoutes } from "./server/shipments/routes.js";
 import { registerUserAvatarRoutes } from "./server/users/routes.js";
 import { registerTransportAssetRoutes } from "./server/transport/routes.js";
+import { registerErrorLogRoutes } from "./server/errors/routes.js";
+import {
+  expressErrorHandler,
+  installConsoleErrorBridge,
+  installProcessErrorHandlers,
+} from "./server/errors/handler.js";
+import { logAppError } from "./server/errors/logger.js";
 import { getUserAvatarFile } from "./server/users/avatars.js";
 import fs from "fs";
 import { setTaskBroadcast } from "./server/tasks/broadcast.js";
@@ -209,6 +216,7 @@ import {
   resetPasswordBodySchema,
   updateMeBodySchema,
   validateBody,
+  requireRouteParam,
   type ConfirmEmailBody,
   type ForgotPasswordBody,
   type LoginBody,
@@ -220,6 +228,9 @@ import "dotenv/config";
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
+
+installProcessErrorHandlers();
+installConsoleErrorBridge();
 
 app.set("trust proxy", 1);
 app.use(corsMiddleware);
@@ -744,7 +755,8 @@ app.post("/api/factories", requireAuth, requireMinRole("admin"), async (req, res
 
 app.put("/api/factories/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
   const { st, user } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
     const patch = pickFactoryUpdatePatch(user.role, req.body as Partial<Factory>);
     if (Object.keys(patch).length === 0) {
@@ -763,7 +775,8 @@ app.put("/api/factories/:id", requireAuth, requireMinRole("manager"), async (req
 
 app.delete("/api/factories/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
     const result = await deleteFactory(id);
     if (!result.ok) return res.status(400).json({ error: result.error });
@@ -829,7 +842,8 @@ app.post("/api/products", requireAuth, requireMinRole("manager"), async (req, re
 
 app.put("/api/products/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const body = req.body as Partial<ProductInput>;
 
   try {
@@ -846,7 +860,8 @@ app.put("/api/products/:id", requireAuth, requireMinRole("manager"), async (req,
 
 app.delete("/api/products/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
 
   try {
     const result = await deleteProduct(id);
@@ -905,7 +920,8 @@ app.post("/api/sales-managers", requireAuth, requireMinRole("admin"), async (req
 
 app.put("/api/sales-managers/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const body = req.body as Partial<SalesManagerInput>;
 
   try {
@@ -922,7 +938,8 @@ app.put("/api/sales-managers/:id", requireAuth, requireMinRole("admin"), async (
 
 app.delete("/api/sales-managers/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
 
   try {
     const result = await deleteSalesManager(id);
@@ -1197,7 +1214,8 @@ app.get("/api/shipments/change-logs", requireAuth, requireMinRole("site_manager"
 app.put("/api/supply-links/:id", requireAuth, requireMinRole("manager"), async (req, res) => {
   const { st } = req as AuthRequest;
   const authUser = (req as AuthRequest).user;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const body = req.body as Record<string, unknown>;
 
   try {
@@ -1313,7 +1331,8 @@ app.put("/api/supply-links/:id", requireAuth, requireMinRole("manager"), async (
 app.put("/api/supply-links/:id/status", requireAuth, requireMinRole("manager"), async (req, res) => {
   const { st } = req as AuthRequest;
   const authUser = (req as AuthRequest).user;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const { status, delay_reason } = req.body;
 
   try {
@@ -1409,7 +1428,8 @@ app.get("/api/shipments/events/recent", requireAuth, requireMinRole("site_manage
 
 app.get("/api/shipments/:id/events", requireAuth, async (req, res) => {
   const authUser = (req as AuthRequest).user;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
     const link = await getSupplyLinkById(id);
     if (!link) return res.status(404).json({ error: "Shipment not found" });
@@ -1428,7 +1448,8 @@ app.get("/api/shipments/:id/events", requireAuth, async (req, res) => {
 app.post("/api/shipments/:id/events", requireAuth, requireMinRole("site_manager"), async (req, res) => {
   const { st } = req as AuthRequest;
   const authUser = (req as AuthRequest).user;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const body = req.body as ShipmentEventInput;
 
   try {
@@ -1684,7 +1705,8 @@ app.post("/api/users", requireAuth, requireMinRole("admin"), async (req, res) =>
 
 app.put("/api/users/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const input = parseUserBody(req.body as Record<string, unknown>, false) as UserUpdateInput | null;
   if (!input || Object.keys(input).length === 0) {
     return res.status(400).json({ error: st("admin.users.validationRequired") });
@@ -1706,7 +1728,8 @@ app.put("/api/users/:id", requireAuth, requireMinRole("admin"), async (req, res)
 
 app.delete("/api/users/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const actor = (req as AuthRequest).user;
 
   try {
@@ -1737,7 +1760,8 @@ app.delete("/api/users/:id", requireAuth, requireMinRole("admin"), async (req, r
 app.post("/api/users/:id/approve", requireAuth, requireMinRole("admin"), async (req, res) => {
   const authReq = req as AuthRequest;
   const { st, locale } = authReq;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
     const user = await approveUser(id);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -1759,7 +1783,8 @@ app.post("/api/users/:id/approve", requireAuth, requireMinRole("admin"), async (
 app.post("/api/users/:id/reject", requireAuth, requireMinRole("admin"), async (req, res) => {
   const authReq = req as AuthRequest;
   const { st } = authReq;
-  const { id } = req.params;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
     const user = await rejectUser(id);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -1795,8 +1820,10 @@ app.post("/api/backups/create", requireAuth, requireMinRole("admin"), async (req
 });
 
 app.get("/api/backups/:id/download", requireAuth, requireMinRole("admin"), async (req, res) => {
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const filePath = await getBackupFilePath(req.params.id);
+    const filePath = await getBackupFilePath(id);
     if (!filePath) return res.status(404).json({ error: "Backup file not found" });
     res.download(filePath);
   } catch (error) {
@@ -1806,8 +1833,10 @@ app.get("/api/backups/:id/download", requireAuth, requireMinRole("admin"), async
 });
 
 app.post("/api/backups/:id/upload-cloud", requireAuth, requireMinRole("admin"), async (req, res) => {
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const result = await uploadBackupToCloud(req.params.id);
+    const result = await uploadBackupToCloud(id);
     res.json({ status: "success", data: result });
   } catch (error) {
     console.error("POST /api/backups/:id/upload-cloud:", error);
@@ -1817,6 +1846,8 @@ app.post("/api/backups/:id/upload-cloud", requireAuth, requireMinRole("admin"), 
 
 app.post("/api/backups/:id/restore", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   const { confirm } = req.body as { confirm?: string };
   if (confirm !== "RESTORE") {
     return res.status(400).json({ error: "Send { \"confirm\": \"RESTORE\" } to restore database from backup" });
@@ -1826,14 +1857,14 @@ app.post("/api/backups/:id/restore", requireAuth, requireMinRole("admin"), async
   }
 
   try {
-    const filePath = await getBackupFilePath(req.params.id);
+    const filePath = await getBackupFilePath(id);
     if (!filePath) return res.status(404).json({ error: "Backup file not found" });
     await restoreBackupFromFile(filePath);
     await logEvent(
       req as AuthRequest,
       st("server.logBackupRestore"),
       "backup",
-      st("server.logBackupRestoreDetails", { id: req.params.id }),
+      st("server.logBackupRestoreDetails", { id }),
     );
     res.json({ status: "success", message: "Database restored from backup" });
   } catch (error) {
@@ -1933,6 +1964,7 @@ registerSupportRoutes(app);
 registerShipmentLogisticsRoutes(app);
 registerUserAvatarRoutes(app);
 registerTransportAssetRoutes(app, (data) => broadcastWebSocket(data));
+registerErrorLogRoutes(app);
 
 app.get("/api/carriers", requireAuth, async (req, res) => {
   try {
@@ -1967,8 +1999,10 @@ app.get("/api/carriers", requireAuth, async (req, res) => {
 });
 
 app.get("/api/carriers/:id/integration", requireAuth, async (req, res) => {
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const carrier = await getCarrierByIdDetailed(req.params.id);
+    const carrier = await getCarrierByIdDetailed(id);
     if (!carrier) return res.status(404).json({ error: "Carrier not found" });
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const spec = buildCarrierIntegrationSpec(carrier, baseUrl);
@@ -2026,8 +2060,10 @@ app.post("/api/carriers", requireAuth, requireMinRole("admin"), async (req, res)
 
 app.put("/api/carriers/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const updated = await updateCarrierSettings(req.params.id, req.body);
+    const updated = await updateCarrierSettings(id, req.body);
     await logEvent(req as AuthRequest, st("carriers.logUpdate"), "sync", `${updated.name} (${updated.id})`);
     broadcastWebSocket({ type: "CARRIERS_UPDATED" });
     res.json({ status: "success", data: updated });
@@ -2039,10 +2075,12 @@ app.put("/api/carriers/:id", requireAuth, requireMinRole("admin"), async (req, r
 
 app.delete("/api/carriers/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
   const { st } = req as AuthRequest;
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const result = await deleteCarrier(req.params.id);
+    const result = await deleteCarrier(id);
     if (!result.ok) return res.status(404).json({ error: result.error || st("carriers.notFound") });
-    await logEvent(req as AuthRequest, st("carriers.logDelete"), "sync", req.params.id);
+    await logEvent(req as AuthRequest, st("carriers.logDelete"), "sync", id);
     broadcastWebSocket({ type: "CARRIERS_UPDATED" });
     res.json({ status: "success", soft: result.soft ?? false });
   } catch (error) {
@@ -2052,8 +2090,10 @@ app.delete("/api/carriers/:id", requireAuth, requireMinRole("admin"), async (req
 });
 
 app.put("/api/integrations/carriers/:id", requireAuth, requireMinRole("admin"), async (req, res) => {
+  const id = requireRouteParam(req, res, "id");
+  if (!id) return;
   try {
-    const carrier = await updateCarrierSettings(req.params.id, req.body);
+    const carrier = await updateCarrierSettings(id, req.body);
     broadcastWebSocket({ type: "CARRIERS_UPDATED" });
     res.json({ status: "success", data: carrier });
   } catch (error) {
@@ -2712,12 +2752,20 @@ async function start() {
     });
   }
 
+  app.use(expressErrorHandler);
+
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
-start().catch((error) => {
+start().catch(async (error) => {
+  await logAppError({
+    error,
+    level: "fatal",
+    source: "process",
+    route: "server.start",
+  });
   console.error("Failed to start server:", error);
   process.exit(1);
 });

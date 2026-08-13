@@ -13,12 +13,13 @@ export type AdminSection =
   | 'data'
   | 'geocoding'
   | 'support'
+  | 'errors'
   | 'api';
 
 const STORAGE_KEY = 'barslogistics_admin';
 const ALL_SECTIONS: AdminSection[] = [
   'overview', 'carriers', 'telemetry', 'telegram', 'mail', 'cloud', 'backups',
-  'users', 'sites', 'data', 'geocoding', 'support', 'api',
+  'users', 'sites', 'data', 'geocoding', 'support', 'errors', 'api',
 ];
 
 export interface AdminState {

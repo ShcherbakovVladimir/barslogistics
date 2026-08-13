@@ -12,9 +12,16 @@ function parsePathPolygons(d: string): Polygon[] {
   let y = 0;
   let i = 0;
 
+  const nextNumber = (): number | null => {
+    const tok = tokens[i];
+    if (tok === undefined || /[a-zA-Z]/.test(tok)) return null;
+    i += 1;
+    return parseFloat(tok);
+  };
+
   while (i < tokens.length) {
     const cmd = tokens[i++];
-    if (!/[a-zA-Z]/.test(cmd)) continue;
+    if (!cmd || !/[a-zA-Z]/.test(cmd)) continue;
 
     const relative = cmd === cmd.toLowerCase() && cmd !== 'z' && cmd !== 'Z';
 
@@ -22,9 +29,12 @@ function parsePathPolygons(d: string): Polygon[] {
       case 'M': {
         if (current.length > 0) polygons.push(current);
         current = [];
-        while (i < tokens.length && !/[a-zA-Z]/.test(tokens[i])) {
-          let px = parseFloat(tokens[i++]);
-          let py = parseFloat(tokens[i++]);
+        for (;;) {
+          const nx = nextNumber();
+          const ny = nextNumber();
+          if (nx == null || ny == null) break;
+          let px = nx;
+          let py = ny;
           if (relative) {
             px += x;
             py += y;
@@ -36,9 +46,12 @@ function parsePathPolygons(d: string): Polygon[] {
         break;
       }
       case 'L': {
-        while (i < tokens.length && !/[a-zA-Z]/.test(tokens[i])) {
-          let px = parseFloat(tokens[i++]);
-          let py = parseFloat(tokens[i++]);
+        for (;;) {
+          const nx = nextNumber();
+          const ny = nextNumber();
+          if (nx == null || ny == null) break;
+          let px = nx;
+          let py = ny;
           if (relative) {
             px += x;
             py += y;
@@ -50,8 +63,10 @@ function parsePathPolygons(d: string): Polygon[] {
         break;
       }
       case 'H': {
-        while (i < tokens.length && !/[a-zA-Z]/.test(tokens[i])) {
-          let px = parseFloat(tokens[i++]);
+        for (;;) {
+          const nx = nextNumber();
+          if (nx == null) break;
+          let px = nx;
           if (relative) px += x;
           x = px;
           current.push([x, y]);
@@ -59,8 +74,10 @@ function parsePathPolygons(d: string): Polygon[] {
         break;
       }
       case 'V': {
-        while (i < tokens.length && !/[a-zA-Z]/.test(tokens[i])) {
-          let py = parseFloat(tokens[i++]);
+        for (;;) {
+          const ny = nextNumber();
+          if (ny == null) break;
+          let py = ny;
           if (relative) py += y;
           y = py;
           current.push([x, y]);
@@ -79,8 +96,11 @@ function parsePathPolygons(d: string): Polygon[] {
 function polygonArea(ring: Polygon): number {
   let area = 0;
   for (let idx = 0; idx < ring.length; idx++) {
-    const [x1, y1] = ring[idx];
-    const [x2, y2] = ring[(idx + 1) % ring.length];
+    const a = ring[idx];
+    const b = ring[(idx + 1) % ring.length];
+    if (!a || !b) continue;
+    const [x1, y1] = a;
+    const [x2, y2] = b;
     area += x1 * y2 - x2 * y1;
   }
   return Math.abs(area) / 2;
@@ -114,8 +134,11 @@ function pointToPolygonDist(x: number, y: number, polygon: Polygon[]): number {
 
   for (const ring of polygon) {
     for (let idx = 0, len = ring.length, prev = len - 1; idx < len; prev = idx++) {
-      const [ax, ay] = ring[idx];
-      const [bx, by] = ring[prev];
+      const a = ring[idx];
+      const b = ring[prev];
+      if (!a || !b) continue;
+      const [ax, ay] = a;
+      const [bx, by] = b;
 
       if (ay > y !== by > y && x < ((bx - ax) * (y - ay)) / (by - ay) + ax) {
         inside = !inside;
@@ -180,15 +203,20 @@ function polylabel(polygon: Polygon[], precision = 0.5): Point {
     let area = 0;
     let cx = 0;
     let cy = 0;
+    const first = outer[0];
+    if (!first) return new LabelCell(0, 0, 0, polygon);
     for (let idx = 0, len = outer.length, prev = len - 1; idx < len; prev = idx++) {
-      const [ax, ay] = outer[idx];
-      const [bx, by] = outer[prev];
+      const a = outer[idx];
+      const b = outer[prev];
+      if (!a || !b) continue;
+      const [ax, ay] = a;
+      const [bx, by] = b;
       const f = ax * by - bx * ay;
       cx += (ax + bx) * f;
       cy += (ay + by) * f;
       area += f * 3;
     }
-    if (area === 0) return new LabelCell(outer[0][0], outer[0][1], 0, polygon);
+    if (area === 0) return new LabelCell(first[0], first[1], 0, polygon);
     return new LabelCell(cx / area, cy / area, 0, polygon);
   })();
 
@@ -222,6 +250,7 @@ export function computePathLabelPoint(d: string): { x: number; y: number } {
   if (polygons.length === 0) return { x: 0, y: 0 };
 
   const largest = [...polygons].sort((a, b) => polygonArea(b) - polygonArea(a))[0];
+  if (!largest) return { x: 0, y: 0 };
   const [x, y] = polylabel([largest], 0.5);
   return { x, y };
 }

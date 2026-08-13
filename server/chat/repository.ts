@@ -201,7 +201,9 @@ export async function getOrCreateConversation(
      RETURNING *`,
     [id, userA, userB],
   );
-  return rows[0];
+  const row = rows[0];
+  if (!row) throw new Error("Failed to create conversation");
+  return row;
 }
 
 export async function assertConversationAccess(

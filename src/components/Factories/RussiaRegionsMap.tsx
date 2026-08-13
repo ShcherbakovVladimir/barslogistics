@@ -91,6 +91,7 @@ export const RussiaRegionsMap: React.FC<RussiaRegionsMapProps> = ({
           const count = regionCounts.get(id) || 0;
           const selected = selectedMapId === id;
           const hovered = hoveredId === id;
+          const labelPoint = REGION_LABEL_POINTS[id];
 
           return (
             <g key={id}>
@@ -114,10 +115,10 @@ export const RussiaRegionsMap: React.FC<RussiaRegionsMapProps> = ({
                   }
                 }}
               />
-              {count > 0 && (
+              {count > 0 && labelPoint && (
                 <text
-                  x={REGION_LABEL_POINTS[id].x}
-                  y={REGION_LABEL_POINTS[id].y}
+                  x={labelPoint.x}
+                  y={labelPoint.y}
                   className="russia-map-region-count pointer-events-none select-none"
                   textAnchor="middle"
                   dominantBaseline="central"

@@ -72,7 +72,7 @@ function parseCsvLine(line: string, delimiter: string): string[] {
 function parseDate(value: string): string | null {
   const v = value.trim();
   const m = v.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-  if (!m) return null;
+  if (!m?.[1] || !m[2] || !m[3]) return null;
   return `${m[3]}-${m[2]}-${m[1]}`;
 }
 
@@ -92,8 +92,13 @@ export function validateInternalShipmentsCsvStructure(csvText: string): Internal
     return { ok: false, errors: ['CSV file is empty'], delimiter: ';', headers: [] };
   }
 
-  const delimiter: ';' | ',' = lines[0].includes(';') ? ';' : ',';
-  const headers = parseCsvLine(lines[0], delimiter).map(normalizeHeader);
+  const headerLine = lines[0];
+  if (!headerLine) {
+    return { ok: false, errors: ['CSV file is empty'], delimiter: ';', headers: [] };
+  }
+
+  const delimiter: ';' | ',' = headerLine.includes(';') ? ';' : ',';
+  const headers = parseCsvLine(headerLine, delimiter).map(normalizeHeader);
   const columnMap = headers.map(h => HEADER_MAP[h] ?? null);
 
   if (!columnMap.includes('shipmentDate')) {
@@ -129,14 +134,20 @@ export function parseInternalShipmentsCsv(csvText: string): { rows: ParsedIntern
 
   const lines = csvText.split(/\r?\n/).filter(l => l.trim());
   const delimiter = structure.delimiter;
-  const headers = parseCsvLine(lines[0], delimiter).map(normalizeHeader);
+  const headerLine = lines[0];
+  if (!headerLine) {
+    return { rows: [], errors: ['CSV file is empty'] };
+  }
+  const headers = parseCsvLine(headerLine, delimiter).map(normalizeHeader);
   const columnMap: (keyof ParsedInternalShipmentRow | 'skip' | null)[] = headers.map(h => HEADER_MAP[h] ?? null);
 
   const errors: string[] = [];
   const rows: ParsedInternalShipmentRow[] = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const cells = parseCsvLine(lines[i], delimiter);
+    const line = lines[i];
+    if (!line) continue;
+    const cells = parseCsvLine(line, delimiter);
     if (cells.every(c => !c.trim())) continue;
 
     const raw: Partial<Record<keyof ParsedInternalShipmentRow, string>> = {};

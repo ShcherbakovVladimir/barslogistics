@@ -77,16 +77,16 @@ export function extractSettlementFromAddress(address: string): string | null {
 
   const parts = splitAddressParts(address);
   if (parts.length === 1) {
-    return extractCityFromPart(parts[0]);
+    return extractCityFromPart(parts[0] ?? '');
   }
 
   if (parts.length >= 2) {
     const second = parts[1];
-    if (!REGION_MARKERS.test(second)) {
+    if (second && !REGION_MARKERS.test(second)) {
       return second.replace(/^г\.?\s*/i, '').trim();
     }
     if (parts.length >= 3) {
-      return parts[2].replace(/^г\.?\s*/i, '').trim();
+      return (parts[2] ?? '').replace(/^г\.?\s*/i, '').trim();
     }
   }
 

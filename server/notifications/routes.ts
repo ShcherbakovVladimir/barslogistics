@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { requireAuth, type AuthRequest } from "../auth.js";
+import { requireRouteParam } from "../security/validate.js";
 import {
   countUnreadNotifications,
   listUserNotifications,
@@ -26,8 +27,10 @@ export function registerNotificationRoutes(app: Express): void {
 
   app.post("/api/notifications/:id/read", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const item = await markNotificationRead(user.id, req.params.id);
+      const item = await markNotificationRead(user.id, id);
       if (!item) return res.status(404).json({ error: "Not found" });
       emitNotificationUpdated(user.id, item);
       res.json({ status: "success", data: item });
@@ -51,8 +54,10 @@ export function registerNotificationRoutes(app: Express): void {
 
   app.delete("/api/notifications/:id", requireAuth, async (req, res) => {
     try {
+      const id = requireRouteParam(req, res, 'id');
+      if (!id) return;
       const user = (req as AuthRequest).user;
-      const item = await softDeleteNotification(user.id, req.params.id);
+      const item = await softDeleteNotification(user.id, id);
       if (!item) return res.status(404).json({ error: "Not found" });
       emitNotificationUpdated(user.id, item);
       res.json({ status: "success", data: item });

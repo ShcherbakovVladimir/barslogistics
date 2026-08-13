@@ -73,7 +73,7 @@ function mapKladrObject(obj: KladrApiObject): KladrMatch {
 function stripHouseFromStreet(street?: string): { street?: string; house?: string } {
   if (!street) return {};
   const m = street.match(/^(.+?)\s+(\d+[a-zа-я]?)$/i);
-  if (m) return { street: m[1].trim(), house: m[2].trim() };
+  if (m?.[1] && m[2]) return { street: m[1].trim(), house: m[2].trim() };
   return { street };
 }
 
@@ -137,6 +137,7 @@ async function lookupCity(cityName: string, regionId?: string): Promise<KladrApi
     data.result.find(c => normalizeKladrName(c.name || '') === norm)
     ?? data.result.find(c => normalizeKladrName(c.name || '').startsWith(norm))
     ?? data.result[0]
+    ?? null
   );
 }
 
@@ -157,6 +158,7 @@ async function lookupStreet(cityId: string, streetName: string): Promise<KladrAp
   return (
     data.result.find(s => normalizeKladrName(s.name || '').startsWith(norm))
     ?? data.result[0]
+    ?? null
   );
 }
 
@@ -183,7 +185,7 @@ async function lookupStructured(address: string): Promise<KladrMatch | null> {
     house = split.house ?? house;
   }
 
-  const cityName = parsed.city ?? (address.includes(',') ? address.split(',')[0].trim() : undefined);
+  const cityName = parsed.city ?? (address.includes(',') ? address.split(',')[0]?.trim() : undefined);
   if (!cityName) return null;
 
   const city = await lookupCity(cityName);

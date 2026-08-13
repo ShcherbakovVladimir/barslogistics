@@ -4,19 +4,23 @@ function clean(value: string): string {
   return value.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function capture(match: RegExpMatchArray, index: number): string {
+  return match[index] ?? '';
+}
+
 export function parseAddressComponents(raw: string): ParsedAddress {
   const address = clean(raw);
   if (!address) return { raw: '' };
 
   let station: string | undefined;
   const stationMatch = address.match(/станц(?:ия|\.)\s+([^,;]+)/i);
-  if (stationMatch) station = clean(stationMatch[1]);
+  if (stationMatch) station = clean(capture(stationMatch, 1));
 
   let region: string | undefined;
   const regionMatch = address.match(
     /^((?:[А-Яа-яЁё\s-]+(?:область|край|респ\.?|республика|АО|округ|автономная\s+область)))/i,
   );
-  if (regionMatch) region = clean(regionMatch[1]);
+  if (regionMatch) region = clean(capture(regionMatch, 1));
 
   let city: string | undefined;
   const cityPatterns = [
@@ -27,12 +31,12 @@ export function parseAddressComponents(raw: string): ParsedAddress {
   for (const re of cityPatterns) {
     const m = address.match(re);
     if (m) {
-      city = clean(m[1]);
+      city = clean(capture(m, 1));
       break;
     }
   }
   if (!city && address.includes(',')) {
-    const first = clean(address.split(',')[0]);
+    const first = clean(address.split(',')[0] ?? '');
     if (first && !/\b(область|край|респ|округ)\b/i.test(first)) {
       city = first.replace(/^г\.\s*/i, '');
     }
@@ -44,11 +48,11 @@ export function parseAddressComponents(raw: string): ParsedAddress {
     /(?:ул\.?|улица|пр\.?|просп\.?|проспект|пер\.?|переулок|ш\.?|шоссе|наб\.?|набережная)\s*([^,;]+)/i,
   );
   if (streetMatch) {
-    const tail = clean(streetMatch[1]);
+    const tail = clean(capture(streetMatch, 1));
     const houseMatch = tail.match(/^(.+?)\s+(?:д\.?|дом)\s*([^,;\s]+)/i);
     if (houseMatch) {
-      street = clean(houseMatch[1]);
-      house = clean(houseMatch[2]);
+      street = clean(capture(houseMatch, 1));
+      house = clean(capture(houseMatch, 2));
     } else {
       street = tail;
     }
@@ -56,7 +60,7 @@ export function parseAddressComponents(raw: string): ParsedAddress {
 
   if (!house) {
     const houseMatch = address.match(/(?:д\.?|дом)\s*([^,;\s]+)/i);
-    if (houseMatch) house = clean(houseMatch[1]);
+    if (houseMatch) house = clean(capture(houseMatch, 1));
   }
 
   return { raw: address, region, city, street, house, station };
