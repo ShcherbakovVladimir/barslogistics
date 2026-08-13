@@ -68,7 +68,7 @@ const AdminModalShell: React.FC<AdminModalShellProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`admin-users-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full ${maxWidthClass} shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`admin-modal admin-users-modal app-modal-sheet modal-panel w-full ${maxWidthClass} flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle
           onPointerDown={dragEnabled ? onHandlePointerDown : () => {}}
@@ -121,7 +121,7 @@ const UserCard = ({
           <div className="admin-users-card-username">@{user.username}</div>
         </div>
       </div>
-      <span className="admin-users-card-role px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] font-bold uppercase shrink-0">
+      <span className="admin-users-role-badge shrink-0">
         {t(`roles.${user.role}.title`)}
       </span>
     </div>
@@ -132,10 +132,10 @@ const UserCard = ({
       </div>
       <div className="admin-users-card-row">
         <span className="admin-users-card-label">{t('admin.users.colStatus')}</span>
-        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-          user.account_status === 'pending' ? 'bg-amber-500/10 text-amber-300'
-          : user.account_status === 'rejected' ? 'bg-red-500/10 text-red-300'
-          : 'bg-emerald-500/10 text-emerald-300'
+        <span className={`admin-users-status-badge ${
+          user.account_status === 'pending' ? 'admin-users-status-badge--pending'
+          : user.account_status === 'rejected' ? 'admin-users-status-badge--rejected'
+          : 'admin-users-status-badge--active'
         }`}>
           {statusLabel(user)}
         </span>
@@ -439,7 +439,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
           />
         )}
         <div className="min-w-0 space-y-1.5">
-          <div className="text-xs text-slate-300 font-medium">{t('admin.users.avatar')}</div>
+          <div className="admin-users-avatar-label">{t('admin.users.avatar')}</div>
           <p className="admin-users-avatar-hint">{t('admin.users.avatarHint')}</p>
           <div className="admin-users-avatar-actions">
             <input
@@ -452,12 +452,12 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
             <button
               type="button"
               onClick={() => avatarInputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-semibold hover:bg-slate-750 hover:border-slate-600"
+              className="admin-users-avatar-upload-btn"
             >
-              <ImagePlus className="w-3.5 h-3.5 shrink-0" />
+              <ImagePlus aria-hidden />
               {avatarPreview || showExistingAvatar ? t('admin.users.avatarChange') : t('admin.users.avatarUpload')}
             </button>
-            {(avatarPreview || showExistingAvatar) && (
+            {(avatarPreview || showExistingAvatar) ? (
               <button
                 type="button"
                 onClick={() => {
@@ -467,26 +467,26 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
                   }
                   setRemoveAvatar(true);
                 }}
-                className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/30"
+                className="admin-users-avatar-remove-btn"
               >
                 {t('admin.users.avatarRemove')}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
 
       <div className="admin-users-form-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label className="block space-y-1 text-xs">
-          <span className="text-slate-400">{t('auth.username')}</span>
+          <span className="admin-form-field-label">{t('auth.username')}</span>
           <input required value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} className={fieldClass} />
         </label>
         <label className="block space-y-1 text-xs">
-          <span className="text-slate-400">{t('admin.users.fullName')}</span>
+          <span className="admin-form-field-label">{t('admin.users.fullName')}</span>
           <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className={fieldClass} />
         </label>
         <label className="block space-y-1 text-xs">
-          <span className="text-slate-400">{t('admin.users.colRole')}</span>
+          <span className="admin-form-field-label">{t('admin.users.colRole')}</span>
           <SearchableSelect
             {...adminDropdownSelectProps}
             value={form.role}
@@ -495,18 +495,18 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
           />
         </label>
         <label className="block space-y-1 text-xs">
-          <span className="text-slate-400">{t('admin.users.colEmail')}</span>
+          <span className="admin-form-field-label">{t('admin.users.colEmail')}</span>
           <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={fieldClass} />
         </label>
         <label className="block space-y-1 text-xs sm:col-span-2">
-          <span className="text-slate-400">{creating ? t('auth.password') : t('admin.users.newPassword')}</span>
+          <span className="admin-form-field-label">{creating ? t('auth.password') : t('admin.users.newPassword')}</span>
           <input type="password" required={creating} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder={editing ? t('admin.users.passwordOptional') : ''} className={fieldClass} />
         </label>
         <label className="block space-y-1 text-xs sm:col-span-2">
-          <span className="text-slate-400">{t('admin.users.colTelegram')}</span>
+          <span className="admin-form-field-label">{t('admin.users.colTelegram')}</span>
           <input value={form.telegram_chat_id} onChange={e => setForm({ ...form, telegram_chat_id: e.target.value })} className={`${fieldClass} font-mono`} />
         </label>
-        <label className="flex items-center gap-2 sm:col-span-2 text-slate-300 min-h-[2.75rem]">
+        <label className="admin-form-check sm:col-span-2 min-h-[2.75rem]">
           <input type="checkbox" checked={form.notifications_enabled} onChange={e => setForm({ ...form, notifications_enabled: e.target.checked })} />
           {t('admin.users.notifications')}
         </label>
@@ -514,7 +514,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
 
       {showSiteField && (
         <label className="space-y-1 block text-xs">
-          <span className="text-slate-400">{t('admin.users.colSite')}</span>
+          <span className="admin-form-field-label">{t('admin.users.colSite')}</span>
           <SearchableSelect
             {...adminDropdownSelectProps}
             searchable={ourSites.length > 6}
@@ -527,14 +527,14 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
 
       {showAssignedSites && (
         <div className="space-y-1 text-xs">
-          <span className="text-slate-400">{t('admin.users.assignedSites')}</span>
+          <span className="admin-form-field-label">{t('admin.users.assignedSites')}</span>
           <div className="admin-users-site-chips flex flex-wrap gap-1 max-h-32 overflow-y-auto">
             {ourSites.map(s => (
               <button
                 key={s.id}
                 type="button"
                 onClick={() => toggleAssignedSite(s.id)}
-                className={`admin-users-site-chip px-2 py-1 rounded text-[10px] border min-h-[2rem] ${form.assigned_site_ids.includes(s.id) ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-300'}`}
+                className={`admin-users-site-chip${form.assigned_site_ids.includes(s.id) ? ' is-active' : ''}`}
               >
                 {s.name}
               </button>
@@ -598,38 +598,38 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
                       </div>
                     </td>
                     <td className="p-3">
-                      <span className="px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] font-bold uppercase">
+                      <span className="admin-users-role-badge">
                         {t(`roles.${u.role}.title`)}
                       </span>
                     </td>
-                    <td className="p-3 hidden sm:table-cell text-slate-400">{u.email || '—'}</td>
+                    <td className="p-3 hidden sm:table-cell admin-users-row-login">{u.email || '—'}</td>
                     <td className="p-3 hidden md:table-cell">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        u.account_status === 'pending' ? 'bg-amber-500/10 text-amber-300'
-                        : u.account_status === 'rejected' ? 'bg-red-500/10 text-red-300'
-                        : 'bg-emerald-500/10 text-emerald-300'
+                      <span className={`admin-users-status-badge ${
+                        u.account_status === 'pending' ? 'admin-users-status-badge--pending'
+                        : u.account_status === 'rejected' ? 'admin-users-status-badge--rejected'
+                        : 'admin-users-status-badge--active'
                       }`}>
                         {statusLabel(u)}
                       </span>
                     </td>
-                    <td className="p-3 hidden lg:table-cell text-slate-400">{siteName || '—'}</td>
+                    <td className="p-3 hidden lg:table-cell admin-users-row-login">{siteName || '—'}</td>
                     <td className="p-3">
                       <div className="flex justify-end gap-1">
                         {u.account_status === 'pending' && (
                           <>
-                            <button type="button" onClick={() => void handleApprove(u)} disabled={saving} className="p-1.5 rounded-lg hover:bg-emerald-500/20 text-emerald-400" title={t('admin.users.approve')}>
-                              <Check className="w-3.5 h-3.5" />
+                            <button type="button" onClick={() => void handleApprove(u)} disabled={saving} className="admin-users-row-action admin-users-row-action--approve" title={t('admin.users.approve')}>
+                              <Check aria-hidden />
                             </button>
-                            <button type="button" onClick={() => void handleReject(u)} disabled={saving} className="p-1.5 rounded-lg hover:bg-red-500/20 text-red-400" title={t('admin.users.reject')}>
-                              <Ban className="w-3.5 h-3.5" />
+                            <button type="button" onClick={() => void handleReject(u)} disabled={saving} className="admin-users-row-action admin-users-row-action--reject" title={t('admin.users.reject')}>
+                              <Ban aria-hidden />
                             </button>
                           </>
                         )}
-                        <button type="button" onClick={() => openEdit(u)} className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white" title={t('admin.users.edit')}>
-                          <Pencil className="w-3.5 h-3.5" />
+                        <button type="button" onClick={() => openEdit(u)} className="admin-users-row-action admin-users-row-action--edit" title={t('admin.users.edit')}>
+                          <Pencil aria-hidden />
                         </button>
-                        <button type="button" onClick={() => setDeleteTarget(u)} disabled={u.id === currentUserId} className="p-1.5 rounded-lg hover:bg-red-500/20 text-slate-400 hover:text-red-400 disabled:opacity-30" title={t('admin.users.delete')}>
-                          <Trash2 className="w-3.5 h-3.5" />
+                        <button type="button" onClick={() => setDeleteTarget(u)} disabled={u.id === currentUserId} className="admin-users-row-action admin-users-row-action--delete" title={t('admin.users.delete')}>
+                          <Trash2 aria-hidden />
                         </button>
                       </div>
                     </td>
@@ -664,24 +664,24 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
           <form onSubmit={e => void handleSave(e)} className="admin-users-form-modal admin-form-panel flex flex-col flex-1 min-h-0">
             <header className="modal-panel-header app-modal-sheet-header px-4 pb-3">
               <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-white break-words">
+                <h3 className="admin-modal-title">
                   {creating ? t('admin.users.createTitle') : t('admin.users.editTitle')}
                 </h3>
-                <button type="button" onClick={closeForm} className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label={t('common.close')}>
-                  <X className="w-4 h-4" />
+                <button type="button" onClick={closeForm} className="admin-modal-close-btn" aria-label={t('common.close')}>
+                  <X aria-hidden />
                 </button>
               </div>
             </header>
             <div className="modal-panel-body modal-scrollbar px-4 space-y-3 flex-1 min-h-0 overflow-y-auto">
-              {error && <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">{error}</p>}
+              {error ? <p className="admin-alert admin-alert--error">{error}</p> : null}
               {formBody}
             </div>
-            <footer className="admin-users-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-              <button type="button" onClick={closeForm} className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold min-h-[2.75rem] sm:min-h-0">
+            <footer className="admin-users-form-modal-footer modal-panel-footer px-4 pt-2 pb-4">
+              <button type="button" onClick={closeForm} className="admin-modal-cancel">
                 {t('common.cancel')}
               </button>
-              <button type="submit" disabled={saving} className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0">
-                <Save className="w-3.5 h-3.5 shrink-0" />
+              <button type="submit" disabled={saving} className="admin-modal-submit">
+                <Save aria-hidden />
                 {saving ? t('admin.users.saving') : t('admin.users.save')}
               </button>
             </footer>
@@ -693,17 +693,17 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
         <AdminModalShell onClose={() => { setDeleteTarget(null); setError(''); }} maxWidthClass="max-w-sm">
           <div className="admin-users-delete-modal flex flex-col flex-1 min-h-0">
             <header className="modal-panel-header px-4 pb-3">
-              <h3 className="font-bold text-white text-sm">{t('admin.users.deleteTitle')}</h3>
+              <h3 className="admin-modal-title admin-modal-title--sm">{t('admin.users.deleteTitle')}</h3>
             </header>
             <div className="modal-panel-body px-4 flex-1">
-              <p className="text-xs text-slate-400">{t('admin.users.deleteConfirm', { name: deleteTarget.name, username: deleteTarget.username })}</p>
-              {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+              <p className="admin-modal-body-text">{t('admin.users.deleteConfirm', { name: deleteTarget.name, username: deleteTarget.username })}</p>
+              {error ? <p className="admin-form-msg admin-form-msg--error mt-2">{error}</p> : null}
             </div>
-            <footer className="admin-users-form-modal-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-              <button type="button" onClick={() => { setDeleteTarget(null); setError(''); }} className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs min-h-[2.75rem] sm:min-h-0 flex-1 sm:flex-none">
+            <footer className="admin-users-form-modal-footer modal-panel-footer px-4 pt-2 pb-4">
+              <button type="button" onClick={() => { setDeleteTarget(null); setError(''); }} className="admin-modal-cancel flex-1 sm:flex-none">
                 {t('common.cancel')}
               </button>
-              <button type="button" onClick={() => void handleDelete()} disabled={saving} className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold disabled:opacity-50 min-h-[2.75rem] sm:min-h-0 flex-1 sm:flex-none">
+              <button type="button" onClick={() => void handleDelete()} disabled={saving} className="admin-modal-submit admin-modal-submit--danger flex-1 sm:flex-none">
                 {t('admin.users.delete')}
               </button>
             </footer>

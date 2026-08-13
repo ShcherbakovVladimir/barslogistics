@@ -19,7 +19,7 @@ const DeleteModalShell: React.FC<{ onClose: () => void; children: React.ReactNod
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`admin-sites-delete-modal app-modal-sheet modal-panel bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm shadow-2xl text-slate-100 flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`admin-modal admin-sites-delete-modal app-modal-sheet modal-panel w-full max-w-sm flex flex-col ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <AppBottomSheetHandle onPointerDown={dragEnabled ? onHandlePointerDown : () => {}} isDragging={isDragging} />
         {children}
@@ -393,12 +393,19 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
       {deleteTarget && (
         <DeleteModalShell onClose={() => setDeleteTarget(null)}>
           <div className="flex flex-col flex-1 min-h-0">
+            <header className="modal-panel-header px-4 pb-3">
+              <h3 className="admin-modal-title admin-modal-title--sm">{t('admin.users.deleteTitle')}</h3>
+            </header>
             <div className="modal-panel-body px-4 py-2 flex-1">
-              <p className="text-sm text-white">{t('siteDirectory.admin.deleteConfirm', { name: deleteTarget.name })}</p>
+              <p className="admin-modal-body-text">{t('siteDirectory.admin.deleteConfirm', { name: deleteTarget.name })}</p>
             </div>
-            <footer className="admin-sites-delete-footer modal-panel-footer px-4 pt-2 pb-4 flex justify-end gap-2 border-t border-slate-800">
-              <button type="button" onClick={() => setDeleteTarget(null)} className="admin-sites-btn-secondary px-3 py-1.5 text-xs text-slate-400 min-h-[2.75rem] sm:min-h-0 flex-1 sm:flex-none rounded-lg bg-slate-800">{t('common.cancel')}</button>
-              <button type="button" onClick={() => void handleDelete()} disabled={saving} className="admin-sites-btn-danger px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold min-h-[2.75rem] sm:min-h-0 flex-1 sm:flex-none">{t('admin.users.delete')}</button>
+            <footer className="admin-sites-delete-footer modal-panel-footer px-4 pt-2 pb-4">
+              <button type="button" onClick={() => setDeleteTarget(null)} className="admin-modal-cancel admin-sites-btn-secondary flex-1 sm:flex-none">
+                {t('common.cancel')}
+              </button>
+              <button type="button" onClick={() => void handleDelete()} disabled={saving} className="admin-modal-submit admin-modal-submit--danger admin-sites-btn-danger flex-1 sm:flex-none">
+                {t('admin.users.delete')}
+              </button>
             </footer>
           </div>
         </DeleteModalShell>

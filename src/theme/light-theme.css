@@ -135,7 +135,7 @@
 }
 
 [data-theme="light"] .facility-modal.bg-slate-900,
-[data-theme="light"] .site-directory-form-modal.bg-slate-900 {
+[data-theme="light"] .site-directory-form-modal {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow:
@@ -149,18 +149,39 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
   box-shadow: 0 -10px 40px rgb(15 23 42 / 0.12) !important;
 }
 
-[data-theme="light"] .facility-modal .text-white,
-[data-theme="light"] .site-directory-form-modal .text-white {
+[data-theme="light"] .facility-modal .text-white {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .facility-modal .text-slate-300,
-[data-theme="light"] .site-directory-form-modal .text-slate-300 {
+[data-theme="light"] .site-directory-form-modal-title,
+[data-theme="light"] .site-directory-form-equipment-title,
+[data-theme="light"] .site-directory-form-equipment-item-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .site-directory-form-field-label,
+[data-theme="light"] .site-directory-form-equipment-hint,
+[data-theme="light"] .site-directory-form-equipment-item-type {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .site-directory-form-equipment-item,
+[data-theme="light"] .site-directory-form-equipment-item-id {
   color: #475569 !important;
 }
 
-[data-theme="light"] .facility-modal .text-slate-400,
-[data-theme="light"] .site-directory-form-modal .text-slate-400 {
+[data-theme="light"] .site-directory-form-equipment-box,
+[data-theme="light"] .admin-form-subsection {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
+}
+
+[data-theme="light"] .facility-modal .text-slate-300 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .facility-modal .text-slate-400 {
   color: #64748b !important;
 }
 
@@ -186,14 +207,12 @@ html.layout-fold[data-theme="light"] .modal-backdrop .app-modal-sheet.bg-slate-9
   color: #0f172a !important;
 }
 
-[data-theme="light"] .facility-modal button.bg-slate-800,
-[data-theme="light"] .site-directory-form-modal .site-directory-form-cancel {
+[data-theme="light"] .facility-modal button.bg-slate-800 {
   background-color: #f1f5f9 !important;
   color: #475569 !important;
 }
 
-[data-theme="light"] .facility-modal button.bg-slate-800:hover,
-[data-theme="light"] .site-directory-form-modal .site-directory-form-cancel:hover {
+[data-theme="light"] .facility-modal button.bg-slate-800:hover {
   background-color: #e2e8f0 !important;
   color: #0f172a !important;
 }
@@ -3796,15 +3815,152 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 }
 
 [data-theme="light"] .admin-users-modal,
-[data-theme="light"] .admin-sites-delete-modal {
+[data-theme="light"] .admin-sites-delete-modal,
+[data-theme="light"] .admin-modal {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
   color: #334155 !important;
+  box-shadow:
+    0 24px 48px rgb(15 23 42 / 0.12),
+    0 0 0 1px rgb(99 102 241 / 0.08) !important;
 }
 
+[data-theme="light"] .admin-modal-title,
 [data-theme="light"] .admin-users-modal .text-white,
 [data-theme="light"] .admin-sites-delete-modal .text-white {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-modal-body-text,
+[data-theme="light"] .admin-form-field-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-modal-close-btn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-modal-close-btn:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-modal-footer,
+[data-theme="light"] .admin-users-form-modal-footer,
+[data-theme="light"] .admin-sites-delete-footer {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .admin-modal-cancel,
+[data-theme="light"] .admin-sites-btn-secondary,
+[data-theme="light"] .site-directory-form-cancel {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-modal-cancel:hover,
+[data-theme="light"] .admin-sites-btn-secondary:hover,
+[data-theme="light"] .site-directory-form-cancel:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-modal-submit,
+[data-theme="light"] .site-directory-form-submit {
+  background: #059669 !important;
+  border-color: rgb(16 185 129 / 0.45) !important;
+  color: #fff !important;
+}
+
+[data-theme="light"] .admin-modal-submit:hover:not(:disabled),
+[data-theme="light"] .site-directory-form-submit:hover:not(:disabled) {
+  background: #047857 !important;
+  border-color: #065f46 !important;
+}
+
+[data-theme="light"] .admin-modal-submit--danger,
+[data-theme="light"] .admin-sites-btn-danger {
+  background: #dc2626 !important;
+  border-color: rgb(239 68 68 / 0.45) !important;
+  color: #fff !important;
+}
+
+[data-theme="light"] .admin-modal-submit--danger:hover:not(:disabled),
+[data-theme="light"] .admin-sites-btn-danger:hover:not(:disabled) {
+  background: #b91c1c !important;
+  border-color: #991b1b !important;
+}
+
+[data-theme="light"] .admin-segment-btn {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-segment-btn:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-segment-btn.is-active {
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.35) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .admin-users-site-chip {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-users-site-chip.is-active {
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.35) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .admin-users-role-badge {
+  background: rgb(99 102 241 / 0.1) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .admin-users-status-badge--pending {
+  background: rgb(245 158 11 / 0.12) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-users-status-badge--active {
+  background: rgb(16 185 129 / 0.12) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .admin-users-status-badge--blocked {
+  background: rgb(239 68 68 / 0.1) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .admin-users-avatar-label {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-users-avatar-upload-btn {
+  background: #fff !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .admin-users-avatar-upload-btn:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-form-heading svg {
+  color: #6366f1 !important;
 }
 
 [data-theme="light"] .admin-panel button.bg-indigo-600,

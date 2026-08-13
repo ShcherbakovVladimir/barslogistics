@@ -26,7 +26,7 @@ interface SiteDirectoryFormModalProps {
 }
 
 const fieldClass =
-  'w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
+  'admin-form-field admin-field w-full rounded-lg px-2.5 py-2 text-sm min-h-[2.75rem]';
 
 export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
   mode,
@@ -107,7 +107,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
       <div
         ref={sheetRef}
         style={sheetStyle}
-        className={`site-directory-form-modal app-modal-sheet modal-panel shipment-events-panel bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl text-slate-100 ${isDragging ? 'is-sheet-dragging' : ''}`}
+        className={`site-directory-form-modal app-modal-sheet modal-panel admin-form-panel w-full max-w-lg ${isDragging ? 'is-sheet-dragging' : ''}`}
       >
         <form onSubmit={handleSubmit} className="site-directory-form-modal-form flex flex-col flex-1 min-h-0">
         <header className="modal-panel-header app-modal-sheet-header">
@@ -116,30 +116,28 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
             isDragging={isDragging}
           />
           <div className="flex items-start justify-between gap-3">
-            <h4 className="font-bold text-base text-white min-w-0 break-words">
+            <h4 className="site-directory-form-modal-title">
               {mode === 'create' ? t('siteDirectory.admin.add') : t('siteDirectory.admin.edit')}
             </h4>
             <button
               type="button"
               onClick={onClose}
-              className="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="admin-modal-close-btn"
               aria-label={t('common.close')}
             >
-              <X className="w-4 h-4" />
+              <X aria-hidden />
             </button>
           </div>
         </header>
 
         <div className="modal-panel-body modal-scrollbar space-y-3">
-          {error && (
-            <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-2.5">
-              {error}
-            </div>
-          )}
+          {error ? (
+            <div className="admin-alert admin-alert--error">{error}</div>
+          ) : null}
 
           <div className="site-directory-form-grid grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
             <label className="space-y-1.5 sm:col-span-2">
-              <span className="text-slate-400 font-medium">{t('siteDirectory.colName')}</span>
+              <span className="site-directory-form-field-label">{t('siteDirectory.colName')}</span>
               <input
                 required
                 value={form.name}
@@ -148,7 +146,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('siteDirectory.admin.colType')}</span>
+              <span className="site-directory-form-field-label">{t('siteDirectory.admin.colType')}</span>
               <SearchableSelect
                 value={form.type}
                 onChange={v => setForm({ ...form, type: v as FactoryType })}
@@ -160,7 +158,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('siteDirectory.admin.colCode')}</span>
+              <span className="site-directory-form-field-label">{t('siteDirectory.admin.colCode')}</span>
               <input
                 value={form.code}
                 onChange={e => setForm({ ...form, code: e.target.value })}
@@ -168,7 +166,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('factories.latitude')}</span>
+              <span className="site-directory-form-field-label">{t('factories.latitude')}</span>
               <input
                 required
                 value={form.latitude}
@@ -177,7 +175,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('factories.longitude')}</span>
+              <span className="site-directory-form-field-label">{t('factories.longitude')}</span>
               <input
                 required
                 value={form.longitude}
@@ -186,7 +184,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('factories.region')}</span>
+              <span className="site-directory-form-field-label">{t('factories.region')}</span>
               <KladrAddressInput
                 mode="region"
                 value={form.region}
@@ -196,7 +194,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5">
-              <span className="text-slate-400 font-medium">{t('factories.country')}</span>
+              <span className="site-directory-form-field-label">{t('factories.country')}</span>
               <input
                 value={form.country}
                 onChange={e => setForm({ ...form, country: e.target.value })}
@@ -204,7 +202,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5 sm:col-span-2">
-              <span className="text-slate-400 font-medium">{t('siteDirectory.admin.colAddress')}</span>
+              <span className="site-directory-form-field-label">{t('siteDirectory.admin.colAddress')}</span>
               <KladrAddressInput
                 value={form.address}
                 onChange={v => setForm({ ...form, address: v })}
@@ -213,7 +211,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5 sm:col-span-2">
-              <span className="text-slate-400 font-medium">{t('factories.holdingField')}</span>
+              <span className="site-directory-form-field-label">{t('factories.holdingField')}</span>
               <input
                 value={form.holding}
                 onChange={e => setForm({ ...form, holding: e.target.value })}
@@ -221,7 +219,7 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
               />
             </label>
             <label className="space-y-1.5 sm:col-span-2">
-              <span className="text-slate-400 font-medium">{t('factories.description')}</span>
+              <span className="site-directory-form-field-label">{t('factories.description')}</span>
               <textarea
                 rows={3}
                 value={form.description}
@@ -229,30 +227,30 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
                 className={`${fieldClass} min-h-[4.5rem] resize-y`}
               />
             </label>
-            <label className="flex items-center gap-2.5 text-slate-300 sm:col-span-2 min-h-[2.75rem]">
+            <label className="admin-form-check sm:col-span-2 min-h-[2.75rem]">
               <input type="checkbox" checked={form.is_ours} onChange={e => setForm({ ...form, is_ours: e.target.checked })} />
               {t('common.oursObject')}
             </label>
-            <label className="flex items-center gap-2.5 text-slate-300 sm:col-span-2 min-h-[2.75rem]">
+            <label className="admin-form-check sm:col-span-2 min-h-[2.75rem]">
               <input type="checkbox" checked={form.is_active} onChange={e => setForm({ ...form, is_active: e.target.checked })} />
               {t('siteDirectory.admin.active')}
             </label>
           </div>
 
           {mode === 'edit' && (
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-3 space-y-2">
-              <div className="text-xs font-semibold text-white">{t('transport.siteEquipment')}</div>
-              <p className="text-[11px] text-slate-500">{t('transport.siteEquipmentHint')}</p>
+            <div className="site-directory-form-equipment-box space-y-2">
+              <div className="site-directory-form-equipment-title">{t('transport.siteEquipment')}</div>
+              <p className="site-directory-form-equipment-hint">{t('transport.siteEquipmentHint')}</p>
               {transportAssets.length === 0 ? (
-                <p className="text-xs text-slate-500">{t('transport.siteEquipmentEmpty')}</p>
+                <p className="admin-form-msg--muted">{t('transport.siteEquipmentEmpty')}</p>
               ) : (
-                <ul className="space-y-1.5">
+                <ul className="site-directory-form-equipment-list space-y-1.5">
                   {transportAssets.map(a => (
-                    <li key={a.id} className="text-xs text-slate-300 flex flex-wrap gap-x-2">
-                      <span className="font-medium text-white">{a.name}</span>
-                      <span className="text-slate-500">{t(`transport.types.${a.type_key}`)}</span>
+                    <li key={a.id} className="site-directory-form-equipment-item">
+                      <span className="site-directory-form-equipment-item-name">{a.name}</span>
+                      <span className="site-directory-form-equipment-item-type">{t(`transport.types.${a.type_key}`)}</span>
                       {a.vehicle_number || a.inventory_number ? (
-                        <span className="font-mono text-[10px] text-slate-400">
+                        <span className="site-directory-form-equipment-item-id">
                           {a.vehicle_number || a.inventory_number}
                         </span>
                       ) : null}
@@ -269,16 +267,16 @@ export const SiteDirectoryFormModal: React.FC<SiteDirectoryFormModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="site-directory-form-cancel px-4 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 text-sm font-medium"
+              className="site-directory-form-cancel"
             >
               {t('common.cancel')}
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="site-directory-form-submit flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm disabled:opacity-50"
+              className="site-directory-form-submit"
             >
-              <Save className="w-4 h-4" />
+              <Save aria-hidden />
               {saving ? t('admin.users.saving') : t('admin.users.save')}
             </button>
           </div>

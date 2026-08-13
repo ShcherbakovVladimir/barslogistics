@@ -46,13 +46,13 @@ export const TelegramSettingsForm: React.FC<TelegramSettingsFormProps> = ({ sett
   };
 
   return (
-    <div className="space-y-3 border-t border-slate-800 pt-4 mt-4">
-      <h4 className="text-sm font-bold text-white flex items-center gap-2">
-        <Settings2 className="w-4 h-4 text-indigo-400" />
+    <div className="admin-form-divider space-y-3">
+      <h4 className="admin-form-heading">
+        <Settings2 aria-hidden />
         {t('integrations.adminSettings')}
       </h4>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
         {t('integrations.enabled')}
       </label>
@@ -67,12 +67,12 @@ export const TelegramSettingsForm: React.FC<TelegramSettingsFormProps> = ({ sett
         <input className={inputClass} value={form.default_chat_id} onChange={e => setForm({ ...form, default_chat_id: e.target.value })} />
       </div>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.alert_on_delay} onChange={e => setForm({ ...form, alert_on_delay: e.target.checked })} />
         {t('integrations.alertOnDelay')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.alert_on_status_change} onChange={e => setForm({ ...form, alert_on_status_change: e.target.checked })} />
         {t('integrations.alertOnStatusChange')}
       </label>
@@ -85,7 +85,7 @@ export const TelegramSettingsForm: React.FC<TelegramSettingsFormProps> = ({ sett
           <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
         </button>
       </div>
-      {msg && <p className="text-xs text-slate-400">{msg}</p>}
+      {msg ? <p className="admin-form-msg">{msg}</p> : null}
     </div>
   );
 };
@@ -134,18 +134,18 @@ export const CloudSettingsForm: React.FC<CloudSettingsFormProps> = ({ settings, 
   };
 
   return (
-    <div className="admin-form-panel space-y-3 border-t border-slate-800 pt-4">
-      <h4 className="text-sm font-bold text-white flex items-center gap-2">
-        <Settings2 className="w-4 h-4 text-emerald-400" />
+    <div className="admin-form-panel admin-form-divider space-y-3">
+      <h4 className="admin-form-heading">
+        <Settings2 aria-hidden />
         {t('integrations.adminSettings')}
       </h4>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
         {t('integrations.enabled')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.auto_upload_on_backup} onChange={e => setForm({ ...form, auto_upload_on_backup: e.target.checked })} />
         {t('integrations.autoUploadBackup')}
       </label>
@@ -185,18 +185,20 @@ export const CloudSettingsForm: React.FC<CloudSettingsFormProps> = ({ settings, 
         </div>
       )}
 
-      {form.last_upload_at && <p className="text-[11px] text-slate-500">{t('integrations.lastUpload')}: {new Date(form.last_upload_at).toLocaleString()}</p>}
-      {form.last_error && <p className="text-[11px] text-red-400">{form.last_error}</p>}
+      {form.last_upload_at ? (
+        <p className="admin-form-msg--muted">{t('integrations.lastUpload')}: {new Date(form.last_upload_at).toLocaleString()}</p>
+      ) : null}
+      {form.last_error ? <p className="admin-form-msg--error">{form.last_error}</p> : null}
 
-      <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
-          <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
+      <div className="admin-form-actions">
+        <button type="button" onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
+          <Save aria-hidden /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
-          <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
+        <button type="button" onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
+          <TestTube aria-hidden /> {t('integrations.testConnection')}
         </button>
       </div>
-      {msg && <p className="text-xs text-slate-400">{msg}</p>}
+      {msg ? <p className="admin-form-msg">{msg}</p> : null}
     </div>
   );
 };
@@ -240,34 +242,34 @@ export const TelemetrySettingsForm: React.FC<TelemetrySettingsFormProps> = ({ se
   };
 
   return (
-    <div className="space-y-3 border-t border-slate-800 pt-4">
-      <h4 className="text-sm font-bold text-white flex items-center gap-2">
-        <Satellite className="w-4 h-4 text-cyan-400" />
+    <div className="admin-form-divider space-y-3">
+      <h4 className="admin-form-heading">
+        <Satellite aria-hidden />
         {t('integrations.telemetryTitle')}
       </h4>
-      <p className="text-[11px] text-slate-400">{t('integrations.telemetrySubtitle')}</p>
+      <p className="admin-form-hint">{t('integrations.telemetrySubtitle')}</p>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
         {t('integrations.enabled')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.sync_carriers} onChange={e => setForm({ ...form, sync_carriers: e.target.checked })} />
         {t('integrations.telemetrySyncCarriers')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.webhook_enabled} onChange={e => setForm({ ...form, webhook_enabled: e.target.checked })} />
         {t('integrations.telemetryWebhook')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.allow_jwt_push} onChange={e => setForm({ ...form, allow_jwt_push: e.target.checked })} />
         {t('integrations.telemetryJwtPush')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.calculate_progress} onChange={e => setForm({ ...form, calculate_progress: e.target.checked })} />
         {t('integrations.telemetryCalcProgress')}
       </label>
@@ -304,21 +306,21 @@ export const TelemetrySettingsForm: React.FC<TelemetrySettingsFormProps> = ({ se
       </div>
 
       {form.last_sync_at && (
-        <p className="text-[11px] text-slate-500">
+        <p className="admin-form-msg--muted">
           {t('integrations.telemetryLastSync')}: {new Date(form.last_sync_at).toLocaleString()} ({form.last_updated_count ?? 0})
         </p>
       )}
-      {form.last_error && <p className="text-[11px] text-red-400">{form.last_error}</p>}
+      {form.last_error ? <p className="admin-form-msg--error">{form.last_error}</p> : null}
 
-      <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
-          <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
+      <div className="admin-form-actions">
+        <button type="button" onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
+          <Save aria-hidden /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleSync} disabled={syncing} className="admin-form-actions-btn admin-form-actions-btn--secondary">
-          <TestTube className="w-3.5 h-3.5" /> {syncing ? t('integrations.telemetrySyncing') : t('integrations.telemetrySyncNow')}
+        <button type="button" onClick={handleSync} disabled={syncing} className="admin-form-actions-btn admin-form-actions-btn--secondary">
+          <TestTube aria-hidden /> {syncing ? t('integrations.telemetrySyncing') : t('integrations.telemetrySyncNow')}
         </button>
       </div>
-      {msg && <p className="text-xs text-slate-400">{msg}</p>}
+      {msg ? <p className="admin-form-msg">{msg}</p> : null}
     </div>
   );
 };
@@ -386,9 +388,9 @@ export const CarrierConfigForm: React.FC<CarrierConfigFormProps> = ({ carrier, o
             <div><label className={labelClass}>{t('integrations.fieldLng')}</label><input className={inputClass} value={form.lng_field || ''} onChange={e => setForm({ ...form, lng_field: e.target.value })} /></div>
             <div><label className={labelClass}>{t('integrations.fieldSpeed')}</label><input className={inputClass} value={form.speed_field || ''} onChange={e => setForm({ ...form, speed_field: e.target.value })} /></div>
           </div>
-          {carrier.last_error && <p className="text-red-400 text-[10px]">{carrier.last_error}</p>}
-        <button onClick={handleSave} className="admin-form-actions-btn admin-form-actions-btn--primary">{t('integrations.saveSettings')}</button>
-          {msg && <p className="text-slate-400">{msg}</p>}
+          {carrier.last_error ? <p className="admin-form-msg--error">{carrier.last_error}</p> : null}
+        <button type="button" onClick={handleSave} className="admin-form-actions-btn admin-form-actions-btn--primary">{t('integrations.saveSettings')}</button>
+          {msg ? <p className="admin-form-msg">{msg}</p> : null}
         </div>
       )}
     </div>
@@ -451,19 +453,19 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
   };
 
   return (
-    <div className="space-y-3">
-      <h4 className="text-sm font-bold text-white flex items-center gap-2">
-        <Mail className="w-4 h-4 text-indigo-400" />
+    <div className="admin-form-panel space-y-3">
+      <h4 className="admin-form-heading">
+        <Mail aria-hidden />
         {t('integrations.mailTitle')}
       </h4>
-      <p className="text-xs text-slate-400">{t('integrations.mailHint')}</p>
+      <p className="admin-form-hint">{t('integrations.mailHint')}</p>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
         {t('integrations.enabled')}
       </label>
 
-      <label className="flex items-center gap-2 text-xs text-slate-300">
+      <label className="admin-form-check">
         <input
           type="checkbox"
           checked={form.registration_enabled}
@@ -474,31 +476,23 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
 
       <div>
         <label className={labelClass}>{t('integrations.mailMode')}</label>
-        <div className="admin-form-actions flex gap-2">
+        <div className="admin-segment-group">
           <button
             type="button"
             onClick={() => setForm({ ...form, mode: 'builtin' })}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold border ${
-              form.mode === 'builtin'
-                ? 'bg-indigo-600 border-indigo-500 text-white'
-                : 'bg-slate-950 border-slate-800 text-slate-300'
-            }`}
+            className={`admin-segment-btn${form.mode === 'builtin' ? ' is-active' : ''}`}
           >
             {t('integrations.mailModeBuiltin')}
           </button>
           <button
             type="button"
             onClick={() => setForm({ ...form, mode: 'external' })}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold border ${
-              form.mode === 'external'
-                ? 'bg-indigo-600 border-indigo-500 text-white'
-                : 'bg-slate-950 border-slate-800 text-slate-300'
-            }`}
+            className={`admin-segment-btn${form.mode === 'external' ? ' is-active' : ''}`}
           >
             {t('integrations.mailModeExternal')}
           </button>
         </div>
-        <p className="text-[10px] text-slate-500 mt-1">
+        <p className="admin-form-msg--muted mt-1">
           {form.mode === 'builtin' ? t('integrations.mailModeBuiltinHint') : t('integrations.mailModeExternalHint')}
         </p>
       </div>
@@ -524,7 +518,7 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
       </div>
 
       {form.mode === 'builtin' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border border-slate-800 rounded-xl p-3">
+        <div className="admin-form-subsection">
           <div>
             <label className={labelClass}>{t('integrations.mailBuiltinHostname')}</label>
             <input
@@ -544,7 +538,7 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border border-slate-800 rounded-xl p-3">
+        <div className="admin-form-subsection">
           <div>
             <label className={labelClass}>{t('integrations.mailSmtpHost')}</label>
             <input className={inputClass} value={form.smtp_host} onChange={e => setForm({ ...form, smtp_host: e.target.value })} />
@@ -571,7 +565,7 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
               onChange={e => setForm({ ...form, smtp_password: e.target.value })}
             />
           </div>
-          <label className="flex items-center gap-2 text-xs text-slate-300 sm:col-span-2">
+          <label className="admin-form-check sm:col-span-2">
             <input
               type="checkbox"
               checked={form.smtp_secure}
@@ -579,7 +573,7 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
             />
             {t('integrations.mailSmtpSecure')}
           </label>
-          <p className="text-[10px] text-slate-500 sm:col-span-2">{t('integrations.mailSmtpSecureHint')}</p>
+          <p className="admin-form-msg--muted sm:col-span-2">{t('integrations.mailSmtpSecureHint')}</p>
         </div>
       )}
 
@@ -588,22 +582,22 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
         <input className={inputClass} value={testTo} onChange={e => setTestTo(e.target.value)} />
       </div>
 
-      {(form.last_error || form.last_sent_at) && (
-        <div className="text-[10px] text-slate-500 space-y-0.5">
-          {form.last_sent_at && <p>{t('integrations.mailLastSent')}: {form.last_sent_at}</p>}
-          {form.last_error && <p className="text-red-400">{t('integrations.mailLastError')}: {form.last_error}</p>}
+      {(form.last_error || form.last_sent_at) ? (
+        <div className="admin-form-msg--muted space-y-0.5">
+          {form.last_sent_at ? <p>{t('integrations.mailLastSent')}: {form.last_sent_at}</p> : null}
+          {form.last_error ? <p className="admin-form-msg--error">{t('integrations.mailLastError')}: {form.last_error}</p> : null}
         </div>
-      )}
+      ) : null}
 
-      <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
-          <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
+      <div className="admin-form-actions">
+        <button type="button" onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
+          <Save aria-hidden /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
-          <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
+        <button type="button" onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
+          <TestTube aria-hidden /> {t('integrations.testConnection')}
         </button>
       </div>
-      {msg && <p className="text-xs text-slate-400">{msg}</p>}
+      {msg ? <p className="admin-form-msg">{msg}</p> : null}
     </div>
   );
 };
