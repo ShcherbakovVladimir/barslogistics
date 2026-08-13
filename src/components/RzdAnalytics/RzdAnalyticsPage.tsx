@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
   List,
+  Search,
 } from 'lucide-react';
 import type {
   RzdAggregatedRoute,
@@ -79,7 +80,7 @@ interface RecordCardProps {
 }
 
 const RecordCard = ({ record, localeTag, t }: RecordCardProps) => (
-  <article className="rzd-analytics-record-card">
+  <article className="rzd-analytics-card">
     <div className="rzd-analytics-record-card-header">
       <span className="rzd-analytics-record-card-date">{record.shipment_date}</span>
       <span className="rzd-analytics-record-card-volume">
@@ -111,7 +112,7 @@ interface ImportCardProps {
 }
 
 const ImportCard = ({ batch, localeTag, t }: ImportCardProps) => (
-  <article className="rzd-analytics-import-card">
+  <article className="rzd-analytics-card">
     <div className="rzd-analytics-import-card-filename">{batch.filename}</div>
     <div className="rzd-analytics-import-card-date">
       {new Date(batch.created_at).toLocaleString(localeTag)}
@@ -334,29 +335,119 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
 
   return (
     <div className="rzd-analytics-page">
-      <div className="rzd-analytics-header">
-        <div className="rzd-analytics-toolbar shipments-list-toolbar">
-          <div className="rzd-analytics-toolbar-top">
-            <div className="shipments-list-toolbar-head">
-              <span className="shipments-list-toolbar-icon" aria-hidden>
-                <Train />
-              </span>
-              <div className="shipments-list-toolbar-text">
-                <h2 className="shipments-list-title">
-                  <span className="truncate">{t('rzdAnalytics.title')}</span>
-                </h2>
-                <p className="shipments-list-subtitle rzd-analytics-subtitle">{t('rzdAnalytics.subtitle')}</p>
-              </div>
+      <div className="rzd-analytics-list-toolbar shipments-list-toolbar">
+        <div className="shipments-list-toolbar-head">
+          <span className="shipments-list-toolbar-icon" aria-hidden>
+            <Train />
+          </span>
+          <div className="shipments-list-toolbar-text">
+            <h2 className="shipments-list-title">
+              <span className="truncate">{t('rzdAnalytics.title')}</span>
+            </h2>
+            <p className="shipments-list-subtitle">{t('rzdAnalytics.subtitle')}</p>
+          </div>
+        </div>
+
+        {showToolsToggle && (
+          <button
+            type="button"
+            onClick={() => setToolsExpanded(v => !v)}
+            className="rzd-analytics-tools-toggle factories-region-action-btn"
+          >
+            <span className="rzd-analytics-tools-toggle-label">
+              <Filter aria-hidden />
+              {t('rzdAnalytics.filters')}
+            </span>
+            {toolsExpanded ? <ChevronUp aria-hidden /> : <ChevronDown aria-hidden />}
+          </button>
+        )}
+
+        {(toolsExpanded || !showToolsToggle) && (
+          <div className="rzd-analytics-tools-body theme-scrollbar">
+            <div className="rzd-analytics-kpi-strip">
+              {kpiCards.map(card => (
+                <div key={card.label} className="rzd-analytics-kpi-item">
+                  <span className="rzd-analytics-kpi-label">{card.label}</span>
+                  <span className="rzd-analytics-kpi-value">{card.value}</span>
+                </div>
+              ))}
             </div>
-            <div className="rzd-analytics-toolbar-actions">
+
+            <div className="shipments-list-filters shipments-list-filters-grid rzd-analytics-filters-grid">
+              <label className="shipments-list-filter rzd-analytics-date-filter">
+                <span className="rzd-analytics-date-filter-label">{t('rzdAnalytics.dateFrom')}</span>
+                <input
+                  type="date"
+                  value={filters.dateFrom ?? ''}
+                  onChange={e => updateFilters({ dateFrom: e.target.value || undefined })}
+                  aria-label={t('rzdAnalytics.dateFrom')}
+                />
+              </label>
+              <label className="shipments-list-filter rzd-analytics-date-filter">
+                <span className="rzd-analytics-date-filter-label">{t('rzdAnalytics.dateTo')}</span>
+                <input
+                  type="date"
+                  value={filters.dateTo ?? ''}
+                  onChange={e => updateFilters({ dateTo: e.target.value || undefined })}
+                  aria-label={t('rzdAnalytics.dateTo')}
+                />
+              </label>
+              <div className="shipments-list-filter">
+                <SearchableSelect
+                  value={filters.cargoCode ?? ''}
+                  onChange={v => updateFilters({ cargoCode: v || undefined })}
+                  options={cargoOptions}
+                  allowEmpty
+                  emptyLabel={t('rzdAnalytics.allCargo')}
+                  placeholder={t('rzdAnalytics.cargo')}
+                  inlinePanel={mobileLayout}
+                  panelClassName="shipments-list-dropdown-panel"
+                  listClassName="shipment-events-scroll"
+                />
+              </div>
+              <div className="shipments-list-filter">
+                <SearchableSelect
+                  value={filters.originRegion ?? ''}
+                  onChange={v => updateFilters({ originRegion: v || undefined })}
+                  options={originRegionOptions}
+                  allowEmpty
+                  emptyLabel={t('rzdAnalytics.allRegions')}
+                  placeholder={t('rzdAnalytics.originRegion')}
+                  inlinePanel={mobileLayout}
+                  panelClassName="shipments-list-dropdown-panel"
+                  listClassName="shipment-events-scroll"
+                />
+              </div>
+              <div className="shipments-list-filter">
+                <SearchableSelect
+                  value={filters.destRegion ?? ''}
+                  onChange={v => updateFilters({ destRegion: v || undefined })}
+                  options={destRegionOptions}
+                  allowEmpty
+                  emptyLabel={t('rzdAnalytics.allRegions')}
+                  placeholder={t('rzdAnalytics.destRegion')}
+                  inlinePanel={mobileLayout}
+                  panelClassName="shipments-list-dropdown-panel"
+                  listClassName="shipment-events-scroll"
+                />
+              </div>
+              <div className="shipments-list-search rzd-analytics-search">
+                <Search aria-hidden />
+                <input
+                  type="text"
+                  value={filters.cargoSearch ?? ''}
+                  placeholder={t('rzdAnalytics.searchPlaceholder')}
+                  onChange={e => updateFilters({ cargoSearch: e.target.value || undefined })}
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => void loadData()}
                 disabled={loading}
-                className="rzd-analytics-toolbar-btn rzd-analytics-toolbar-btn--refresh"
+                className="rzd-analytics-refresh-btn factories-region-action-btn"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-                {t('rzdAnalytics.refresh')}
+                <RefreshCw className={loading ? 'animate-spin' : undefined} aria-hidden />
+                <span>{t('rzdAnalytics.refresh')}</span>
               </button>
               {canImport && (
                 <>
@@ -375,185 +466,84 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                     type="button"
                     onClick={() => fileRef.current?.click()}
                     disabled={importing}
-                    className="rzd-analytics-toolbar-btn rzd-analytics-toolbar-btn--upload"
+                    className="rzd-analytics-upload-btn factories-add-btn"
                   >
-                    <Upload className="w-3.5 h-3.5" />
-                    {importing ? t('rzdAnalytics.importing') : t('rzdAnalytics.uploadCsv')}
+                    <Upload aria-hidden />
+                    <span>{importing ? t('rzdAnalytics.importing') : t('rzdAnalytics.uploadCsv')}</span>
                   </button>
                 </>
               )}
             </div>
           </div>
+        )}
 
-          {(error || importMsg) && (
-            <div className={`rzd-analytics-alert ${error ? 'rzd-analytics-alert--error' : 'rzd-analytics-alert--success'}`}>
-              {error || importMsg}
-            </div>
-          )}
-
-          {showToolsToggle && (
-            <button
-              type="button"
-              onClick={() => setToolsExpanded(v => !v)}
-              className="rzd-analytics-tools-toggle"
-            >
-              <span className="rzd-analytics-tools-toggle-label">
-                <Filter className="w-3.5 h-3.5" />
-                {t('rzdAnalytics.filters')}
-              </span>
-              {toolsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
-          )}
-
-          {(toolsExpanded || !showToolsToggle) && (
-            <div className="rzd-analytics-tools-body theme-scrollbar">
-              <div className="rzd-analytics-kpi-grid">
-                {kpiCards.map(card => (
-                  <div key={card.label} className="rzd-analytics-kpi-card">
-                    <div className="rzd-analytics-kpi-label">{card.label}</div>
-                    <div className="rzd-analytics-kpi-value">{card.value}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="rzd-analytics-filters theme-scrollbar">
-                <div className="rzd-analytics-filters-title">
-                  <Filter className="w-3.5 h-3.5" />
-                  {t('rzdAnalytics.filters')}
-                </div>
-                <div className="rzd-analytics-filters-grid">
-                  <label className="rzd-analytics-filter-item">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.dateFrom')}</span>
-                    <input
-                      type="date"
-                      value={filters.dateFrom ?? ''}
-                      onChange={e => updateFilters({ dateFrom: e.target.value || undefined })}
-                      className="rzd-analytics-field"
-                    />
-                  </label>
-                  <label className="rzd-analytics-filter-item">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.dateTo')}</span>
-                    <input
-                      type="date"
-                      value={filters.dateTo ?? ''}
-                      onChange={e => updateFilters({ dateTo: e.target.value || undefined })}
-                      className="rzd-analytics-field"
-                    />
-                  </label>
-                  <label className="rzd-analytics-filter-item">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.cargo')}</span>
-                    <SearchableSelect
-                      value={filters.cargoCode ?? ''}
-                      onChange={v => updateFilters({ cargoCode: v || undefined })}
-                      options={cargoOptions}
-                      allowEmpty
-                      emptyLabel={t('rzdAnalytics.allCargo')}
-                      placeholder={t('rzdAnalytics.allCargo')}
-                      triggerClassName="rzd-analytics-field"
-                      inlinePanel={mobileLayout}
-                      panelClassName="rzd-analytics-dropdown-panel"
-                      listClassName="rzd-analytics-dropdown-list"
-                    />
-                  </label>
-                  <label className="rzd-analytics-filter-item">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.originRegion')}</span>
-                    <SearchableSelect
-                      value={filters.originRegion ?? ''}
-                      onChange={v => updateFilters({ originRegion: v || undefined })}
-                      options={originRegionOptions}
-                      allowEmpty
-                      emptyLabel={t('rzdAnalytics.allRegions')}
-                      placeholder={t('rzdAnalytics.allRegions')}
-                      triggerClassName="rzd-analytics-field"
-                      inlinePanel={mobileLayout}
-                      panelClassName="rzd-analytics-dropdown-panel"
-                      listClassName="rzd-analytics-dropdown-list"
-                    />
-                  </label>
-                  <label className="rzd-analytics-filter-item rzd-analytics-filter-item--wide">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.search')}</span>
-                    <input
-                      type="text"
-                      value={filters.cargoSearch ?? ''}
-                      placeholder={t('rzdAnalytics.searchPlaceholder')}
-                      onChange={e => updateFilters({ cargoSearch: e.target.value || undefined })}
-                      className="rzd-analytics-field"
-                    />
-                  </label>
-                  <label className="rzd-analytics-filter-item rzd-analytics-filter-item--wide">
-                    <span className="rzd-analytics-filter-label">{t('rzdAnalytics.destRegion')}</span>
-                    <SearchableSelect
-                      value={filters.destRegion ?? ''}
-                      onChange={v => updateFilters({ destRegion: v || undefined })}
-                      options={destRegionOptions}
-                      allowEmpty
-                      emptyLabel={t('rzdAnalytics.allRegions')}
-                      placeholder={t('rzdAnalytics.allRegions')}
-                      triggerClassName="rzd-analytics-field"
-                      inlinePanel={mobileLayout}
-                      panelClassName="rzd-analytics-dropdown-panel"
-                      listClassName="rzd-analytics-dropdown-list"
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="rzd-analytics-tabs">
-            {([
-              ['map', MapIcon, t('rzdAnalytics.tabMap')] as const,
-              ['table', Table2, t('rzdAnalytics.tabTable')] as const,
-              ['imports', BarChart3, t('rzdAnalytics.tabImports')] as const,
-            ]).map(([id, Icon, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setView(id)}
-                className={`rzd-analytics-tab${view === id ? ' is-active' : ''}`}
-              >
-                <Icon className="w-3.5 h-3.5 shrink-0" />
-                <span className="rzd-analytics-tab-label">{label}</span>
-              </button>
-            ))}
+        {(error || importMsg) && (
+          <div className={`rzd-analytics-alert ${error ? 'rzd-analytics-alert--error' : 'rzd-analytics-alert--success'}`}>
+            {error || importMsg}
           </div>
+        )}
+
+        <div
+          className="rzd-analytics-view-modes factories-view-modes"
+          role="tablist"
+          aria-label={t('rzdAnalytics.title')}
+        >
+          {([
+            ['map', MapIcon, t('rzdAnalytics.tabMap')] as const,
+            ['table', Table2, t('rzdAnalytics.tabTable')] as const,
+            ['imports', BarChart3, t('rzdAnalytics.tabImports')] as const,
+          ]).map(([id, Icon, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={view === id}
+              onClick={() => setView(id)}
+              className={`factories-view-mode-tab${view === id ? ' is-active' : ''}`}
+            >
+              <Icon aria-hidden />
+              <span className="rzd-analytics-view-mode-label">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="rzd-analytics-content">
+      <div className="rzd-analytics-main">
         {view === 'map' && (
           <div className="rzd-analytics-map-layout">
-            <div className="rzd-analytics-map-wrap">
-              <RzdAnalyticsMap routes={routes} onSelectRoute={setSelectedRoute} />
-              {mobileLayout && (
-                <div className="rzd-analytics-map-fab-bar">
-                  <button
-                    type="button"
-                    onClick={() => setRoutesSheetOpen(true)}
-                    className={`rzd-analytics-map-fab ${routesSheetOpen ? 'is-active' : ''}`}
-                    aria-label={t('rzdAnalytics.topRoutes')}
-                  >
-                    <List className="w-4 h-4 shrink-0" />
-                    <span className="rzd-analytics-map-fab-label">{t('rzdAnalytics.topRoutes')}</span>
-                  </button>
-                </div>
-              )}
+            <div className="rzd-analytics-map-shell">
+              <div className="rzd-analytics-map-wrap">
+                <RzdAnalyticsMap routes={routes} onSelectRoute={setSelectedRoute} />
+                {mobileLayout && (
+                  <div className="rzd-analytics-map-fab-bar">
+                    <button
+                      type="button"
+                      onClick={() => setRoutesSheetOpen(true)}
+                      className={`rzd-analytics-map-fab ${routesSheetOpen ? 'is-active' : ''}`}
+                      aria-label={t('rzdAnalytics.topRoutes')}
+                    >
+                      <List aria-hidden />
+                      <span className="rzd-analytics-map-fab-label">{t('rzdAnalytics.topRoutes')}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="rzd-analytics-routes rzd-analytics-routes--desktop">
+            <div className="rzd-analytics-routes-panel rzd-analytics-routes--desktop">
               <div className="rzd-analytics-routes-title">
                 {t('rzdAnalytics.topRoutes')}
               </div>
               <div className="rzd-analytics-routes-list theme-scrollbar">
-              {routes.slice(0, 20).map(r => (
-                <RouteListItem
-                  key={`${r.origin_station_id}-${r.dest_station_id}-${r.cargo_code}`}
-                  route={r}
-                  selected={selectedRoute === r}
-                  localeTag={localeTag}
-                  tonsLabel={t('common.tons')}
-                  onSelect={setSelectedRoute}
-                />
-              ))}
+                {routes.slice(0, 20).map(r => (
+                  <RouteListItem
+                    key={`${r.origin_station_id}-${r.dest_station_id}-${r.cargo_code}`}
+                    route={r}
+                    selected={selectedRoute === r}
+                    localeTag={localeTag}
+                    tonsLabel={t('common.tons')}
+                    onSelect={setSelectedRoute}
+                  />
+                ))}
               </div>
             </div>
           </div>

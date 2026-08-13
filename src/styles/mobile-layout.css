@@ -2022,40 +2022,38 @@ html.layout-fold .audit-logs-table-desktop {
 }
 
 /* RZD Analytics — mobile layout */
-html.layout-mobile .rzd-analytics-header,
-html.layout-fold .rzd-analytics-header {
-  padding: 0.75rem 0.75rem 0 !important;
+html.layout-mobile .rzd-analytics-page,
+html.layout-fold .rzd-analytics-page {
+  padding: 0.75rem !important;
+  gap: 0.75rem !important;
 }
 
-html.layout-mobile .rzd-analytics-content,
-html.layout-fold .rzd-analytics-content {
-  padding: 0.5rem 0.75rem 0.75rem !important;
-}
-
-html.layout-mobile .rzd-analytics-toolbar,
-html.layout-fold .rzd-analytics-toolbar {
+html.layout-mobile .rzd-analytics-list-toolbar,
+html.layout-fold .rzd-analytics-list-toolbar {
   padding: 0.875rem !important;
   border-radius: 1rem !important;
 }
 
-html.layout-mobile .rzd-analytics-toolbar h2,
-html.layout-fold .rzd-analytics-toolbar h2 {
+html.layout-mobile .rzd-analytics-list-toolbar .shipments-list-title,
+html.layout-fold .rzd-analytics-list-toolbar .shipments-list-title {
   font-size: 1rem;
 }
 
-html.layout-mobile .rzd-analytics-toolbar-actions,
-html.layout-fold .rzd-analytics-toolbar-actions {
+html.layout-mobile .rzd-analytics-filters-grid,
+html.layout-fold .rzd-analytics-filters-grid {
   width: 100%;
 }
 
-html.layout-mobile .rzd-analytics-toolbar-actions .rzd-analytics-toolbar-btn,
-html.layout-fold .rzd-analytics-toolbar-actions .rzd-analytics-toolbar-btn {
-  flex: 1 1 calc(50% - 0.25rem);
-}
-
-html.layout-mobile .rzd-analytics-filters-title,
-html.layout-fold .rzd-analytics-filters-title {
-  display: none;
+html.layout-mobile .rzd-analytics-filters-grid .shipments-list-filter,
+html.layout-fold .rzd-analytics-filters-grid .shipments-list-filter,
+html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-date-filter,
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-date-filter,
+html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-refresh-btn,
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-refresh-btn,
+html.layout-mobile .rzd-analytics-filters-grid .rzd-analytics-upload-btn,
+html.layout-fold .rzd-analytics-filters-grid .rzd-analytics-upload-btn {
+  flex: 1 1 100%;
+  min-width: 0;
 }
 
 html.layout-mobile .rzd-analytics-tools-body,
@@ -2072,38 +2070,25 @@ html.layout-fold .rzd-analytics-tools-body {
   padding-right: 0.125rem;
 }
 
-html.layout-mobile .rzd-analytics-filters,
-html.layout-fold .rzd-analytics-filters {
-  flex: 1 1 auto;
-  min-height: 0;
-  max-height: none;
-  overflow: visible;
+html.layout-mobile .rzd-analytics-kpi-item,
+html.layout-fold .rzd-analytics-kpi-item {
+  flex: 1 1 calc(50% - 0.25rem);
 }
 
-html.layout-mobile .rzd-analytics-filters-grid,
-html.layout-fold .rzd-analytics-filters-grid {
-  grid-template-columns: 1fr;
+html.layout-mobile .rzd-analytics-kpi-strip .rzd-analytics-kpi-item:last-child,
+html.layout-fold .rzd-analytics-kpi-strip .rzd-analytics-kpi-item:last-child {
+  flex-basis: 100%;
 }
 
-html.layout-mobile .rzd-analytics-kpi-grid,
-html.layout-fold .rzd-analytics-kpi-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-html.layout-mobile .rzd-analytics-kpi-grid .rzd-analytics-kpi-card:last-child,
-html.layout-fold .rzd-analytics-kpi-grid .rzd-analytics-kpi-card:last-child {
-  grid-column: 1 / -1;
-}
-
-html.layout-mobile .rzd-analytics-tabs,
-html.layout-fold .rzd-analytics-tabs {
+html.layout-mobile .rzd-analytics-view-modes,
+html.layout-fold .rzd-analytics-view-modes {
   width: 100%;
 }
 
-html.layout-mobile .rzd-analytics-tab,
-html.layout-fold .rzd-analytics-tab {
+html.layout-mobile .rzd-analytics-view-modes .factories-view-mode-tab,
+html.layout-fold .rzd-analytics-view-modes .factories-view-mode-tab {
   flex: 1 1 0;
+  min-height: 2.5rem;
 }
 
 html.layout-mobile .rzd-analytics-map-layout,
@@ -2114,6 +2099,12 @@ html.layout-fold .rzd-analytics-map-layout {
 html.layout-mobile .rzd-analytics-routes--desktop,
 html.layout-fold .rzd-analytics-routes--desktop {
   display: none !important;
+}
+
+html.layout-mobile .rzd-analytics-map-shell,
+html.layout-fold .rzd-analytics-map-shell {
+  flex: 1 1 auto;
+  min-height: 0 !important;
 }
 
 html.layout-mobile .rzd-analytics-map-wrap,
@@ -2160,26 +2151,18 @@ html.layout-fold .rzd-analytics-pagination-btn {
   min-height: 2.75rem;
 }
 
-html.layout-mobile .rzd-analytics-filters .modal-dropdown .modal-dropdown-trigger,
-html.layout-fold .rzd-analytics-filters .modal-dropdown .modal-dropdown-trigger,
-html.layout-mobile .rzd-analytics-filters .rzd-analytics-field,
-html.layout-fold .rzd-analytics-filters .rzd-analytics-field {
+html.layout-mobile .rzd-analytics-list-toolbar .modal-dropdown-trigger,
+html.layout-fold .rzd-analytics-list-toolbar .modal-dropdown-trigger,
+html.layout-mobile .rzd-analytics-list-toolbar .rzd-analytics-date-filter input[type="date"],
+html.layout-fold .rzd-analytics-list-toolbar .rzd-analytics-date-filter input[type="date"] {
   min-height: 2.75rem;
 }
 
-html.layout-mobile .rzd-analytics-dropdown-panel,
-html.layout-fold .rzd-analytics-dropdown-panel {
+html.layout-mobile .rzd-analytics-list-toolbar .shipments-list-dropdown-panel,
+html.layout-fold .rzd-analytics-list-toolbar .shipments-list-dropdown-panel {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-html.layout-mobile .rzd-analytics-dropdown-panel .rzd-analytics-dropdown-list,
-html.layout-fold .rzd-analytics-dropdown-panel .rzd-analytics-dropdown-list {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
 }
 
 html.layout-mobile .responsive-table-wrap,
