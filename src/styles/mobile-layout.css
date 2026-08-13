@@ -1871,10 +1871,9 @@ html.layout-fold .admin-nav-btn {
   line-height: 1.25;
 }
 
-html.layout-mobile .admin-section-title,
-html.layout-fold .admin-section-title {
-  font-size: 0.9375rem;
-  margin-bottom: 0.75rem !important;
+html.layout-mobile .admin-section-chrome .shipments-list-title,
+html.layout-fold .admin-section-chrome .shipments-list-title {
+  font-size: 1rem;
 }
 
 html.layout-mobile .admin-users-toolbar-actions,

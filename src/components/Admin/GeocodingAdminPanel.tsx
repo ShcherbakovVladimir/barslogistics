@@ -6,7 +6,7 @@ import { useI18n } from '../../i18n';
 import { SearchableSelect } from '../UI/SearchableSelect';
 
 const inputClass = 'admin-field geocoding-admin-field w-full rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[2.75rem] sm:min-h-0';
-const labelClass = 'block text-slate-300 font-semibold mb-1 text-xs';
+const labelClass = 'admin-form-label';
 
 interface GeocodingAdminPanelProps {
   settings: GeocodingSettings | null;
@@ -115,17 +115,17 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
   };
 
   return (
-    <div className="geocoding-admin-panel space-y-6 max-w-3xl">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+    <div className="geocoding-admin-panel admin-form-panel space-y-6 max-w-3xl">
+      <div className="admin-section-card space-y-4">
         <div>
-          <h3 className="font-bold text-white flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-indigo-400" />
+          <h3 className="admin-form-heading">
+            <MapPin />
             {t('integrations.geocodingTitle')}
           </h3>
-          <p className="text-xs text-slate-400 mt-1">{t('integrations.geocodingHint')}</p>
+          <p className="admin-form-hint mt-1">{t('integrations.geocodingHint')}</p>
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
           {t('integrations.enabled')}
         </label>
@@ -140,7 +140,7 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
           />
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input
             type="checkbox"
             checked={form.kladr_fallback_api}
@@ -150,9 +150,9 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
         </label>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-        <h4 className="text-sm font-bold text-white">{t('integrations.kladrLocalDb')}</h4>
-        <p className="text-xs text-slate-400">{t('integrations.kladrLocalDbHint')}</p>
+      <div className="admin-section-card space-y-4">
+        <h4 className="admin-form-heading">{t('integrations.kladrLocalDb')}</h4>
+        <p className="admin-form-hint">{t('integrations.kladrLocalDbHint')}</p>
 
         <div>
           <label className={labelClass}>{t('integrations.kladrArchiveUrl')}</label>
@@ -164,56 +164,56 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
         </div>
 
         <div className="admin-geocoding-stats grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3">
-            <div className="text-slate-500">{t('integrations.kladrSettlements')}</div>
-            <div className="text-white font-bold mt-1">{counts.settlement_count.toLocaleString(localeTag)}</div>
+          <div className="admin-stat-card">
+            <div className="admin-stat-card-label">{t('integrations.kladrSettlements')}</div>
+            <div className="admin-stat-card-value">{counts.settlement_count.toLocaleString(localeTag)}</div>
           </div>
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3">
-            <div className="text-slate-500">{t('integrations.kladrStreets')}</div>
-            <div className="text-white font-bold mt-1">{counts.street_count.toLocaleString(localeTag)}</div>
+          <div className="admin-stat-card">
+            <div className="admin-stat-card-label">{t('integrations.kladrStreets')}</div>
+            <div className="admin-stat-card-value">{counts.street_count.toLocaleString(localeTag)}</div>
           </div>
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3">
-            <div className="text-slate-500">{t('integrations.kladrBuildings')}</div>
-            <div className="text-white font-bold mt-1">{counts.building_count.toLocaleString(localeTag)}</div>
+          <div className="admin-stat-card">
+            <div className="admin-stat-card-label">{t('integrations.kladrBuildings')}</div>
+            <div className="admin-stat-card-value">{counts.building_count.toLocaleString(localeTag)}</div>
           </div>
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3">
-            <div className="text-slate-500">{t('integrations.kladrLastImport')}</div>
-            <div className="text-white font-bold mt-1 text-[10px]">
+          <div className="admin-stat-card">
+            <div className="admin-stat-card-label">{t('integrations.kladrLastImport')}</div>
+            <div className="admin-stat-card-value admin-stat-card-value--sm">
               {counts.last_import_at ? new Date(counts.last_import_at).toLocaleString(localeTag) : '—'}
             </div>
           </div>
         </div>
 
-        {counts.in_progress && (
-          <p className="text-xs text-amber-400">{t('integrations.kladrImportRunning')}</p>
-        )}
-        {counts.last_error && (
-          <p className="text-xs text-red-400">{counts.last_error}</p>
-        )}
+        {counts.in_progress ? (
+          <p className="admin-alert admin-alert--warn">{t('integrations.kladrImportRunning')}</p>
+        ) : null}
+        {counts.last_error ? (
+          <p className="admin-form-msg admin-form-msg--error">{counts.last_error}</p>
+        ) : null}
 
-        <div className="admin-form-actions flex flex-wrap gap-2">
+        <div className="admin-form-actions">
           <button
             type="button"
             onClick={handleImport}
             disabled={counts.in_progress}
-            className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+            className="admin-form-actions-btn admin-form-actions-btn--primary"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download />
             {t('integrations.kladrDownloadImport')}
           </button>
           <button
             type="button"
             onClick={() => void refreshStatus()}
-            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+            className="admin-form-actions-btn admin-form-actions-btn--secondary"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw />
             {t('integrations.refreshStatus')}
           </button>
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-        <h4 className="text-sm font-bold text-white">{t('integrations.kladrExternalApi')}</h4>
+      <div className="admin-section-card space-y-4">
+        <h4 className="admin-form-heading">{t('integrations.kladrExternalApi')}</h4>
 
         <div>
           <label className={labelClass}>{t('integrations.kladrApiPlan')}</label>
@@ -254,10 +254,10 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-        <h4 className="text-sm font-bold text-white">{t('integrations.geocodingServices')}</h4>
+      <div className="admin-section-card space-y-4">
+        <h4 className="admin-form-heading">{t('integrations.geocodingServices')}</h4>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input
             type="checkbox"
             checked={form.nominatim_enabled}
@@ -275,7 +275,7 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
           />
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input
             type="checkbox"
             checked={form.station_lookup_enabled}
@@ -284,7 +284,7 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
           {t('integrations.stationLookupEnabled')}
         </label>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input
             type="checkbox"
             checked={form.known_places_enabled}
@@ -294,33 +294,33 @@ export const GeocodingAdminPanel: React.FC<GeocodingAdminPanelProps> = ({ settin
         </label>
       </div>
 
-      <div className="admin-form-actions flex flex-wrap gap-2">
+      <div className="admin-form-actions">
         <button
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+          className="admin-form-actions-btn admin-form-actions-btn--primary"
         >
-          <Save className="w-3.5 h-3.5" />
+          <Save />
           {t('integrations.saveSettings')}
         </button>
         <button
           type="button"
           onClick={handleTest}
-          className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+          className="admin-form-actions-btn admin-form-actions-btn--secondary"
         >
-          <TestTube className="w-3.5 h-3.5" />
+          <TestTube />
           {t('integrations.testConnection')}
         </button>
       </div>
 
-      {form.last_test_at && (
-        <p className="text-[11px] text-slate-500">
+      {form.last_test_at ? (
+        <p className="admin-form-msg--muted">
           {t('integrations.lastTest')}: {new Date(form.last_test_at).toLocaleString(localeTag)}
           {form.last_test_message ? ` — ${form.last_test_message}` : ''}
         </p>
-      )}
-      {msg && <p className="text-xs text-slate-400">{msg}</p>}
+      ) : null}
+      {msg ? <p className="admin-form-msg">{msg}</p> : null}
     </div>
   );
 };

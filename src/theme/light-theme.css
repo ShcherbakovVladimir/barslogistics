@@ -3177,23 +3177,30 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   background: #e2e8f0 !important;
 }
 
-/* ── Admin panel (mobile + light) ── */
+/* ── Admin panel (chrome + light) ── */
 [data-theme="light"] .admin-panel {
-  color: #334155;
+  background: #f1f5f9 !important;
+  color: #0f172a;
 }
 
 [data-theme="light"] .admin-sidebar-header,
+[data-theme="light"] .admin-nav,
+[data-theme="light"] .admin-section-chrome,
 [data-theme="light"] .admin-section-card,
 [data-theme="light"] .admin-overview-card,
 [data-theme="light"] .admin-carrier-card,
 [data-theme="light"] .admin-api-endpoint-card,
+[data-theme="light"] .admin-api-snippet,
 [data-theme="light"] .admin-users-table-panel,
 [data-theme="light"] .admin-sites-table-panel,
 [data-theme="light"] .admin-support-panel,
 [data-theme="light"] .admin-backups-toolbar,
-[data-theme="light"] .admin-backup-card {
-  background: #ffffff !important;
+[data-theme="light"] .admin-backup-card,
+[data-theme="light"] .admin-sites-duplicates-panel,
+[data-theme="light"] .admin-sites-hint {
+  background: #fff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 16px 40px #0f172a00 !important;
 }
 
 [data-theme="light"] .admin-backups .admin-db-tools,
@@ -3243,14 +3250,35 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 }
 
 [data-theme="light"] .admin-sidebar-header h2,
-[data-theme="light"] .admin-section-title {
+[data-theme="light"] .admin-section-chrome .shipments-list-title,
+[data-theme="light"] .admin-form-heading,
+[data-theme="light"] .admin-carrier-card-title {
   color: #0f172a !important;
 }
 
-[data-theme="light"] .admin-nav-btn:not(.bg-indigo-600) {
+[data-theme="light"] .admin-sidebar-subtitle,
+[data-theme="light"] .admin-section-hint,
+[data-theme="light"] .admin-overview-hint,
+[data-theme="light"] .admin-form-hint {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-nav-btn:not(.is-active) {
   background: #f8fafc !important;
   border-color: #e2e8f0 !important;
   color: #64748b !important;
+}
+
+[data-theme="light"] .admin-nav-btn.is-active {
+  background: rgb(99 102 241 / 0.12) !important;
+  border-color: rgb(99 102 241 / 0.35) !important;
+  color: #4338ca !important;
+}
+
+[data-theme="light"] .admin-section-chrome .shipments-list-toolbar-icon {
+  background: #fff !important;
+  border-color: #e2e8f0 !important;
+  color: #6366f1 !important;
 }
 
 [data-theme="light"] .admin-users-card,

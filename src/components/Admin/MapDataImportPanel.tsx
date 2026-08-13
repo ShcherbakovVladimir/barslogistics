@@ -6,8 +6,8 @@ import { Upload, Download, RefreshCw, Save, Copy, Database } from 'lucide-react'
 import { SearchableSelect } from '../UI/SearchableSelect';
 import { adminDropdownSelectProps } from './adminDropdown';
 
-const inputClass = 'admin-field map-data-field w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[2.75rem] sm:min-h-0';
-const labelClass = 'block text-slate-300 font-semibold mb-1 text-xs';
+const inputClass = 'admin-field admin-form-field map-data-field w-full rounded-xl p-2.5 text-xs min-h-[2.75rem] sm:min-h-0';
+const labelClass = 'admin-form-label';
 
 interface MapDataImportPanelProps {
   settings: MapDataSettings | null;
@@ -159,32 +159,32 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
 
   return (
     <div className="admin-map-data admin-form-panel space-y-6 max-w-3xl">
-      <div className="admin-section-card bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+      <div className="admin-section-card space-y-4">
         <div>
-          <h3 className="font-bold text-white flex items-center gap-2">
-            <Upload className="w-4 h-4 text-emerald-400" />
+          <h3 className="admin-form-heading">
+            <Upload />
             {t('integrations.mapDataJsonImport')}
           </h3>
-          <p className="text-xs text-slate-400 mt-1">{t('integrations.mapDataJsonHint')}</p>
+          <p className="admin-form-hint mt-1">{t('integrations.mapDataJsonHint')}</p>
         </div>
 
-        <div className="admin-form-actions flex flex-wrap gap-2">
-          <label className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold cursor-pointer">
+        <div className="admin-form-actions">
+          <label className="admin-form-actions-btn admin-form-actions-btn--file">
             {t('integrations.mapDataSelectFile')}
             <input ref={fileInputRef} type="file" accept=".json,application/json" className="hidden" onChange={handleFileChange} />
           </label>
-          <button onClick={handleDownloadTemplate} className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5">
-            <Download className="w-3.5 h-3.5" />
+          <button type="button" onClick={handleDownloadTemplate} className="admin-form-actions-btn admin-form-actions-btn--secondary">
+            <Download />
             {t('integrations.mapDataDownloadTemplate')}
           </button>
         </div>
 
-        {selectedFile && (
-          <p className="text-xs text-slate-300 font-mono">{selectedFile}</p>
-        )}
+        {selectedFile ? (
+          <p className="admin-form-msg font-mono">{selectedFile}</p>
+        ) : null}
 
         <div className="flex flex-wrap gap-3 text-xs">
-          <label className="flex items-center gap-2 text-slate-300">
+          <label className="admin-form-check">
             <input
               type="radio"
               name="importMode"
@@ -193,7 +193,7 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
             />
             {t('integrations.mapDataModeMerge')}
           </label>
-          <label className="flex items-center gap-2 text-slate-300">
+          <label className="admin-form-check">
             <input
               type="radio"
               name="importMode"
@@ -205,26 +205,26 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
         </div>
 
         {importMode === 'replace' && (
-          <p className="text-xs text-amber-400/90">{t('integrations.mapDataReplaceWarning')}</p>
+          <p className="admin-alert admin-alert--warn">{t('integrations.mapDataReplaceWarning')}</p>
         )}
 
         <button
           onClick={handleImportFile}
           disabled={importing || !selectedFile}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 rounded-xl text-xs font-semibold flex items-center gap-2"
+          className="admin-form-actions-btn admin-form-actions-btn--save"
         >
           <Database className="w-4 h-4" />
           {importing ? t('integrations.mapDataImporting') : t('integrations.mapDataImportBtn')}
         </button>
       </div>
 
-      <div className="admin-section-card bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+      <div className="admin-section-card space-y-4">
         <div>
-          <h3 className="font-bold text-white">{t('integrations.mapDataApiTitle')}</h3>
-          <p className="text-xs text-slate-400 mt-1">{t('integrations.mapDataSubtitle')}</p>
+          <h3 className="admin-form-heading">{t('integrations.mapDataApiTitle')}</h3>
+          <p className="admin-form-hint mt-1">{t('integrations.mapDataSubtitle')}</p>
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-slate-300">
+        <label className="admin-form-check">
           <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
           {t('integrations.enabled')}
         </label>
@@ -265,45 +265,46 @@ export const MapDataImportPanel: React.FC<MapDataImportPanelProps> = ({
           </div>
         </div>
 
-        {form.last_sync_at && (
-          <p className="text-xs text-slate-400">
+        {form.last_sync_at ? (
+          <p className="admin-form-msg">
             {t('integrations.mapDataLastSync')}: {new Date(form.last_sync_at).toLocaleString(localeTag)}
             {form.last_factories_count != null && ` · ${form.last_factories_count} / ${form.last_links_count}`}
           </p>
-        )}
-        {form.last_error && (
-          <p className="text-xs text-red-400">{form.last_error}</p>
-        )}
+        ) : null}
+        {form.last_error ? (
+          <p className="admin-form-msg admin-form-msg--error">{form.last_error}</p>
+        ) : null}
 
-        <div className="admin-form-actions flex flex-wrap gap-2">
-          <button onClick={handleSaveSettings} disabled={saving} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5">
-            <Save className="w-3.5 h-3.5" />
+        <div className="admin-form-actions">
+          <button type="button" onClick={handleSaveSettings} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
+            <Save />
             {t('integrations.saveSettings')}
           </button>
           <button
+            type="button"
             onClick={handleSyncApi}
             disabled={syncing || !form.enabled}
-            className="px-3 py-2 bg-cyan-700 hover:bg-cyan-600 disabled:opacity-50 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+            className="admin-form-actions-btn admin-form-actions-btn--secondary"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={syncing ? 'animate-spin' : ''} />
             {syncing ? t('integrations.mapDataSyncing') : t('integrations.mapDataSyncNow')}
           </button>
         </div>
       </div>
 
-      <div className="admin-section-card admin-api-snippet bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-xs">
-        <div className="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
-          <span className="text-indigo-400 font-bold">{t('integrations.mapDataApiCurl')}</span>
-          <button onClick={handleCopy} className="text-slate-400 hover:text-white flex items-center gap-1">
-            <Copy className="w-3.5 h-3.5" />
+      <div className="admin-section-card admin-api-snippet">
+        <div className="admin-api-snippet-head">
+          <span className="admin-api-snippet-title">{t('integrations.mapDataApiCurl')}</span>
+          <button type="button" onClick={handleCopy} className="admin-api-copy-btn">
+            <Copy />
             {copied ? t('integrations.copied') : t('integrations.copyCurl')}
           </button>
         </div>
-        <p className="text-slate-400 mb-2">{t('integrations.mapDataApiCurlDesc')}</p>
-        <pre className="text-slate-300 whitespace-pre-wrap overflow-x-auto">{curlSnippet}</pre>
+        <p className="admin-api-endpoint-desc mb-2">{t('integrations.mapDataApiCurlDesc')}</p>
+        <pre>{curlSnippet}</pre>
       </div>
 
-      {message && <p className="text-xs text-emerald-400">{message}</p>}
+      {message ? <p className="admin-alert admin-alert--success">{message}</p> : null}
       {errors.length > 0 && (
         <ul className="text-xs text-amber-400/90 space-y-1 list-disc pl-4">
           {errors.map((err, i) => <li key={i}>{err}</li>)}

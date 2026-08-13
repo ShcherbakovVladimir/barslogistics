@@ -174,46 +174,45 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
   };
 
   return (
-    <div className={embedded ? 'admin-backups-embedded space-y-4' : 'admin-backups p-4 sm:p-6 space-y-6 bg-slate-950 min-h-full text-slate-100'}>
+    <div className={embedded ? 'admin-backups-embedded space-y-4' : 'admin-backups admin-panel space-y-6'}>
 
-      <div className={`admin-backups-toolbar flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl`}>
-        {!embedded && (
+      <div className="admin-backups-toolbar">
+        {!embedded ? (
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Cloud className="w-5 h-5 text-indigo-400" />
+            <h2 className="admin-form-heading">
+              <Cloud />
               <span>{t('backups.title')}</span>
             </h2>
-            <p className="text-xs text-slate-400 mt-1">{t('backups.subtitleReal')}</p>
+            <p className="admin-section-hint mt-1">{t('backups.subtitleReal')}</p>
           </div>
-        )}
-        {embedded && (
-          <p className="text-xs text-slate-400">{t('backups.subtitleReal')}</p>
+        ) : (
+          <p className="admin-section-hint">{t('backups.subtitleReal')}</p>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-          {canBackup && (
+        <div className="admin-backups-toolbar-actions">
+          {canBackup ? (
             <button
               type="button"
               onClick={() => void loadMaintenance()}
               disabled={maintenanceLoading}
-              className="flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 rounded-xl text-xs font-semibold transition-colors min-h-[2.75rem] sm:min-h-0"
+              className="admin-form-actions-btn admin-form-actions-btn--secondary admin-backups-toolbar-btn--secondary"
             >
-              <RefreshCw className={`w-4 h-4 ${maintenanceLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={maintenanceLoading ? 'animate-spin' : ''} />
               <span>{t('backups.refresh')}</span>
             </button>
-          )}
+          ) : null}
           {canBackup ? (
             <button
               type="button"
               onClick={() => void handleCreate()}
               disabled={creating}
-              className="admin-backups-create-btn flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow-lg transition-colors min-h-[2.75rem] sm:min-h-0 w-full sm:w-auto"
+              className="admin-backups-create-btn"
             >
               <Plus className="w-4 h-4" />
               <span>{creating ? t('backups.creating') : t('backups.create')}</span>
             </button>
           ) : (
-            <div className="text-xs text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30">
+            <div className="admin-alert admin-alert--warn">
               {t('backups.adminRequired')}
             </div>
           )}
@@ -222,9 +221,9 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
 
       {canBackup && (
         <>
-          <section className="admin-db-tools bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Wrench className="w-4 h-4 text-slate-400" />
+          <section className="admin-db-tools space-y-4">
+            <h3 className="admin-form-heading">
+              <Wrench />
               {t('backups.sectionTools')}
             </h3>
             {maintenanceError && (
@@ -239,12 +238,12 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
                 return (
                   <div
                     key={tool}
-                    className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/60"
+                    className="admin-db-tool-row"
                   >
-                    <span className="font-mono text-xs text-slate-300">
+                    <span className="admin-db-tool-name">
                       {tool === 'pg_dump' ? t('backups.toolPgDump') : t('backups.toolPsql')}
                     </span>
-                    <span className={`flex items-center gap-1 text-[11px] font-semibold ${available ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <span className={`flex items-center gap-1 text-[11px] font-semibold ${available ? 'admin-db-tool-status--ok' : 'admin-db-tool-status--warn'}`}>
                       {available ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
                       {available ? t('backups.toolAvailable') : t('backups.toolUnavailable')}
                     </span>
@@ -254,27 +253,27 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
             </div>
           </section>
 
-          <section className="admin-db-migrations bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <section className="admin-db-migrations space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <GitBranch className="w-4 h-4 text-cyan-400" />
+                <h3 className="admin-form-heading">
+                  <GitBranch />
                   {t('backups.sectionMigrations')}
                 </h3>
-                {migrations && (
-                  <p className="text-xs text-slate-400 mt-1">
+                {migrations ? (
+                  <p className="admin-section-hint mt-1">
                     {t('backups.migrationsSummary', {
                       applied: migrations.applied_count,
                       total: migrations.total_count,
                       pending: migrations.pending_count,
                     })}
                   </p>
-                )}
+                ) : null}
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              <div className="space-y-2 p-4 rounded-xl border border-slate-800 bg-slate-950/50">
+              <div className="admin-db-migration-box space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                   {t('backups.migrationsApply')}
                 </label>

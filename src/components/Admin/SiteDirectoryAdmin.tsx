@@ -194,13 +194,13 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
 
   return (
     <div className="admin-sites-page space-y-4">
-      <div className="admin-sites-toolbar flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <p className="text-xs text-slate-400">{t('siteDirectory.admin.subtitle')}</p>
+      <div className="admin-section-toolbar admin-sites-toolbar">
+        <p className="admin-section-hint">{t('siteDirectory.admin.subtitle')}</p>
         <div className="admin-sites-toolbar-actions flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => { void loadSites(); void loadDuplicates(); }}
-            className="admin-sites-toolbar-btn admin-sites-toolbar-btn--secondary flex items-center justify-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg min-h-[2.75rem] sm:min-h-0"
+            className="admin-sites-toolbar-btn admin-sites-toolbar-btn--secondary"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading || duplicatesLoading ? 'animate-spin' : ''}`} />
             {t('siteDirectory.admin.refresh')}
@@ -209,7 +209,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
             type="button"
             onClick={() => void handleMergeDuplicates()}
             disabled={merging || (duplicatesReport?.total_groups ?? 0) === 0}
-            className="admin-sites-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs rounded-lg font-semibold min-h-[2.75rem] sm:min-h-0"
+            className="admin-sites-toolbar-btn admin-sites-toolbar-btn--warn"
           >
             <GitMerge className={`w-3.5 h-3.5 ${merging ? 'animate-pulse' : ''}`} />
             {merging ? t('siteDirectory.admin.merging') : t('siteDirectory.admin.mergeDuplicates')}
@@ -217,7 +217,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
           <button
             type="button"
             onClick={openCreate}
-            className="admin-sites-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-lg font-semibold min-h-[2.75rem] sm:min-h-0"
+            className="admin-sites-toolbar-btn"
           >
             <Plus className="w-3.5 h-3.5" />
             {t('siteDirectory.admin.add')}
@@ -225,20 +225,18 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
         </div>
       </div>
 
-      <div className="admin-sites-hint bg-slate-900 border border-indigo-500/30 rounded-xl p-4 flex gap-3 text-xs text-slate-300">
+      <div className="admin-sites-hint">
         <Database className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
         <p>{t('siteDirectory.admin.dbSourceHint')}</p>
       </div>
 
-      {mergeResult && (
-        <div className="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3">
-          {mergeResult}
-        </div>
-      )}
+      {mergeResult ? (
+        <div className="admin-alert admin-alert--success">{mergeResult}</div>
+      ) : null}
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
-        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-400" />
+      <div className="admin-sites-duplicates-panel space-y-3">
+        <h4 className="admin-form-heading">
+          <AlertTriangle />
           {t('siteDirectory.admin.duplicatesTitle')}
         </h4>
         {duplicatesLoading && !duplicatesReport ? (
@@ -253,7 +251,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
             </p>
             <div className="max-h-48 overflow-y-auto space-y-2 text-[11px]">
               {duplicatesReport.groups.slice(0, 8).map(group => (
-                <div key={group.canonical_key} className="bg-slate-950 border border-slate-800 rounded-lg p-2">
+                <div key={group.canonical_key} className="admin-sites-duplicates-item">
                   {group.sites.map(site => (
                     <div key={site.id} className="text-slate-300 flex flex-wrap gap-x-2">
                       <span className="text-white font-medium">{site.name}</span>
@@ -273,27 +271,15 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
 
       <div className="admin-sites-contour-chips flex flex-wrap gap-2">
         {([
-          ['all', t('siteDirectory.allContours'), sites.length, 'indigo'] as const,
-          ['inner', t('siteDirectory.contourInner'), innerCount, 'emerald'] as const,
-          ['outer', t('siteDirectory.contourOuter'), outerCount, 'amber'] as const,
-        ]).map(([id, label, count, tone]) => (
+          ['all', t('siteDirectory.allContours'), sites.length] as const,
+          ['inner', t('siteDirectory.contourInner'), innerCount] as const,
+          ['outer', t('siteDirectory.contourOuter'), outerCount] as const,
+        ]).map(([id, label, count]) => (
           <button
             key={id}
             type="button"
             onClick={() => setActiveContour(id)}
-            className={`admin-sites-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors min-h-[2.5rem] sm:min-h-0 ${
-              activeContour === id
-                ? tone === 'emerald'
-                  ? 'bg-emerald-600 text-white border-emerald-500'
-                  : tone === 'amber'
-                    ? 'bg-amber-600 text-white border-amber-500'
-                    : 'bg-indigo-600 text-white border-indigo-500'
-                : tone === 'emerald'
-                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:opacity-90'
-                  : tone === 'amber'
-                    ? 'bg-amber-500/10 text-amber-400 border-amber-500/30 hover:opacity-90'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
-            }`}
+            className={`admin-sites-chip${activeContour === id ? ` is-active${id === 'inner' ? ' is-active--emerald' : id === 'outer' ? ' is-active--amber' : ''}` : ''}`}
           >
             {label} ({count})
           </button>
@@ -306,11 +292,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
             key={cat.id}
             type="button"
             onClick={() => setActiveCategory(cat.id)}
-            className={`admin-sites-chip px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors min-h-[2.5rem] sm:min-h-0 ${
-              activeCategory === cat.id
-                ? 'bg-indigo-600 text-white border-indigo-500'
-                : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
-            }`}
+            className={`admin-sites-chip${activeCategory === cat.id ? ' is-active' : ''}`}
           >
             {getSiteCategoryLabel(cat.id, locale)} ({sites.filter(s => s.type === cat.id).length})
           </button>
@@ -321,10 +303,10 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
         <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-3">{error}</div>
       )}
 
-      <div className="admin-sites-table-panel overflow-x-auto responsive-table-wrap bg-slate-900 border border-slate-800 rounded-xl">
+      <div className="admin-sites-table-panel overflow-x-auto responsive-table-wrap">
         <div className="admin-sites-table-desktop">
-        <table className="w-full text-xs">
-          <thead className="bg-slate-950 text-slate-400">
+        <table>
+          <thead>
             <tr>
               <th className="text-left p-3">{t('siteDirectory.colName')}</th>
               <th className="text-left p-3 hidden sm:table-cell">{t('siteDirectory.colContour')}</th>

@@ -42,7 +42,7 @@ const emptyForm = (): FormState => ({
 });
 
 const fieldClass =
-  'admin-users-field w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white min-h-[2.75rem]';
+  'admin-users-field admin-form-field w-full rounded-lg px-2.5 py-2 text-sm min-h-[2.75rem]';
 
 interface AdminModalShellProps {
   onClose: () => void;
@@ -547,26 +547,26 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
 
   return (
     <div className="admin-users-page space-y-4">
-      <div className="admin-users-toolbar flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <p className="text-xs text-slate-400">{t('admin.users.subtitle')}</p>
+      <div className="admin-section-toolbar admin-users-toolbar">
+        <p className="admin-section-hint">{t('admin.users.subtitle')}</p>
         <button
           type="button"
           onClick={openCreate}
-          className="admin-users-toolbar-btn flex items-center justify-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-lg font-semibold min-h-[2.75rem] sm:min-h-0"
+          className="admin-users-toolbar-btn"
         >
           <Plus className="w-3.5 h-3.5 shrink-0" />
           {t('admin.users.add')}
         </button>
       </div>
 
-      {error && !creating && !editing && !deleteTarget && (
-        <p className="admin-users-alert text-xs text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">{error}</p>
-      )}
+      {error && !creating && !editing && !deleteTarget ? (
+        <p className="admin-alert admin-alert--error">{error}</p>
+      ) : null}
 
-      <div className="admin-users-table-panel bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="admin-users-table-panel">
         <div className="admin-users-table-desktop overflow-x-auto responsive-table-wrap">
-          <table className="w-full text-xs min-w-[28rem] lg:min-w-[32rem]">
-            <thead className="bg-slate-950 text-slate-400">
+          <table className="min-w-[28rem] lg:min-w-[32rem]">
+            <thead>
               <tr>
                 <th className="text-left p-3 font-semibold">{t('admin.users.colUser')}</th>
                 <th className="text-left p-3 font-semibold">{t('admin.users.colRole')}</th>
@@ -580,7 +580,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
               {users.map(u => {
                 const siteName = ourSites.find(s => s.id === u.site_id)?.name;
                 return (
-                  <tr key={u.id} className="border-t border-slate-800 text-slate-200">
+                  <tr key={u.id}>
                     <td className="p-3">
                       <div className="flex items-center gap-2.5 min-w-0">
                         <UserAvatar
@@ -592,8 +592,8 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, currentUserId, 
                           className="admin-users-row-avatar shrink-0"
                         />
                         <div className="min-w-0">
-                          <div className="font-semibold text-white truncate">{u.name}</div>
-                          <div className="text-slate-500 truncate">@{u.username}</div>
+                          <div className="admin-users-row-name truncate">{u.name}</div>
+                          <div className="admin-users-row-login truncate">@{u.username}</div>
                         </div>
                       </div>
                     </td>

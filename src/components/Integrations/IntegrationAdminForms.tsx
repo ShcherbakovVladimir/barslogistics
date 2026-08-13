@@ -8,8 +8,8 @@ import { Save, TestTube, Settings2, Satellite, Mail } from 'lucide-react';
 import { SearchableSelect } from '../UI/SearchableSelect';
 import { adminDropdownSelectProps } from '../Admin/adminDropdown';
 
-const inputClass = 'admin-field w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[2.75rem] sm:min-h-0';
-const labelClass = 'block text-slate-300 font-semibold mb-1 text-xs';
+const inputClass = 'admin-field admin-form-field w-full rounded-xl p-2.5 text-xs min-h-[2.75rem] sm:min-h-0';
+const labelClass = 'admin-form-label';
 
 interface TelegramSettingsFormProps {
   settings: TelegramSettings;
@@ -78,10 +78,10 @@ export const TelegramSettingsForm: React.FC<TelegramSettingsFormProps> = ({ sett
       </label>
 
       <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
           <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleTest} className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
           <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
         </button>
       </div>
@@ -189,10 +189,10 @@ export const CloudSettingsForm: React.FC<CloudSettingsFormProps> = ({ settings, 
       {form.last_error && <p className="text-[11px] text-red-400">{form.last_error}</p>}
 
       <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
           <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleTest} className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
           <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
         </button>
       </div>
@@ -311,10 +311,10 @@ export const TelemetrySettingsForm: React.FC<TelemetrySettingsFormProps> = ({ se
       {form.last_error && <p className="text-[11px] text-red-400">{form.last_error}</p>}
 
       <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
           <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleSync} disabled={syncing} className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleSync} disabled={syncing} className="admin-form-actions-btn admin-form-actions-btn--secondary">
           <TestTube className="w-3.5 h-3.5" /> {syncing ? t('integrations.telemetrySyncing') : t('integrations.telemetrySyncNow')}
         </button>
       </div>
@@ -358,12 +358,12 @@ export const CarrierConfigForm: React.FC<CarrierConfigFormProps> = ({ carrier, o
 
   return (
     <div>
-      <button onClick={() => setOpen(!open)} className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+      <button type="button" onClick={() => setOpen(!open)} className="admin-carrier-config-toggle">
         <Settings2 className="w-3 h-3" /> {t('integrations.configure')}
       </button>
       {open && (
-        <div className="mt-3 p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 text-xs">
-          <label className="flex items-center gap-2 text-slate-300">
+        <div className="admin-carrier-config-panel space-y-2 text-xs">
+          <label className="admin-form-check">
             <input type="checkbox" checked={form.enabled} onChange={e => setForm({ ...form, enabled: e.target.checked })} />
             {t('integrations.enabled')}
           </label>
@@ -387,7 +387,7 @@ export const CarrierConfigForm: React.FC<CarrierConfigFormProps> = ({ carrier, o
             <div><label className={labelClass}>{t('integrations.fieldSpeed')}</label><input className={inputClass} value={form.speed_field || ''} onChange={e => setForm({ ...form, speed_field: e.target.value })} /></div>
           </div>
           {carrier.last_error && <p className="text-red-400 text-[10px]">{carrier.last_error}</p>}
-          <button onClick={handleSave} className="px-3 py-1.5 bg-indigo-600 rounded-lg text-xs font-semibold">{t('integrations.saveSettings')}</button>
+        <button onClick={handleSave} className="admin-form-actions-btn admin-form-actions-btn--primary">{t('integrations.saveSettings')}</button>
           {msg && <p className="text-slate-400">{msg}</p>}
         </div>
       )}
@@ -596,10 +596,10 @@ export const MailSettingsForm: React.FC<MailSettingsFormProps> = ({ settings, on
       )}
 
       <div className="admin-form-actions flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleSave} disabled={saving} className="admin-form-actions-btn admin-form-actions-btn--primary">
           <Save className="w-3.5 h-3.5" /> {t('integrations.saveSettings')}
         </button>
-        <button onClick={handleTest} className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <button onClick={handleTest} className="admin-form-actions-btn admin-form-actions-btn--secondary">
           <TestTube className="w-3.5 h-3.5" /> {t('integrations.testConnection')}
         </button>
       </div>
