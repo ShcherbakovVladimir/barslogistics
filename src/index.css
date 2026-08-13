@@ -7929,6 +7929,111 @@ html.portal-embed .header-nav-scroll {
   background: rgb(2 6 23 / 0.75);
 }
 
+.admin-sites-duplicates-summary {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #fcd34d;
+}
+
+.admin-sites-duplicates-list {
+  max-height: 12rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+}
+
+.admin-sites-duplicates-site {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.5rem;
+  color: #cbd5e1;
+}
+
+.admin-sites-duplicates-site-name {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.admin-sites-duplicates-site-meta {
+  color: #64748b;
+}
+
+.admin-sites-duplicates-site-meta--mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.admin-sites-row-name {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.admin-sites-row-id,
+.admin-sites-row-muted {
+  color: #64748b;
+}
+
+.admin-sites-row-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.625rem;
+}
+
+.admin-sites-row-muted--mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.admin-sites-row-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.admin-sites-table-panel th.is-actions {
+  text-align: right;
+}
+
+.admin-sites-contour-badge {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.admin-sites-contour-badge--inner {
+  background: rgb(16 185 129 / 0.1);
+  color: #34d399;
+  border-color: rgb(16 185 129 / 0.3);
+}
+
+.admin-sites-contour-badge--outer {
+  background: rgb(245 158 11 / 0.1);
+  color: #fbbf24;
+  border-color: rgb(245 158 11 / 0.3);
+}
+
+.admin-sites-status-badge {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.admin-sites-status-badge--active {
+  background: rgb(16 185 129 / 0.1);
+  color: #34d399;
+}
+
+.admin-sites-status-badge--inactive {
+  background: rgb(100 116 139 / 0.1);
+  color: #94a3b8;
+}
+
 .admin-backups-toolbar {
   display: flex;
   flex-direction: column;

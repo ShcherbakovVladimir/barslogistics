@@ -42,10 +42,8 @@ const SiteAdminCard = ({ site, t, onEdit, onDelete }: SiteAdminCardProps) => (
         <div className="admin-sites-card-name">{site.name}</div>
         <div className="admin-sites-card-id">{site.id}</div>
       </div>
-      <span className={`admin-sites-card-contour px-2 py-0.5 rounded text-[10px] border shrink-0 ${
-        site.is_ours
-          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-          : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+      <span className={`admin-sites-contour-badge shrink-0 ${
+        site.is_ours ? 'admin-sites-contour-badge--inner' : 'admin-sites-contour-badge--outer'
       }`}>
         {site.is_ours ? t('siteDirectory.contourInner') : t('siteDirectory.contourOuter')}
       </span>
@@ -226,7 +224,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
       </div>
 
       <div className="admin-sites-hint">
-        <Database className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+        <Database aria-hidden />
         <p>{t('siteDirectory.admin.dbSourceHint')}</p>
       </div>
 
@@ -240,24 +238,24 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
           {t('siteDirectory.admin.duplicatesTitle')}
         </h4>
         {duplicatesLoading && !duplicatesReport ? (
-          <p className="text-xs text-slate-500">{t('siteDirectory.admin.loading')}</p>
+          <p className="admin-form-msg--muted">{t('siteDirectory.admin.loading')}</p>
         ) : duplicatesReport && duplicatesReport.total_groups > 0 ? (
           <>
-            <p className="text-xs text-amber-300">
+            <p className="admin-sites-duplicates-summary">
               {t('siteDirectory.admin.duplicatesSummary', {
                 groups: duplicatesReport.total_groups,
                 rows: duplicatesReport.total_duplicate_rows,
               })}
             </p>
-            <div className="max-h-48 overflow-y-auto space-y-2 text-[11px]">
+            <div className="admin-sites-duplicates-list">
               {duplicatesReport.groups.slice(0, 8).map(group => (
                 <div key={group.canonical_key} className="admin-sites-duplicates-item">
                   {group.sites.map(site => (
-                    <div key={site.id} className="text-slate-300 flex flex-wrap gap-x-2">
-                      <span className="text-white font-medium">{site.name}</span>
-                      <span className="text-slate-500 font-mono">{site.id}</span>
-                      <span className="text-slate-500">{t('siteDirectory.admin.colEdits')}: {site.edit_count}</span>
-                      <span className="text-slate-500">{t('factories.routesCount', { count: site.link_refs })}</span>
+                    <div key={site.id} className="admin-sites-duplicates-site">
+                      <span className="admin-sites-duplicates-site-name">{site.name}</span>
+                      <span className="admin-sites-duplicates-site-meta admin-sites-duplicates-site-meta--mono">{site.id}</span>
+                      <span className="admin-sites-duplicates-site-meta">{t('siteDirectory.admin.colEdits')}: {site.edit_count}</span>
+                      <span className="admin-sites-duplicates-site-meta">{t('factories.routesCount', { count: site.link_refs })}</span>
                     </div>
                   ))}
                 </div>
@@ -265,7 +263,7 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
             </div>
           </>
         ) : (
-          <p className="text-xs text-slate-500">{t('siteDirectory.admin.duplicatesEmpty')}</p>
+          <p className="admin-form-msg--muted">{t('siteDirectory.admin.duplicatesEmpty')}</p>
         )}
       </div>
 
@@ -299,9 +297,9 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
         ))}
       </div>
 
-      {error && (
-        <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg p-3">{error}</div>
-      )}
+      {error ? (
+        <div className="admin-alert admin-alert--error">{error}</div>
+      ) : null}
 
       <div className="admin-sites-table-panel overflow-x-auto responsive-table-wrap">
         <div className="admin-sites-table-desktop">
@@ -314,50 +312,48 @@ export const SiteDirectoryAdmin: React.FC<SiteDirectoryAdminProps> = ({ onSitesC
               <th className="text-left p-3 hidden lg:table-cell">{t('siteDirectory.colCoords')}</th>
               <th className="text-left p-3 hidden sm:table-cell">{t('siteDirectory.admin.colEdits')}</th>
               <th className="text-left p-3 hidden sm:table-cell">{t('common.status')}</th>
-              <th className="text-right p-3">{t('common.action')}</th>
+              <th className="text-right p-3 is-actions">{t('common.action')}</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="p-6 text-center text-slate-500">{t('siteDirectory.admin.loading')}</td></tr>
+              <tr><td colSpan={7} className="p-6 text-center admin-sites-empty">{t('siteDirectory.admin.loading')}</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="p-6 text-center text-slate-500">{t('siteDirectory.empty')}</td></tr>
+              <tr><td colSpan={7} className="p-6 text-center admin-sites-empty">{t('siteDirectory.empty')}</td></tr>
             ) : filtered.map(site => (
-              <tr key={site.id} className="border-t border-slate-800 hover:bg-slate-800/40">
+              <tr key={site.id}>
                 <td className="p-3">
-                  <div className="text-white font-medium">{site.name}</div>
-                  <div className="text-slate-500 font-mono text-[10px]">{site.id}</div>
+                  <div className="admin-sites-row-name">{site.name}</div>
+                  <div className="admin-sites-row-id">{site.id}</div>
                 </td>
                 <td className="p-3 hidden sm:table-cell">
-                  <span className={`px-2 py-0.5 rounded text-[10px] border ${
-                    site.is_ours
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                  <span className={`admin-sites-contour-badge ${
+                    site.is_ours ? 'admin-sites-contour-badge--inner' : 'admin-sites-contour-badge--outer'
                   }`}>
                     {site.is_ours ? t('siteDirectory.contourInner') : t('siteDirectory.contourOuter')}
                   </span>
                 </td>
-                <td className="p-3 hidden md:table-cell text-slate-400">{site.region}</td>
-                <td className="p-3 hidden lg:table-cell text-slate-500 font-mono">
+                <td className="p-3 hidden md:table-cell admin-sites-row-muted">{site.region}</td>
+                <td className="p-3 hidden lg:table-cell admin-sites-row-muted admin-sites-row-muted--mono">
                   {site.latitude.toFixed(4)}, {site.longitude.toFixed(4)}
                 </td>
-                <td className="p-3 hidden sm:table-cell text-slate-400 font-mono">
+                <td className="p-3 hidden sm:table-cell admin-sites-row-muted admin-sites-row-muted--mono">
                   {site.edit_count ?? 0}
                 </td>
                 <td className="p-3 hidden sm:table-cell">
-                  <span className={`px-2 py-0.5 rounded text-[10px] ${
-                    site.is_active !== false ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-500/10 text-slate-400'
+                  <span className={`admin-sites-status-badge ${
+                    site.is_active !== false ? 'admin-sites-status-badge--active' : 'admin-sites-status-badge--inactive'
                   }`}>
                     {site.is_active !== false ? t('siteDirectory.admin.active') : t('siteDirectory.admin.inactive')}
                   </span>
                 </td>
                 <td className="p-3">
-                  <div className="flex justify-end gap-1">
-                    <button type="button" onClick={() => openEdit(site)} className="p-1.5 rounded hover:bg-slate-700 text-slate-400 hover:text-white">
-                      <Pencil className="w-3.5 h-3.5" />
+                  <div className="admin-sites-row-actions">
+                    <button type="button" onClick={() => openEdit(site)} className="admin-users-row-action admin-users-row-action--edit" title={t('siteDirectory.admin.edit')}>
+                      <Pencil aria-hidden />
                     </button>
-                    <button type="button" onClick={() => setDeleteTarget(site)} className="p-1.5 rounded hover:bg-red-500/20 text-slate-400 hover:text-red-400">
-                      <Trash2 className="w-3.5 h-3.5" />
+                    <button type="button" onClick={() => setDeleteTarget(site)} className="admin-users-row-action admin-users-row-action--delete" title={t('admin.users.delete')}>
+                      <Trash2 aria-hidden />
                     </button>
                   </div>
                 </td>

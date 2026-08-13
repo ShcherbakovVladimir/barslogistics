@@ -4016,14 +4016,73 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   color: #b45309 !important;
 }
 
+[data-theme="light"] .admin-sites-row-name,
+[data-theme="light"] .admin-sites-duplicates-site-name {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-sites-row-id,
+[data-theme="light"] .admin-sites-row-muted,
+[data-theme="light"] .admin-sites-duplicates-site,
+[data-theme="light"] .admin-sites-duplicates-site-meta {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-sites-duplicates-summary {
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-sites-contour-badge--inner {
+  background: rgb(16 185 129 / 0.12) !important;
+  border-color: rgb(16 185 129 / 0.35) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .admin-sites-contour-badge--outer {
+  background: rgb(245 158 11 / 0.12) !important;
+  border-color: rgb(245 158 11 / 0.35) !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .admin-sites-status-badge--active {
+  background: rgb(16 185 129 / 0.12) !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .admin-sites-status-badge--inactive {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-users-row-action--edit,
+[data-theme="light"] .admin-users-row-action--delete,
+[data-theme="light"] .admin-users-row-action--reject {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .admin-users-row-action--edit:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .admin-users-row-action--delete:hover:not(:disabled),
+[data-theme="light"] .admin-users-row-action--reject:hover:not(:disabled) {
+  background: rgb(239 68 68 / 0.1) !important;
+  color: #dc2626 !important;
+}
+
+[data-theme="light"] .admin-users-row-action--approve {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .admin-users-row-action--approve:hover:not(:disabled) {
+  background: rgb(16 185 129 / 0.12) !important;
+}
+
 [data-theme="light"] .admin-sites-duplicates-item {
   background: #f8fafc !important;
   border-color: #e2e8f0 !important;
   box-shadow: none !important;
-}
-
-[data-theme="light"] .admin-sites-duplicates-item .text-white {
-  color: #0f172a !important;
 }
 
 [data-theme="light"] .admin-sites-toolbar-btn--secondary,
@@ -4056,20 +4115,6 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
 [data-theme="light"] .admin-sites-card-action--delete {
   background: rgb(239 68 68 / 0.08) !important;
   border-color: rgb(239 68 68 / 0.22) !important;
-  color: #dc2626 !important;
-}
-
-[data-theme="light"] .admin-sites-table-panel button.text-slate-400 {
-  color: #64748b !important;
-}
-
-[data-theme="light"] .admin-sites-table-panel button.hover\:bg-slate-700:hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .admin-sites-table-panel button.hover\:bg-red-500\/20:hover {
-  background-color: rgb(239 68 68 / 0.08) !important;
   color: #dc2626 !important;
 }
 
