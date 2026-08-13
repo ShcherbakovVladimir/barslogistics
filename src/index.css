@@ -16467,7 +16467,7 @@ html.compact-laptop .app-header-nav {
 
 /* ── KPI dashboard: chrome panels ── */
 .kpi-dashboard-page {
-  --account-page-bg-scrim: rgb(2 6 23 / 0.58);
+  --account-page-bg-scrim: rgb(2 6 23 / 0.38);
   position: relative;
   isolation: isolate;
   min-height: 100%;
@@ -16478,7 +16478,7 @@ html.compact-laptop .app-header-nav {
 
 .kpi-dashboard-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -21447,7 +21447,7 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
 /* ── Account / personal cabinet — chrome panels ── */
 .account-page,
 .kpi-dashboard-page {
-  --account-page-bg-scrim: rgb(2 6 23 / 0.58);
+  --account-page-bg-scrim: rgb(2 6 23 / 0.38);
 }
 
 .account-page {
@@ -21477,6 +21477,7 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  filter: invert(1) hue-rotate(180deg) brightness(0.82) contrast(1.06) saturate(0.78);
 }
 
 .account-page::before,
@@ -21484,14 +21485,14 @@ html.app-side-rail-active.app-side-rail-collapsed .tasks-drawer-panel {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   background: var(--account-page-bg-scrim);
 }
 
 .account-page-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   max-width: 42rem;
   margin: 0 auto;
