@@ -37,6 +37,13 @@
   border-color: #e2e8f0 !important;
 }
 
+[data-theme="light"] .modal-panel {
+  background: rgb(255 255 255 / 0.94) !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 0.12) !important;
+}
+
 [data-theme="light"] .facility-modal-card {
   background: #f8fafc;
   border-color: #e2e8f0 !important;
@@ -175,6 +182,7 @@
 }
 
 [data-theme="light"] .shipment-detail-modal-dismiss:hover {
+  background: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
@@ -584,6 +592,7 @@
 }
 
 [data-theme="light"] .route-detail-modal-dismiss:hover {
+  background: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
@@ -625,8 +634,15 @@
 }
 
 [data-theme="light"] .export-format-option {
-  border-color: #cbd5e1 !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
   color: #64748b !important;
+}
+
+[data-theme="light"] .export-format-option:hover:not(.is-active) {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .export-format-option.is-active {
@@ -639,14 +655,37 @@
   color: #475569 !important;
 }
 
-[data-theme="light"] .export-modal-dismiss,
-[data-theme="light"] .export-modal-btn-cancel {
+[data-theme="light"] .export-modal-dismiss {
   color: #64748b !important;
 }
 
-[data-theme="light"] .export-modal-dismiss:hover,
-[data-theme="light"] .export-modal-btn-cancel:hover {
+[data-theme="light"] .export-modal-dismiss:hover {
+  background: #f1f5f9 !important;
   color: #0f172a !important;
+}
+
+[data-theme="light"] .export-modal-btn-cancel {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .export-modal-btn-cancel:hover {
+  background: #f8fafc !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .export-modal-btn-primary {
+  background: #4f46e5 !important;
+  border-color: rgb(99 102 241 / 0.45) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .export-modal-btn-primary:hover:not(:disabled) {
+  background: #4338ca !important;
+  border-color: rgb(99 102 241 / 0.65) !important;
+  color: #ffffff !important;
 }
 
 /* Auth login — light */
