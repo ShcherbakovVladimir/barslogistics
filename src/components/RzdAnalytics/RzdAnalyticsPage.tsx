@@ -45,7 +45,7 @@ interface RouteListItemProps {
   route: RzdAggregatedRoute;
   selected: boolean;
   localeTag: string;
-  tonsLabel: string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   onSelect: (route: RzdAggregatedRoute) => void;
 }
 
@@ -53,25 +53,56 @@ const RouteListItem = ({
   route,
   selected,
   localeTag,
-  tonsLabel,
+  t,
   onSelect,
-}: RouteListItemProps) => (
-  <button
-    type="button"
-    onClick={() => onSelect(route)}
-    className={`rzd-analytics-route-item${selected ? ' rzd-analytics-route-item--selected' : ''}`}
-  >
-    <div className="rzd-analytics-route-item-cargo">
-      {route.cargo_name || route.cargo_code}
-    </div>
-    <div className="rzd-analytics-route-item-path">
-      {route.origin_name} → {route.dest_name}
-    </div>
-    <div className="rzd-analytics-route-item-meta">
-      {route.total_volume.toLocaleString(localeTag)} {tonsLabel} · {route.shipment_count}
-    </div>
-  </button>
-);
+}: RouteListItemProps) => {
+  const cargoLabel = route.cargo_name || route.cargo_code || '—';
+  const showCodeBadge = Boolean(route.cargo_code && route.cargo_name);
+  const regionLine =
+    route.origin_region || route.dest_region
+      ? `${route.origin_region || '—'} → ${route.dest_region || '—'}`
+      : null;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(route)}
+      className={`rzd-analytics-route-item${selected ? ' rzd-analytics-route-item--selected' : ''}`}
+    >
+      <div className="rzd-analytics-route-item-top">
+        <div className="rzd-analytics-route-item-type-row">
+          <span className="rzd-analytics-route-item-icon">
+            <Train aria-hidden />
+          </span>
+          <span className="rzd-analytics-route-item-cargo">{cargoLabel}</span>
+          {showCodeBadge ? (
+            <span className="rzd-analytics-route-item-badge">{route.cargo_code}</span>
+          ) : null}
+        </div>
+        <span className="rzd-analytics-route-item-time">
+          {route.total_volume.toLocaleString(localeTag)} {t('common.tons')}
+        </span>
+      </div>
+
+      <div className="rzd-analytics-route-item-path">
+        {route.origin_name} → {route.dest_name}
+      </div>
+
+      {regionLine ? (
+        <div className="rzd-analytics-route-item-regions">{regionLine}</div>
+      ) : null}
+
+      <div className="rzd-analytics-route-item-foot">
+        <span className="rzd-analytics-route-item-foot-label">
+          {t('routeModal.shipmentCount')}
+        </span>
+        <span className="rzd-analytics-route-item-badge">
+          {route.shipment_count.toLocaleString(localeTag)}
+        </span>
+      </div>
+    </button>
+  );
+};
 
 interface RecordCardProps {
   record: RzdAnalyticsRecord;
@@ -185,7 +216,7 @@ const RoutesSheet = ({
               route={r}
               selected={selectedRoute === r}
               localeTag={localeTag}
-              tonsLabel={t('common.tons')}
+              t={t}
               onSelect={handleSelect}
             />
           ))}
@@ -540,7 +571,7 @@ export function RzdAnalyticsPage({ currentUser }: RzdAnalyticsPageProps) {
                     route={r}
                     selected={selectedRoute === r}
                     localeTag={localeTag}
-                    tonsLabel={t('common.tons')}
+                    t={t}
                     onSelect={setSelectedRoute}
                   />
                 ))}

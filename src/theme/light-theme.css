@@ -5771,9 +5771,13 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   color: #64748b !important;
 }
 
-[data-theme="light"] .rzd-analytics-kpi-item,
-[data-theme="light"] .rzd-analytics-route-item {
+[data-theme="light"] .rzd-analytics-kpi-item {
   background: #fff !important;
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item {
+  background: #f8fafc !important;
   border-color: #e2e8f0 !important;
 }
 
@@ -5860,8 +5864,36 @@ html.layout-fold[data-theme="light"] .modal-backdrop .my-data-modal.app-modal-sh
   background: rgb(99 102 241 / 0.08) !important;
 }
 
+[data-theme="light"] .rzd-analytics-route-item:hover:not(.rzd-analytics-route-item--selected) {
+  background: #f1f5f9 !important;
+  border-color: #c7d2fe !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-type-row,
 [data-theme="light"] .rzd-analytics-route-item-cargo {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-icon {
+  color: #6366f1 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-badge {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-time {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-regions,
+[data-theme="light"] .rzd-analytics-route-item-foot {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .rzd-analytics-route-item-foot {
+  border-top-color: #e2e8f0 !important;
 }
 
 [data-theme="light"] .rzd-analytics-map {
